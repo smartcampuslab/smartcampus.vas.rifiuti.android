@@ -1,0 +1,2 @@
+smartcampus.vas.rifiuti.android
+===============================
