@@ -1,8 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">smartcampus.vas.rifiuti.android</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Rifiuti</string>
+    <string name="action_settings">Configurazione</string>
+    <string name="hello_world">Ciao mondo!</string>
+    <string name="empty"></string>
+
+    <!-- Drawer titles -->
+    <string name="drawer_open">Rifiuti</string>
+    <string name="drawer_close">Rifiuti</string>
+    
+    <!-- Drawer and tabs entries -->
+    <string name="drawer_home">Home</string>
+    <string name="drawer_dove_butto">Dove lo butto?</string>
+    <string name="drawer_punti_raccolta">Punti di raccolta</string>
+    <string name="drawer_tipi_raccolta">Tipi di raccolta</string>
+    <string name="drawer_tipi_rifiuti">Tipi di rifiuti</string>
+    <string name="drawer_calendario">Calendario</string>
+    <string name="drawer_scadenze_note">Scadenze e note</string>
+    <string name="drawer_feedback">Feedback</string>
+    <string name="drawer_profilo">Profilo</string>
+    <string name="drawer_tutorial">Tutorial</string>
+    <string name="drawer_info">Informazioni sull\'app</string>
+    
+    <!-- Home pager titles -->
+    <string name="home_pager_scadenzenote">SCADENZE E NOTE</string>
+    <string name="home_pager_dovelobutto">DOVE LO BUTTO?</string>
+    <string name="home_pager_calendario">CALENDARIO</string>
+    
+    <!-- Dove lo butto? strings -->
+    <string name="dovelobutto_search_hint">Che rifiuto vuoi buttare?</string>
+    
+    <!-- Tipi di rifiuti strings -->
+    <string name="tipirifiuti_01">Tipo di rifiuto 01</string>
+    <string name="tipirifiuti_02">Tipo di rifiuto 02</string>
+    <string name="tipirifiuti_03">Tipo di rifiuto 03</string>
+    <string name="tipirifiuti_04">Tipo di rifiuto 04</string>
+    <string name="tipirifiuti_05">Tipo di rifiuto 05</string>
+    <string name="tipirifiuti_06">Tipo di rifiuto 06</string>
+    <string name="tipirifiuti_07">Tipo di rifiuto 07</string>
+    <string name="tipirifiuti_08">Tipo di rifiuto 08</string>
+    <string name="tipirifiuti_09">Tipo di rifiuto 09</string>
+    <string name="tipirifiuti_10">Tipo di rifiuto 10</string>
+    <string name="tipirifiuti_11">Tipo di rifiuto 11</string>
+    <string name="tipirifiuti_12">Tipo di rifiuto 12</string>
+    <string name="tipirifiuti_13">Tipo di rifiuto 13</string>
+    <string name="tipirifiuti_14">Tipo di rifiuto 14</string>
+    <string name="tipirifiuti_15">Tipo di rifiuto 15</string>
+    <string name="tipirifiuti_16">Tipo di rifiuto 16</string>
+    <string name="tipirifiuti_17">Tipo di rifiuto 17</string>
+    <string name="tipirifiuti_18">Tipo di rifiuto 18</string>
+    <string name="tipirifiuti_19">Tipo di rifiuto 19</string>
+    <string name="tipirifiuti_20">Tipo di rifiuto 20</string>
+    <string name="tipirifiuti_21">Tipo di rifiuto 21</string>
+    <string name="tipirifiuti_22">Tipo di rifiuto 22</string>
+    <string name="tipirifiuti_23">Tipo di rifiuto 23</string>
+    <string name="tipirifiuti_24">Tipo di rifiuto 24</string>
+    <string name="tipirifiuti_25">Tipo di rifiuto 25</string>
+    
 
 </resources>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/eu.trentorise.smartcampus.rifiuti"
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/fragment_horizontal_margin"
+        android:paddingRight="@dimen/fragment_horizontal_margin"
+        android:paddingTop="@dimen/fragment_vertical_margin" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical" >
+
+            <EditText
+                android:id="@+id/dovelobutto_search_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/dovelobutto_search_hint"
+                android:inputType="text" />
+
+            <ImageButton
+                android:id="@+id/dovelobutto_search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/empty"
+                android:src="@android:drawable/ic_menu_search" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/dovelobutto_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+        </ListView>
+
+        <!-- <android.support.v7.widget.GridLayout -->
+        <!-- xmlns:app="http://schemas.android.com/apk/res/eu.trentorise.smartcampus.rifiuti" -->
+        <!-- android:id="@+id/tipirifiuti_grid" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:layout_marginTop="@dimen/fragment_vertical_margin" -->
+        <!-- app:columnCount="3" > -->
+        <!-- </android.support.v7.widget.GridLayout> -->
+
+        <GridView
+            android:id="@+id/tipirifiuti_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fragment_vertical_margin"
+            android:numColumns="3" >
+        </GridView>
+    </LinearLayout>
+
+</ScrollView>
