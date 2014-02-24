@@ -16,31 +16,45 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class PreferenceUtils {
-
+	
+	//key for the profile's preferences (the container)
 	private final static String PROFILE_PREF_KEY = "profile";
+	
 	private final static String PROFILE_IN_USE_KEY = "in use";
 	private final static String ALL_PROFILES_KEY = "profiles";
 
-	private SharedPreferences getSharedPreferences(Context ctx, String pref_key) {
+	private static SharedPreferences getSharedPreferences(Context ctx, String pref_key) {
 		return ctx.getSharedPreferences(pref_key, Context.MODE_PRIVATE);
 	}
-
-	public List<Profile> getProfiles(Context ctx) {
-		SharedPreferences sp = getSharedPreferences(ctx, PROFILE_PREF_KEY);
+	
+	private static SharedPreferences getProfilePreference(Context ctx){
+		return getSharedPreferences(ctx, PROFILE_PREF_KEY);
+	}
+	
+	/**
+	 * 
+	 * @param ctx
+	 * @return all stored profiles
+	 */
+	public static List<Profile> getProfiles(Context ctx) {
+		SharedPreferences sp = getProfilePreference(ctx);
 		String jsonArrString = sp.getString(ALL_PROFILES_KEY, null);
+		List<Profile> out = new ArrayList<Profile>();
 		JSONArray jsonArr;
 		try {
 			jsonArr = new JSONArray(jsonArrString);
-			List<Profile> out = new ArrayList<Profile>();
 			for (int i = 0; i < jsonArr.length(); i++) {
 				out.add(Profile.fromJSON(jsonArr.getJSONObject(i)));
 			}
 			return out;
 		} catch (JSONException e) {
 			Log.e(Profile.class.getName(), e.toString());
+		}catch (NullPointerException e) {
+			Log.e(Profile.class.getName(), e.toString());
+			Log.e(Profile.class.getName(), "Non ci sono profili, dovrebbe essercene sempre almeno uno!");
 		}
 
-		return null;
+		return out;
 	}
 
 	/**
@@ -49,8 +63,8 @@ public class PreferenceUtils {
 	 *            the Context of the app
 	 * @return the profile in use, null otherwise
 	 */
-	public Profile getProfileInUse(Context ctx) {
-		SharedPreferences sp = getSharedPreferences(ctx, PROFILE_PREF_KEY);
+	public static Profile getProfileInUse(Context ctx) {
+		SharedPreferences sp = getProfilePreference(ctx);
 		String jsonString = sp.getString(PROFILE_IN_USE_KEY, null);
 		if (jsonString != null) {
 			JSONObject obj;
@@ -63,18 +77,20 @@ public class PreferenceUtils {
 		}
 		return null;
 	}
-
-	public void useProfile(Context ctx, int position) throws Exception {
+	
+	/**
+	 * 
+	 * @param ctx
+	 * @param position of the choosen profile
+	 * @throws Exception wrong position
+	 */
+	public static void setProfileInUse(Context ctx, int position) throws Exception {
 		List<Profile> profiles = getProfiles(ctx);
 		try {
-			SharedPreferences sp = getSharedPreferences(ctx, PROFILE_PREF_KEY);
+			SharedPreferences sp = getProfilePreference(ctx);
 			Editor editor = sp.edit();
-			if (profiles != null) {
 				editor.putString(PROFILE_IN_USE_KEY, profiles.get(position)
 						.toJSON().toString());
-			} else {
-				throw new Exception("wrong position");
-			}
 			editor.commit();
 		} catch (JSONException e) {
 			Log.e(Profile.class.getName(), e.toString());
@@ -82,7 +98,20 @@ public class PreferenceUtils {
 		}
 	}
 	
-	public void addProfile(Context ctx, int position) throws Exception {
-		throw new Exception("Not implemented");
+	/**
+	 * 
+	 * @param ctx
+	 * @param p the profile that must be added
+	 * @throws Exception
+	 */
+	public static void addProfile(Context ctx, Profile p) throws Exception {
+		List<Profile> profiles = getProfiles(ctx);
+		profiles.add(p);
+		JSONArray jsonArr = new JSONArray();
+		for(Profile tmp : profiles){
+			jsonArr.put(tmp.toJSON());
+		}
+		SharedPreferences sp = getProfilePreference(ctx);
+		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
 	}
 }

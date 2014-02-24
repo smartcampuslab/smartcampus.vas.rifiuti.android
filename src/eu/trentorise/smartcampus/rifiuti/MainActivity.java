@@ -80,6 +80,9 @@ public class MainActivity extends ActionBarActivity {
 		case 0:
 			fragment = new HomeFragment();
 			break;
+		case 5:
+			fragment = new ProfilesFragment();
+			break;
 		default:
 			fragment = new DummyFragment();
 			break;

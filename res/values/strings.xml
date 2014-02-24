@@ -9,7 +9,7 @@
     <!-- Drawer titles -->
     <string name="drawer_open">Rifiuti</string>
     <string name="drawer_close">Rifiuti</string>
-    
+
     <!-- Drawer and tabs entries -->
     <string name="drawer_home">Home</string>
     <string name="drawer_dove_butto">Dove lo butto?</string>
@@ -22,15 +22,15 @@
     <string name="drawer_profilo">Profilo</string>
     <string name="drawer_tutorial">Tutorial</string>
     <string name="drawer_info">Informazioni sull\'app</string>
-    
+
     <!-- Home pager titles -->
     <string name="home_pager_scadenzenote">SCADENZE E NOTE</string>
     <string name="home_pager_dovelobutto">DOVE LO BUTTO?</string>
     <string name="home_pager_calendario">CALENDARIO</string>
-    
+
     <!-- Dove lo butto? strings -->
     <string name="dovelobutto_search_hint">Che rifiuto vuoi buttare?</string>
-    
+
     <!-- Tipi di rifiuti strings -->
     <string name="tipirifiuti_01">Tipo di rifiuto 01</string>
     <string name="tipirifiuti_02">Tipo di rifiuto 02</string>
@@ -57,6 +57,8 @@
     <string name="tipirifiuti_23">Tipo di rifiuto 23</string>
     <string name="tipirifiuti_24">Tipo di rifiuto 24</string>
     <string name="tipirifiuti_25">Tipo di rifiuto 25</string>
-    
+
+    <!-- Profile Fragment -->
+    <string name="niente_profili">Nessun profilo registrato al momento.</string>
 
 </resources>
