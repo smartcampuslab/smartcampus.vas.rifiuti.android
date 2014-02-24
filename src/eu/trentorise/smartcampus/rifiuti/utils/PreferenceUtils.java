@@ -102,9 +102,10 @@ public class PreferenceUtils {
 	 * 
 	 * @param ctx
 	 * @param p the profile that must be added
+	 * @throws JSONException 
 	 * @throws Exception
 	 */
-	public static void addProfile(Context ctx, Profile p) throws Exception {
+	public static void addProfile(Context ctx, Profile p) throws JSONException{
 		List<Profile> profiles = getProfiles(ctx);
 		profiles.add(p);
 		JSONArray jsonArr = new JSONArray();

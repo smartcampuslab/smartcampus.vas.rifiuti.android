@@ -1,5 +1,10 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import org.json.JSONException;
+
+import eu.trentorise.smartcampus.rifiuti.model.Profile;
+import eu.trentorise.smartcampus.rifiuti.model.Profile.Utenza;
+import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -48,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
 		getSupportActionBar().setHomeButtonEnabled(true);
 
 		loadFragment(0);
+		
 	}
 
 	@Override

@@ -21,6 +21,21 @@ public class Profile implements Serializable {
 		public int value() {
 			return mIndex;
 		}
+		
+		public static int fromUtenza(Utenza u){
+			switch (u) {
+			case PRIVATO:
+				return 0;
+			case TURISTA:
+				return 1;
+			case STAGIONALE:
+				return 2;
+			case AZIENDA:
+				return 3;
+			default:
+				return 0;
+			}
+		}
 	}
 
 	private static final long serialVersionUID = -2983888114579592139L;
@@ -37,6 +52,57 @@ public class Profile implements Serializable {
 	private String mVia;
 	private int mNCivico;
 	private String mArea;
+	
+	public Profile() {
+	}
+
+	public Profile(String mName, Utenza mUtenza, String mComune, String mVia,
+			int mNCivico, String mArea) {
+		super();
+		this.mName = mName;
+		this.mUtenza = mUtenza;
+		this.mComune = mComune;
+		this.mVia = mVia;
+		this.mNCivico = mNCivico;
+		this.mArea = mArea;
+	}
+
+	
+
+	public JSONObject toJSON() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put(KEY_NAME, mName);
+		json.put(KEY_UTENZA, Utenza.fromUtenza(mUtenza));
+		json.put(KEY_COMUNE, mComune);
+		json.put(KEY_VIA, mVia);
+		json.put(KEY_CIVICO, mNCivico);
+		json.put(KEY_AREA, mArea);
+		return json;
+
+	}
+
+	public static Profile fromJSON(JSONObject json) {
+		Profile profile = new Profile();
+		try {
+			profile.setName(json.getString(KEY_NAME));
+			profile.setUtenza(Utenza.valueOf(json.getString(KEY_UTENZA)));
+			profile.setComune(json.getString(KEY_COMUNE));
+			profile.setVia(json.getString(KEY_VIA));
+			profile.setNCivico(json.getInt(KEY_CIVICO));
+			profile.setArea(json.getString(KEY_AREA));
+		} catch (JSONException e) {
+			Log.e(Profile.class.getName(), e.toString());
+			return null;
+		}
+		return profile;
+	}
+	
+	
+	
+	@Override
+	public String toString() {
+		return mComune+","+mVia+","+mNCivico+mArea+","+mUtenza;
+	}
 
 	public String getName() {
 		return mName;
@@ -85,33 +151,7 @@ public class Profile implements Serializable {
 	public void setArea(String area) {
 		mArea = area;
 	}
-
-	public JSONObject toJSON() throws JSONException {
-		JSONObject json = new JSONObject();
-		json.put(KEY_NAME, mName);
-		json.put(KEY_UTENZA, mUtenza);
-		json.put(KEY_COMUNE, mComune);
-		json.put(KEY_VIA, mVia);
-		json.put(KEY_CIVICO, mNCivico);
-		json.put(KEY_AREA, mArea);
-		return json;
-
-	}
-
-	public static Profile fromJSON(JSONObject json) {
-		Profile profile = new Profile();
-		try {
-			profile.setName(json.getString(KEY_NAME));
-			profile.setUtenza((Utenza) json.get(KEY_UTENZA));
-			profile.setComune(json.getString(KEY_COMUNE));
-			profile.setVia(json.getString(KEY_VIA));
-			profile.setNCivico(json.getInt(KEY_CIVICO));
-			profile.setArea(json.getString(KEY_AREA));
-		} catch (JSONException e) {
-			Log.e(Profile.class.getName(), e.toString());
-			return null;
-		}
-		return profile;
-	}
+	
+	
 
 }

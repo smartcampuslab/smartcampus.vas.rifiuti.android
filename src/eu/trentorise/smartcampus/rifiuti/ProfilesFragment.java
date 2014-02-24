@@ -38,7 +38,7 @@ public class ProfilesFragment extends ListFragment {
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.profile_row, parent);
+				convertView = inflater.inflate(R.layout.profile_row, parent,false);
 			}
 			TextView name = (TextView) convertView.findViewById(R.id.row_profile_name);
 			if(!name.getText().toString().equals(tmp.getName()))
