@@ -1,20 +1,21 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import net.simonvt.calendarview.CalendarView;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tyczj.extendedcalendarview.ExtendedCalendarView;
+
 public class CalendarFragment extends Fragment {
 
-	private CalendarView calendarView;
+	private ExtendedCalendarView calendarView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_calendar, container, false);
-		calendarView = (CalendarView) viewGroup.findViewById(R.id.calendarView);
+		calendarView = (ExtendedCalendarView) viewGroup.findViewById(R.id.calendar_view);
 		return viewGroup;
 	}
 
