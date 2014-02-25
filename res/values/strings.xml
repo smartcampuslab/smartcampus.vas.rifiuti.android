@@ -64,6 +64,12 @@
     <string name="profilo_comune">Comune</string>
     <string name="profilo_area">Area</string>
     <string name="profilo_utenza">Utenza</string>
-    <string name="profilo_indirizzo">Indirizzo</string>
+    <string name="profilo_via">Via/Piazza/Viale</string>
+    <string name="profilo_nciv">Numero Civico</string>
     
+    <!-- Actions -->
+    <string name="action_edit">Modifica</string>
+    <string name="action_save">Salva</string>
+    <string name="action_delete">Elimina</string>
+    <string name="action_add">Agiiungi nuovo profilo</string>
 </resources>

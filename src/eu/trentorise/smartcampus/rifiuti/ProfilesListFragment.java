@@ -12,8 +12,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,33 +27,56 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ProfilesListFragment extends ListFragment {
-
-	private List<Profile> mProfiles;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		mProfiles = PreferenceUtils.getProfiles(getActivity());
-		setListAdapter(new ProfileAdapter(getActivity(), mProfiles));
+		List<Profile> profiles = PreferenceUtils.getProfiles(getActivity());
+		setListAdapter(new ProfileAdapter(getActivity(), profiles));
 		setEmptyText(getString(R.string.niente_profili));
 
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.profiles_list, menu);
+	}
+	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.action_add) {
+			goToDetail(-1);
+		}else
+			return super.onOptionsItemSelected(item);
+		((ActionBarActivity) getActivity()).supportInvalidateOptionsMenu();
+		return true;
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+		goToDetail(position);
+
+	}
+	
+	private void goToDetail(int position){
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		ProfileFragment pf;
-		try {
-			pf = ProfileFragment.newIstance(mProfiles.get(position));
-			ft.replace(R.id.content_frame, pf);
-			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			ft.commit();
-		} catch (Exception e) {
-			Log.e(ProfilesListFragment.class.getName(), e.toString());
-		}
+		pf = ProfileFragment.newIstance(position);
+		ft.addToBackStack(null);
+		ft.replace(R.id.content_frame, pf);
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		ft.commit();
 	}
 
 	private class ProfileAdapter extends ArrayAdapter<Profile> {

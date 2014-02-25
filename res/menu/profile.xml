@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:smartcampus.vas.rifiuti.android="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:showAsAction="always"
+        android:title="@string/action_edit"
+        android:visible="false"
+        smartcampus.vas.rifiuti.android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:showAsAction="always"
+        android:title="@string/action_save"
+        android:visible="false"
+        smartcampus.vas.rifiuti.android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:showAsAction="always"
+        android:title="@string/action_delete"
+        android:visible="false"
+        smartcampus.vas.rifiuti.android:showAsAction="always"/>
+
+</menu>

@@ -36,7 +36,7 @@ public class PreferenceUtils {
 	 * 
 	 * @param all
 	 *            stored profiles' names
-	 * @param ctx 
+	 * @param ctx
 	 * @return the requested profile, null otherwise
 	 */
 	public static Profile getProfile(Context ctx, int position) {
@@ -109,7 +109,8 @@ public class PreferenceUtils {
 	/**
 	 * 
 	 * @param ctx
-	 * @param p he profile that must be added
+	 * @param p
+	 *            he profile that must be added
 	 * @throws JSONException
 	 * @throws Exception
 	 */
@@ -119,6 +120,48 @@ public class PreferenceUtils {
 		JSONArray jsonArr = new JSONArray();
 		for (Profile tmp : profiles) {
 			jsonArr.put(tmp.toJSON());
+		}
+		SharedPreferences sp = getProfilePreference(ctx);
+		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
+	}
+
+	/**
+	 * 
+	 * @param ctx
+	 * @param position
+	 *            of the profile that should be removed
+	 */
+	public static void removeProfile(Context ctx, int position) {
+		List<Profile> profiles = getProfiles(ctx);
+		profiles.remove(position);
+		JSONArray jsonArr = new JSONArray();
+		try {
+			for (Profile tmp : profiles) {
+				jsonArr.put(tmp.toJSON());
+			}
+		} catch (JSONException e) {
+			Log.w(PreferenceUtils.class.getName(), e.toString());
+		}
+		SharedPreferences sp = getProfilePreference(ctx);
+		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
+	}
+	
+	/**
+	 * 
+	 * @param ctx
+	 * @param position
+	 *            of the profile that should be updated
+	 */
+	public static void editProfile(Context ctx, int position,Profile newProfile) {
+		List<Profile> profiles = getProfiles(ctx);
+		profiles.set(position, newProfile);
+		JSONArray jsonArr = new JSONArray();
+		try {
+			for (Profile tmp : profiles) {
+				jsonArr.put(tmp.toJSON());
+			}
+		} catch (JSONException e) {
+			Log.w(PreferenceUtils.class.getName(), e.toString());
 		}
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();

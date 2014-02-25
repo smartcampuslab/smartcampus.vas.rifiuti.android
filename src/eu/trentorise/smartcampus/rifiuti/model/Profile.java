@@ -36,14 +36,14 @@ public class Profile implements Serializable {
 	private Utenza mUtenza;
 	private String mComune;
 	private String mVia;
-	private int mNCivico;
+	private String mNCivico;
 	private String mArea;
 	
 	public Profile() {
 	}
 
 	public Profile(String mName, Utenza mUtenza, String mComune, String mVia,
-			int mNCivico, String mArea) {
+			String mNCivico, String mArea) {
 		super();
 		this.mName = mName;
 		this.mUtenza = mUtenza;
@@ -74,7 +74,7 @@ public class Profile implements Serializable {
 			profile.setUtenza(Utenza.valueOf(json.getString(KEY_UTENZA)));
 			profile.setComune(json.getString(KEY_COMUNE));
 			profile.setVia(json.getString(KEY_VIA));
-			profile.setNCivico(json.getInt(KEY_CIVICO));
+			profile.setNCivico(json.getString(KEY_CIVICO));
 			profile.setArea(json.getString(KEY_AREA));
 		} catch (JSONException e) {
 			Log.e(Profile.class.getName(), e.toString());
@@ -122,11 +122,11 @@ public class Profile implements Serializable {
 		this.mVia = via;
 	}
 
-	public int getNCivico() {
+	public String getNCivico() {
 		return mNCivico;
 	}
 
-	public void setNCivico(int nCivico) {
+	public void setNCivico(String nCivico) {
 		this.mNCivico = nCivico;
 	}
 

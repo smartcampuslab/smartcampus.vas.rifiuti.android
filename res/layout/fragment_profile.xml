@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin" >
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,20 +15,22 @@
     <ViewSwitcher
         android:id="@+id/profile_name_vs"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/profilo_nome"
+            android:paddingTop="3dp"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_name_et"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/profilo_utenza" />
+            android:hint="@string/profilo_nome" />
     </ViewSwitcher>
 
     <TextView
@@ -40,18 +43,20 @@
     <ViewSwitcher
         android:id="@+id/profile_utenza_vs"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_utenza_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_nome"
+            android:paddingTop="3dp"
+            android:text="@string/profilo_utenza"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_utenza_et"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/profilo_utenza" />
     </ViewSwitcher>
@@ -66,46 +71,78 @@
     <ViewSwitcher
         android:id="@+id/profile_comune_vs"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_comune_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_nome"
+            android:text="@string/profilo_comune"
+            android:paddingTop="3dp"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_comune_et"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/profilo_utenza" />
+            android:hint="@string/profilo_comune" />
     </ViewSwitcher>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/profilo_indirizzo"
+        android:text="@string/profilo_via"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/primary_text_light" />
 
     <ViewSwitcher
         android:id="@+id/profile_indirizzo_vs"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_indirizzo_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_nome"
+            android:text="@string/profilo_via"
+            android:paddingTop="3dp"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_indirizzo_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/profilo_via" />
+    </ViewSwitcher>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilo_nciv"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/primary_text_light" />
+    
+    <ViewSwitcher
+        android:id="@+id/profile_nciv_vs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/expand" >
+
+        <TextView
+            android:id="@+id/profile_nciv_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/profilo_utenza" />
+            android:text="@string/profilo_nciv"
+            android:paddingTop="3dp"
+            android:textColor="@android:color/secondary_text_light" />
+
+        <EditText
+            android:id="@+id/profile_nciv_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/profilo_nciv" />
     </ViewSwitcher>
 
     <TextView
@@ -118,20 +155,22 @@
     <ViewSwitcher
         android:id="@+id/profile_area_vs"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_area_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_nome"
+            android:text="@string/profilo_area"
+            android:paddingTop="3dp"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_area_et"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/profilo_utenza" />
+            android:hint="@string/profilo_area" />
     </ViewSwitcher>
 
 </LinearLayout>
