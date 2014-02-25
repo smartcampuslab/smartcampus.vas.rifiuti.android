@@ -16,21 +16,42 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class PreferenceUtils {
-	
-	//key for the profile's preferences (the container)
+
+	// key for the profile's preferences (the container)
 	private final static String PROFILE_PREF_KEY = "profile";
-	
-	private final static String PROFILE_IN_USE_KEY = "in use";
+
+	private final static String PROFILE_IN_USE_INDEX_KEY = "index_prof_in_use";
 	private final static String ALL_PROFILES_KEY = "profiles";
 
-	private static SharedPreferences getSharedPreferences(Context ctx, String pref_key) {
+	private static SharedPreferences getSharedPreferences(Context ctx,
+			String pref_key) {
 		return ctx.getSharedPreferences(pref_key, Context.MODE_PRIVATE);
 	}
-	
-	private static SharedPreferences getProfilePreference(Context ctx){
+
+	private static SharedPreferences getProfilePreference(Context ctx) {
 		return getSharedPreferences(ctx, PROFILE_PREF_KEY);
 	}
-	
+
+	/**
+	 * 
+	 * @param all
+	 *            stored profiles' names
+	 * @param ctx 
+	 * @return the requested profile, null otherwise
+	 */
+	public static Profile getProfile(Context ctx, int position) {
+		SharedPreferences sp = getProfilePreference(ctx);
+		String jsonArrString = sp.getString(ALL_PROFILES_KEY, null);
+		try {
+			JSONArray jsonArr = new JSONArray(jsonArrString);
+			return Profile.fromJSON(jsonArr.getJSONObject(position));
+		} catch (Exception e) {
+			Log.e(Profile.class.getName(), e.toString());
+			Log.e(Profile.class.getName(), "wrong position");
+		}
+		return null;
+	}
+
 	/**
 	 * 
 	 * @param ctx
@@ -49,9 +70,10 @@ public class PreferenceUtils {
 			return out;
 		} catch (JSONException e) {
 			Log.e(Profile.class.getName(), e.toString());
-		}catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			Log.e(Profile.class.getName(), e.toString());
-			Log.e(Profile.class.getName(), "Non ci sono profili, dovrebbe essercene sempre almeno uno!");
+			Log.e(Profile.class.getName(),
+					"Non ci sono profili, dovrebbe essercene sempre almeno uno!");
 		}
 
 		return out;
@@ -61,55 +83,41 @@ public class PreferenceUtils {
 	 * 
 	 * @param ctx
 	 *            the Context of the app
-	 * @return the profile in use, null otherwise
+	 * @return profile in use position, -1 otherwise
 	 */
-	public static Profile getProfileInUse(Context ctx) {
+	public static int getCurrentProfilePosition(Context ctx) {
 		SharedPreferences sp = getProfilePreference(ctx);
-		String jsonString = sp.getString(PROFILE_IN_USE_KEY, null);
-		if (jsonString != null) {
-			JSONObject obj;
-			try {
-				obj = new JSONObject(jsonString);
-				return Profile.fromJSON(obj);
-			} catch (JSONException e) {
-				Log.e(Profile.class.getName(), e.toString());
-			}
-		}
-		return null;
+		return sp.getInt(PROFILE_IN_USE_INDEX_KEY, -1);
 	}
-	
+
 	/**
 	 * 
 	 * @param ctx
-	 * @param position of the choosen profile
-	 * @throws Exception wrong position
+	 * @param position
+	 *            of the profile inside the list
+	 * @param saveProfile
+	 *            true if you want to store a copy of the whole profile
+	 * @throws Exception
+	 *             if the position is wrong
 	 */
-	public static void setProfileInUse(Context ctx, int position) throws Exception {
-		List<Profile> profiles = getProfiles(ctx);
-		try {
-			SharedPreferences sp = getProfilePreference(ctx);
-			Editor editor = sp.edit();
-				editor.putString(PROFILE_IN_USE_KEY, profiles.get(position)
-						.toJSON().toString());
-			editor.commit();
-		} catch (JSONException e) {
-			Log.e(Profile.class.getName(), e.toString());
-			throw new Exception("wrong position");
-		}
+	public static void setCurrentProfilePosition(Context ctx, int position)
+			throws Exception {
+		SharedPreferences sp = getProfilePreference(ctx);
+		sp.edit().putInt(PROFILE_IN_USE_INDEX_KEY, position).commit();
 	}
-	
+
 	/**
 	 * 
 	 * @param ctx
-	 * @param p the profile that must be added
-	 * @throws JSONException 
+	 * @param p he profile that must be added
+	 * @throws JSONException
 	 * @throws Exception
 	 */
-	public static void addProfile(Context ctx, Profile p) throws JSONException{
+	public static void addProfile(Context ctx, Profile p) throws JSONException {
 		List<Profile> profiles = getProfiles(ctx);
 		profiles.add(p);
 		JSONArray jsonArr = new JSONArray();
-		for(Profile tmp : profiles){
+		for (Profile tmp : profiles) {
 			jsonArr.put(tmp.toJSON());
 		}
 		SharedPreferences sp = getProfilePreference(ctx);
