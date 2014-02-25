@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilo_nome"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/primary_text_light" />
+
+    <ViewSwitcher
+        android:id="@+id/profile_name_switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/profile_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profilo_nome"
+            android:textColor="@android:color/secondary_text_light" />
+
+        <EditText
+            android:id="@+id/profile_name_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/profilo_utenza" />
+    </ViewSwitcher>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilo_utenza"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/primary_text_light" />
+
+    <ViewSwitcher
+        android:id="@+id/profile_utenza_switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/profile_utenza_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profilo_nome"
+            android:textColor="@android:color/secondary_text_light" />
+
+        <EditText
+            android:id="@+id/profile_utenza_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/profilo_utenza" />
+    </ViewSwitcher>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilo_comune"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/primary_text_light" />
+
+    <ViewSwitcher
+        android:id="@+id/profile_comune_switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/profile_comune_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profilo_nome"
+            android:textColor="@android:color/secondary_text_light" />
+
+        <EditText
+            android:id="@+id/profile_comune_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/profilo_utenza" />
+    </ViewSwitcher>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilo_indirizzo"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/primary_text_light" />
+
+    <ViewSwitcher
+        android:id="@+id/profile_indirizzo_switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/profile_indirizzo_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profilo_nome"
+            android:textColor="@android:color/secondary_text_light" />
+
+        <EditText
+            android:id="@+id/profile_indirizzo_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/profilo_utenza" />
+    </ViewSwitcher>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilo_area"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/primary_text_light" />
+
+    <ViewSwitcher
+        android:id="@+id/profile_area_switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/profile_area_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profilo_nome"
+            android:textColor="@android:color/secondary_text_light" />
+
+        <EditText
+            android:id="@+id/profile_area_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/profilo_utenza" />
+    </ViewSwitcher>
+
+</LinearLayout>
