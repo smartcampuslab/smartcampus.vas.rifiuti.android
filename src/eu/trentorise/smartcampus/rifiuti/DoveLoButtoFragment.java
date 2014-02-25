@@ -9,23 +9,21 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import eu.trentorise.smartcampus.rifiuti.custom.ExpandedGridView;
+import eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView;
 
 public class DoveLoButtoFragment extends Fragment {
 
+	private static final int NUM_COLUMNS = 3;
+
 	private EditText doveLoButtoSearchField;
 	private ImageButton doveLoButtoSearchButton;
-	private ListView doveLoButtoResults;
-	private GridView tipiRifiutiGrid;
-	// private GridLayout tipiRifiutiGrid;
-
+	private ExpandedListView doveLoButtoResultsList;
+	private ExpandedGridView tipiRifiutiGrid;
 	private String[] tipiRifiutiEntries;
 
 	private List<String> RESULTS_TEST = Arrays.asList("Risultato", "Altro risultato", "Ancora uno", "Numero quattro",
@@ -42,10 +40,9 @@ public class DoveLoButtoFragment extends Fragment {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_dovelobutto, container, false);
 		doveLoButtoSearchField = (EditText) viewGroup.findViewById(R.id.dovelobutto_search_tv);
 		doveLoButtoSearchButton = (ImageButton) viewGroup.findViewById(R.id.dovelobutto_search_btn);
-		doveLoButtoResults = (ListView) viewGroup.findViewById(R.id.dovelobutto_results);
-		tipiRifiutiGrid = (GridView) viewGroup.findViewById(R.id.tipirifiuti_grid);
-		// tipiRifiutiGrid = (GridLayout)
-		// viewGroup.findViewById(R.id.tipirifiuti_grid);
+		doveLoButtoResultsList = (ExpandedListView) viewGroup.findViewById(R.id.dovelobutto_results);
+		tipiRifiutiGrid = (ExpandedGridView) viewGroup.findViewById(R.id.tipirifiuti_grid);
+		tipiRifiutiGrid.setNumColumns(NUM_COLUMNS);
 		return viewGroup;
 	}
 
@@ -53,22 +50,8 @@ public class DoveLoButtoFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		doveLoButtoResults
-				.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, RESULTS_TEST));
-
-		// doveLoButtoResults.setOnTouchListener(new OnTouchListener() {
-		// // Setting on Touch Listener for handling the touch inside
-		// // ScrollView
-		// @Override
-		// public boolean onTouch(View v, MotionEvent event) {
-		// // Disallow the touch request for parent scroll on touch of
-		// // child view
-		// v.getParent().requestDisallowInterceptTouchEvent(true);
-		// return false;
-		// }
-		// });
-
-		setListViewHeightBasedOnChildren(doveLoButtoResults);
+		doveLoButtoResultsList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
+				RESULTS_TEST));
 
 		doveLoButtoSearchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -89,10 +72,10 @@ public class DoveLoButtoFragment extends Fragment {
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (s.toString().trim().length() == 0) {
-					doveLoButtoResults.setVisibility(View.GONE);
+					doveLoButtoResultsList.setVisibility(View.GONE);
 					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_search));
 				} else {
-					doveLoButtoResults.setVisibility(View.VISIBLE);
+					doveLoButtoResultsList.setVisibility(View.VISIBLE);
 					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(
 							android.R.drawable.ic_menu_close_clear_cancel));
 				}
@@ -100,65 +83,6 @@ public class DoveLoButtoFragment extends Fragment {
 		});
 
 		tipiRifiutiGrid.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.tipirifiuti_entry, tipiRifiutiEntries));
-
-		/**
-		 * fill Tipi di rifiuti gridLayout
-		 */
-		// for (String tipiRifiutiEntry : tipiRifiutiEntries) {
-		// TextView textView = (TextView)
-		// getActivity().getLayoutInflater().inflate(R.layout.tipirifiuti_entry,
-		// null);
-		// textView.setText(tipiRifiutiEntry);
-		// tipiRifiutiGrid.addView(textView);
-		// }
 	}
-
-	private void setListViewHeightBasedOnChildren(ListView listView) {
-		ListAdapter listAdapter = listView.getAdapter();
-		if (listAdapter != null) {
-			int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.UNSPECIFIED);
-			int totalHeight = 0;
-			View view = null;
-			for (int i = 0; i < listAdapter.getCount(); i++) {
-				view = listAdapter.getView(i, view, listView);
-				if (i == 0) {
-					view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
-				}
-				view.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
-				totalHeight += view.getMeasuredHeight();
-			}
-			ViewGroup.LayoutParams params = listView.getLayoutParams();
-			params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-			listView.setLayoutParams(params);
-			listView.requestLayout();
-		}
-	}
-
-	// private void setGridViewHeightBasedOnChildren(GridView gridView) {
-	// ListAdapter listAdapter = gridView.getAdapter();
-	// if (listAdapter == null) {
-	// return;
-	// }
-	//
-	// int desiredWidth = MeasureSpec.makeMeasureSpec(gridView.getWidth(),
-	// MeasureSpec.UNSPECIFIED);
-	// int totalHeight = 0;
-	// View view = null;
-	// for (int i = 0; i < listAdapter.getCount(); i++) {
-	// view = listAdapter.getView(i, view, gridView);
-	// if (i == 0) {
-	// view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth,
-	// ViewGroup.LayoutParams.WRAP_CONTENT));
-	// }
-	//
-	// view.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
-	// totalHeight += view.getMeasuredHeight();
-	// }
-	// ViewGroup.LayoutParams params = gridView.getLayoutParams();
-	// params.height = totalHeight + (gridView.getDividerHeight() *
-	// (listAdapter.getCount() - 1));
-	// gridView.setLayoutParams(params);
-	// gridView.requestLayout();
-	// }
 
 }

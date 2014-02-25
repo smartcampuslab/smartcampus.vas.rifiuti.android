@@ -14,7 +14,11 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
+
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <!-- These lines import che CalendarView library styles -->
+        <!-- <item name="calendarViewStyle">@style/Widget.Holo.CalendarView</item> -->
+        <item name="calendarViewStyle">@style/Widget.Holo.Light.CalendarView</item>
     </style>
 
 </resources>

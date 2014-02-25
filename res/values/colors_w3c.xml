@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="w3c_white">#FFFFFF</color>
+    <color name="w3c_yellow">#FFFF00</color>
+    <color name="w3c_fuchsia">#FF00FF</color>
+    <color name="w3c_red">#FF0000</color>
+    <color name="w3c_silver">#C0C0C0</color>
+    <color name="w3c_gray">#808080</color>
+    <color name="w3c_olive">#808000</color>
+    <color name="w3c_purple">#800080</color>
+    <color name="w3c_maroon">#800000</color>
+    <color name="w3c_aqua">#00FFFF</color>
+    <color name="w3c_lime">#00FF00</color>
+    <color name="w3c_teal">#008080</color>
+    <color name="w3c_green">#008000</color>
+    <color name="w3c_blue">#0000FF</color>
+    <color name="w3c_navy">#000080</color>
+    <color name="w3c_black">#000000</color>
+
+</resources>

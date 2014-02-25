@@ -4,7 +4,7 @@
 
     <stroke
         android:width="1dp"
-        android:color="@color/gray_dark" />
+        android:color="@android:color/darker_gray" />
 
     <!--
          <padding
@@ -17,8 +17,8 @@
     <corners android:radius="4dp" />
 
     <size
-        android:height="48dp"
-        android:width="48dp" />
+        android:height="47dp"
+        android:width="47dp" />
 
     <solid android:color="@color/gray_light" />
 

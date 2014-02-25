@@ -62,6 +62,8 @@ public class HomeFragment extends Fragment {
 			switch (position) {
 			case 1:
 				return new DoveLoButtoFragment();
+			case 2:
+				return new CalendarFragment();
 			default:
 				return new DummyFragment();
 			}
