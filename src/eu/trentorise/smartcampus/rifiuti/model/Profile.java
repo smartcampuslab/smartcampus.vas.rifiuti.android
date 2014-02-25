@@ -22,20 +22,6 @@ public class Profile implements Serializable {
 			return mIndex;
 		}
 		
-		public static int fromUtenza(Utenza u){
-			switch (u) {
-			case PRIVATO:
-				return 0;
-			case TURISTA:
-				return 1;
-			case STAGIONALE:
-				return 2;
-			case AZIENDA:
-				return 3;
-			default:
-				return 0;
-			}
-		}
 	}
 
 	private static final long serialVersionUID = -2983888114579592139L;
@@ -72,7 +58,7 @@ public class Profile implements Serializable {
 	public JSONObject toJSON() throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put(KEY_NAME, mName);
-		json.put(KEY_UTENZA, Utenza.fromUtenza(mUtenza));
+		json.put(KEY_UTENZA, mUtenza);
 		json.put(KEY_COMUNE, mComune);
 		json.put(KEY_VIA, mVia);
 		json.put(KEY_CIVICO, mNCivico);
@@ -101,7 +87,7 @@ public class Profile implements Serializable {
 	
 	@Override
 	public String toString() {
-		return mComune+","+mVia+","+mNCivico+mArea+","+mUtenza;
+		return mComune+","+mVia+","+mNCivico+" ,"+mArea+","+mUtenza;
 	}
 
 	public String getName() {

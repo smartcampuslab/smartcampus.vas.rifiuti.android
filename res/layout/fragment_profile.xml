@@ -12,7 +12,7 @@
         android:textColor="@android:color/primary_text_light" />
 
     <ViewSwitcher
-        android:id="@+id/profile_name_switcher"
+        android:id="@+id/profile_name_vs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -38,7 +38,7 @@
         android:textColor="@android:color/primary_text_light" />
 
     <ViewSwitcher
-        android:id="@+id/profile_utenza_switcher"
+        android:id="@+id/profile_utenza_vs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -64,7 +64,7 @@
         android:textColor="@android:color/primary_text_light" />
 
     <ViewSwitcher
-        android:id="@+id/profile_comune_switcher"
+        android:id="@+id/profile_comune_vs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -90,7 +90,7 @@
         android:textColor="@android:color/primary_text_light" />
 
     <ViewSwitcher
-        android:id="@+id/profile_indirizzo_switcher"
+        android:id="@+id/profile_indirizzo_vs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
@@ -116,7 +116,7 @@
         android:textColor="@android:color/primary_text_light" />
 
     <ViewSwitcher
-        android:id="@+id/profile_area_switcher"
+        android:id="@+id/profile_area_vs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
