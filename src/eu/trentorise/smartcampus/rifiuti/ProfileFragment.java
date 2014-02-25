@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 public class ProfileFragment extends Fragment {
@@ -51,10 +52,6 @@ public class ProfileFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		mActiveMode = MODE.VIEW;
-		((ActionBarActivity) getActivity()).getSupportActionBar()
-				.setHomeButtonEnabled(true);
-		((ActionBarActivity) getActivity()).getSupportActionBar()
-				.setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -125,8 +122,12 @@ public class ProfileFragment extends Fragment {
 			switchMode();
 		} else if (item.getItemId() == R.id.action_delete) {
 			if (mProfile != null) {
-				PreferenceUtils.removeProfile(getActivity(), getArguments()
-						.getInt(PROFILE_INDEX_KEY));
+				try {
+					PreferenceUtils.removeProfile(getActivity(), getArguments()
+							.getInt(PROFILE_INDEX_KEY));
+				} catch (Exception e) {
+					Toast.makeText(getActivity(), getString(R.string.err_delete_profilo), Toast.LENGTH_SHORT).show();
+				}
 				switchMode();
 			}
 			getFragmentManager().popBackStack();

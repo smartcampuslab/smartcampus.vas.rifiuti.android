@@ -130,29 +130,34 @@ public class PreferenceUtils {
 	 * @param ctx
 	 * @param position
 	 *            of the profile that should be removed
+	 * @throws Exception if there's just one profile
 	 */
-	public static void removeProfile(Context ctx, int position) {
+	public static void removeProfile(Context ctx, int position) throws Exception {
 		List<Profile> profiles = getProfiles(ctx);
-		profiles.remove(position);
-		JSONArray jsonArr = new JSONArray();
-		try {
-			for (Profile tmp : profiles) {
-				jsonArr.put(tmp.toJSON());
+		if (profiles.size() > 1) {
+			profiles.remove(position);
+			JSONArray jsonArr = new JSONArray();
+			try {
+				for (Profile tmp : profiles) {
+					jsonArr.put(tmp.toJSON());
+				}
+			} catch (JSONException e) {
+				Log.w(PreferenceUtils.class.getName(), e.toString());
 			}
-		} catch (JSONException e) {
-			Log.w(PreferenceUtils.class.getName(), e.toString());
+			SharedPreferences sp = getProfilePreference(ctx);
+			sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
+		}else{
+			throw new Exception("Last Element");
 		}
-		SharedPreferences sp = getProfilePreference(ctx);
-		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
 	}
-	
+
 	/**
 	 * 
 	 * @param ctx
 	 * @param position
 	 *            of the profile that should be updated
 	 */
-	public static void editProfile(Context ctx, int position,Profile newProfile) {
+	public static void editProfile(Context ctx, int position, Profile newProfile) {
 		List<Profile> profiles = getProfiles(ctx);
 		profiles.set(position, newProfile);
 		JSONArray jsonArr = new JSONArray();
