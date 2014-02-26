@@ -70,6 +70,9 @@
     <string name="profilo_via">Via/Piazza/Viale</string>
     <string name="profilo_nciv">Numero Civico</string>
     <string name="err_delete_profilo">Impossibile eliminare l\' ultimo profilo</string>
+    <string name="err_gps_off">Accendi il gps se vuoi velocizzare il processo!</string>
+    <string name="dialog_gps_title">Vuoi usare questa posizione?</string>
+    <string name="dialog_gps_msg">%1$s %2$s, %3$s</string>
     
     <!-- Actions -->
     <string name="action_edit">Modifica</string>
