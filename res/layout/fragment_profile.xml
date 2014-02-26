@@ -22,15 +22,16 @@
             android:id="@+id/profile_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_nome"
             android:paddingTop="3dp"
+            android:text="@string/profilo_nome"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_name_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/profilo_nome" />
+            android:hint="@string/profilo_nome"
+            android:minHeight="48dp" />
     </ViewSwitcher>
 
     <TextView
@@ -59,8 +60,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
-            android:text="@string/profilo_utenza_PRIVATO"
-            android:hint="@string/profilo_utenza" />
+            android:hint="@string/profilo_utenza"
+            android:minHeight="48dp"
+            android:text="@string/profilo_utenza_PRIVATO" />
     </ViewSwitcher>
 
     <TextView
@@ -80,15 +82,16 @@
             android:id="@+id/profile_comune_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_comune"
             android:paddingTop="3dp"
+            android:text="@string/profilo_comune"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_comune_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/profilo_comune" />
+            android:hint="@string/profilo_comune"
+            android:minHeight="48dp" />
     </ViewSwitcher>
 
     <TextView
@@ -108,24 +111,25 @@
             android:id="@+id/profile_indirizzo_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_via"
             android:paddingTop="3dp"
+            android:text="@string/profilo_via"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_indirizzo_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:hint="@string/profilo_via" />
     </ViewSwitcher>
-    
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profilo_nciv"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/primary_text_light" />
-    
+
     <ViewSwitcher
         android:id="@+id/profile_nciv_vs"
         android:layout_width="wrap_content"
@@ -136,14 +140,15 @@
             android:id="@+id/profile_nciv_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_nciv"
             android:paddingTop="3dp"
+            android:text="@string/profilo_nciv"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_nciv_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:hint="@string/profilo_nciv" />
     </ViewSwitcher>
 
@@ -151,29 +156,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profilo_area"
-        android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/primary_text_light" />
+        android:textColor="@android:color/primary_text_light"
+        android:visibility="gone" />
 
     <ViewSwitcher
         android:id="@+id/profile_area_vs"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:visibility="gone"
-        android:inAnimation="@anim/expand" >
+        android:layout_height="wrap_content"
+        android:inAnimation="@anim/expand"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/profile_area_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profilo_area"
             android:paddingTop="3dp"
+            android:text="@string/profilo_area"
             android:textColor="@android:color/secondary_text_light" />
 
         <EditText
             android:id="@+id/profile_area_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:hint="@string/profilo_area" />
     </ViewSwitcher>
 

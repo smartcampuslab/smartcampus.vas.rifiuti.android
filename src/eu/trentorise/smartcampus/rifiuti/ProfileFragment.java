@@ -1,13 +1,9 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import java.security.InvalidAlgorithmParameterException;
-
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import eu.trentorise.smartcampus.rifiuti.model.Profile;
-import eu.trentorise.smartcampus.rifiuti.model.Profile.Utenza;
-import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -22,6 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+import eu.trentorise.smartcampus.rifiuti.model.Profile;
+import eu.trentorise.smartcampus.rifiuti.model.Profile.Utenza;
+import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.ValidatorHelper;
 
 public class ProfileFragment extends Fragment {
 
@@ -93,7 +93,8 @@ public class ProfileFragment extends Fragment {
 			menu.getItem(2).setVisible(false);
 		} else {
 			menu.getItem(0).setVisible(false);
-			menu.getItem(1).setVisible(true);
+			if (mProfile != null)
+				menu.getItem(1).setVisible(true);
 			menu.getItem(2).setVisible(true);
 		}
 		super.onPrepareOptionsMenu(menu);
@@ -101,52 +102,95 @@ public class ProfileFragment extends Fragment {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.action_edit) {
+		if (item.getItemId() == R.id.action_edit)
 			switchMode();
-		} else if (item.getItemId() == R.id.action_save) {
-			Profile newProfile = getNewProfile();
-			if (mProfile == null) {
-				try {
-					PreferenceUtils.addProfile(getActivity(), newProfile);
-					getFragmentManager().popBackStack();
-				} catch (JSONException e) {
-					Log.e(ProfileFragment.class.getName(), e.toString());
-				}
-			} else {
-				PreferenceUtils.editProfile(getActivity(), getArguments()
-						.getInt(PROFILE_INDEX_KEY), newProfile);
-				mProfile= newProfile;
-				setContent();
-				
+		else if (item.getItemId() == R.id.action_save) {
+			Profile newProfile;
+			try {
+				newProfile = getNewProfile();
+				addOrModify(newProfile);
+				switchMode();
+			} catch (InvalidNameExeption e) {
+				ValidatorHelper.highlight(getActivity(), mETNome, null);
+			} catch (InvalidUtenzaExeption e) {
+				ValidatorHelper.highlight(getActivity(), mETUtenza, null);
+			} catch (InvalidAreaExeption e) {
+				ValidatorHelper.highlight(getActivity(), mETArea, null);
+			} catch (InvalidViaExeption e) {
+				ValidatorHelper.highlight(getActivity(), mETVia, null);
+			} catch (InvalidNCivicoExeption e) {
+				ValidatorHelper.highlight(getActivity(), mETNCiv, null);
+			} catch (InvalidComuneExeption e) {
+				ValidatorHelper.highlight(getActivity(), mETComune, null);
 			}
-			switchMode();
+
 		} else if (item.getItemId() == R.id.action_delete) {
 			if (mProfile != null) {
-				try {
-					PreferenceUtils.removeProfile(getActivity(), getArguments()
-							.getInt(PROFILE_INDEX_KEY));
-				} catch (Exception e) {
-					Toast.makeText(getActivity(), getString(R.string.err_delete_profilo), Toast.LENGTH_SHORT).show();
-				}
+				showConfirmAndDelete();
 				switchMode();
 			}
-			getFragmentManager().popBackStack();
 
 		} else
 			return super.onOptionsItemSelected(item);
+
 		((ActionBarActivity) getActivity()).supportInvalidateOptionsMenu();
 		return true;
 	}
 
-	private Profile getNewProfile() {
-		Profile p = new Profile();
-		//TODO sanity check
-		p.setName(mETNome.getText().toString());
-		p.setUtenza(Utenza.valueOf(mETUtenza.getText().toString()));
-		p.setArea(mETArea.getText().toString());
-		p.setVia(mETVia.getText().toString());
-		p.setNCivico(mETNCiv.getText().toString());
-		p.setComune(mETComune.getText().toString());
+	private void addOrModify(Profile newProfile) {
+		// if it's a new one
+		if (mProfile == null) {
+			try {
+				PreferenceUtils.addProfile(getActivity(), newProfile);
+				getFragmentManager().popBackStack();
+			} catch (JSONException e) {
+				Log.e(ProfileFragment.class.getName(), e.toString());
+			}
+		} else {
+			PreferenceUtils.editProfile(getActivity(),
+					getArguments().getInt(PROFILE_INDEX_KEY), newProfile);
+			mProfile = newProfile;
+			setContent();
+
+		}
+	}
+
+	private Profile getNewProfile() throws InvalidNameExeption,
+			InvalidUtenzaExeption, InvalidAreaExeption, InvalidViaExeption,
+			InvalidNCivicoExeption, InvalidComuneExeption {
+		// because it might be that some fields were left as they had been.
+		// create the profile from the saved one
+		Profile p = null;
+		if (mProfile != null)
+			p = new Profile(mProfile);
+		else
+			// if it's a new one, every field is required
+			p = new Profile();
+		// TODO sanity check with the db
+		if (mETNome.getText().toString().trim().length() > 0)
+			p.setName(mETNome.getText().toString());
+		else if (mProfile == null)
+			throw new InvalidNameExeption();
+		if (mETUtenza.getText().toString().trim().length() > 0)
+			p.setUtenza(Utenza.valueOf(mETUtenza.getText().toString()));
+		else if (mProfile == null)
+			throw new InvalidUtenzaExeption();
+		if (mETArea.getText().toString().trim().length() > 0)
+			p.setArea(mETArea.getText().toString());
+		else if (mProfile == null)
+			throw new InvalidAreaExeption();
+		if (mETVia.getText().toString().trim().length() > 0)
+			p.setVia(mETVia.getText().toString());
+		else if (mProfile == null)
+			throw new InvalidViaExeption();
+		if (mETNCiv.getText().toString().trim().length() > 0)
+			p.setNCivico(mETNCiv.getText().toString());
+		else if (mProfile == null)
+			throw new InvalidNCivicoExeption();
+		if (mETComune.getText().toString().trim().length() > 0)
+			p.setComune(mETComune.getText().toString());
+		else if (mProfile == null)
+			throw new InvalidComuneExeption();
 		return p;
 	}
 
@@ -159,7 +203,15 @@ public class ProfileFragment extends Fragment {
 			mVSNome.showNext();
 			mVSUtenza.showNext();
 			mVSNCiv.showNext();
-			//TODO set hints from profile's field
+
+			if (mProfile != null) {
+				mETArea.setHint(mProfile.getArea());
+				mETComune.setHint(mProfile.getComune());
+				mETNCiv.setHint(mProfile.getNCivico());
+				mETNome.setHint(mProfile.getName());
+				mETVia.setHint(mProfile.getVia());
+			}
+
 		} else {
 			mActiveMode = MODE.VIEW;
 			mVSArea.showPrevious();
@@ -199,11 +251,67 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private void setContent() {
+		mTVNome.setText(mProfile.getName());
 		mTVArea.setText(mProfile.getArea());
 		mTVComune.setText(mProfile.getComune());
 		mTVVia.setText(mProfile.getVia());
 		mTVUtenza.setText(mProfile.getUtenza().toString());
 		mTVNCiv.setText(mProfile.getNCivico());
+	}
+
+	private void showConfirmAndDelete() {
+		AlertDialog.Builder build = createConfirmDialog();
+		build.setPositiveButton(getString(android.R.string.ok),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						try {
+							PreferenceUtils.removeProfile(getActivity(),
+									getArguments().getInt(PROFILE_INDEX_KEY));
+
+						} catch (Exception e) {
+							Toast.makeText(getActivity(),
+									getString(R.string.err_delete_profilo),
+									Toast.LENGTH_SHORT).show();
+						}
+						getFragmentManager().popBackStack();
+					}
+				});
+		build.show();
+	}
+
+	private AlertDialog.Builder createConfirmDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle(getString(R.string.dialog_confirm_title));
+		builder.setMessage(getString(R.string.dialog_confirm_msg));
+		builder.setNeutralButton(getString(android.R.string.cancel),
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		return builder;
+	}
+
+	private static class InvalidNameExeption extends Exception {
+	}
+
+	private static class InvalidComuneExeption extends Exception {
+	}
+
+	private static class InvalidViaExeption extends Exception {
+	}
+
+	private static class InvalidAreaExeption extends Exception {
+	}
+
+	private static class InvalidNCivicoExeption extends Exception {
+	}
+
+	private static class InvalidUtenzaExeption extends Exception {
 	}
 
 }

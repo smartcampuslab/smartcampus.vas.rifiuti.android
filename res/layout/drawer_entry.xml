@@ -6,7 +6,8 @@
     android:gravity="center_vertical"
     android:padding="8dp"
     android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="@android:color/white" >
+    android:textColor="@android:color/white"
+    android:minHeight="48dp" >
 
     <!-- android:textColor="@android:color/white" -->
 

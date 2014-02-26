@@ -52,7 +52,15 @@ public class Profile implements Serializable {
 		this.mNCivico = mNCivico;
 		this.mArea = mArea;
 	}
-
+	
+	public Profile(Profile from){
+		this.mName= from.getName();
+		this.mUtenza = from.getUtenza();
+		this.mComune = from.getComune();
+		this.mVia = from.getVia();
+		this.mNCivico = from.getNCivico();
+		this.mArea = from.getArea();
+	}
 	
 
 	public JSONObject toJSON() throws JSONException {
