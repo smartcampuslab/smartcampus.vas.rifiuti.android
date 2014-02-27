@@ -31,7 +31,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/profilo_nome"
-            android:minHeight="48dp" />
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:nextFocusDown="@+id/profile_utenza_et" />
     </ViewSwitcher>
 
     <TextView
@@ -61,7 +64,10 @@
             android:layout_height="wrap_content"
             android:editable="false"
             android:hint="@string/profilo_utenza"
+            android:imeOptions="actionNext"
+            android:inputType="text"
             android:minHeight="48dp"
+            android:nextFocusDown="@+id/profile_comune_et"
             android:text="@string/profilo_utenza_PRIVATO" />
     </ViewSwitcher>
 
@@ -91,7 +97,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/profilo_comune"
-            android:minHeight="48dp" />
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:nextFocusDown="@+id/profile_indirizzo_et" />
     </ViewSwitcher>
 
     <TextView
@@ -119,8 +128,11 @@
             android:id="@+id/profile_indirizzo_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/profilo_via"
+            android:imeOptions="actionNext"
+            android:inputType="text"
             android:minHeight="48dp"
-            android:hint="@string/profilo_via" />
+            android:nextFocusDown="@+id/profile_nciv_et" />
     </ViewSwitcher>
 
     <TextView
@@ -148,8 +160,10 @@
             android:id="@+id/profile_nciv_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:hint="@string/profilo_nciv" />
+            android:hint="@string/profilo_nciv"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:minHeight="48dp" />
     </ViewSwitcher>
 
     <TextView
@@ -179,8 +193,9 @@
             android:id="@+id/profile_area_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/profilo_area"
             android:minHeight="48dp"
-            android:hint="@string/profilo_area" />
+            android:text="@string/profilo_area" />
     </ViewSwitcher>
 
 </LinearLayout>

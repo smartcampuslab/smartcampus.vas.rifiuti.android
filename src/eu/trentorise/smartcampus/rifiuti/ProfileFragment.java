@@ -1,9 +1,17 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.json.JSONException;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -14,16 +22,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+import eu.trentorise.smartcampus.network.RemoteException;
+import eu.trentorise.smartcampus.rifiuti.geo.OSMAddress;
+import eu.trentorise.smartcampus.rifiuti.geo.OSMGeocoder;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.model.Profile.Utenza;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.ValidatorHelper;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements ILocation {
 
 	private enum MODE {
 		VIEW, EDIT
@@ -36,6 +51,7 @@ public class ProfileFragment extends Fragment {
 
 	private Profile mProfile;
 	private MODE mActiveMode;
+	private LocationUtils mLocUtils;
 
 	private final static String PROFILE_INDEX_KEY = "profile_index";
 
@@ -76,6 +92,34 @@ public class ProfileFragment extends Fragment {
 
 		} else {
 			switchMode();
+		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (mLocUtils != null) {
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			mLocUtils.close();
+			mLocUtils = null;
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (mProfile == null && mLocUtils == null) {
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			mLocUtils = new LocationUtils(getActivity(), this);
+		}
+	}
+
+	@Override
+	public void onStop() {
+		super.onPause();
+		if (mLocUtils != null) {
+			mLocUtils.close();
+			mLocUtils = null;
 		}
 	}
 
@@ -135,6 +179,37 @@ public class ProfileFragment extends Fragment {
 
 		((ActionBarActivity) getActivity()).supportInvalidateOptionsMenu();
 		return true;
+	}
+
+	@Override
+	public void onLocationChaged(Location l) {
+		Log.i(ProfileFragment.class.getName(), l.toString());
+		mLocUtils.close();
+		mLocUtils = null;
+		if(isInDB(l))
+			new GeocoderTask().execute(l);
+	}
+
+	private boolean isInDB(Location l) {
+		// TODO check with db
+		return true;
+	}
+
+	@Override
+	public void onErrorOccured(ErrorType ex, String provider) {
+		// Do nothing, the user should just type what it wants
+		getActivity().setProgressBarIndeterminateVisibility(false);
+		Log.e(ProfileFragment.class.getName(), "Provider:" + provider
+				+ "\nErrorType:" + ex);
+	}
+
+	@Override
+	public void onStatusChanged(String provider, boolean isActive) {
+		if (!isActive) {
+			getActivity().setProgressBarIndeterminateVisibility(false);
+			Toast.makeText(getActivity(), getString(R.string.err_gps_off),
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private void addOrModify(Profile newProfile) {
@@ -294,6 +369,57 @@ public class ProfileFragment extends Fragment {
 					}
 				});
 		return builder;
+	}
+
+	private class GeocoderTask extends AsyncTask<Location, OSMAddress, Void> {
+
+		@Override
+		protected Void doInBackground(Location... params) {
+			try {
+				Location l = params[0];
+				OSMGeocoder geo = new OSMGeocoder(getActivity());
+				final List<OSMAddress> addresses = geo.getFromLocation(
+						l.getLatitude(), l.getLongitude(), null);
+				publishProgress(addresses.get(0));
+
+			} catch (Exception e) {
+				Log.e(ProfileFragment.class.getName(), e.toString());
+			}
+			return null;
+		}
+
+		@Override
+		protected void onProgressUpdate(OSMAddress... values) {
+			super.onProgressUpdate(values);
+			final OSMAddress address = values[0];
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setTitle(getString(R.string.dialog_gps_title));
+			String msg = String.format(getString(R.string.dialog_gps_msg),
+					address.getStreet(), (address.getHousenumber()!=null)?address.getHousenumber():"",
+					address.city());
+			builder.setMessage(msg);
+			builder.setPositiveButton(getString(android.R.string.ok),
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							mETComune.setText(address.city());
+							mETVia.setText(address.getStreet());
+							mETNCiv.setText(address.getHousenumber());
+						}
+					});
+			builder.setNeutralButton(getString(android.R.string.cancel),
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+			builder.create().show();
+			getActivity().setProgressBarIndeterminateVisibility(false);
+		}
+
 	}
 
 	private static class InvalidNameExeption extends Exception {

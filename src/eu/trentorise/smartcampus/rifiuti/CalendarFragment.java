@@ -16,6 +16,7 @@ public class CalendarFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_calendar, container, false);
 		calendarView = (ExtendedCalendarView) viewGroup.findViewById(R.id.calendar_view);
+		calendarView.setMonthTextBackgroundColor(getResources().getColor(R.color.gray_light));
 		return viewGroup;
 	}
 
