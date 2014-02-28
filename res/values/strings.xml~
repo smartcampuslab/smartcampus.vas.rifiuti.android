@@ -80,6 +80,5 @@
     <string name="action_add">Aggiungi nuovo profilo</string>
     
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
-        <string name="rifiuti_container_listarifiuti">LISTA RIFIUTI</string>
-    <string name="rifiuti_container_listapuntidiraccolta">PUNTI DI RACCOLTA</string>
+    
 </resources>

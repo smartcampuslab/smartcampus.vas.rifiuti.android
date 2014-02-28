@@ -3,6 +3,7 @@ package eu.trentorise.smartcampus.rifiuti;
 import java.util.Arrays;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -10,12 +11,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import eu.trentorise.smartcampus.rifiuti.custom.ExpandedGridView;
 import eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class DoveLoButtoFragment extends Fragment {
 
@@ -84,6 +88,16 @@ public class DoveLoButtoFragment extends Fragment {
 		});
 
 		tipiRifiutiGrid.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.tipirifiuti_entry, tipiRifiutiEntries));
+		tipiRifiutiGrid.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Intent intent = new Intent(getActivity(), RifiutiManagerContainerActivity.class);
+				intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO, tipiRifiutiEntries.get(arg2));
+				startActivity(intent);
+				
+			}
+		});
 	}
 
 }
