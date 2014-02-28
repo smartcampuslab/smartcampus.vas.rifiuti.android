@@ -1,9 +1,0 @@
-[submodule "android-calendarview"]
-	path = android-calendarview
-	url = git@github.com:SimonVT/android-calendarview.git
-[submodule "ExtendedCalendarView"]
-	path = ExtendedCalendarView
-	url = git@github.com:tyczj/ExtendedCalendarView.git
-[submodule "ScExtendedCalendarView"]
-	path = ScExtendedCalendarView
-	url = git@github.com:smartcampuslab/ScExtendedCalendarView.git
