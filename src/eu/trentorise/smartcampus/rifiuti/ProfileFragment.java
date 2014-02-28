@@ -1,15 +1,11 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONException;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,16 +18,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
-import eu.trentorise.smartcampus.network.RemoteException;
 import eu.trentorise.smartcampus.rifiuti.geo.OSMAddress;
 import eu.trentorise.smartcampus.rifiuti.geo.OSMGeocoder;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
-import eu.trentorise.smartcampus.rifiuti.model.Profile.Utenza;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
@@ -247,7 +240,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 		else if (mProfile == null)
 			throw new InvalidNameExeption();
 		if (mETUtenza.getText().toString().trim().length() > 0)
-			p.setUtenza(Utenza.valueOf(mETUtenza.getText().toString()));
+			p.setUtenza(mETUtenza.getText().toString());
 		else if (mProfile == null)
 			throw new InvalidUtenzaExeption();
 		if (mETArea.getText().toString().trim().length() > 0)

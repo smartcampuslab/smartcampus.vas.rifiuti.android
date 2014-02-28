@@ -33,7 +33,7 @@ public class Profile implements Serializable {
 	private static final String KEY_AREA = "area";
 
 	private String mName;
-	private Utenza mUtenza;
+	private String mUtenza;
 	private String mComune;
 	private String mVia;
 	private String mNCivico;
@@ -42,7 +42,7 @@ public class Profile implements Serializable {
 	public Profile() {
 	}
 
-	public Profile(String mName, Utenza mUtenza, String mComune, String mVia,
+	public Profile(String mName, String mUtenza, String mComune, String mVia,
 			String mNCivico, String mArea) {
 		super();
 		this.mName = mName;
@@ -79,7 +79,7 @@ public class Profile implements Serializable {
 		Profile profile = new Profile();
 		try {
 			profile.setName(json.getString(KEY_NAME));
-			profile.setUtenza(Utenza.valueOf(json.getString(KEY_UTENZA)));
+			profile.setUtenza(json.getString(KEY_UTENZA));
 			profile.setComune(json.getString(KEY_COMUNE));
 			profile.setVia(json.getString(KEY_VIA));
 			profile.setNCivico(json.getString(KEY_CIVICO));
@@ -106,11 +106,11 @@ public class Profile implements Serializable {
 		this.mName = name;
 	}
 
-	public Utenza getUtenza() {
+	public String getUtenza() {
 		return mUtenza;
 	}
 
-	public void setUtenza(Utenza utenza) {
+	public void setUtenza(String utenza) {
 		this.mUtenza = utenza;
 	}
 
