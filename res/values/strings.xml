@@ -3,7 +3,6 @@
 
     <string name="app_name">Rifiuti</string>
     <string name="action_settings">Configurazione</string>
-    <string name="hello_world">Ciao mondo!</string>
     <string name="empty"></string>
     <string name="dialog_confirm_title">Sei sicuro?</string>
     <string name="dialog_confirm_msg">questa operazione comporta dei rischi, premi OK solo se sai cosa stai facendo.</string>
@@ -79,4 +78,7 @@
     <string name="action_save">Salva</string>
     <string name="action_delete">Elimina</string>
     <string name="action_add">Aggiungi nuovo profilo</string>
+    
+    <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
+    
 </resources>

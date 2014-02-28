@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import eu.trentorise.smartcampus.rifiuti.custom.ExpandedGridView;
 import eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView;
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 
 public class DoveLoButtoFragment extends Fragment {
 
@@ -24,7 +25,7 @@ public class DoveLoButtoFragment extends Fragment {
 	private ImageButton doveLoButtoSearchButton;
 	private ExpandedListView doveLoButtoResultsList;
 	private ExpandedGridView tipiRifiutiGrid;
-	private String[] tipiRifiutiEntries;
+	private List<String> tipiRifiutiEntries;
 
 	private List<String> RESULTS_TEST = Arrays.asList("Risultato", "Altro risultato", "Ancora uno", "Numero quattro",
 			"El Cinco", "Franco Baresi");
@@ -32,7 +33,7 @@ public class DoveLoButtoFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		tipiRifiutiEntries = getResources().getStringArray(R.array.tipirifiuti_entries);
+		tipiRifiutiEntries = RifiutiHelper.readTipologiaRifiuti();//getResources().getStringArray(R.array.tipirifiuti_entries);
 	}
 
 	@Override
