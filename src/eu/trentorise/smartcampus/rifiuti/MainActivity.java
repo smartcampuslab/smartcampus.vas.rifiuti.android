@@ -1,7 +1,5 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import java.io.IOException;
-
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -58,11 +56,21 @@ public class MainActivity extends ActionBarActivity {
 
 		try {
 			RifiutiHelper.init(this.getApplicationContext());
-		} catch (IOException e) {
+			System.err.println(RifiutiHelper.readTipologiaRaccolta());
+			System.err.println(RifiutiHelper.readTipologiaRifiuti());
+			System.err.println(RifiutiHelper.getPuntiRaccolta());
+			System.err.println(RifiutiHelper.getPuntiRaccoltaPerTipoRaccolta("CARTA, CARTONE E CARTONI PER BEVANDE"));
+			System.err.println(RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto("CARTONI PER BEVANDE"));
+			System.err.println(RifiutiHelper.getRifiutoPerTipoRaccolta("CARTA, CARTONE E CARTONI PER BEVANDE"));
+			System.err.println(RifiutiHelper.getRifiutoPerTipoRifiuti("CARTONI PER BEVANDE"));
+			System.err.println(RifiutiHelper.getTipoRifiuto("Acquario"));
+			System.err.println(RifiutiHelper.getCalendars(RifiutiHelper.getPuntiRaccolta().get(0)));
+		} catch (Exception e) {
 			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 			finish();
 		}
+		
 		
 		loadFragment(0);
 		
