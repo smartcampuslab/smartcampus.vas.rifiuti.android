@@ -1,10 +1,7 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import org.json.JSONException;
+import java.io.IOException;
 
-import eu.trentorise.smartcampus.rifiuti.model.Profile;
-import eu.trentorise.smartcampus.rifiuti.model.Profile.Utenza;
-import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -16,6 +13,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -57,6 +56,14 @@ public class MainActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 
+		try {
+			RifiutiHelper.init(this.getApplicationContext());
+		} catch (IOException e) {
+			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG).show();
+			e.printStackTrace();
+			finish();
+		}
+		
 		loadFragment(0);
 		
 	}
