@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.tyczj.extendedcalendarview.CalendarEvent;
@@ -17,7 +18,7 @@ public class RifiutiEventsSource implements CalendarEventsSource {
 		Calendar cal = Calendar.getInstance(Locale.getDefault());
 		cal.set(Calendar.MONTH, month);
 		int max = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		
+
 		SparseArray<Collection<CalendarEvent>> eventsByMonth = new SparseArray<Collection<CalendarEvent>>(max);
 
 		/*
@@ -27,27 +28,20 @@ public class RifiutiEventsSource implements CalendarEventsSource {
 			if (dc % 3 != 0) {
 				continue;
 			}
-			
+
 			List<CalendarEvent> dayEvents = new ArrayList<CalendarEvent>();
 
-			for (int i = 0; i < 5; i++) {
+			int emax = dc % 2 != 0 ? 10 : 3;
+
+			for (int i = 0; i < emax; i++) {
 				CalendarEvent event = new CalendarEvent(i + 1, 1392509133, 1393509133);
 
-				switch (i) {
+				switch (i % 2) {
 				case 0:
 					event.setColor("red");
 					break;
 				case 1:
-					event.setColor("maroon");
-					break;
-				case 2:
 					event.setColor("blue");
-					break;
-				case 3:
-					event.setColor("green");
-					break;
-				case 4:
-					event.setColor("purple");
 					break;
 				default:
 					event.setColor("gray");
@@ -55,6 +49,7 @@ public class RifiutiEventsSource implements CalendarEventsSource {
 				}
 
 				dayEvents.add(event);
+				Log.e(getClass().getSimpleName(), "Event " + (i + 1) + " created");
 			}
 
 			eventsByMonth.append(dc, dayEvents);

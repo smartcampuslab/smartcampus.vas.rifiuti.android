@@ -5,7 +5,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
+import com.tyczj.extendedcalendarview.CalendarDay;
 import com.tyczj.extendedcalendarview.ExtendedCalendarView;
 
 import eu.trentorise.smartcampus.rifiuti.helper.RifiutiEventsSource;
@@ -26,6 +28,12 @@ public class CalendarFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+
+		calendarView.setOnDayClickListener(new ExtendedCalendarView.OnDayClickListener() {
+			@Override
+			public void onDayClicked(AdapterView<?> adapter, View view, int position, long id, CalendarDay day) {
+			}
+		});
 	}
 
 }

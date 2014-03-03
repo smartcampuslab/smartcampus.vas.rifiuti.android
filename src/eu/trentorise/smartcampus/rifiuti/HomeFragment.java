@@ -46,10 +46,10 @@ public class HomeFragment extends Fragment {
 		mPager.setAdapter(mPagerAdapter);
 
 		// Page "Dove lo butto?" is default
-		// mPager.setCurrentItem(1);
+		mPager.setCurrentItem(1);
 
 		// Page "Calendar" is default
-		mPager.setCurrentItem(2);
+		// mPager.setCurrentItem(2);
 	}
 
 	/**
