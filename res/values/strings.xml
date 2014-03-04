@@ -60,7 +60,7 @@
     <string name="tipirifiuti_25">Tipo di rifiuto 25</string>
 
     <!-- Profile Fragment -->
-    <string name="niente_profili">Nessun profilo registrato al momento.</string>
+    <string name="niente_profili">Aggiungi un nuovo profilo dal menu in alto!</string>
     <string name="profilo_nome">Nome</string>
     <string name="profilo_comune">Comune</string>
     <string name="profilo_area">Area</string>

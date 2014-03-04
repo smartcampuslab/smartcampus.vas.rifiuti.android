@@ -11,13 +11,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,13 +42,15 @@ public class ProfileFragment extends Fragment implements ILocation {
 	}
 
 	private TextView mTVNome, mTVComune, mTVVia, mTVNCiv, mTVArea, mTVUtenza;
-	private EditText mETNome, mETComune, mETVia, mETNCiv, mETArea, mETUtenza;
+	private EditText mETNome, mETVia, mETNCiv, mETArea, mETUtenza;
+	private AutoCompleteTextView mACTVComune;
 	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv, mVSArea,
 			mVSUtenza;
 
 	private Profile mProfile;
 	private MODE mActiveMode;
 	private LocationUtils mLocUtils;
+	private String mLastString = "";
 
 	private final static String PROFILE_INDEX_KEY = "profile_index";
 
@@ -158,7 +164,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 			} catch (InvalidNCivicoExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNCiv, null);
 			} catch (InvalidComuneExeption e) {
-				ValidatorHelper.highlight(getActivity(), mETComune, null);
+				ValidatorHelper.highlight(getActivity(), mACTVComune, null);
 			}
 
 		} else if (item.getItemId() == R.id.action_delete) {
@@ -179,7 +185,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 		Log.i(ProfileFragment.class.getName(), l.toString());
 		mLocUtils.close();
 		mLocUtils = null;
-		if(isInDB(l))
+		if (isInDB(l))
 			new GeocoderTask().execute(l);
 	}
 
@@ -255,8 +261,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 			p.setNCivico(mETNCiv.getText().toString());
 		else if (mProfile == null)
 			throw new InvalidNCivicoExeption();
-		if (mETComune.getText().toString().trim().length() > 0)
-			p.setComune(mETComune.getText().toString());
+		if (mACTVComune.getText().toString().trim().length() > 0)
+			p.setComune(mACTVComune.getText().toString());
 		else if (mProfile == null)
 			throw new InvalidComuneExeption();
 		return p;
@@ -274,7 +280,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 			if (mProfile != null) {
 				mETArea.setHint(mProfile.getArea());
-				mETComune.setHint(mProfile.getComune());
+				mACTVComune.setHint(mProfile.getComune());
 				mETNCiv.setHint(mProfile.getNCivico());
 				mETNome.setHint(mProfile.getName());
 				mETVia.setHint(mProfile.getVia());
@@ -301,7 +307,31 @@ public class ProfileFragment extends Fragment implements ILocation {
 		mTVNCiv = (TextView) getView().findViewById(R.id.profile_nciv_tv);
 
 		mETArea = (EditText) getView().findViewById(R.id.profile_area_et);
-		mETComune = (EditText) getView().findViewById(R.id.profile_comune_et);
+
+		mACTVComune = (AutoCompleteTextView) getView().findViewById(
+				R.id.profile_comune_et);
+		mACTVComune.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+
+					
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				Log.i("refresh", mLastString);
+			}
+		});
+
 		mETNome = (EditText) getView().findViewById(R.id.profile_name_et);
 		mETVia = (EditText) getView().findViewById(R.id.profile_indirizzo_et);
 		mETUtenza = (EditText) getView().findViewById(R.id.profile_utenza_et);
@@ -387,16 +417,18 @@ public class ProfileFragment extends Fragment implements ILocation {
 			final OSMAddress address = values[0];
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle(getString(R.string.dialog_gps_title));
-			String msg = String.format(getString(R.string.dialog_gps_msg),
-					address.getStreet(), (address.getHousenumber()!=null)?address.getHousenumber():"",
-					address.city());
+			String msg = String.format(
+					getString(R.string.dialog_gps_msg),
+					address.getStreet(),
+					(address.getHousenumber() != null) ? address
+							.getHousenumber() : "", address.city());
 			builder.setMessage(msg);
 			builder.setPositiveButton(getString(android.R.string.ok),
 					new DialogInterface.OnClickListener() {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							mETComune.setText(address.city());
+							mACTVComune.setText(address.city());
 							mETVia.setText(address.getStreet());
 							mETNCiv.setText(address.getHousenumber());
 						}
@@ -414,6 +446,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 		}
 
 	}
+	
 
 	private static class InvalidNameExeption extends Exception {
 	}

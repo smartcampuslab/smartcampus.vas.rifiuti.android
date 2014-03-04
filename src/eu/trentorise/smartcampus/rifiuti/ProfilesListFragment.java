@@ -27,7 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ProfilesListFragment extends ListFragment {
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,20 +42,30 @@ public class ProfilesListFragment extends ListFragment {
 		setListAdapter(new ProfileAdapter(getActivity(), profiles));
 		setEmptyText(getString(R.string.niente_profili));
 
+		
+		//we can't let the user switch fragment whithout having a profile
+		if (getActivity() instanceof MainActivity)
+			if (profiles.isEmpty()){
+				((ActionBarActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+				((MainActivity) getActivity()).lockDrawer();
+			}
+			else{
+				((ActionBarActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+				((MainActivity) getActivity()).unlockDrawer();
+			}
 	}
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.profiles_list, menu);
 	}
-	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_add) {
 			goToDetail(-1);
-		}else
+		} else
 			return super.onOptionsItemSelected(item);
 		((ActionBarActivity) getActivity()).supportInvalidateOptionsMenu();
 		return true;
@@ -67,8 +77,8 @@ public class ProfilesListFragment extends ListFragment {
 		goToDetail(position);
 
 	}
-	
-	private void goToDetail(int position){
+
+	private void goToDetail(int position) {
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		ProfileFragment pf;

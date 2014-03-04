@@ -5,6 +5,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
+import eu.trentorise.smartcampus.rifiuti.model.Profile;
+import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -25,20 +28,21 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		requestWindowFeature(
-				Window.FEATURE_INDETERMINATE_PROGRESS);
-		
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		setContentView(R.layout.activity_main);
 
 		mContentFrameId = R.id.content_frame;
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-		mDrawerList.setAdapter(new DrawerArrayAdapter(this, R.layout.drawer_entry, getResources().getStringArray(
-				R.array.drawer_entries_strings)));
+		mDrawerList.setAdapter(new DrawerArrayAdapter(this,
+				R.layout.drawer_entry, getResources().getStringArray(
+						R.array.drawer_entries_strings)));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
@@ -56,16 +60,22 @@ public class MainActivity extends ActionBarActivity {
 
 		try {
 			RifiutiHelper.init(this.getApplicationContext());
-			
+			if (PreferenceUtils.getProfiles(this).isEmpty()) {
+				loadFragment(5);
+			} else {
+				Profile p = PreferenceUtils.getProfile(this,
+						PreferenceUtils.getCurrentProfilePosition(this));
+				RifiutiHelper.setProfile(p);
+				loadFragment(0);
+			}
+
 		} catch (Exception e) {
-			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG)
+					.show();
 			e.printStackTrace();
 			finish();
 		}
-		
-		
-		loadFragment(0);
-		
+
 	}
 
 	@Override
@@ -84,7 +94,9 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
+		//we can't open the drawer if it's locked
+		if (mDrawerLayout.getDrawerLockMode(Gravity.START) == DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+				&& mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
 
@@ -108,7 +120,8 @@ public class MainActivity extends ActionBarActivity {
 
 		if (fragment != null) {
 			// Insert the fragment by replacing any existing fragment
-			getSupportFragmentManager().beginTransaction().replace(mContentFrameId, fragment).commit();
+			getSupportFragmentManager().beginTransaction()
+					.replace(mContentFrameId, fragment).commit();
 			// Highlight the selected item, update the title, close the drawer
 			mDrawerList.setItemChecked(position, true);
 			// setTitle(mPlanetTitles[position]);
@@ -116,12 +129,27 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 
+	// USE WITH CARE!!
+	public void lockDrawer() {
+		if (mDrawerLayout != null)
+			mDrawerLayout
+					.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+	}
+
+	// USE WITH CARE!!
+	public void unlockDrawer() {
+		if (mDrawerLayout != null)
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+	}
+
 	/**
 	 * Drawer item click listener
 	 */
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
 			loadFragment(position);
 		}
 	}

@@ -34,10 +34,8 @@ public class PreferenceUtils {
 
 	/**
 	 * 
-	 * @param all
-	 *            stored profiles' names
-	 * @param ctx
-	 * @return the requested profile, null otherwise
+	 * @param position of the needed profile
+	 * @return the profile needed
 	 */
 	public static Profile getProfile(Context ctx, int position) {
 		SharedPreferences sp = getProfilePreference(ctx);
