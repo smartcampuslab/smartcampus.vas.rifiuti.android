@@ -66,7 +66,7 @@
     <string name="profilo_comune">Comune</string>
     <string name="profilo_area">Area</string>
     <string name="profilo_utenza">Utenza</string>
-    <string name="profilo_utenza_PRIVATO">PRIVATO</string>
+    <string name="profilo_utenza_PRIVATO">utenza domestica</string>
     <string name="profilo_via">Via/Piazza/Viale</string>
     <string name="profilo_nciv">Numero Civico</string>
     <string name="err_delete_profilo">Impossibile eliminare l\' ultimo profilo</string>
