@@ -55,6 +55,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 	private MODE mActiveMode;
 	private LocationUtils mLocUtils;
 	private String mLastString = "";
+	private AsyncTask mCurrentTask;
 
 	private final static String PROFILE_INDEX_KEY = "profile_index";
 
@@ -157,6 +158,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 				newProfile = getNewProfile();
 				addOrModify(newProfile);
 				switchMode();
+				if (getActivity() instanceof MainActivity)
+					((MainActivity) getActivity()).prepareNavDropdown();
 			} catch (InvalidNameExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNome, null);
 			} catch (InvalidUtenzaExeption e) {
@@ -319,8 +322,11 @@ public class ProfileFragment extends Fragment implements ILocation {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// /Log.i("refresh", mLastString);
-				new LoadAreasTask().execute(s.toString());
+				if (s.length() > 1) {
+					if (mCurrentTask != null)
+						mCurrentTask.cancel(true);
+					mCurrentTask = new LoadAreasTask().execute(s.toString());
+				}
 			}
 
 			@Override
@@ -369,6 +375,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 						try {
 							PreferenceUtils.removeProfile(getActivity(),
 									getArguments().getInt(PROFILE_INDEX_KEY));
+							if (getActivity() instanceof MainActivity)
+								((MainActivity) getActivity()).prepareNavDropdown();
 
 						} catch (Exception e) {
 							Toast.makeText(getActivity(),
@@ -455,8 +463,10 @@ public class ProfileFragment extends Fragment implements ILocation {
 		protected Void doInBackground(String... params) {
 			List<Area> areas = RifiutiHelper.readAreas(params[0]);
 			Area[] comuni = new Area[areas.size()];
-			areas.toArray(comuni);
-			publishProgress(comuni);
+			if (!this.isCancelled()) {
+				areas.toArray(comuni);
+				publishProgress(comuni);
+			}
 			return null;
 		}
 
@@ -476,20 +486,24 @@ public class ProfileFragment extends Fragment implements ILocation {
 								android.R.layout.simple_list_item_1, parent,
 								false);
 					}
+					((TextView)convertView).setText(getItem(position).getComune());
 					convertView.setTag(getItem(position));
 					return convertView;
 				}
 
 			};
 			mACTVComune.setAdapter(adapter);
-			mACTVComune.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			mACTVComune
+					.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-						int arg2, long arg3) {
-					mETArea.setText(((Area)arg1.getTag()).getParent());
-				}
-			});
+						@Override
+						public void onItemClick(AdapterView<?> arg0, View arg1,
+								int arg2, long arg3) {
+							mACTVComune.setText(((Area) arg1.getTag()).getComune());
+							mETArea.setText(((Area) arg1.getTag()).getParent());
+						}
+					});
+			mACTVComune.showDropDown();
 		}
 
 	}

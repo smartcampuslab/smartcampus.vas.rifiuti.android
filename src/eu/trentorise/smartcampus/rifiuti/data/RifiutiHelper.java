@@ -54,8 +54,8 @@ public class RifiutiHelper {
 	public static void init(Context ctx) throws IOException {
 		mHelper = new RifiutiHelper(ctx);
 		// TODO replace test data
-		setProfile(new Profile("test", "utenza domestica", "Bleggio Superiore",
-				"via Dante", "1", "Bleggio Superiore"));
+//		setProfile(new Profile("test", "utenza domestica", "Bleggio Superiore",
+//				"via Dante", "1", "Bleggio Superiore"));
 	}
 
 	public static void setProfile(Profile profile) {

@@ -42,13 +42,15 @@
         android:layout_height="wrap_content"
         android:text="@string/profilo_utenza"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/primary_text_light" />
+        android:textColor="@android:color/primary_text_light"
+        android:visibility="gone" />
 
     <ViewSwitcher
         android:id="@+id/profile_utenza_vs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inAnimation="@anim/expand" >
+        android:inAnimation="@anim/expand"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/profile_utenza_tv"
