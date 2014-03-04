@@ -34,8 +34,6 @@ public class MainActivity extends ActionBarActivity implements
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 
-	private int mLockMsgResId;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -95,8 +93,6 @@ public class MainActivity extends ActionBarActivity implements
 			if (mDrawerToggle.onOptionsItemSelected(item)) {
 				return true;
 			}
-			Toast.makeText(this, getString(mLockMsgResId), Toast.LENGTH_SHORT)
-					.show();
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -190,9 +186,8 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	// USE WITH CARE!!
-	public void lockDrawer(int resId) {
+	public void lockDrawer() {
 		if (mDrawerLayout != null) {
-			mLockMsgResId = resId;
 			mDrawerLayout
 					.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			getSupportActionBar().setHomeButtonEnabled(false);
@@ -202,7 +197,6 @@ public class MainActivity extends ActionBarActivity implements
 	// USE WITH CARE!!
 	public void unlockDrawer() {
 		if (mDrawerLayout != null) {
-			mLockMsgResId = R.string.app_failure_setup;
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 			getSupportActionBar().setHomeButtonEnabled(true);
 		}

@@ -95,7 +95,7 @@ public class Profile implements Serializable {
 	
 	@Override
 	public String toString() {
-		return mComune+","+mVia+","+mNCivico+" ,"+mArea+","+mUtenza;
+		return mName+": "+mComune+","+mVia+","+mNCivico+" ,"+mArea+","+mUtenza;
 	}
 
 	public String getName() {
