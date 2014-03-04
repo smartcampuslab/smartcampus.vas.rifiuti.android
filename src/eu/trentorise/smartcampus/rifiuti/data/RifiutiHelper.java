@@ -397,20 +397,21 @@ public class RifiutiHelper {
 	/**
 	 * recover all user areas recursively
 	 */
-	public List<Area> readAreas(String comune) {
+	public static List<Area> readAreas(String comune) {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			List<Area> result = new ArrayList<Area>();
-			String query = "SELECT nome,comune,via,numero FROM aree WHERE comune LIKE %\"" + comune
-					+ "\"";
+			String query = "SELECT nome,parent FROM aree WHERE nome LIKE \"%" + comune
+					+ "%\"";
 			cursor = db.rawQuery(query, null);
 			while(cursor.moveToNext()){
 				Area tmp = new Area();
 				tmp.setNome(cursor.getString(0));
-				tmp.setComune(cursor.getString(1));
-				tmp.setVia(cursor.getString(2));
-				tmp.setNumero(cursor.getString(3));
+				tmp.setComune(cursor.getString(0));
+				tmp.setParent(cursor.getString(1));
+				//tmp.setVia(cursor.getString(2));
+				//tmp.setNumero(cursor.getString(3));
 				result.add(tmp);
 			}
 			return result;

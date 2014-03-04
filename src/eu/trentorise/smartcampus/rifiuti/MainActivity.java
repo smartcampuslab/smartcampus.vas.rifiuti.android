@@ -41,22 +41,7 @@ public class MainActivity extends ActionBarActivity {
 						R.array.drawer_entries_strings)));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
-				R.string.drawer_close) {
-			public void onDrawerClosed(View view) {
-				super.onDrawerClosed(view);
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				super.onDrawerOpened(drawerView);
-			}
-		};
-
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
+		addNavDrawerButton();
 
 		try {
 			RifiutiHelper.init(this.getApplicationContext());
@@ -78,6 +63,8 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
+	
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -95,12 +82,31 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		//we can't open the drawer if it's locked
-		if (mDrawerLayout.getDrawerLockMode(Gravity.START) == DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+		if (mDrawerLayout.getDrawerLockMode(Gravity.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED
 				&& mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+	
+	private void addNavDrawerButton() {
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.ic_drawer, R.string.drawer_open,
+				R.string.drawer_close) {
+			public void onDrawerClosed(View view) {
+				super.onDrawerClosed(view);
+			}
+
+			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);
+			}
+		};
+
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	private void loadFragment(int position) {
@@ -131,15 +137,19 @@ public class MainActivity extends ActionBarActivity {
 
 	// USE WITH CARE!!
 	public void lockDrawer() {
-		if (mDrawerLayout != null)
+		if (mDrawerLayout != null){
 			mDrawerLayout
 					.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+			getSupportActionBar().setHomeButtonEnabled(false);
+		}
 	}
 
 	// USE WITH CARE!!
 	public void unlockDrawer() {
-		if (mDrawerLayout != null)
+		if (mDrawerLayout != null){
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+			getSupportActionBar().setHomeButtonEnabled(true);
+		}
 	}
 
 	/**

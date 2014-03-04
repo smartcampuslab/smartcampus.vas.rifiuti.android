@@ -21,13 +21,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.geo.OSMAddress;
 import eu.trentorise.smartcampus.rifiuti.geo.OSMGeocoder;
+import eu.trentorise.smartcampus.rifiuti.model.Area;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
@@ -315,20 +319,18 @@ public class ProfileFragment extends Fragment implements ILocation {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-
-					
+				// /Log.i("refresh", mLastString);
+				new LoadAreasTask().execute(s.toString());
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				Log.i("refresh", mLastString);
+
 			}
 		});
 
@@ -446,14 +448,50 @@ public class ProfileFragment extends Fragment implements ILocation {
 		}
 
 	}
-	
-	private class LoadAreasTask extends AsyncTask<String, String, Void>{
+
+	private class LoadAreasTask extends AsyncTask<String, Area, Void> {
 
 		@Override
 		protected Void doInBackground(String... params) {
+			List<Area> areas = RifiutiHelper.readAreas(params[0]);
+			Area[] comuni = new Area[areas.size()];
+			areas.toArray(comuni);
+			publishProgress(comuni);
 			return null;
 		}
-		
+
+		@Override
+		protected void onProgressUpdate(Area... values) {
+			super.onProgressUpdate(values);
+			ArrayAdapter<Area> adapter = new ArrayAdapter<Area>(getActivity(),
+					-1, values) {
+
+				@Override
+				public View getView(int position, View convertView,
+						ViewGroup parent) {
+					if (convertView == null) {
+						LayoutInflater inflater = getActivity()
+								.getLayoutInflater();
+						convertView = inflater.inflate(
+								android.R.layout.simple_list_item_1, parent,
+								false);
+					}
+					convertView.setTag(getItem(position));
+					return convertView;
+				}
+
+			};
+			mACTVComune.setAdapter(adapter);
+			mACTVComune.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					mETArea.setText(((Area)arg1.getTag()).getParent());
+				}
+			});
+		}
+
 	}
 
 	private static class InvalidNameExeption extends Exception {
