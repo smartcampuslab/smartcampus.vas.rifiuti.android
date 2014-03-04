@@ -2,7 +2,6 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
-import android.app.ActionBar.OnNavigationListener;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
