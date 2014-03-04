@@ -447,6 +447,14 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 	}
 	
+	private class LoadAreasTask extends AsyncTask<String, String, Void>{
+
+		@Override
+		protected Void doInBackground(String... params) {
+			return null;
+		}
+		
+	}
 
 	private static class InvalidNameExeption extends Exception {
 	}
