@@ -6,7 +6,8 @@
     <string name="empty"></string>
     <string name="dialog_confirm_title">Sei sicuro?</string>
     <string name="dialog_confirm_msg">questa operazione comporta dei rischi, premi OK solo se sai cosa stai facendo.</string>
-
+    <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
+    
     <!-- Drawer titles -->
     <string name="drawer_open">Rifiuti</string>
     <string name="drawer_close">Rifiuti</string>
@@ -72,6 +73,7 @@
     <string name="err_gps_off">Accendi il gps se vuoi velocizzare il processo!</string>
     <string name="dialog_gps_title">Vuoi usare questa posizione?</string>
     <string name="dialog_gps_msg">%1$s %2$s, %3$s</string>
+    <string name="no_prof_err">Prima crea un profilo</string>
     
     <!-- Actions -->
     <string name="action_edit">Modifica</string>
@@ -79,7 +81,7 @@
     <string name="action_delete">Elimina</string>
     <string name="action_add">Aggiungi nuovo profilo</string>
     
-    <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
+    
         <string name="rifiuti_container_listarifiuti">LISTA RIFIUTI</string>
     <string name="rifiuti_container_listapuntidiraccolta">PUNTI DI RACCOLTA</string>
 </resources>

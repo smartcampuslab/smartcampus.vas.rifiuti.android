@@ -45,7 +45,7 @@ public class ProfilesListFragment extends ListFragment {
 		// we can't let the user switch fragment whithout having a profile
 		if (getActivity() instanceof MainActivity)
 			if (profiles.isEmpty())
-				((MainActivity) getActivity()).lockDrawer();
+				((MainActivity) getActivity()).lockDrawer(R.string.no_prof_err);
 			else
 				((MainActivity) getActivity()).unlockDrawer();
 

@@ -1,28 +1,40 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import java.util.List;
+
+import android.app.ActionBar.OnNavigationListener;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements
+		ActionBar.OnNavigationListener {
 
 	private int mContentFrameId;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+
+	private int mLockMsgResId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +60,8 @@ public class MainActivity extends ActionBarActivity {
 			if (PreferenceUtils.getProfiles(this).isEmpty()) {
 				loadFragment(5);
 			} else {
-				Profile p = PreferenceUtils.getProfile(this,
-						PreferenceUtils.getCurrentProfilePosition(this));
-				RifiutiHelper.setProfile(p);
+				prepareNavDropdown();
+				setCurrentProfile();
 				loadFragment(0);
 			}
 
@@ -62,8 +73,6 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 	}
-
-	
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -81,15 +90,60 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		//we can't open the drawer if it's locked
-		if (mDrawerLayout.getDrawerLockMode(Gravity.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED
-				&& mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
+		// we can't open the drawer if it's locked
+		if (mDrawerLayout.getDrawerLockMode(Gravity.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+			if (mDrawerToggle.onOptionsItemSelected(item)) {
+				return true;
+			}
+			Toast.makeText(this, getString(mLockMsgResId), Toast.LENGTH_SHORT)
+					.show();
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+	@Override
+	public boolean onNavigationItemSelected(int arg0, long arg1) {
+		try {
+			PreferenceUtils.setCurrentProfilePosition(this, arg0);
+			setCurrentProfile();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
+
+	private void setCurrentProfile() {
+		if (PreferenceUtils.getCurrentProfilePosition(this) < 0)
+			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this, 0));
+		else
+			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this,
+					PreferenceUtils.getCurrentProfilePosition(this)));
+	}
+
+	public void prepareNavDropdown() {
+		List<Profile> profiles = PreferenceUtils.getProfiles(this);
+		SpinnerAdapter adapter = new ArrayAdapter<Profile>(this,
+				android.R.layout.simple_spinner_dropdown_item, profiles){
+
+					@Override
+					public View getView(int position, View convertView,
+							ViewGroup parent) {
+						if(convertView==null){
+							LayoutInflater inflater = getLayoutInflater();
+							convertView = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent,false);
+						}
+						((TextView)convertView).setText(getItem(position).getName());
+						return convertView;
+					}
+			
+		};
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
+		getSupportActionBar().setListNavigationCallbacks(adapter, this);
+	}
+
 	private void addNavDrawerButton() {
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
@@ -136,8 +190,9 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	// USE WITH CARE!!
-	public void lockDrawer() {
-		if (mDrawerLayout != null){
+	public void lockDrawer(int resId) {
+		if (mDrawerLayout != null) {
+			mLockMsgResId = resId;
 			mDrawerLayout
 					.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			getSupportActionBar().setHomeButtonEnabled(false);
@@ -146,7 +201,8 @@ public class MainActivity extends ActionBarActivity {
 
 	// USE WITH CARE!!
 	public void unlockDrawer() {
-		if (mDrawerLayout != null){
+		if (mDrawerLayout != null) {
+			mLockMsgResId = R.string.app_failure_setup;
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 			getSupportActionBar().setHomeButtonEnabled(true);
 		}
