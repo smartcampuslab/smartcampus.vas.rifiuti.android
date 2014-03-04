@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.tyczj.extendedcalendarview.CalendarEvent;
@@ -49,7 +48,6 @@ public class RifiutiEventsSource implements CalendarEventsSource {
 				}
 
 				dayEvents.add(event);
-				Log.e(getClass().getSimpleName(), "Event " + (i + 1) + " created");
 			}
 
 			eventsByMonth.append(dc, dayEvents);
