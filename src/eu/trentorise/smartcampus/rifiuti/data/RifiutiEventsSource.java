@@ -1,15 +1,21 @@
-package eu.trentorise.smartcampus.rifiuti.helper;
+package eu.trentorise.smartcampus.rifiuti.data;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.tyczj.extendedcalendarview.CalendarEvent;
 import com.tyczj.extendedcalendarview.CalendarEventsSource;
+
+import eu.trentorise.smartcampus.rifiuti.model.Calendario;
+import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 
 public class RifiutiEventsSource implements CalendarEventsSource {
 
@@ -20,6 +26,39 @@ public class RifiutiEventsSource implements CalendarEventsSource {
 
 		SparseArray<Collection<CalendarEvent>> eventsByMonth = new SparseArray<Collection<CalendarEvent>>(max);
 
+		/*
+		 * TEST PURPOSES ONLY
+		 */
+		// testFiller(max, eventsByMonth);
+		/*
+		 * end TEST PURPOSES ONLY
+		 */
+		
+		filler(max, eventsByMonth);
+
+		return eventsByMonth;
+	}
+
+	private void filler(int max, SparseArray<Collection<CalendarEvent>> eventsByMonth) {
+		try {
+			List<PuntoRaccolta> puntiRaccoltaList = RifiutiHelper.getPuntiRaccolta();
+			Map<PuntoRaccolta, List<Calendario>> calendariMap = new HashMap<PuntoRaccolta, List<Calendario>>();
+			
+			for (PuntoRaccolta pr : puntiRaccoltaList) {
+				calendariMap.put(pr, RifiutiHelper.getCalendars(pr));
+			}
+			
+			for (PuntoRaccolta pr : calendariMap.keySet()) {
+				List<Calendario> calendariList = calendariMap.get(pr);
+				String s = "";
+			}
+			
+		} catch (Exception e) {
+			Log.e(getClass().getSimpleName(), e.getMessage());
+		}
+	}
+	
+	private void testFiller(int max, SparseArray<Collection<CalendarEvent>> eventsByMonth) {
 		/*
 		 * TEST PURPOSES ONLY
 		 */
@@ -52,10 +91,5 @@ public class RifiutiEventsSource implements CalendarEventsSource {
 
 			eventsByMonth.append(dc, dayEvents);
 		}
-		/*
-		 * end TEST PURPOSES ONLY
-		 */
-
-		return eventsByMonth;
 	}
 }

@@ -1,5 +1,6 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,7 +11,8 @@ import android.widget.AdapterView;
 import com.tyczj.extendedcalendarview.CalendarDay;
 import com.tyczj.extendedcalendarview.ExtendedCalendarView;
 
-import eu.trentorise.smartcampus.rifiuti.helper.RifiutiEventsSource;
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiEventsSource;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class CalendarFragment extends Fragment {
 
@@ -32,6 +34,11 @@ public class CalendarFragment extends Fragment {
 		calendarView.setOnDayClickListener(new ExtendedCalendarView.OnDayClickListener() {
 			@Override
 			public void onDayClicked(AdapterView<?> adapter, View view, int position, long id, CalendarDay day) {
+				if (day.getEventsCount() > 0) {
+					Intent intent = new Intent(getActivity(), CalendarAgendaActivity.class);
+					intent.putExtra(ArgUtils.ARGUMENT_CALENDAR_DAY, day);
+					startActivity(intent);
+				}
 			}
 		});
 	}
