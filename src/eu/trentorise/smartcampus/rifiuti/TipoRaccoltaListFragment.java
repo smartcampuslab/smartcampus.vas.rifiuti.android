@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -91,7 +92,7 @@ public class TipoRaccoltaListFragment extends ListFragment {
 			View colorView = convertView.findViewById(R.id.color_view);
 			if (tmp.getColore() != null && tmp.getColore().length() > 0) {
 				colorView.setVisibility(View.VISIBLE);
-				colorView.setBackgroundColor(RifiutiHelper.getColorResource(getActivity(), tmp.getColore()));
+				((GradientDrawable)colorView.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(), tmp.getColore()));
 			} else {
 				colorView.setVisibility(View.GONE);
 			}
