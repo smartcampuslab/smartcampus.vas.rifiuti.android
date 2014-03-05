@@ -63,6 +63,8 @@ public class HomeFragment extends Fragment {
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {
+			case 0:
+				return new NotesListFragment();
 			case 1:
 				return new DoveLoButtoFragment();
 			case 2:

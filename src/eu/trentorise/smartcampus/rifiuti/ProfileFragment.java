@@ -174,9 +174,13 @@ public class ProfileFragment extends Fragment implements ILocation,
 			menu.getItem(2).setVisible(false);
 		} else {
 			menu.getItem(0).setVisible(false);
-			if (mProfile != null)
-				menu.getItem(1).setVisible(true);
 			menu.getItem(2).setVisible(true);
+			if (mProfile != null
+					&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments()
+							.getInt(PROFILE_INDEX_KEY))
+				menu.getItem(1).setVisible(true);
+			else
+				menu.getItem(1).setVisible(false);
 		}
 		super.onPrepareOptionsMenu(menu);
 	}
@@ -302,7 +306,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 		if (mProfile == null) {
 			try {
 				PreferenceUtils.addProfile(getActivity(), newProfile);
-				getFragmentManager().popBackStack();
+				onBack();
 			} catch (JSONException e) {
 				Log.e(ProfileFragment.class.getName(), e.toString());
 			}
@@ -473,7 +477,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 									getString(R.string.err_delete_profilo),
 									Toast.LENGTH_SHORT).show();
 						}
-						getFragmentManager().popBackStack();
+						onBack();
 					}
 				});
 		build.show();
@@ -515,33 +519,41 @@ public class ProfileFragment extends Fragment implements ILocation,
 		protected void onProgressUpdate(OSMAddress... values) {
 			super.onProgressUpdate(values);
 			final OSMAddress address = values[0];
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			builder.setTitle(getString(R.string.dialog_gps_title));
-			String msg = String.format(
-					getString(R.string.dialog_gps_msg),
-					address.getStreet(),
-					(address.getHousenumber() != null) ? address
-							.getHousenumber() : "", address.city());
-			builder.setMessage(msg);
-			builder.setPositiveButton(getString(android.R.string.ok),
-					new DialogInterface.OnClickListener() {
+			//the user might have clicked back
+			if (getFragmentManager().findFragmentById(R.id.content_frame) != null
+					&& getFragmentManager()
+							.findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				builder.setTitle(getString(R.string.dialog_gps_title));
+				String msg = String.format(
+						getString(R.string.dialog_gps_msg),
+						address.getStreet(),
+						(address.getHousenumber() != null) ? address
+								.getHousenumber() : "", address.city());
+				builder.setMessage(msg);
+				builder.setPositiveButton(getString(android.R.string.ok),
+						new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							mACTVComune.setText(address.city());
-							mETVia.setText(address.getStreet());
-							mETNCiv.setText(address.getHousenumber());
-						}
-					});
-			builder.setNeutralButton(getString(android.R.string.cancel),
-					new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								mACTVComune.setText(address.city());
+								mETVia.setText(address.getStreet());
+								mETNCiv.setText(address.getHousenumber());
+							}
+						});
+				builder.setNeutralButton(getString(android.R.string.cancel),
+						new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					});
-			builder.create().show();
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+				builder.create().show();
+			}
 			getActivity().setProgressBarIndeterminateVisibility(false);
 		}
 
@@ -563,39 +575,46 @@ public class ProfileFragment extends Fragment implements ILocation,
 		@Override
 		protected void onProgressUpdate(Area... values) {
 			super.onProgressUpdate(values);
-			ArrayAdapter<Area> adapter = new ArrayAdapter<Area>(getActivity(),
-					-1, values) {
+			//the user might have clicked back
 
-				@Override
-				public View getView(int position, View convertView,
-						ViewGroup parent) {
-					if (convertView == null) {
-						LayoutInflater inflater = getActivity()
-								.getLayoutInflater();
-						convertView = inflater.inflate(
-								android.R.layout.simple_list_item_1, parent,
-								false);
-					}
-					((TextView) convertView).setText(getItem(position)
-							.getComune());
-					convertView.setTag(getItem(position));
-					return convertView;
-				}
+			if (getFragmentManager().findFragmentById(R.id.content_frame) != null
+					&& getFragmentManager()
+							.findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
+				ArrayAdapter<Area> adapter = new ArrayAdapter<Area>(
+						getActivity(), -1, values) {
 
-			};
-			mACTVComune.setAdapter(adapter);
-			mACTVComune
-					.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-						@Override
-						public void onItemClick(AdapterView<?> arg0, View arg1,
-								int arg2, long arg3) {
-							mACTVComune.setText(((Area) arg1.getTag())
-									.getComune());
-							mETArea.setText(((Area) arg1.getTag()).getNome());
+					@Override
+					public View getView(int position, View convertView,
+							ViewGroup parent) {
+						if (convertView == null) {
+							LayoutInflater inflater = getActivity()
+									.getLayoutInflater();
+							convertView = inflater.inflate(
+									android.R.layout.simple_list_item_1,
+									parent, false);
 						}
-					});
-			mACTVComune.showDropDown();
+						((TextView) convertView).setText(getItem(position)
+								.getComune());
+						convertView.setTag(getItem(position));
+						return convertView;
+					}
+
+				};
+				mACTVComune.setAdapter(adapter);
+				mACTVComune
+						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,
+									View arg1, int arg2, long arg3) {
+								mACTVComune.setText(((Area) arg1.getTag())
+										.getComune());
+								mETArea.setText(((Area) arg1.getTag())
+										.getNome());
+							}
+						});
+				mACTVComune.showDropDown();
+			}
 		}
 
 	}
