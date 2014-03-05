@@ -7,7 +7,7 @@
         <!-- <item>@string/drawer_dove_butto</item> -->
         <item>@string/drawer_punti_raccolta</item>
         <item>@string/drawer_tipi_raccolta</item>
-        <item>@string/drawer_tipi_rifiuti</item>
+<!--         <item>@string/drawer_tipi_rifiuti</item> -->
         <!-- <item>@string/drawer_calendario</item> -->
         <!-- <item>@string/drawer_scadenze_note</item> -->
         <item>@string/drawer_feedback</item>
@@ -20,7 +20,7 @@
         <!-- <item>@android:drawable/ic_menu_agenda</item> -->
         <item>@android:drawable/ic_menu_always_landscape_portrait</item>
         <item>@android:drawable/ic_menu_call</item>
-        <item>@android:drawable/ic_menu_camera</item>
+<!--         <item>@android:drawable/ic_menu_camera</item> -->
         <!-- <item>@android:drawable/ic_menu_close_clear_cancel</item> -->
         <!-- <item>@android:drawable/ic_menu_compass</item> -->
         <item>@android:drawable/ic_menu_crop</item>
@@ -42,33 +42,32 @@
         <item>@string/home_pager_calendario</item>
     </string-array>
     
-    <!-- Tipi di rifiuti -->
-    <string-array name="tipirifiuti_entries">
-        <item>@string/tipirifiuti_01</item>
-        <item>@string/tipirifiuti_02</item>
-        <item>@string/tipirifiuti_03</item>
-        <item>@string/tipirifiuti_04</item>
-        <item>@string/tipirifiuti_05</item>
-        <item>@string/tipirifiuti_06</item>
-        <item>@string/tipirifiuti_07</item>
-        <item>@string/tipirifiuti_08</item>
-        <item>@string/tipirifiuti_09</item>
-        <item>@string/tipirifiuti_10</item>
-        <item>@string/tipirifiuti_11</item>
-        <item>@string/tipirifiuti_12</item>
-        <item>@string/tipirifiuti_13</item>
-        <item>@string/tipirifiuti_14</item>
-        <item>@string/tipirifiuti_15</item>
-        <item>@string/tipirifiuti_16</item>
-        <item>@string/tipirifiuti_17</item>
-        <item>@string/tipirifiuti_18</item>
-        <item>@string/tipirifiuti_19</item>
-        <item>@string/tipirifiuti_20</item>
-        <item>@string/tipirifiuti_21</item>
-        <item>@string/tipirifiuti_22</item>
-        <item>@string/tipirifiuti_23</item>
-        <item>@string/tipirifiuti_24</item>
-        <item>@string/tipirifiuti_25</item>
+    <string-array name="color_names">
+        <item>VERDE</item>
+        <item>VERDE SCURO</item> 
+        <item>MARRONE</item>
+        <item>GRIGIO</item>
+        <item>GRIGIO SCURO</item> 
+        <item>NERO</item> 
+        <item>BLU</item>
+        <item>GIALLO SCURO</item>
+        <item>GIALLO</item>
+        <item>BIANCO</item>
+        <item>AZZURRO</item>
     </string-array>
-
+    
+    <integer-array name="color_values">
+        <item>@color/w3c_green</item>
+        <item>@color/w3c_olive</item> 
+        <item>@color/w3c_maroon</item>
+        <item>@color/gray_light</item>
+        <item>@color/w3c_gray</item> 
+        <item>@color/w3c_black</item> 
+        <item>@color/w3c_blue</item>
+        <item>@color/w3c_lime</item>
+        <item>@color/w3c_yellow</item>
+        <item>@color/w3c_white</item>
+        <item>@color/w3c_aqua</item>
+    </integer-array>
+    
 </resources>
