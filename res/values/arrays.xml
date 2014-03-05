@@ -7,7 +7,7 @@
         <!-- <item>@string/drawer_dove_butto</item> -->
         <item>@string/drawer_punti_raccolta</item>
         <item>@string/drawer_tipi_raccolta</item>
-        <item>@string/drawer_tipi_rifiuti</item>
+<!--         <item>@string/drawer_tipi_rifiuti</item> -->
         <!-- <item>@string/drawer_calendario</item> -->
         <!-- <item>@string/drawer_scadenze_note</item> -->
         <item>@string/drawer_feedback</item>
@@ -20,7 +20,7 @@
         <!-- <item>@android:drawable/ic_menu_agenda</item> -->
         <item>@android:drawable/ic_menu_always_landscape_portrait</item>
         <item>@android:drawable/ic_menu_call</item>
-        <item>@android:drawable/ic_menu_camera</item>
+<!--         <item>@android:drawable/ic_menu_camera</item> -->
         <!-- <item>@android:drawable/ic_menu_close_clear_cancel</item> -->
         <!-- <item>@android:drawable/ic_menu_compass</item> -->
         <item>@android:drawable/ic_menu_crop</item>
