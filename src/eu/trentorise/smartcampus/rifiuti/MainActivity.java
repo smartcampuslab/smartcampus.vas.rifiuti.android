@@ -24,6 +24,7 @@ import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
 public class MainActivity extends ActionBarActivity implements
 		ActionBar.OnNavigationListener {
@@ -57,7 +58,8 @@ public class MainActivity extends ActionBarActivity implements
 			if (PreferenceUtils.getProfiles(this).isEmpty()) {
 				lockDrawer();
 				loadFragment(8);
-				Toast.makeText(this, getString(R.string.toast_no_prof), Toast.LENGTH_SHORT).show(); 
+				Toast.makeText(this, getString(R.string.toast_no_prof),
+						Toast.LENGTH_SHORT).show();
 			} else {
 				prepareNavDropdown();
 				setCurrentProfile();
@@ -78,6 +80,17 @@ public class MainActivity extends ActionBarActivity implements
 		super.onPostCreate(savedInstanceState);
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onBackPressed() {
+
+		Fragment f = getSupportFragmentManager().findFragmentById(
+				R.id.content_frame);
+		if (f instanceof onBackListener)
+			((onBackListener) f).onBack();
+		else
+			super.onBackPressed();
 	}
 
 	@Override
@@ -122,19 +135,20 @@ public class MainActivity extends ActionBarActivity implements
 	public void prepareNavDropdown() {
 		List<Profile> profiles = PreferenceUtils.getProfiles(this);
 		SpinnerAdapter adapter = new ArrayAdapter<Profile>(this,
-				android.R.layout.simple_spinner_dropdown_item, profiles){
+				android.R.layout.simple_spinner_dropdown_item, profiles) {
 
-					@Override
-					public View getView(int position, View convertView,
-							ViewGroup parent) {
-						if(convertView==null){
-							LayoutInflater inflater = getLayoutInflater();
-							convertView = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent,false);
-						}
-						((TextView)convertView).setText(getItem(position).getName());
-						return convertView;
-					}
-			
+			@Override
+			public View getView(int position, View convertView, ViewGroup parent) {
+				if (convertView == null) {
+					LayoutInflater inflater = getLayoutInflater();
+					convertView = inflater.inflate(
+							android.R.layout.simple_spinner_dropdown_item,
+							parent, false);
+				}
+				((TextView) convertView).setText(getItem(position).getName());
+				return convertView;
+			}
+
 		};
 		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -172,7 +186,7 @@ public class MainActivity extends ActionBarActivity implements
 			fragment = new ProfilesListFragment();
 			break;
 		case 8:
-			fragment= new ProfileFragment();
+			fragment = new ProfileFragment();
 			break;
 		default:
 			fragment = new DummyFragment();
@@ -204,6 +218,20 @@ public class MainActivity extends ActionBarActivity implements
 		if (mDrawerLayout != null) {
 			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 			getSupportActionBar().setHomeButtonEnabled(true);
+		}
+	}
+
+	// USE WITH CARE!!
+	public void hideDrawer() {
+		if (mDrawerToggle != null) {
+			mDrawerToggle.setDrawerIndicatorEnabled(false);
+		}
+	}
+
+	// USE WITH CARE!!
+	public void showDrawer() {
+		if (mDrawerToggle != null) {
+			mDrawerToggle.setDrawerIndicatorEnabled(true);
 		}
 	}
 

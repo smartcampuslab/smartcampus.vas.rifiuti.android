@@ -38,8 +38,10 @@ import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.ValidatorHelper;
+import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
-public class ProfileFragment extends Fragment implements ILocation {
+public class ProfileFragment extends Fragment implements ILocation,
+		onBackListener {
 
 	private enum MODE {
 		VIEW, EDIT
@@ -66,6 +68,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 	private AsyncTask mCurrentTask;
 
 	private String[] saved;
+	private boolean mLocked;
 
 	private final static String PROFILE_INDEX_KEY = "profile_index";
 
@@ -81,11 +84,15 @@ public class ProfileFragment extends Fragment implements ILocation {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+
+		toggleDrawer();
+
 		if (savedInstanceState != null) {
 			mActiveMode = (savedInstanceState.getInt(SAVE_MODE) == 0) ? MODE.VIEW
 					: MODE.EDIT;
 			if (mActiveMode == MODE.VIEW) {
-				getArguments().putInt(PROFILE_INDEX_KEY, savedInstanceState.getInt(PROFILE_INDEX_KEY));
+				getArguments().putInt(PROFILE_INDEX_KEY,
+						savedInstanceState.getInt(PROFILE_INDEX_KEY));
 			} else {
 				saved = new String[] { savedInstanceState.getString(SAVE_AREA),
 						savedInstanceState.getString(SAVE_COMUNE),
@@ -176,7 +183,12 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.action_edit)
+		if (item.getItemId() == android.R.id.home) {
+			// getFragmentManager().beginTransaction()
+			// .replace(R.id.content_frame, new HomeFragment())
+			// .addToBackStack(null).commit();
+			onBack();
+		} else if (item.getItemId() == R.id.action_edit)
 			switchMode();
 		else if (item.getItemId() == R.id.action_save) {
 			Profile newProfile;
@@ -222,11 +234,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 			new GeocoderTask().execute(l);
 	}
 
-	private boolean isInDB(Location l) {
-		// TODO check with db
-		return true;
-	}
-
 	@Override
 	public void onErrorOccured(ErrorType ex, String provider) {
 		// Do nothing, the user should just type what it wants
@@ -261,6 +268,33 @@ public class ProfileFragment extends Fragment implements ILocation {
 		}
 
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onBack() {
+		getFragmentManager().popBackStack();
+		toggleDrawer();
+	}
+
+	private void toggleDrawer() {
+		if (getActivity() instanceof MainActivity) {
+			if (mLocked) {
+				((MainActivity) getActivity()).unlockDrawer();
+				((MainActivity) getActivity()).showDrawer();
+				mLocked = false;
+			} else {
+				mLocked = true;
+				((MainActivity) getActivity()).hideDrawer();
+				((MainActivity) getActivity()).lockDrawer();
+				((MainActivity) getActivity()).getSupportActionBar()
+						.setHomeButtonEnabled(true);
+			}
+		}
+	}
+
+	private boolean isInDB(Location l) {
+		// TODO check with db
+		return true;
 	}
 
 	private void addOrModify(Profile newProfile) {
@@ -399,15 +433,15 @@ public class ProfileFragment extends Fragment implements ILocation {
 		mVSUtenza = (ViewSwitcher) getView().findViewById(
 				R.id.profile_utenza_vs);
 		mVSNCiv = (ViewSwitcher) getView().findViewById(R.id.profile_nciv_vs);
-		
-		if(saved!=null){
+
+		if (saved != null) {
 			mETArea.setText(saved[0]);
 			mACTVComune.setText(saved[1]);
 			mETNome.setText(saved[2]);
 			mETNCiv.setText(saved[3]);
 			mETUtenza.setText(saved[4]);
 			mETVia.setText(saved[5]);
-			saved=null;
+			saved = null;
 		}
 	}
 

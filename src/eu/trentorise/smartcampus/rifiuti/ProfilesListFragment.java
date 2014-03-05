@@ -6,6 +6,7 @@ import org.json.JSONException;
 
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
+import android.R.anim;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -80,8 +81,8 @@ public class ProfilesListFragment extends ListFragment {
 		ProfileFragment pf;
 		pf = ProfileFragment.newIstance(position);
 		ft.addToBackStack(null);
+		ft.setCustomAnimations(R.anim.enter,R.anim.exit,R.anim.popenter,R.anim.popexit);
 		ft.replace(R.id.content_frame, pf);
-		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		ft.commit();
 	}
 
