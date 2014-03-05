@@ -3,6 +3,7 @@ package eu.trentorise.smartcampus.rifiuti;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -15,9 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class TipoRaccoltaListFragment extends ListFragment {
 
+	private List<DatiTipologiaRaccolta> mTypes = null;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,8 +32,8 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		List<DatiTipologiaRaccolta> types = RifiutiHelper.readTipologiaRaccolta();
-		setListAdapter(new TipoRaccoltaAdapter(getActivity(), types));
+		mTypes = RifiutiHelper.readTipologiaRaccolta();
+		setListAdapter(new TipoRaccoltaAdapter(getActivity(), mTypes));
 		setEmptyText(getString(R.string.niente_tipi_raccolta));
 	}
 
@@ -51,6 +55,10 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	}
 
 	private void goToDetail(int position) {
+		Intent intent = new Intent(getActivity(), RifiutiManagerContainerActivity.class);
+		intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, mTypes.get(position).getTipologiaRaccolta());
+		startActivity(intent);
+
 //		FragmentManager fm = getFragmentManager();
 //		FragmentTransaction ft = fm.beginTransaction();
 //		ProfileFragment pf;
