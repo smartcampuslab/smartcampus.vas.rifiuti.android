@@ -45,6 +45,14 @@ public class ProfileFragment extends Fragment implements ILocation {
 		VIEW, EDIT
 	}
 
+	private static final String SAVE_MODE = "save_mode";
+	private static final String SAVE_NAME = "save_mode";
+	private static final String SAVE_COMUNE = "save_mode";
+	private static final String SAVE_VIA = "save_mode";
+	private static final String SAVE_NCIV = "save_mode";
+	private static final String SAVE_UTENZA = "save_mode";
+	private static final String SAVE_AREA = "save_mode";
+
 	private TextView mTVNome, mTVComune, mTVVia, mTVNCiv, mTVArea, mTVUtenza;
 	private EditText mETNome, mETVia, mETNCiv, mETArea, mETUtenza;
 	private AutoCompleteTextView mACTVComune;
@@ -56,6 +64,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 	private LocationUtils mLocUtils;
 	private String mLastString = "";
 	private AsyncTask mCurrentTask;
+
+	private String[] saved;
 
 	private final static String PROFILE_INDEX_KEY = "profile_index";
 
@@ -71,7 +81,23 @@ public class ProfileFragment extends Fragment implements ILocation {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		mActiveMode = MODE.VIEW;
+		if (savedInstanceState != null) {
+			mActiveMode = (savedInstanceState.getInt(SAVE_MODE) == 0) ? MODE.VIEW
+					: MODE.EDIT;
+			if (mActiveMode == MODE.VIEW) {
+				getArguments().putInt(PROFILE_INDEX_KEY, savedInstanceState.getInt(PROFILE_INDEX_KEY));
+			} else {
+				saved = new String[] { savedInstanceState.getString(SAVE_AREA),
+						savedInstanceState.getString(SAVE_COMUNE),
+						savedInstanceState.getString(SAVE_NAME),
+						savedInstanceState.getString(SAVE_NCIV),
+						savedInstanceState.getString(SAVE_UTENZA),
+						savedInstanceState.getString(SAVE_VIA) };
+			}
+		} else {
+			mActiveMode = MODE.VIEW;
+		}
+
 	}
 
 	@Override
@@ -218,6 +244,25 @@ public class ProfileFragment extends Fragment implements ILocation {
 		}
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		if (mActiveMode == MODE.VIEW) {
+			outState.putInt(SAVE_MODE, 0);
+			outState.putInt(PROFILE_INDEX_KEY,
+					getArguments().getInt(PROFILE_INDEX_KEY));
+		} else {
+			outState.putInt(SAVE_MODE, 1);
+			outState.putString(SAVE_AREA, mETArea.getText().toString());
+			outState.putString(SAVE_COMUNE, mACTVComune.getText().toString());
+			outState.putString(SAVE_NAME, mETNome.getText().toString());
+			outState.putString(SAVE_NCIV, mETNCiv.getText().toString());
+			outState.putString(SAVE_UTENZA, mETUtenza.getText().toString());
+			outState.putString(SAVE_VIA, mETVia.getText().toString());
+		}
+
+		super.onSaveInstanceState(outState);
+	}
+
 	private void addOrModify(Profile newProfile) {
 		// if it's a new one
 		if (mProfile == null) {
@@ -354,6 +399,16 @@ public class ProfileFragment extends Fragment implements ILocation {
 		mVSUtenza = (ViewSwitcher) getView().findViewById(
 				R.id.profile_utenza_vs);
 		mVSNCiv = (ViewSwitcher) getView().findViewById(R.id.profile_nciv_vs);
+		
+		if(saved!=null){
+			mETArea.setText(saved[0]);
+			mACTVComune.setText(saved[1]);
+			mETNome.setText(saved[2]);
+			mETNCiv.setText(saved[3]);
+			mETUtenza.setText(saved[4]);
+			mETVia.setText(saved[5]);
+			saved=null;
+		}
 	}
 
 	private void setContent() {
@@ -376,7 +431,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 							PreferenceUtils.removeProfile(getActivity(),
 									getArguments().getInt(PROFILE_INDEX_KEY));
 							if (getActivity() instanceof MainActivity)
-								((MainActivity) getActivity()).prepareNavDropdown();
+								((MainActivity) getActivity())
+										.prepareNavDropdown();
 
 						} catch (Exception e) {
 							Toast.makeText(getActivity(),
@@ -486,7 +542,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 								android.R.layout.simple_list_item_1, parent,
 								false);
 					}
-					((TextView)convertView).setText(getItem(position).getComune());
+					((TextView) convertView).setText(getItem(position)
+							.getComune());
 					convertView.setTag(getItem(position));
 					return convertView;
 				}
@@ -499,7 +556,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1,
 								int arg2, long arg3) {
-							mACTVComune.setText(((Area) arg1.getTag()).getComune());
+							mACTVComune.setText(((Area) arg1.getTag())
+									.getComune());
 							mETArea.setText(((Area) arg1.getTag()).getNome());
 						}
 					});

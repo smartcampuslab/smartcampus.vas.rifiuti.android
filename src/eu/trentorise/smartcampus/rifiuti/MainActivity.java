@@ -55,7 +55,9 @@ public class MainActivity extends ActionBarActivity implements
 		try {
 			RifiutiHelper.init(this.getApplicationContext());
 			if (PreferenceUtils.getProfiles(this).isEmpty()) {
-				loadFragment(5);
+				lockDrawer();
+				loadFragment(8);
+				Toast.makeText(this, getString(R.string.toast_no_prof), Toast.LENGTH_SHORT).show(); 
 			} else {
 				prepareNavDropdown();
 				setCurrentProfile();
@@ -137,6 +139,7 @@ public class MainActivity extends ActionBarActivity implements
 		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		getSupportActionBar().setDisplayShowTitleEnabled(true);
 		getSupportActionBar().setListNavigationCallbacks(adapter, this);
+		unlockDrawer();
 	}
 
 	private void addNavDrawerButton() {
@@ -167,6 +170,9 @@ public class MainActivity extends ActionBarActivity implements
 			break;
 		case 5:
 			fragment = new ProfilesListFragment();
+			break;
+		case 8:
+			fragment= new ProfileFragment();
 			break;
 		default:
 			fragment = new DummyFragment();

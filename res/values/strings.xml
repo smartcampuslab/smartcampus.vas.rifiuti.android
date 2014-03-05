@@ -7,6 +7,7 @@
     <string name="dialog_confirm_title">Sei sicuro?</string>
     <string name="dialog_confirm_msg">questa operazione comporta dei rischi, premi OK solo se sai cosa stai facendo.</string>
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
+    <string name="toast_no_prof">Crea il tuo profilo!</string>
     
     <!-- Drawer titles -->
     <string name="drawer_open">Rifiuti</string>
