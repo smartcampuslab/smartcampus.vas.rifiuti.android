@@ -70,7 +70,7 @@ public class RifiutiManagerContainerFragment extends Fragment {
 			case 0:
 				return new RifiutiListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
 			case 1:
-				return new PuntiDiRaccoltaListFragment();
+				return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
 			default:
 				return new DummyFragment();
 			}

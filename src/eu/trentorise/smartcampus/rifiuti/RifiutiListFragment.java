@@ -2,24 +2,21 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
-import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
-import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class RifiutiListFragment extends ListFragment {
 
 	private String tipologiaRaccolta = null;
 	private String tipologiaRifiuto = null;
+	private List<String> rifiuti = null;
 
 	public static RifiutiListFragment newIstanceTipologiaRaccolta(String raccolta) {
 		RifiutiListFragment rf = new RifiutiListFragment();
@@ -44,6 +41,26 @@ public class RifiutiListFragment extends ListFragment {
 	}
 
 	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+		RifiutoDetailsFragment fragment = new RifiutoDetailsFragment();
+
+		Bundle args = new Bundle();
+//		if (tipologiaRaccolta != null)
+//			args.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, tipologiaRaccolta);
+//		else if (tipologiaRifiuto != null)
+//			args.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO, tipologiaRifiuto);
+		args.putString(ArgUtils.ARGUMENT_RIFIUTO,rifiuti.get(position));
+		fragment.setArguments(args);
+		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		// fragmentTransaction.detach(this);
+		fragmentTransaction.replace(R.id.content_frame, fragment, "rifiuti");
+		fragmentTransaction.addToBackStack(fragment.getTag());
+		fragmentTransaction.commit();
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Bundle bundle = getArguments();
@@ -52,19 +69,19 @@ public class RifiutiListFragment extends ListFragment {
 		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO))
 			tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
 
-		List<String> list = null;
 		try {
 			if (tipologiaRaccolta != null) {
-				list=RifiutiHelper.getRifiutoPerTipoRaccolta(tipologiaRaccolta);
-			} else 		if (tipologiaRifiuto != null) {
-				list=RifiutiHelper.getRifiutoPerTipoRifiuti(tipologiaRifiuto);
+				rifiuti = RifiutiHelper.getRifiutoPerTipoRaccolta(tipologiaRaccolta);
+			} else if (tipologiaRifiuto != null) {
+				rifiuti = RifiutiHelper.getRifiutoPerTipoRifiuti(tipologiaRifiuto);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_column, R.id.text,list);
+		RifiutoAdapter adapter = new RifiutoAdapter(getActivity(), R.layout.rifiuto_adapter, rifiuti);
 		setListAdapter(adapter);
+
 	}
 
 	@Override

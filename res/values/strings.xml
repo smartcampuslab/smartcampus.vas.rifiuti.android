@@ -82,9 +82,19 @@
     <string name="action_add">Aggiungi</string>
     <string name="rifiuti_container_listarifiuti">LISTA RIFIUTI</string>
     <string name="rifiuti_container_listapuntidiraccolta">PUNTI DI RACCOLTA</string>
+    <string name="tipodiraccolta_label">Tipo di raccolta</string>
+    <string name="puntodiraccolta_label">Punto di raccolta</string>
 
     <!-- NOTE -->
     <string name="note_add">Cosa vuoi ricordare?</string>
     <string name="no_notes">Non ci sono note</string>
+    
+
+    
+    
+<!--     dettagli punto di raccolta -->
+    <string name="dettagli_label">DETTAGLI</string>
+    <string name="orario_label">ORARIO</string>
+    <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
 
 </resources>

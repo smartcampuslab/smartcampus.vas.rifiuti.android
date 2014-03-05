@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 import android.util.SparseArray;
 
@@ -16,10 +15,8 @@ import eu.trentorise.smartcampus.rifiuti.model.CalendarioItem;
 
 public class RifiutiEventsSource implements CalendarEventsSource {
 
-	public SparseArray<Collection<CalendarEvent>> getEventsByMonth(int month) {
-		Calendar cal = Calendar.getInstance(Locale.getDefault());
-		cal.set(Calendar.MONTH, month);
-
+	public SparseArray<Collection<CalendarEvent>> getEventsByMonth(Calendar calendar) {
+		Calendar cal = (Calendar) calendar.clone();
 		SparseArray<Collection<CalendarEvent>> eventsByMonth = new SparseArray<Collection<CalendarEvent>>(
 				cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 
@@ -40,7 +37,7 @@ public class RifiutiEventsSource implements CalendarEventsSource {
 		List<List<CalendarioItem>> data = RifiutiHelper.getCalendarsForMonth(cal);
 		for (int i = 0; i < data.size(); i++) {
 			List<CalendarEvent> events = new ArrayList<CalendarEvent>();
-			cal.set(Calendar.DAY_OF_MONTH, i+1);
+			cal.set(Calendar.DAY_OF_MONTH, i + 1);
 			for (CalendarioItem item : data.get(i)) {
 				CalendarEvent event = null;
 				long start = 0, end = 0;
@@ -56,11 +53,11 @@ public class RifiutiEventsSource implements CalendarEventsSource {
 				event.setLocation(item.getPoint().getLocalizzazione());
 				// TODO: color?
 				events.add(event);
-				
+
 			}
-			eventsByMonth.append(i+1, events);
+			eventsByMonth.append(i + 1, events);
 		}
-		
+
 	}
 
 	private void testFiller(Calendar cal, SparseArray<Collection<CalendarEvent>> eventsByMonth) {

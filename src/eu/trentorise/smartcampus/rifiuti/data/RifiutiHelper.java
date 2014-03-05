@@ -41,7 +41,7 @@ public class RifiutiHelper {
 	private static final int DB_VERSION = 1;
 
 	private static RifiutiHelper mHelper = null;
-
+	
 	protected Context mContext = null;
 	private DBHelper dbHelper = null;
 	private Profile mProfile = null;
@@ -56,18 +56,17 @@ public class RifiutiHelper {
 	public static void init(Context ctx) throws IOException {
 		mHelper = new RifiutiHelper(ctx);
 		// TODO replace test data
-//		setProfile(new Profile("test", "utenza domestica", "Bleggio Superiore",
-//				"via Dante", "1", "Bleggio Superiore"));
-	}
-
+//		setProfile(new Profile("test", "utenza domestica", "Bleggio Superiore", "via Dante", "1", "Bleggio Superiore"));
+	}		
+			
 	public static void setProfile(Profile profile) {
 		mHelper.mProfile = profile;
 		mHelper.mAreas = mHelper.readUserAreas();
 	}
-
+	
 	/**
 	 * @param ctx
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 	private RifiutiHelper(Context ctx) throws IOException {
 		super();
@@ -75,22 +74,17 @@ public class RifiutiHelper {
 		dbHelper = new DBHelper(ctx, DB_VERSION);
 		dbHelper.createDataBase();
 	};
-
+	
 	/**
 	 * Read 'tipi di rifiuti' for the specified user
-	 * 
 	 * @return
 	 */
 	public static List<String> readTipologiaRifiuti() {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			cursor = db.rawQuery(
-					"SELECT DISTINCT tipologiaRifiuto FROM raccolta "
-							+ "WHERE area IN "
-							+ getAreeForQuery(mHelper.mAreas)
-							+ " AND tipologiaUtenza = \""
-							+ mHelper.mProfile.getUtenza() + "\"", null);
+			cursor = db.rawQuery("SELECT DISTINCT tipologiaRifiuto FROM raccolta "
+					+ "WHERE area IN " + getAreeForQuery(mHelper.mAreas)+ " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"", null);
 			List<String> result = new ArrayList<String>();
 			if (cursor != null) {
 				cursor.moveToFirst();
@@ -101,69 +95,74 @@ public class RifiutiHelper {
 			}
 			return result;
 		} finally {
-			if (cursor != null)
-				cursor.close();
+			if (cursor != null) cursor.close();
 		}
 
 	}
 
 	/**
 	 * Read 'tipi di raccolta' for the specified user
-	 * 
 	 * @return
 	 */
 	public static List<DatiTipologiaRaccolta> readTipologiaRaccolta() {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			cursor = db
-					.rawQuery(
-							"SELECT DISTINCT tipologiaRaccolta, tipologiaPuntoRaccolta, colore FROM raccolta "
-									+ "WHERE area IN "
-									+ getAreeForQuery(mHelper.mAreas)
-									+ " AND tipologiaUtenza = \""
-									+ mHelper.mProfile.getUtenza() + "\"", null);
+			cursor = db.rawQuery("SELECT DISTINCT tipologiaRaccolta, tipologiaPuntoRaccolta, colore FROM raccolta "
+					+ "WHERE area IN " + getAreeForQuery(mHelper.mAreas)+ " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"", null);
 			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
 			if (cursor != null) {
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {
 					DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
-					dtr.setColore(cursor.getString(cursor
-							.getColumnIndex("colore")));
-					dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor
-							.getColumnIndex("tipologiaPuntoRaccolta")));
-					dtr.setTipologiaRaccolta(cursor.getString(cursor
-							.getColumnIndex("tipologiaRaccolta")));
+					dtr.setColore(cursor.getString(cursor.getColumnIndex("colore")));
+					dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntoRaccolta")));
+					dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
 					result.add(dtr);
 					cursor.moveToNext();
 				}
 			}
 			return result;
 		} finally {
-			if (cursor != null)
-				cursor.close();
+			if (cursor != null) cursor.close();
+		}
+	}
+	
+	public static List<DatiTipologiaRaccolta> readTipologiaRaccoltaPerTipologiaPuntoRaccolta(String tipologiaPuntoRaccolta) {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			cursor = db.rawQuery("SELECT DISTINCT tipologiaRaccolta, colore FROM raccolta "
+					+ "WHERE area IN " + getAreeForQuery(mHelper.mAreas)+ " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\" AND tipologiaPuntoRaccolta = \"" + tipologiaPuntoRaccolta + "\"", null);
+			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
+			if (cursor != null) {
+				cursor.moveToFirst();
+				for (int i = 0; i < cursor.getCount(); i++) {
+					DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
+					dtr.setColore(cursor.getString(cursor.getColumnIndex("colore")));
+					dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
+					result.add(dtr);
+					cursor.moveToNext();
+				}
+			}
+			return result;
+		} finally {
+			if (cursor != null) cursor.close();
 		}
 	}
 
 	/**
 	 * Read all 'rifiuti' that correspond to the specified 'tipo rifiuti'
-	 * 
 	 * @param tipoRifiuto
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<String> getRifiutoPerTipoRifiuti(String tipoRifiuto)
-			throws Exception {
+	public static List<String> getRifiutoPerTipoRifiuti(String tipoRifiuto) throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT nome FROM riciclabolario WHERE tipologiaRifiuto = \""
-					+ tipoRifiuto
-					+ "\" AND area in "
-					+ aree
-					+ " AND tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+			String query = "SELECT DISTINCT nome FROM riciclabolario WHERE tipologiaRifiuto = \"" + tipoRifiuto + "\" AND area in " + aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()+"\"";
 			cursor = db.rawQuery(query, null);
 			List<String> result = new ArrayList<String>();
 			if (cursor != null) {
@@ -175,32 +174,22 @@ public class RifiutiHelper {
 			}
 			return result;
 		} finally {
-			if (cursor != null)
-				cursor.close();
+			if (cursor != null) cursor.close();
 		}
 	}
 
 	/**
 	 * Read all 'rifiuti' that correspond to the specified 'tipo raccolta'
-	 * 
 	 * @param tipoRifiuto
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<String> getRifiutoPerTipoRaccolta(String tipoRaccolta)
-			throws Exception {
+	public static List<String> getRifiutoPerTipoRaccolta(String tipoRaccolta) throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT nome FROM riciclabolario ri INNER JOIN raccolta ra ON ri.tipologiaRifiuto = ra.tipologiaRifiuto AND ri.tipologiaUtenza = ra.tipologiaUtenza WHERE ra.tipologiaRaccolta = \""
-					+ tipoRaccolta
-					+ "\" AND ra.area in "
-					+ aree
-					+ " AND ri.area in "
-					+ aree
-					+ " AND ra.tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+			String query = "SELECT DISTINCT nome FROM riciclabolario ri INNER JOIN raccolta ra ON ri.tipologiaRifiuto = ra.tipologiaRifiuto AND ri.tipologiaUtenza = ra.tipologiaUtenza WHERE ra.tipologiaRaccolta = \"" + tipoRaccolta + "\" AND ra.area in " + aree + " AND ri.area in " + aree + " AND ra.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()+"\"";
 			cursor = db.rawQuery(query, null);
 			List<String> result = new ArrayList<String>();
 			if (cursor != null) {
@@ -212,38 +201,30 @@ public class RifiutiHelper {
 			}
 			return result;
 		} finally {
-			if (cursor != null)
-				cursor.close();
+			if (cursor != null) cursor.close();
 		}
 	}
 
 	/**
-	 * Read all 'punti raccolta' that correspond to the specified 'tipo
-	 * raccolta'
-	 * 
+	 * Read all 'punti raccolta' that correspond to the specified 'tipo raccolta'
 	 * @param tipoRifiuto
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRaccolta(
-			String tipoRaccolta) throws Exception {
+	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRaccolta(String tipoRaccolta) throws Exception {
 		return getPuntiRaccoltaPerTipo(tipoRaccolta, null);
 	}
-
 	/**
 	 * Read all 'punti raccolta' that correspond to the specified 'tipo rifiuto'
-	 * 
 	 * @param tipoRifiuto
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRifiuto(
-			String tipoRifiuto) throws Exception {
+	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRifiuto(String tipoRifiuto) throws Exception {
 		return getPuntiRaccoltaPerTipo(null, tipoRifiuto);
 	}
-
-	private static List<PuntoRaccolta> getPuntiRaccoltaPerTipo(
-			String tipoRaccolta, String tipoRifiuto) throws Exception {
+	
+	private static List<PuntoRaccolta> getPuntiRaccoltaPerTipo(String tipoRaccolta, String tipoRifiuto) throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
@@ -255,28 +236,20 @@ public class RifiutiHelper {
 					+ "puntiRaccolta.localizzazione,"
 					+ "puntiRaccolta.indirizzo FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
-					+ " WHERE puntiRaccolta.area IN " + aree
-					+ " AND raccolta.area IN " + aree
-					+ " AND puntiRaccolta.tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
-			String selector = "AND "
-					+ (tipoRaccolta != null ? ("raccolta.tipologiaRaccolta = \""
-							+ tipoRaccolta + "\"")
-							: ("raccolta.tipologiaRifiuto = \"" + tipoRifiuto + "\""));
+					+ " WHERE puntiRaccolta.area IN " + aree + " AND raccolta.area IN " + aree + " AND puntiRaccolta.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
+			String selector = "AND " + (tipoRaccolta != null ? ("raccolta.tipologiaRaccolta = \"" + tipoRaccolta + "\"") : ("raccolta.tipologiaRifiuto = \"" + tipoRifiuto+ "\""));
 			query += selector;
-
+			
 			cursor = db.rawQuery(query, null);
 			List<PuntoRaccolta> result = extractListFromCursor(cursor);
 			return result;
 		} finally {
-			if (cursor != null)
-				cursor.close();
+			if (cursor != null) cursor.close();
 		}
 	}
 
 	/**
 	 * Read all 'punti raccolta' for the user profile
-	 * 
 	 * @return
 	 * @throws Exception
 	 */
@@ -285,19 +258,19 @@ public class RifiutiHelper {
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT " + "area, "
-					+ "tipologiaPuntiRaccolta," + "tipologiaUtenza,"
-					+ "localizzazione," + "indirizzo FROM puntiRaccolta "
-					+ " WHERE puntiRaccolta.area IN " + aree + " AND area IN "
-					+ aree + " AND tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
-
+			String query = "SELECT DISTINCT "
+					+ "area, "
+					+ "tipologiaPuntiRaccolta,"
+					+ "tipologiaUtenza,"
+					+ "localizzazione,"
+					+ "indirizzo FROM puntiRaccolta "
+					+ " WHERE puntiRaccolta.area IN " + aree + " AND area IN " + aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
+			
 			cursor = db.rawQuery(query, null);
 			List<PuntoRaccolta> result = extractListFromCursor(cursor);
 			return result;
 		} finally {
-			if (cursor != null)
-				cursor.close();
+			if (cursor != null) cursor.close();
 		}
 	}
 
@@ -312,24 +285,19 @@ public class RifiutiHelper {
 			for (int i = 0; i < cursor.getCount(); i++) {
 				PuntoRaccolta pr = new PuntoRaccolta();
 				pr.setArea(cursor.getString(cursor.getColumnIndex("area")));
-				pr.setTipologiaPuntiRaccolta(cursor.getString(cursor
-						.getColumnIndex("tipologiaPuntiRaccolta")));
-				pr.setTipologiaUtenza(cursor.getString(cursor
-						.getColumnIndex("tipologiaUtenza")));
-				pr.setLocalizzazione(cursor.getString(cursor
-						.getColumnIndex("localizzazione")));
-				pr.setIndirizzo(cursor.getString(cursor
-						.getColumnIndex("indirizzo")));
+				pr.setTipologiaPuntiRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntiRaccolta")));
+				pr.setTipologiaUtenza(cursor.getString(cursor.getColumnIndex("tipologiaUtenza")));
+				pr.setLocalizzazione(cursor.getString(cursor.getColumnIndex("localizzazione")));
+				pr.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
 				result.add(pr);
 				cursor.moveToNext();
 			}
 		}
 		return result;
 	}
-
+	
 	/**
 	 * return 'tipo rifiuti' for the specified 'rifiuto'
-	 * 
 	 * @param rifiuto
 	 * @return
 	 * @throws Exception
@@ -339,12 +307,7 @@ public class RifiutiHelper {
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT tipologiaRifiuto FROM riciclabolario WHERE nome = \""
-					+ rifiuto
-					+ "\" AND area in "
-					+ aree
-					+ " AND tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+			String query = "SELECT DISTINCT tipologiaRifiuto FROM riciclabolario WHERE nome = \"" + rifiuto + "\" AND area in " + aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()+"\"";
 			cursor = db.rawQuery(query, null);
 			if (cursor != null) {
 				cursor.moveToFirst();
@@ -352,14 +315,12 @@ public class RifiutiHelper {
 			}
 			return null;
 		} finally {
-			if (cursor != null)
-				cursor.close();
+			if (cursor != null) cursor.close();
 		}
 	}
-
+	
 	/**
 	 * Read calendars of the specified 'punto raccolta'
-	 * 
 	 * @param pr
 	 * @return
 	 */
@@ -367,20 +328,14 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			String query = "SELECT DISTINCT dataDa, dataA, il, dalle, alle FROM puntiRaccolta WHERE indirizzo = \""
-					+ pr.getIndirizzo()
-					+ "\" AND tipologiaUtenza = \""
-					+ pr.getTipologiaUtenza()
-					+ "\" AND area = \""
-					+ pr.getArea() + "\"";
+			String query = "SELECT DISTINCT dataDa, dataA, il, dalle, alle FROM puntiRaccolta WHERE indirizzo = \"" + pr.getIndirizzo() + "\" AND tipologiaUtenza = \""+ pr.getTipologiaUtenza() +"\" AND area = \"" + pr.getArea() + "\"";
 			cursor = db.rawQuery(query, null);
 			List<Calendario> result = new ArrayList<Calendario>();
 			if (cursor != null) {
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {
 					Calendario c = new Calendario();
-					c.setDataDa(cursor.getString(cursor
-							.getColumnIndex("dataDa")));
+					c.setDataDa(cursor.getString(cursor.getColumnIndex("dataDa")));
 					c.setDataA(cursor.getString(cursor.getColumnIndex("dataA")));
 					c.setIl(cursor.getString(cursor.getColumnIndex("il")));
 					c.setDalle(cursor.getString(cursor.getColumnIndex("dalle")));
@@ -391,9 +346,33 @@ public class RifiutiHelper {
 			}
 			return result;
 		} finally {
-			if (cursor != null)
-				cursor.close();
+			if (cursor != null) cursor.close();
 		}
+	}
+	
+	/**
+	 * recover all user areas recursively
+	 */
+	private List<String> readUserAreas() {
+		String parent = mProfile.getArea();
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			List<String> result = new ArrayList<String>();
+			while (parent != null && parent.trim().length() > 0) {
+				result.add(parent);
+				String query = "SELECT parent FROM aree WHERE nome = \"" + parent + "\"";
+				cursor = db.rawQuery(query, null);
+				if (cursor != null) {
+					cursor.moveToFirst();
+					parent = cursor.getString(0);
+				}
+			}
+			return result;
+		} finally {
+			if (cursor != null) cursor.close();
+		}
+		
 	}
 
 	/**
@@ -502,32 +481,32 @@ public class RifiutiHelper {
 
 	}
 
-	/**
-	 * recover the parent of all user areas recursively
-	 */
-	private List<String> readUserAreas() {
-		String parent = mProfile.getArea();
-		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
-		Cursor cursor = null;
-		try {
-			List<String> result = new ArrayList<String>();
-			while (parent != null && parent.trim().length() > 0) {
-				result.add(parent);
-				String query = "SELECT parent FROM aree WHERE nome = \""
-						+ parent + "\"";
-				cursor = db.rawQuery(query, null);
-				if (cursor != null) {
-					cursor.moveToFirst();
-					parent = cursor.getString(0);
-				}
-			}
-			return result;
-		} finally {
-			if (cursor != null)
-				cursor.close();
-		}
-
-	}
+//	/**
+//	 * recover the parent of all user areas recursively
+//	 */
+//	private List<String> readUserAreas() {
+//		String parent = mProfile.getArea();
+//		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+//		Cursor cursor = null;
+//		try {
+//			List<String> result = new ArrayList<String>();
+//			while (parent != null && parent.trim().length() > 0) {
+//				result.add(parent);
+//				String query = "SELECT parent FROM aree WHERE nome = \""
+//						+ parent + "\"";
+//				cursor = db.rawQuery(query, null);
+//				if (cursor != null) {
+//					cursor.moveToFirst();
+//					parent = cursor.getString(0);
+//				}
+//			}
+//			return result;
+//		} finally {
+//			if (cursor != null)
+//				cursor.close();
+//		}
+//
+//	}
 
 	/**
 	 * Get 'tipi di raccolta' for the specified 'tipo di punto di raccolta' 
@@ -564,7 +543,6 @@ public class RifiutiHelper {
 				cursor.close();
 		}
 	}
-
 	private static String getAreeForQuery(List<String> areas) {
 		String aree = "(";
 		for (String area : areas) {
@@ -573,5 +551,7 @@ public class RifiutiHelper {
 		aree = aree.substring(0, aree.length() - 1) + ")";
 		return aree;
 	}
+	
+	
 
 }
