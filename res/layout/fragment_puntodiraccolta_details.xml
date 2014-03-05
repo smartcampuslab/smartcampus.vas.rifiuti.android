@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/x11_Black" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dettagli_label"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/x11_White" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/puntodiraccolta_dettagli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medium Text"
+                    android:textColor="@color/x11_White"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <ImageView
+                    android:id="@+id/map_dettagli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_map" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/orario_label"
+                android:textColor="@color/x11_White"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
+                android:id="@+id/puntodiraccolta_listaorari"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawSelectorOnTop="false" >
+            </eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView>
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tipologiediraccolta_label"
+                android:textColor="@color/x11_White"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
+                android:id="@+id/puntodiraccolta_listatipologie"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawSelectorOnTop="false" >
+            </eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

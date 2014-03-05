@@ -1,7 +1,10 @@
 package eu.trentorise.smartcampus.rifiuti.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class PuntoRaccolta {
+
+public class PuntoRaccolta implements Parcelable{
 	
 	private String area;
 	private String tipologiaPuntiRaccolta;
@@ -55,5 +58,17 @@ public class PuntoRaccolta {
 				+ tipologiaPuntiRaccolta + ", tipologiaUtenza="
 				+ tipologiaUtenza + ", localizzazione=" + localizzazione
 				+ ", indirizzo=" + indirizzo + "]";
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		
 	}
 }
