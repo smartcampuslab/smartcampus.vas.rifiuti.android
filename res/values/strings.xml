@@ -89,7 +89,9 @@
     <string name="note_add">Cosa vuoi ricordare?</string>
     <string name="no_notes">Non ci sono note</string>
     
-
+	<!-- Tipi Raccolta Fragment -->
+    <string name="niente_tipi_raccolta">Nessun risultato trovato</string>
+    
     
     
 <!--     dettagli punto di raccolta -->
