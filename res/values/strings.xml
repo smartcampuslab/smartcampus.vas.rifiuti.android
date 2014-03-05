@@ -91,4 +91,8 @@
     <string name="dettagli_label">DETTAGLI</string>
     <string name="orario_label">ORARIO</string>
     <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
+    
+    <!-- Tipi Raccolta Fragment -->
+    <string name="niente_tipi_raccolta">Nessun risultato trovato</string>
+
 </resources>
