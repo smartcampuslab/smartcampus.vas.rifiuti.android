@@ -63,7 +63,7 @@ public class RifiutoDetailsFragment extends Fragment {
 				PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
 
 				Bundle args = new Bundle();
-				args.putParcelable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(arg2));
+				args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(arg2));
 				fragment.setArguments(args);
 				fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 				// fragmentTransaction.detach(this);

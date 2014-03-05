@@ -55,7 +55,7 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 		PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
 
 		Bundle args = new Bundle();
-		args.putParcelable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
+		args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
 		fragment.setArguments(args);
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		// fragmentTransaction.detach(this);

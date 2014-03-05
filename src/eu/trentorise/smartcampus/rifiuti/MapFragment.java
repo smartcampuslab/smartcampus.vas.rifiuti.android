@@ -18,8 +18,10 @@ package eu.trentorise.smartcampus.rifiuti;
 import java.util.Collection;
 import java.util.List;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,10 +86,22 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		}
 		if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
 			//get punto o punti di raccolta
-			puntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
+			List<PuntoRaccolta> puntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
+			new AsyncTask<List<PuntoRaccolta>, Void, List<PuntoRaccolta>>() {
+				@Override
+				protected List<PuntoRaccolta> doInBackground(List<PuntoRaccolta>... params) {
+					return params[0];
+				}
 
+				@Override
+				protected void onPostExecute(List<PuntoRaccolta> result) {
+					addObjects(result);
+				}
+			}.execute(puntiRaccolta);
 		}
 	}
+	
+	
 	
 	@Override
 	public void onCameraChange(CameraPosition position) {
@@ -126,7 +140,13 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		return mMap;
 	}
 	
-	
+	public void onDestroyView() {
+		   super.onDestroyView(); 
+		   Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));   
+		   FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+		   ft.remove(fragment);
+		   ft.commit();
+		}
 
 
 }

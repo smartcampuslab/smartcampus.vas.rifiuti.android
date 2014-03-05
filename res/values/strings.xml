@@ -8,7 +8,7 @@
     <string name="dialog_confirm_msg">questa operazione comporta dei rischi, premi OK solo se sai cosa stai facendo.</string>
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
     <string name="toast_no_prof">Crea il tuo profilo!</string>
-    
+
     <!-- Drawer titles -->
     <string name="drawer_open">Rifiuti</string>
     <string name="drawer_close">Rifiuti</string>
@@ -74,21 +74,21 @@
     <string name="err_gps_off">Accendi il gps se vuoi velocizzare il processo!</string>
     <string name="dialog_gps_title">Vuoi usare questa posizione?</string>
     <string name="dialog_gps_msg">%1$s %2$s, %3$s</string>
-    
+
     <!-- Actions -->
     <string name="action_edit">Modifica</string>
     <string name="action_save">Salva</string>
     <string name="action_delete">Elimina</string>
     <string name="action_add">Aggiungi nuovo profilo</string>
     
-    
-        <string name="rifiuti_container_listarifiuti">LISTA RIFIUTI</string>
+    <string name="rifiuti_container_listarifiuti">LISTA RIFIUTI</string>
     <string name="rifiuti_container_listapuntidiraccolta">PUNTI DI RACCOLTA</string>
     <string name="tipodiraccolta_label">Tipo di raccolta</string>
     <string name="puntodiraccolta_label">Punto di raccolta</string>
-    
-<!--     dettagli punto di raccolta -->
+
+    <!-- dettagli punto di raccolta -->
     <string name="dettagli_label">DETTAGLI</string>
     <string name="orario_label">ORARIO</string>
     <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
+
 </resources>
