@@ -65,7 +65,7 @@ public class RifiutiManagerContainerActivity extends ActionBarActivity {
 		if (fragment != null) {
 			Bundle bundle = new Bundle();
 			bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO, tipologiaRifiuti);
-			bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO, tipologiaRaccolta);
+			bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, tipologiaRaccolta);
 			fragment.setArguments(bundle);
 			//passo il parametro (carta, accendino, ...)
 			// Insert the fragment by replacing any existing fragment
