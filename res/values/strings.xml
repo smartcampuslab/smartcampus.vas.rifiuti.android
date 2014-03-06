@@ -84,7 +84,8 @@
     <string name="rifiuti_container_listapuntidiraccolta">PUNTI DI RACCOLTA</string>
     <string name="tipodiraccolta_label">Tipo di raccolta</string>
     <string name="puntodiraccolta_label">Punto di raccolta</string>
-
+    <string name="action_list">List</string>
+    
     <!-- NOTE -->
     <string name="note_add">Cosa vuoi ricordare?</string>
     <string name="no_notes">Non ci sono note</string>

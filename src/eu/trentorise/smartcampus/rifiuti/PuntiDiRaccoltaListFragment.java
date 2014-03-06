@@ -1,29 +1,27 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class PuntiDiRaccoltaListFragment extends ListFragment {
 
 	private String tipologiaRaccolta = null;
 	private String tipologiaRifiuto = null;
 	List<PuntoRaccolta> puntiDiRaccolta = null;
+	boolean hasMenu = false;
 	
 	public static PuntiDiRaccoltaListFragment newIstanceTipologiaRaccolta(String raccolta) {
 		PuntiDiRaccoltaListFragment rf = new PuntiDiRaccoltaListFragment();
@@ -78,17 +76,31 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 		try {
 			if (tipologiaRaccolta != null) {
 				puntiDiRaccolta=RifiutiHelper.getPuntiRaccoltaPerTipoRaccolta(tipologiaRaccolta);
-			} else 		if (tipologiaRifiuto != null) {
+			} else if (tipologiaRifiuto != null) {
 				puntiDiRaccolta=RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
+			} else {
+				puntiDiRaccolta=RifiutiHelper.getPuntiRaccolta();
+				hasMenu = true;
 			}
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			puntiDiRaccolta = new ArrayList<PuntoRaccolta>();
 		}
 		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.puntodiraccolta_adapter, puntiDiRaccolta);
 		setListAdapter(adapter);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu, android.view.MenuInflater)
+	 */
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (hasMenu) {
+			
+		}
+		super.onCreateOptionsMenu(menu, inflater);
+	}	
 	@Override
 	public void onStart() {
 		super.onStart();
