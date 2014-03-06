@@ -34,33 +34,6 @@
     <!-- Dove lo butto? strings -->
     <string name="dovelobutto_search_hint">Che rifiuto vuoi buttare?</string>
 
-    <!-- Tipi di rifiuti strings -->
-    <string name="tipirifiuti_01">Tipo di rifiuto 01</string>
-    <string name="tipirifiuti_02">Tipo di rifiuto 02</string>
-    <string name="tipirifiuti_03">Tipo di rifiuto 03</string>
-    <string name="tipirifiuti_04">Tipo di rifiuto 04</string>
-    <string name="tipirifiuti_05">Tipo di rifiuto 05</string>
-    <string name="tipirifiuti_06">Tipo di rifiuto 06</string>
-    <string name="tipirifiuti_07">Tipo di rifiuto 07</string>
-    <string name="tipirifiuti_08">Tipo di rifiuto 08</string>
-    <string name="tipirifiuti_09">Tipo di rifiuto 09</string>
-    <string name="tipirifiuti_10">Tipo di rifiuto 10</string>
-    <string name="tipirifiuti_11">Tipo di rifiuto 11</string>
-    <string name="tipirifiuti_12">Tipo di rifiuto 12</string>
-    <string name="tipirifiuti_13">Tipo di rifiuto 13</string>
-    <string name="tipirifiuti_14">Tipo di rifiuto 14</string>
-    <string name="tipirifiuti_15">Tipo di rifiuto 15</string>
-    <string name="tipirifiuti_16">Tipo di rifiuto 16</string>
-    <string name="tipirifiuti_17">Tipo di rifiuto 17</string>
-    <string name="tipirifiuti_18">Tipo di rifiuto 18</string>
-    <string name="tipirifiuti_19">Tipo di rifiuto 19</string>
-    <string name="tipirifiuti_20">Tipo di rifiuto 20</string>
-    <string name="tipirifiuti_21">Tipo di rifiuto 21</string>
-    <string name="tipirifiuti_22">Tipo di rifiuto 22</string>
-    <string name="tipirifiuti_23">Tipo di rifiuto 23</string>
-    <string name="tipirifiuti_24">Tipo di rifiuto 24</string>
-    <string name="tipirifiuti_25">Tipo di rifiuto 25</string>
-
     <!-- Profile Fragment -->
     <string name="niente_profili">Aggiungi un nuovo profilo dal menu in alto!</string>
     <string name="profilo_nome">Nome</string>
@@ -84,7 +57,8 @@
     <string name="rifiuti_container_listapuntidiraccolta">PUNTI DI RACCOLTA</string>
     <string name="tipodiraccolta_label">Tipo di raccolta</string>
     <string name="puntodiraccolta_label">Punto di raccolta</string>
-    <string name="action_list">List</string>
+    <string name="action_list">Lista</string>
+    <string name="action_map">Mappa</string>
     
     <!-- NOTE -->
     <string name="note_add">Cosa vuoi ricordare?</string>

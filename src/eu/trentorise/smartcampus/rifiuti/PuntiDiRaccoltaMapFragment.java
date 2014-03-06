@@ -74,7 +74,8 @@ public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChan
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_list:
-			// TODO
+			PuntiDiRaccoltaListFragment rf = new PuntiDiRaccoltaListFragment();
+			getFragmentManager().beginTransaction().replace(R.id.content_frame, rf).commit();
 			return true;
 		default:
 		}
