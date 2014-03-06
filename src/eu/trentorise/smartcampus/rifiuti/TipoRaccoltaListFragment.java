@@ -1,6 +1,10 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
@@ -21,7 +26,7 @@ import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class TipoRaccoltaListFragment extends ListFragment {
 
-	private List<DatiTipologiaRaccolta> mTypes = null;
+	private List<List<DatiTipologiaRaccolta>> mTypes = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +38,20 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		mTypes = RifiutiHelper.readTipologiaRaccolta();
+		List<DatiTipologiaRaccolta> alltypes = RifiutiHelper.readTipologiaRaccolta();
+		mTypes = new ArrayList<List<DatiTipologiaRaccolta>>();
+		LinkedHashMap<String, List<DatiTipologiaRaccolta>> map = new LinkedHashMap<String, List<DatiTipologiaRaccolta>>();
+		for (DatiTipologiaRaccolta dtr : alltypes) {
+			List<DatiTipologiaRaccolta> list = map.get(dtr.getTipologiaRaccolta());
+			if (list == null) {
+				list = new ArrayList<DatiTipologiaRaccolta>();
+				map.put(dtr.getTipologiaRaccolta(), list);
+			}
+			list.add(dtr);
+		} 
+		for (Entry<String, List<DatiTipologiaRaccolta>> entry : map.entrySet()) {
+			mTypes.add(entry.getValue());
+		}
 		setListAdapter(new TipoRaccoltaAdapter(getActivity(), mTypes));
 		setEmptyText(getString(R.string.niente_tipi_raccolta));
 	}
@@ -57,7 +75,7 @@ public class TipoRaccoltaListFragment extends ListFragment {
 
 	private void goToDetail(int position) {
 		Intent intent = new Intent(getActivity(), RifiutiManagerContainerActivity.class);
-		intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, mTypes.get(position).getTipologiaRaccolta());
+		intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, mTypes.get(position).get(0).getTipologiaRaccolta());
 		startActivity(intent);
 
 //		FragmentManager fm = getFragmentManager();
@@ -70,15 +88,16 @@ public class TipoRaccoltaListFragment extends ListFragment {
 //		ft.commit();
 	}
 
-	private class TipoRaccoltaAdapter extends ArrayAdapter<DatiTipologiaRaccolta> {
+	private class TipoRaccoltaAdapter extends ArrayAdapter<List<DatiTipologiaRaccolta>> {
 
-		public TipoRaccoltaAdapter(Context context, List<DatiTipologiaRaccolta> objects) {
+		public TipoRaccoltaAdapter(Context context, List<List<DatiTipologiaRaccolta>> objects) {
 			super(context, R.layout.tipo_raccolta_row, objects);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			DatiTipologiaRaccolta tmp = getItem(position);
+			List<DatiTipologiaRaccolta> tmpList = getItem(position);
+			DatiTipologiaRaccolta tmp = tmpList.get(0);
 			if (convertView == null) {
 				LayoutInflater inflater = (LayoutInflater) getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -87,15 +106,28 @@ public class TipoRaccoltaListFragment extends ListFragment {
 			}
 			TextView name = (TextView) convertView.findViewById(R.id.row_type_name);
 			name.setText(tmp.getTipologiaRaccolta());
-			TextView type = (TextView) convertView.findViewById(R.id.row_sub_type);
-			type.setText(tmp.getTipologiaPuntoRaccolta());
-			View colorView = convertView.findViewById(R.id.color_view);
-			if (tmp.getColore() != null && tmp.getColore().length() > 0) {
-				colorView.setVisibility(View.VISIBLE);
-				((GradientDrawable)colorView.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(), tmp.getColore()));
-			} else {
-				colorView.setVisibility(View.GONE);
+			LinearLayout types = (LinearLayout) convertView.findViewById(R.id.row_sub_type);
+			types.removeAllViews();
+			for (DatiTipologiaRaccolta dtr : tmpList) {
+				TextView tv = (TextView)getActivity().getLayoutInflater().inflate(R.layout.tipo_punto_raccolta_row, null);
+				tv.setText(dtr.getTipologiaPuntoRaccolta());
+				types.addView(tv);
+				if (dtr.getColore() != null && dtr.getColore().length() > 0) {
+					((GradientDrawable) tv.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(), tmp.getColore()));
+				} else {
+					((GradientDrawable) tv.getBackground()).setColor(getResources().getColor(R.color.gray_light));
+					
+				}
 			}
+			
+//			type.setText(tmp.getTipologiaPuntoRaccolta());
+//			View colorView = convertView.findViewById(R.id.color_view);
+//			if (tmp.getColore() != null && tmp.getColore().length() > 0) {
+//				colorView.setVisibility(View.VISIBLE);
+//				((GradientDrawable)colorView.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(), tmp.getColore()));
+//			} else {
+//				colorView.setVisibility(View.GONE);
+//			}
 			return convertView;
 		}
 
