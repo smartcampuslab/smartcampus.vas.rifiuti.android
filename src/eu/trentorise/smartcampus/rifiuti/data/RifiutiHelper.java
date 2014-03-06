@@ -76,7 +76,7 @@ public class RifiutiHelper {
 	private RifiutiHelper(Context ctx) throws IOException {
 		super();
 		this.mContext = ctx;
-		dbHelper = new DBHelper(ctx, DB_VERSION);
+		dbHelper = DBHelper.createDataBase(ctx, DB_VERSION);
 	};
 	
 	/**
