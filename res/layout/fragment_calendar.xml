@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.tyczj.extendedcalendarview.ExtendedCalendarView
+    <eu.trentorise.smartcampus.rifiuti.custom.RifiutiCalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

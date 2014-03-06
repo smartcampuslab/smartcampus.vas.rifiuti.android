@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 /**
  * @author raman
- *
+ * 
  */
 public class CalendarioItem implements Serializable {
 	private static final long serialVersionUID = 517349652801258535L;
@@ -28,21 +28,27 @@ public class CalendarioItem implements Serializable {
 	private PuntoRaccolta point;
 	private String color;
 	private Calendario calendar;
+
 	public PuntoRaccolta getPoint() {
 		return point;
 	}
+
 	public void setPoint(PuntoRaccolta point) {
 		this.point = point;
 	}
+
 	public String getColor() {
 		return color;
 	}
+
 	public void setColor(String color) {
 		this.color = color;
 	}
+
 	public Calendario getCalendar() {
 		return calendar;
 	}
+
 	public void setCalendar(Calendario calendar) {
 		this.calendar = calendar;
 	}

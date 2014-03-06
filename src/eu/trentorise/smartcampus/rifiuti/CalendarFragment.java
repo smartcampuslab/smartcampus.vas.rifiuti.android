@@ -8,20 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.tyczj.extendedcalendarview.CalendarDay;
-import com.tyczj.extendedcalendarview.ExtendedCalendarView;
+import com.tyczj.extendedcalendarview.Day;
 
+import eu.trentorise.smartcampus.rifiuti.custom.RifiutiCalendarView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiEventsSource;
+import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class CalendarFragment extends Fragment {
 
-	private ExtendedCalendarView calendarView;
+	private RifiutiCalendarView calendarView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_calendar, container, false);
-		calendarView = (ExtendedCalendarView) viewGroup.findViewById(R.id.calendar_view);
+		calendarView = (RifiutiCalendarView) viewGroup.findViewById(R.id.calendar_view);
 		calendarView.setCalendarEventsSource(new RifiutiEventsSource());
 		calendarView.setMonthTextBackgroundColor(getResources().getColor(R.color.gray_light));
 		return viewGroup;
@@ -31,9 +32,9 @@ public class CalendarFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		calendarView.setOnDayClickListener(new ExtendedCalendarView.OnDayClickListener() {
+		calendarView.setOnDayClickListener(new RifiutiCalendarView.OnDayClickListener<CalendarioEvent>() {
 			@Override
-			public void onDayClicked(AdapterView<?> adapter, View view, int position, long id, CalendarDay day) {
+			public void onDayClicked(AdapterView<?> adapter, View view, int position, long id, Day<CalendarioEvent> day) {
 				if (day.getEventsCount() > 0) {
 					Intent intent = new Intent(getActivity(), CalendarAgendaActivity.class);
 					intent.putExtra(ArgUtils.ARGUMENT_CALENDAR_DAY, day);
@@ -42,5 +43,4 @@ public class CalendarFragment extends Fragment {
 			}
 		});
 	}
-
 }
