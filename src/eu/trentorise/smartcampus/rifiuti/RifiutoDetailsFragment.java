@@ -2,9 +2,6 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
-import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
-import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
-import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +12,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
+import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class RifiutoDetailsFragment extends Fragment {
 	private String rifiuto = null;

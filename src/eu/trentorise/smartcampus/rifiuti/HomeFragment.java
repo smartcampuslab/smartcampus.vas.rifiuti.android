@@ -1,16 +1,15 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
 
 public class HomeFragment extends Fragment {
 
@@ -67,10 +66,10 @@ public class HomeFragment extends Fragment {
 		mPager.setAdapter(mPagerAdapter);
 
 		// Page "Dove lo butto?" is default
-		// mPager.setCurrentItem(1);
+		 mPager.setCurrentItem(1);
 
 		// Page "Calendar" is default
-		mPager.setCurrentItem(2);
+//		mPager.setCurrentItem(2);
 	}
 
 	/**
