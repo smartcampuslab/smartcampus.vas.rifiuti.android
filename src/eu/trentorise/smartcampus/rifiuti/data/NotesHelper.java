@@ -13,6 +13,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.view.ActionMode;
+import android.util.Log;
 import eu.trentorise.smartcampus.rifiuti.model.Note;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 
@@ -70,6 +71,23 @@ public class NotesHelper {
 	public static void addNote(String s) {
 		SQLiteDatabase db = mHelper.dbHelper.getWritableDatabase();
 		db.insert(DBHelper.TABLE_NOTE, null, Note.toContentValues(s));
+		db.close();
+	}
+	
+	public static void deleteNotes(Note... notes){
+		SQLiteDatabase db = mHelper.dbHelper.getWritableDatabase();
+		String whereClause = "";
+		String[] whereArgs = new String[notes.length];
+		for(int i=0;i<notes.length;i++){
+			if(i>0)
+				whereClause+="OR ";
+			whereClause+=DBHelper.NOTE_ID + " = ? ";
+			whereArgs[i]=""+notes[i].getID();
+		}
+		int rows=db.delete(DBHelper.TABLE_NOTE, whereClause, whereArgs);
+		Log.i("sql", whereClause+""+whereArgs[0]);
+		Log.i("deleted", rows+"");
+		db.close();
 	}
 
 }

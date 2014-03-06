@@ -46,8 +46,8 @@ public class PreferenceUtils {
 			JSONArray jsonArr = new JSONArray(jsonArrString);
 			return Profile.fromJSON(jsonArr.getJSONObject(position));
 		} catch (Exception e) {
-			Log.e(Profile.class.getName(), e.toString());
-			Log.e(Profile.class.getName(), "wrong position");
+			Log.e(PreferenceUtils.class.getName(), e.toString());
+			Log.e(PreferenceUtils.class.getName(), "wrong position");
 		}
 		return null;
 	}
@@ -69,10 +69,10 @@ public class PreferenceUtils {
 			}
 			return out;
 		} catch (JSONException e) {
-			Log.e(Profile.class.getName(), e.toString());
+			Log.e(PreferenceUtils.class.getName(), e.toString());
 		} catch (NullPointerException e) {
-			Log.e(Profile.class.getName(), e.toString());
-			Log.e(Profile.class.getName(),
+			Log.e(PreferenceUtils.class.getName(), e.toString());
+			Log.e(PreferenceUtils.class.getName(),
 					"Non ci sono profili, dovrebbe essercene sempre almeno uno!");
 		}
 

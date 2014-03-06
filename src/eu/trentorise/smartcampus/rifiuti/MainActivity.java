@@ -191,7 +191,7 @@ public class MainActivity extends ActionBarActivity implements
 		case 4:
 			fragment = new ProfilesListFragment();
 			break;
-		case 7:
+		case 8:
 			fragment = new ProfileFragment();
 			break;
 		default:

@@ -71,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 
 	public static final String TABLE_NOTE = "note";
-	public static final String NOTE_ID = "nid";
+	public static final String NOTE_ID = "_id";
 	public static final String NOTE_TXT = "txt";
 	public static final String NOTE_DATE = "ndate";
 
@@ -79,7 +79,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ TABLE_NOTE
 			+ "("
 			+ NOTE_ID
-			+ " INTEGER PRIMARY_KEY,"
+			+ " INTEGER PRIMARY KEY,"
 			+ NOTE_TXT
 			+ " TEXT," + NOTE_DATE + " INTEGER)";
 

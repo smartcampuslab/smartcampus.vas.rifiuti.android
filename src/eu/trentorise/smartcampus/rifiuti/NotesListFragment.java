@@ -13,6 +13,7 @@ import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import android.R.anim;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -52,7 +53,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 		super.onActivityCreated(savedInstanceState);
 		try {
 			NotesHelper.init(getActivity());
-			setListAdapter(new ArrayAdapter<Note>(getActivity(),
+			setListAdapter(new NotesAdapter(getActivity(),
 					android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
 			setEmptyText(getString(R.string.no_notes));
 
@@ -143,6 +144,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 	public boolean onActionItemClicked(ActionMode arg0, MenuItem arg1) {
 		if (arg1.getItemId() == R.id.action_delete) {
 			SparseBooleanArray pos = getListView().getCheckedItemPositions();
+			new DeleteNotesTask().execute(pos);
+			getActivity().setProgressBarIndeterminateVisibility(true);
 			arg0.finish();
 		}
 		return false;
@@ -184,6 +187,56 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 			v.setBackgroundColor(Color.CYAN);
 		else
 			v.setBackgroundColor(Color.TRANSPARENT);
+		
+	}
+	
+	private class NotesAdapter extends ArrayAdapter<Note>{
+
+		public NotesAdapter(Context context, int resource,List<Note> list) {
+			super(context, resource,list);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View rootview =super.getView(position, convertView, parent);
+			rootview.setTag(getItem(position));
+			return rootview;
+		}
+		
+	}
+	
+	private class DeleteNotesTask extends AsyncTask<SparseBooleanArray, Void, Void>{
+
+		@Override
+		protected Void doInBackground(SparseBooleanArray... params) {
+			SparseBooleanArray pos = params[0];
+			for(int i =0;i<pos.size();i++){
+				NotesHelper.deleteNotes(((Note)getListView().getItemAtPosition(i)));
+			}
+			publishProgress();
+			return null;
+		}
+		
+		
+		
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			super.onProgressUpdate(values);
+			if(getListView()!=null){
+				setListAdapter(new ArrayAdapter<Note>(getActivity(),
+						android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+			}
+		}
+
+
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			getActivity().setProgressBarIndeterminateVisibility(false);
+		}
+		
+		
 		
 	}
 
