@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import com.tyczj.extendedcalendarview.CalendarDay;
+import com.tyczj.extendedcalendarview.Day;
 
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
@@ -28,7 +28,7 @@ public class CalendarAgendaActivity extends ActionBarActivity {
 
 		Intent intent = getIntent();
 		if (intent.hasExtra(ArgUtils.ARGUMENT_CALENDAR_DAY)) {
-			CalendarDay day = (CalendarDay) intent.getSerializableExtra(ArgUtils.ARGUMENT_CALENDAR_DAY);
+			Day day = (Day) intent.getSerializableExtra(ArgUtils.ARGUMENT_CALENDAR_DAY);
 			Fragment fragment = new CalendarAgendaFragment();
 			Bundle bundle = new Bundle();
 			bundle.putSerializable(ArgUtils.ARGUMENT_CALENDAR_DAY, day);

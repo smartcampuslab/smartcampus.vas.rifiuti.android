@@ -7,20 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tyczj.extendedcalendarview.CalendarDay;
+import com.tyczj.extendedcalendarview.Day;
 
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class CalendarAgendaFragment extends Fragment {
 
-	private CalendarDay calendarDay;
+	private Day Day;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		if (getArguments().containsKey(ArgUtils.ARGUMENT_CALENDAR_DAY)) {
-			calendarDay = (CalendarDay) getArguments().getSerializable(ArgUtils.ARGUMENT_CALENDAR_DAY);
+			Day = (Day) getArguments().getSerializable(ArgUtils.ARGUMENT_CALENDAR_DAY);
 		}
 	}
 
@@ -34,7 +34,7 @@ public class CalendarAgendaFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("" + calendarDay.getDay());
+		((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("" + Day.getDay());
 	}
 
 }
