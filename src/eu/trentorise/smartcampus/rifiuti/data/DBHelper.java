@@ -20,13 +20,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import eu.trentorise.smartcampus.rifiuti.model.Note;
 
 /**
  * @author raman
@@ -86,31 +87,46 @@ public class DBHelper extends SQLiteOpenHelper {
 	/**
 	 * Creates a empty database on the system and rewrites it with your own
 	 * database.
+	 * @param db
 	 * */
-	public void createDataBase() throws IOException {
-		boolean dbExist = checkDataBase();
+	private void createDataBase(SQLiteDatabase db) throws IOException {
+		boolean dbExist = false;//checkDataBase();
 		if (!dbExist) {
 			// By calling this method and empty database will be created into
 			// the default system path
 			// of your application so we are gonna be able to overwrite that
 			// database with our database.
-			this.getReadableDatabase();
-			try {
-				copyDataBase();
-			} catch (IOException e) {
-				throw new Error("Error copying database");
-			}
+			copyDataBase();
 		}
-		Log.i("boh", CREATE_NOTE_TABLE);
-		this.getWritableDatabase().execSQL(CREATE_NOTE_TABLE);
+		db.execSQL(CREATE_NOTE_TABLE);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		try {
+			createDataBase(db);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Failure creating DB");
+		}
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		try {
+			List<Note> notes = NotesHelper.getNotes(db);
+			copyDataBase();
+			db.execSQL(CREATE_NOTE_TABLE);
+			if (notes != null) {
+				for (Note n : notes) {
+					NotesHelper.saveNote(db, n);
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Failure creating DB");
+		}
 	}
 
 	/**

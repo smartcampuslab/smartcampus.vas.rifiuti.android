@@ -41,7 +41,7 @@ import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
  */
 public class RifiutiHelper {
 
-	private static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 2;
 
 	private static RifiutiHelper mHelper = null;
 	
@@ -77,7 +77,6 @@ public class RifiutiHelper {
 		super();
 		this.mContext = ctx;
 		dbHelper = new DBHelper(ctx, DB_VERSION);
-		dbHelper.createDataBase();
 	};
 	
 	/**
