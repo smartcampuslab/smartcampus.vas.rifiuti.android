@@ -19,12 +19,15 @@ package eu.trentorise.smartcampus.rifiuti.data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.SparseArray;
+import eu.trentorise.smartcampus.rifiuti.R;
 import eu.trentorise.smartcampus.rifiuti.model.Area;
 import eu.trentorise.smartcampus.rifiuti.model.Calendario;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioItem;
@@ -46,6 +49,8 @@ public class RifiutiHelper {
 	private DBHelper dbHelper = null;
 	private Profile mProfile = null;
 	private List<String> mAreas = null;
+
+	private Map<String,Integer> colorMap = null;
 
 	/**
 	 * Initialize data access layer support
@@ -108,8 +113,13 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			cursor = db.rawQuery("SELECT DISTINCT tipologiaRaccolta, tipologiaPuntoRaccolta, colore FROM raccolta "
-					+ "WHERE area IN " + getAreeForQuery(mHelper.mAreas)+ " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"", null);
+			cursor = db
+					.rawQuery(
+							"SELECT DISTINCT tipologiaRaccolta, tipologiaPuntoRaccolta, colore FROM raccolta "
+									+ "WHERE area IN " + getAreeForQuery(mHelper.mAreas)
+									+ " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\""
+									+ " AND tipologiaRaccolta IS NOT NULL AND tipologiaRaccolta != ''"
+									+ " ORDER BY colore DESC, tipologiaRaccolta", null);
 			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
 			if (cursor != null) {
 				cursor.moveToFirst();
@@ -554,4 +564,19 @@ public class RifiutiHelper {
 	
 	
 
+	private Map<String, Integer> getColorMap(Context ctx) {
+		if (colorMap  == null) {
+			colorMap = new HashMap<String, Integer>();
+			String[] array = ctx.getResources().getStringArray(R.array.color_names);
+			int[] valueArray = ctx.getResources().getIntArray(R.array.color_values);
+			for (int i = 0; i < array.length; i++) {
+				colorMap.put(array[i], valueArray[i]);
+			}
+		}
+		return colorMap;
+	}
+	
+	public static int getColorResource(Context ctx, String color) {
+		return mHelper.getColorMap(ctx).get(color);
+	}
 }

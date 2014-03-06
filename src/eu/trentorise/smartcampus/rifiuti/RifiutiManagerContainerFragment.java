@@ -18,6 +18,7 @@ public class RifiutiManagerContainerFragment extends Fragment {
 	private HomePagerAdapter mPagerAdapter;
 	private PagerTabStrip mPagerStrip;
 	private String tipologiaRifiuto = null;
+	private String tipologiaRaccolta = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,11 @@ public class RifiutiManagerContainerFragment extends Fragment {
 		Bundle bundle = getArguments();
 		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO)) {
 			tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
-			mPager.setCurrentItem(0);
 		}
+		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA)) {
+			tipologiaRaccolta = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
+		}
+		mPager.setCurrentItem(0);
 		// if (bundle.containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA))
 		// mPager.setCurrentItem(1);
 	}
@@ -68,9 +72,17 @@ public class RifiutiManagerContainerFragment extends Fragment {
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				return new RifiutiListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+				if (tipologiaRifiuto != null) {
+					return new RifiutiListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+				} else if (tipologiaRaccolta != null) {
+					return new RifiutiListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
+				}
 			case 1:
-				return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+				if (tipologiaRifiuto != null) { 
+					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+				} else if (tipologiaRaccolta != null) {
+					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
+				}
 			default:
 				return new DummyFragment();
 			}

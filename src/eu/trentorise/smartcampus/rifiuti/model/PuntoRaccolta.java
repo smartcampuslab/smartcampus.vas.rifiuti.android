@@ -1,11 +1,17 @@
 package eu.trentorise.smartcampus.rifiuti.model;
 
+import java.io.Serializable;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 
-public class PuntoRaccolta implements Parcelable{
+public class PuntoRaccolta implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2577147915158632199L;
 	private String area;
 	private String tipologiaPuntiRaccolta;
 	private String tipologiaUtenza;
@@ -60,15 +66,5 @@ public class PuntoRaccolta implements Parcelable{
 				+ ", indirizzo=" + indirizzo + "]";
 	}
 
-	@Override
-	public int describeContents() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -1,6 +1,5 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -9,10 +8,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class RifiutiManagerContainerActivity extends ActionBarActivity {
 
@@ -21,6 +19,7 @@ public class RifiutiManagerContainerActivity extends ActionBarActivity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private String tipologiaRifiuti = null;
+	private String tipologiaRaccolta = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,8 +33,11 @@ public class RifiutiManagerContainerActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		Intent intent = getIntent();
-		if (intent.getStringExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO)!=null)
+		if (intent.getStringExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO)!=null) {
 			tipologiaRifiuti = intent.getStringExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
+		} else if (intent.getStringExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA)!=null) {
+			tipologiaRaccolta = intent.getStringExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
+		} 
 		loadRifiutiFragment();
 
 	}
@@ -63,6 +65,7 @@ public class RifiutiManagerContainerActivity extends ActionBarActivity {
 		if (fragment != null) {
 			Bundle bundle = new Bundle();
 			bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO, tipologiaRifiuti);
+			bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, tipologiaRaccolta);
 			fragment.setArguments(bundle);
 			//passo il parametro (carta, accendino, ...)
 			// Insert the fragment by replacing any existing fragment

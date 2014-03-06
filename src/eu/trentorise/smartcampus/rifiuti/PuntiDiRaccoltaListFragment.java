@@ -1,29 +1,28 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.PagerTabStrip;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class PuntiDiRaccoltaListFragment extends ListFragment {
 
 	private String tipologiaRaccolta = null;
 	private String tipologiaRifiuto = null;
 	List<PuntoRaccolta> puntiDiRaccolta = null;
+	boolean hasMenu = false;
 	
 	public static PuntiDiRaccoltaListFragment newIstanceTipologiaRaccolta(String raccolta) {
 		PuntiDiRaccoltaListFragment rf = new PuntiDiRaccoltaListFragment();
@@ -55,7 +54,7 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 		PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
 
 		Bundle args = new Bundle();
-		args.putParcelable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
+		args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
 		fragment.setArguments(args);
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		// fragmentTransaction.detach(this);
@@ -69,26 +68,53 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Bundle bundle = getArguments();
-		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA))
-			tipologiaRaccolta = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
-		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO))
-			tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
-
+		if (bundle != null) {
+			if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA))
+				tipologiaRaccolta = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
+			if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO))
+				tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
+		}
 		
 		try {
 			if (tipologiaRaccolta != null) {
 				puntiDiRaccolta=RifiutiHelper.getPuntiRaccoltaPerTipoRaccolta(tipologiaRaccolta);
-			} else 		if (tipologiaRifiuto != null) {
+			} else if (tipologiaRifiuto != null) {
 				puntiDiRaccolta=RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
+			} else {
+				puntiDiRaccolta=RifiutiHelper.getPuntiRaccolta();
+				hasMenu = true;
+				setHasOptionsMenu(true);
 			}
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			puntiDiRaccolta = new ArrayList<PuntoRaccolta>();
 		}
 		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.puntodiraccolta_adapter, puntiDiRaccolta);
-		setListAdapter(adapter);
+		setListAdapter(adapter); 
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		if (hasMenu) {
+			inflater.inflate(R.menu.point_menu, menu);
+		}
+	}	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_map:
+			PuntiDiRaccoltaMapFragment rf = new PuntiDiRaccoltaMapFragment();
+			getFragmentManager().beginTransaction().replace(R.id.content_frame, rf).commit();
+			return true;
+		default:
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	
 	@Override
 	public void onStart() {
 		super.onStart();

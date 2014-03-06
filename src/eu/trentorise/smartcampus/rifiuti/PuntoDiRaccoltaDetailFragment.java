@@ -38,7 +38,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 
 		Bundle bundle = getArguments();
 		if (bundle.containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA))
-			puntoDiRaccolta = bundle.getParcelable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
+			puntoDiRaccolta = (PuntoRaccolta) bundle.getSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 		try {
 			//get lista orari per punto di raccolta
 			calendario = RifiutiHelper.getCalendars(puntoDiRaccolta);
@@ -59,7 +59,8 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 				MapFragment fragment = new MapFragment();
 				Bundle args = new Bundle();
 				ArrayList<PuntoRaccolta> list = new ArrayList<PuntoRaccolta>();
-				args.putParcelable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntoDiRaccolta);
+				list.add(puntoDiRaccolta);
+				args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, list);
 				fragment.setArguments(args);
 				fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 				fragmentTransaction.replace(R.id.content_frame, fragment, "map");
