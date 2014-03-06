@@ -12,6 +12,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.view.ActionMode;
 import eu.trentorise.smartcampus.rifiuti.model.Note;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 
@@ -20,10 +21,13 @@ public class NotesHelper {
 	private static final int DB_VERSION = 1;
 
 	private static NotesHelper mHelper = null;
+	
+	public static ActionMode notesActionMode;
 
 	private DBHelper dbHelper = null;
 
 	private Context mContext = null;
+	
 
 	/**
 	 * Initialize data access layer support

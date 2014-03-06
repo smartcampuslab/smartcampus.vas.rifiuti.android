@@ -1,11 +1,13 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,25 @@ public class HomeFragment extends Fragment {
 		// mPagerStrip.setTextColor(getResources().getColor(R.color.gray_dark));
 		// mPagerStrip.setTextSpacing(48);
 		// mPagerStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+		
+		mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				if(NotesHelper.notesActionMode!=null)
+					NotesHelper.notesActionMode.finish();
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				if(NotesHelper.notesActionMode!=null)
+					NotesHelper.notesActionMode.finish();
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+			}
+		});
 
 		return viewGroup;
 	}
@@ -83,6 +104,8 @@ public class HomeFragment extends Fragment {
 		public CharSequence getPageTitle(int position) {
 			return mPagerTitles[position];
 		}
+		
+		
 	}
 
 }
