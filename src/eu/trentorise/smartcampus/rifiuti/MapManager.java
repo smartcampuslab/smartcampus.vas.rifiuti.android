@@ -3,7 +3,9 @@ package eu.trentorise.smartcampus.rifiuti;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
@@ -31,6 +34,8 @@ public class MapManager {
 	public static final int ZOOM_DEFAULT = 15;
 	public static final LatLng DEFAULT_POINT = new LatLng(45.89096, 11.04014); // Rovereto
 	public static final int MAX_VISIBLE_DISTANCE = 20;
+//	private static Map<Marker,PuntoRaccolta> puntiDiRaccolta = new HashMap<Marker, PuntoRaccolta>();
+//	private static Map<MarkerOptions,PuntoRaccolta> markerPunti = new HashMap<MarkerOptions,PuntoRaccolta>();
 
 	/*
 	 * CLUSTERING
@@ -51,6 +56,8 @@ public class MapManager {
 		public synchronized static <T extends PuntoRaccolta> List<MarkerOptions> cluster(Context mContext,
 				GoogleMap map, Collection<T> objects) {
 			item2group.clear();
+//			puntiDiRaccolta.clear();
+//			markerPunti.clear();
 			// 2D array with some configurable, fixed density
 			grid.clear();
 
@@ -156,14 +163,16 @@ public class MapManager {
 
 		public static void render(GoogleMap map, List<MarkerOptions> markers) {
 			for (MarkerOptions mo : markers) {
-				map.addMarker(mo);
+				Marker marker = map.addMarker(mo);
+//				puntiDiRaccolta.put(marker, markerPunti.get(mo));
+
 			}
 		}
 
 		private static MarkerOptions createSingleMarker(PuntoRaccolta item, int x, int y) {
 			LatLng latLng = getLatLngFromBasicObject(item);
-
 			MarkerOptions marker = new MarkerOptions().position(latLng).title(x + ":" + y);
+//			markerPunti.put(marker, item);
 			return marker;
 		}
 
@@ -262,7 +271,11 @@ public class MapManager {
 		}
 		fit(map, ll, rr, objects != null && objects.size() > 1);
 	}
-
+	
+//	public static PuntoRaccolta getPuntoDiRaccoltaFromMarker(Marker marker){
+//		return puntiDiRaccolta.get(marker);
+//	}
+	
 	private static void fit(GoogleMap map, double[] ll, double[] rr, boolean zoomIn) {
 		if (ll != null && rr != null) {
 			float[] dist = new float[3];

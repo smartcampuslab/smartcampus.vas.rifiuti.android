@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,12 +41,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChangeListener, MapObjectContainer {
 
 	private GoogleMap mMap;
 	private Collection<PuntoRaccolta> mPuntiRaccolta;
 	private SupportMapFragment mMapFragment;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,7 +61,7 @@ public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChan
 				}
 			}
 		} catch (Exception e) {
-			Log.e(getClass().getName(), "Error reading punti di raccolta: "+e.getMessage());
+			Log.e(getClass().getName(), "Error reading punti di raccolta: " + e.getMessage());
 			mPuntiRaccolta = new ArrayList<PuntoRaccolta>();
 		}
 		setHasOptionsMenu(true);
@@ -69,7 +72,7 @@ public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChan
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.map_menu, menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -81,7 +84,7 @@ public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChan
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -92,7 +95,7 @@ public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChan
 			fm.beginTransaction().replace(R.id.map_container, mMapFragment).commit();
 		}
 	}
-	
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_map_container, container, false);
 	}
@@ -102,14 +105,15 @@ public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChan
 		super.onStart();
 		initView();
 	}
-	
+
 	public void onResume() {
 		super.onResume();
 		if (getSupportMap() != null) {
 			getSupportMap().setMyLocationEnabled(true);
 			getSupportMap().setOnCameraChangeListener(this);
-		}	
+		}
 	}
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -119,15 +123,31 @@ public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChan
 			getSupportMap().setOnMarkerClickListener(null);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
 	protected void initView() {
 		if (getSupportMap() != null) {
 			getSupportMap().clear();
 			getSupportMap().getUiSettings().setRotateGesturesEnabled(false);
 			getSupportMap().getUiSettings().setTiltGesturesEnabled(false);
 		}
-		addObjects(mPuntiRaccolta);
+
+		List<PuntoRaccolta> puntiRaccolta = (List<PuntoRaccolta>) mPuntiRaccolta;
+		if (puntiRaccolta != null) {
+			new AsyncTask<List<PuntoRaccolta>, Void, List<PuntoRaccolta>>() {
+				@Override
+				protected List<PuntoRaccolta> doInBackground(List<PuntoRaccolta>... params) {
+					return params[0];
+				}
+
+				@Override
+				protected void onPostExecute(List<PuntoRaccolta> result) {
+					addObjects(result);
+				}
+			}.execute(puntiRaccolta);
+		}
 	}
-	
+
 	@Override
 	public void onCameraChange(CameraPosition position) {
 		render(mPuntiRaccolta);
@@ -153,6 +173,7 @@ public class PuntiDiRaccoltaMapFragment extends Fragment implements OnCameraChan
 		}
 
 	}
+
 	private GoogleMap getSupportMap() {
 		if (mMap == null) {
 			mMap = mMapFragment.getMap();

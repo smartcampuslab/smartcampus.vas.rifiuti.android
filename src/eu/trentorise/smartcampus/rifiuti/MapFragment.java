@@ -29,46 +29,26 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
-public class MapFragment extends Fragment implements OnCameraChangeListener, MapObjectContainer{
+public class MapFragment extends Fragment implements OnCameraChangeListener, MapObjectContainer {
 
-	static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-	static final LatLng KIEL = new LatLng(53.551, 9.993);
 	private GoogleMap mMap;
 	private Collection<PuntoRaccolta> puntiRaccolta;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View v = inflater.inflate(R.layout.fragment_map, null, false);
-
-		// SupportMapFragment mapFrag= ((SupportMapFragment)
-		// getFragmentManager().findFragmentById(R.id.map));
-		// map =mapFrag.getMap();
-		//
-		// Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG)
-		// .title("Hamburg"));
-		// Marker kiel = map.addMarker(new MarkerOptions()
-		// .position(KIEL)
-		// .title("Kiel")
-		// .snippet("Kiel is cool")
-		// .icon(BitmapDescriptorFactory
-		// .fromResource(R.drawable.ic_launcher)));
-		//
-		// // Move the camera instantly to hamburg with a zoom of 15.
-		// map.moveCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 15));
-		//
-		// // Zoom in, animating the camera.
-		// map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-		//
-		// //...
-
+		if (mMap!=null)
+			mMap=null;
 		return v;
 	}
 
@@ -77,16 +57,19 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		super.onStart();
 		initView();
 	}
+
 	@SuppressWarnings("unchecked")
 	protected void initView() {
 		if (getSupportMap() != null) {
 			getSupportMap().clear();
 			getSupportMap().getUiSettings().setRotateGesturesEnabled(false);
 			getSupportMap().getUiSettings().setTiltGesturesEnabled(false);
+			setMarkerListener(getSupportMap());
 		}
 		if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
-			//get punto o punti di raccolta
-			List<PuntoRaccolta> puntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
+			// get punto o punti di raccolta
+			List<PuntoRaccolta> puntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(
+					ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
 			new AsyncTask<List<PuntoRaccolta>, Void, List<PuntoRaccolta>>() {
 				@Override
 				protected List<PuntoRaccolta> doInBackground(List<PuntoRaccolta>... params) {
@@ -100,9 +83,52 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 			}.execute(puntiRaccolta);
 		}
 	}
-	
-	
-	
+
+	private void setMarkerListener(GoogleMap supportMap) {
+		supportMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+
+			@Override
+			public boolean onMarkerClick(Marker marker) {
+				List<PuntoRaccolta> pdr = MapManager.ClusteringHelper.getFromGridId(marker.getTitle());
+				if (pdr.size() == 1) {
+					FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
+							.beginTransaction();
+					PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
+					Bundle args = new Bundle();
+					args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, pdr.get(0));
+					fragment.setArguments(args);
+					fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+					// fragmentTransaction.detach(this);
+					fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
+					fragmentTransaction.addToBackStack(fragment.getTag());
+					fragmentTransaction.commit();
+				} else if (pdr.size() > 1) {
+
+				}
+				return false;
+			}
+		});
+
+	}
+
+	public void onResume() {
+		super.onResume();
+		if (getSupportMap() != null) {
+			getSupportMap().setMyLocationEnabled(true);
+			getSupportMap().setOnCameraChangeListener(this);
+		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (getSupportMap() != null) {
+			getSupportMap().setMyLocationEnabled(false);
+			getSupportMap().setOnCameraChangeListener(null);
+			getSupportMap().setOnMarkerClickListener(null);
+		}
+	}
+
 	@Override
 	public void onCameraChange(CameraPosition position) {
 		render(puntiRaccolta);
@@ -128,6 +154,7 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		}
 
 	}
+
 	private GoogleMap getSupportMap() {
 		if (mMap == null) {
 			if (getFragmentManager().findFragmentById(R.id.map) != null
@@ -139,14 +166,13 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		}
 		return mMap;
 	}
-	
-	public void onDestroyView() {
-		   super.onDestroyView(); 
-		   Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));   
-		   FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-		   ft.remove(fragment);
-		   ft.commit();
-		}
 
+	public void onDestroyView() {
+		super.onDestroyView();
+		Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));
+		FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+		ft.remove(fragment);
+		ft.commit();
+	}
 
 }
