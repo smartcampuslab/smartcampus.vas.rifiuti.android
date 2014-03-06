@@ -578,4 +578,29 @@ public class RifiutiHelper {
 	public static int getColorResource(Context ctx, String color) {
 		return mHelper.getColorMap(ctx).get(color);
 	}
+
+	/**
+	 * @param trim
+	 * @return list of rifiuti objects with the specified prefix
+	 */
+	public static List<String> getRifiuti(String pre) {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			String aree = getAreeForQuery(mHelper.mAreas);
+			String query = "SELECT DISTINCT nome FROM riciclabolario WHERE nome LIKE '%"+pre+"%' AND area in " + aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()+"\"";
+			cursor = db.rawQuery(query, null);
+			List<String> result = new ArrayList<String>();
+			if (cursor != null) {
+				cursor.moveToFirst();
+				for (int i = 0; i < cursor.getCount(); i++) {
+					result.add(cursor.getString(0));
+					cursor.moveToNext();
+				}
+			}
+			return result;
+		} finally {
+			if (cursor != null) cursor.close();
+		}
+	}
 }

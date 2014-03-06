@@ -1,11 +1,11 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import java.util.Arrays;
 import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,19 +20,20 @@ import eu.trentorise.smartcampus.rifiuti.custom.ExpandedGridView;
 import eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.KeyboardUtils;
 
 public class DoveLoButtoFragment extends Fragment {
 
 	private static final int NUM_COLUMNS = 3;
+
+	protected static final int THRESHOLD = 3;
 
 	private EditText doveLoButtoSearchField;
 	private ImageButton doveLoButtoSearchButton;
 	private ExpandedListView doveLoButtoResultsList;
 	private ExpandedGridView tipiRifiutiGrid;
 	private List<String> tipiRifiutiEntries;
-
-	private List<String> RESULTS_TEST = Arrays.asList("Risultato", "Altro risultato", "Ancora uno", "Numero quattro",
-			"El Cinco", "Franco Baresi");
+	private ArrayAdapter<String> mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,8 @@ public class DoveLoButtoFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		doveLoButtoResultsList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
-				RESULTS_TEST));
+		mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+		doveLoButtoResultsList.setAdapter(mAdapter);
 
 		doveLoButtoSearchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -76,10 +77,16 @@ public class DoveLoButtoFragment extends Fragment {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (s.toString().trim().length() == 0) {
+				if (s.toString().trim().length() < THRESHOLD) {
 					doveLoButtoResultsList.setVisibility(View.GONE);
 					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_search));
 				} else {
+					mAdapter.clear();
+					List<String> suggestions = RifiutiHelper.getRifiuti(s.toString().trim());
+					for (String suggestion : suggestions) {
+						mAdapter.add(suggestion);
+					}
+					mAdapter.notifyDataSetChanged();
 					doveLoButtoResultsList.setVisibility(View.VISIBLE);
 					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(
 							android.R.drawable.ic_menu_close_clear_cancel));
@@ -87,6 +94,23 @@ public class DoveLoButtoFragment extends Fragment {
 			}
 		});
 
+		doveLoButtoResultsList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				KeyboardUtils.hideKeyboard(getActivity(), parent);
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				RifiutoDetailsFragment fragment = new RifiutoDetailsFragment();
+				Bundle args = new Bundle();
+				args.putString(ArgUtils.ARGUMENT_RIFIUTO,mAdapter.getItem(position));
+				fragment.setArguments(args);
+				fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+				fragmentTransaction.replace(R.id.content_frame, fragment, "rifiuti");
+				fragmentTransaction.addToBackStack(fragment.getTag());
+				fragmentTransaction.commit();
+				
+			}
+		});
+		
 		tipiRifiutiGrid.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.tipirifiuti_entry, tipiRifiutiEntries));
 		tipiRifiutiGrid.setOnItemClickListener(new OnItemClickListener() {
 
