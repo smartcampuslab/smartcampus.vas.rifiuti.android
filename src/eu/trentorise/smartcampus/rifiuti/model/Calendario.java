@@ -1,15 +1,17 @@
 package eu.trentorise.smartcampus.rifiuti.model;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
+public class Calendario implements Serializable {
+	private static final long serialVersionUID = 1239115472676199234L;
 
-public class Calendario {
-	
-	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
 	private String dataDa;
 	private String dataA;
@@ -85,22 +87,22 @@ public class Calendario {
 	 */
 	public boolean contains(Calendar c) {
 		String s = dateFormatter.format(c.getTime());
-		return s.compareTo(dataA) <=0 && dataDa.compareTo(s) <= 0;
+		return s.compareTo(dataA) <= 0 && dataDa.compareTo(s) <= 0;
 	}
 
 	/**
-	 * @param cal 
+	 * @param cal
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public long end(Calendar cal) throws ParseException {
 		return mergeDate(cal, timeFormatter.parse(alle));
 	}
 
 	/**
-	 * @param cal 
+	 * @param cal
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public long start(Calendar cal) throws ParseException {
 		return mergeDate(cal, timeFormatter.parse(dalle));
