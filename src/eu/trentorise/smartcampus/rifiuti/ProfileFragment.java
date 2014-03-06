@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,14 +37,14 @@ import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.ValidatorHelper;
-import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
-public class ProfileFragment extends Fragment implements ILocation,
-		onBackListener {
+public class ProfileFragment extends Fragment implements ILocation {
 
 	private enum MODE {
 		VIEW, EDIT
 	}
+
+	private ActionBarActivity abActivity;
 
 	private static final String SAVE_MODE = "save_mode";
 	private static final String SAVE_NAME = "save_mode";
@@ -58,8 +57,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 	private TextView mTVNome, mTVComune, mTVVia, mTVNCiv, mTVArea, mTVUtenza;
 	private EditText mETNome, mETVia, mETNCiv, mETArea, mETUtenza;
 	private AutoCompleteTextView mACTVComune;
-	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv, mVSArea,
-			mVSUtenza;
+	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv, mVSArea, mVSUtenza;
 
 	private Profile mProfile;
 	private MODE mActiveMode;
@@ -83,23 +81,21 @@ public class ProfileFragment extends Fragment implements ILocation,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
 		setHasOptionsMenu(true);
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
 		toggleDrawer();
 
 		if (savedInstanceState != null) {
-			mActiveMode = (savedInstanceState.getInt(SAVE_MODE) == 0) ? MODE.VIEW
-					: MODE.EDIT;
+			mActiveMode = (savedInstanceState.getInt(SAVE_MODE) == 0) ? MODE.VIEW : MODE.EDIT;
 			if (mActiveMode == MODE.VIEW) {
-				getArguments().putInt(PROFILE_INDEX_KEY,
-						savedInstanceState.getInt(PROFILE_INDEX_KEY));
+				getArguments().putInt(PROFILE_INDEX_KEY, savedInstanceState.getInt(PROFILE_INDEX_KEY));
 			} else {
-				saved = new String[] { savedInstanceState.getString(SAVE_AREA),
-						savedInstanceState.getString(SAVE_COMUNE),
-						savedInstanceState.getString(SAVE_NAME),
-						savedInstanceState.getString(SAVE_NCIV),
-						savedInstanceState.getString(SAVE_UTENZA),
-						savedInstanceState.getString(SAVE_VIA) };
+				saved = new String[] { savedInstanceState.getString(SAVE_AREA), savedInstanceState.getString(SAVE_COMUNE),
+						savedInstanceState.getString(SAVE_NAME), savedInstanceState.getString(SAVE_NCIV),
+						savedInstanceState.getString(SAVE_UTENZA), savedInstanceState.getString(SAVE_VIA) };
 			}
 		} else {
 			mActiveMode = MODE.VIEW;
@@ -108,8 +104,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_profile, container, false);
 	}
 
@@ -118,10 +113,8 @@ public class ProfileFragment extends Fragment implements ILocation,
 		super.onStart();
 		initializeViews();
 
-		if (getArguments() != null
-				&& getArguments().containsKey(PROFILE_INDEX_KEY)) {
-			mProfile = PreferenceUtils.getProfile(getActivity(), getArguments()
-					.getInt(PROFILE_INDEX_KEY));
+		if (getArguments() != null && getArguments().containsKey(PROFILE_INDEX_KEY)) {
+			mProfile = PreferenceUtils.getProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
 			if (mProfile != null)
 				setContent();
 			else
@@ -176,8 +169,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 			menu.getItem(0).setVisible(false);
 			menu.getItem(2).setVisible(true);
 			if (mProfile != null
-					&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments()
-							.getInt(PROFILE_INDEX_KEY))
+					&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments().getInt(PROFILE_INDEX_KEY))
 				menu.getItem(1).setVisible(true);
 			else
 				menu.getItem(1).setVisible(false);
@@ -242,16 +234,14 @@ public class ProfileFragment extends Fragment implements ILocation,
 	public void onErrorOccured(ErrorType ex, String provider) {
 		// Do nothing, the user should just type what it wants
 		getActivity().setProgressBarIndeterminateVisibility(false);
-		Log.e(ProfileFragment.class.getName(), "Provider:" + provider
-				+ "\nErrorType:" + ex);
+		Log.e(ProfileFragment.class.getName(), "Provider:" + provider + "\nErrorType:" + ex);
 	}
 
 	@Override
 	public void onStatusChanged(String provider, boolean isActive) {
 		if (!isActive) {
 			getActivity().setProgressBarIndeterminateVisibility(false);
-			Toast.makeText(getActivity(), getString(R.string.err_gps_off),
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.err_gps_off), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -259,8 +249,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 	public void onSaveInstanceState(Bundle outState) {
 		if (mActiveMode == MODE.VIEW) {
 			outState.putInt(SAVE_MODE, 0);
-			outState.putInt(PROFILE_INDEX_KEY,
-					getArguments().getInt(PROFILE_INDEX_KEY));
+			outState.putInt(PROFILE_INDEX_KEY, getArguments().getInt(PROFILE_INDEX_KEY));
 		} else {
 			outState.putInt(SAVE_MODE, 1);
 			outState.putString(SAVE_AREA, mETArea.getText().toString());
@@ -274,7 +263,6 @@ public class ProfileFragment extends Fragment implements ILocation,
 		super.onSaveInstanceState(outState);
 	}
 
-	@Override
 	public void onBack() {
 		getFragmentManager().popBackStack();
 		toggleDrawer();
@@ -290,8 +278,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 				mLocked = true;
 				((MainActivity) getActivity()).hideDrawer();
 				((MainActivity) getActivity()).lockDrawer();
-				((MainActivity) getActivity()).getSupportActionBar()
-						.setHomeButtonEnabled(true);
+				((MainActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
 			}
 		}
 	}
@@ -311,16 +298,14 @@ public class ProfileFragment extends Fragment implements ILocation,
 				Log.e(ProfileFragment.class.getName(), e.toString());
 			}
 		} else {
-			PreferenceUtils.editProfile(getActivity(),
-					getArguments().getInt(PROFILE_INDEX_KEY), newProfile);
+			PreferenceUtils.editProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY), newProfile);
 			mProfile = newProfile;
 			setContent();
 
 		}
 	}
 
-	private Profile getNewProfile() throws InvalidNameExeption,
-			InvalidUtenzaExeption, InvalidAreaExeption, InvalidViaExeption,
+	private Profile getNewProfile() throws InvalidNameExeption, InvalidUtenzaExeption, InvalidAreaExeption, InvalidViaExeption,
 			InvalidNCivicoExeption, InvalidComuneExeption {
 		// because it might be that some fields were left as they had been.
 		// create the profile from the saved one
@@ -398,13 +383,11 @@ public class ProfileFragment extends Fragment implements ILocation,
 
 		mETArea = (EditText) getView().findViewById(R.id.profile_area_et);
 
-		mACTVComune = (AutoCompleteTextView) getView().findViewById(
-				R.id.profile_comune_et);
+		mACTVComune = (AutoCompleteTextView) getView().findViewById(R.id.profile_comune_et);
 		mACTVComune.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if (s.length() > 1) {
 					if (mCurrentTask != null)
 						mCurrentTask.cancel(true);
@@ -413,8 +396,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 
 			@Override
@@ -429,13 +411,10 @@ public class ProfileFragment extends Fragment implements ILocation,
 		mETNCiv = (EditText) getView().findViewById(R.id.profile_nciv_et);
 
 		mVSArea = (ViewSwitcher) getView().findViewById(R.id.profile_area_vs);
-		mVSComune = (ViewSwitcher) getView().findViewById(
-				R.id.profile_comune_vs);
+		mVSComune = (ViewSwitcher) getView().findViewById(R.id.profile_comune_vs);
 		mVSNome = (ViewSwitcher) getView().findViewById(R.id.profile_name_vs);
-		mVSVia = (ViewSwitcher) getView().findViewById(
-				R.id.profile_indirizzo_vs);
-		mVSUtenza = (ViewSwitcher) getView().findViewById(
-				R.id.profile_utenza_vs);
+		mVSVia = (ViewSwitcher) getView().findViewById(R.id.profile_indirizzo_vs);
+		mVSUtenza = (ViewSwitcher) getView().findViewById(R.id.profile_utenza_vs);
 		mVSNCiv = (ViewSwitcher) getView().findViewById(R.id.profile_nciv_vs);
 
 		if (saved != null) {
@@ -460,26 +439,21 @@ public class ProfileFragment extends Fragment implements ILocation,
 
 	private void showConfirmAndDelete() {
 		AlertDialog.Builder build = createConfirmDialog();
-		build.setPositiveButton(getString(android.R.string.ok),
-				new DialogInterface.OnClickListener() {
+		build.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						try {
-							PreferenceUtils.removeProfile(getActivity(),
-									getArguments().getInt(PROFILE_INDEX_KEY));
-							if (getActivity() instanceof MainActivity)
-								((MainActivity) getActivity())
-										.prepareNavDropdown();
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				try {
+					PreferenceUtils.removeProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
+					if (getActivity() instanceof MainActivity)
+						((MainActivity) getActivity()).prepareNavDropdown();
 
-						} catch (Exception e) {
-							Toast.makeText(getActivity(),
-									getString(R.string.err_delete_profilo),
-									Toast.LENGTH_SHORT).show();
-						}
-						onBack();
-					}
-				});
+				} catch (Exception e) {
+					Toast.makeText(getActivity(), getString(R.string.err_delete_profilo), Toast.LENGTH_SHORT).show();
+				}
+				onBack();
+			}
+		});
 		build.show();
 	}
 
@@ -487,14 +461,13 @@ public class ProfileFragment extends Fragment implements ILocation,
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(getString(R.string.dialog_confirm_title));
 		builder.setMessage(getString(R.string.dialog_confirm_msg));
-		builder.setNeutralButton(getString(android.R.string.cancel),
-				new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
 		return builder;
 	}
 
@@ -505,8 +478,7 @@ public class ProfileFragment extends Fragment implements ILocation,
 			try {
 				Location l = params[0];
 				OSMGeocoder geo = new OSMGeocoder(getActivity());
-				final List<OSMAddress> addresses = geo.getFromLocation(
-						l.getLatitude(), l.getLongitude(), null);
+				final List<OSMAddress> addresses = geo.getFromLocation(l.getLatitude(), l.getLongitude(), null);
 				publishProgress(addresses.get(0));
 
 			} catch (Exception e) {
@@ -519,39 +491,30 @@ public class ProfileFragment extends Fragment implements ILocation,
 		protected void onProgressUpdate(OSMAddress... values) {
 			super.onProgressUpdate(values);
 			final OSMAddress address = values[0];
-			//the user might have clicked back
+			// the user might have clicked back
 			if (getFragmentManager().findFragmentById(R.id.content_frame) != null
-					&& getFragmentManager()
-							.findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						getActivity());
+					&& getFragmentManager().findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle(getString(R.string.dialog_gps_title));
-				String msg = String.format(
-						getString(R.string.dialog_gps_msg),
-						address.getStreet(),
-						(address.getHousenumber() != null) ? address
-								.getHousenumber() : "", address.city());
+				String msg = String.format(getString(R.string.dialog_gps_msg), address.getStreet(),
+						(address.getHousenumber() != null) ? address.getHousenumber() : "", address.city());
 				builder.setMessage(msg);
-				builder.setPositiveButton(getString(android.R.string.ok),
-						new DialogInterface.OnClickListener() {
+				builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								mACTVComune.setText(address.city());
-								mETVia.setText(address.getStreet());
-								mETNCiv.setText(address.getHousenumber());
-							}
-						});
-				builder.setNeutralButton(getString(android.R.string.cancel),
-						new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mACTVComune.setText(address.city());
+						mETVia.setText(address.getStreet());
+						mETNCiv.setText(address.getHousenumber());
+					}
+				});
+				builder.setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						});
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
 				builder.create().show();
 			}
 			getActivity().setProgressBarIndeterminateVisibility(false);
@@ -575,44 +538,33 @@ public class ProfileFragment extends Fragment implements ILocation,
 		@Override
 		protected void onProgressUpdate(Area... values) {
 			super.onProgressUpdate(values);
-			//the user might have clicked back
+			// the user might have clicked back
 
 			if (getFragmentManager().findFragmentById(R.id.content_frame) != null
-					&& getFragmentManager()
-							.findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
-				ArrayAdapter<Area> adapter = new ArrayAdapter<Area>(
-						getActivity(), -1, values) {
+					&& getFragmentManager().findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
+				ArrayAdapter<Area> adapter = new ArrayAdapter<Area>(getActivity(), -1, values) {
 
 					@Override
-					public View getView(int position, View convertView,
-							ViewGroup parent) {
+					public View getView(int position, View convertView, ViewGroup parent) {
 						if (convertView == null) {
-							LayoutInflater inflater = getActivity()
-									.getLayoutInflater();
-							convertView = inflater.inflate(
-									android.R.layout.simple_list_item_1,
-									parent, false);
+							LayoutInflater inflater = getActivity().getLayoutInflater();
+							convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
 						}
-						((TextView) convertView).setText(getItem(position)
-								.getComune());
+						((TextView) convertView).setText(getItem(position).getComune());
 						convertView.setTag(getItem(position));
 						return convertView;
 					}
 
 				};
 				mACTVComune.setAdapter(adapter);
-				mACTVComune
-						.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				mACTVComune.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-							@Override
-							public void onItemClick(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
-								mACTVComune.setText(((Area) arg1.getTag())
-										.getComune());
-								mETArea.setText(((Area) arg1.getTag())
-										.getNome());
-							}
-						});
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+						mACTVComune.setText(((Area) arg1.getTag()).getComune());
+						mETArea.setText(((Area) arg1.getTag()).getNome());
+					}
+				});
 				mACTVComune.showDropDown();
 			}
 		}
