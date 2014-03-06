@@ -106,7 +106,7 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_map:
-			PuntiDiRaccoltaMapFragment rf = new PuntiDiRaccoltaMapFragment();
+			MapFragment rf = new MapFragment();
 			getFragmentManager().beginTransaction().replace(R.id.content_frame, rf).commit();
 			return true;
 		default:

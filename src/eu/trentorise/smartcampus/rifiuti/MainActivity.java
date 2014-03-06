@@ -183,7 +183,7 @@ public class MainActivity extends ActionBarActivity implements
 			fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new PuntiDiRaccoltaMapFragment();
+			fragment = new MapFragment();
 			break;
 		case 2:
 			fragment = new TipoRaccoltaListFragment();
