@@ -2,12 +2,12 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:drawablePadding="4dp"
+    android:drawablePadding="8dp"
     android:gravity="center_vertical"
+    android:minHeight="48dp"
     android:padding="8dp"
     android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="@android:color/white"
-    android:minHeight="48dp" >
+    android:textColor="@android:color/white" >
 
     <!-- android:textColor="@android:color/white" -->
 
