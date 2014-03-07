@@ -1,20 +1,15 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,9 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -43,7 +39,7 @@ import eu.trentorise.smartcampus.rifiuti.utils.ValidatorHelper;
 
 public class ProfileFragment extends Fragment implements ILocation {
 
-	private MessageHandler messageHandler = null;
+//	private MessageHandler messageHandler = null;
 
 	private enum MODE {
 		VIEW, EDIT
@@ -61,8 +57,9 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 	private TextView mTVNome, mTVComune, mTVVia, mTVNCiv, /**mTVArea,*/ mTVUtenza;
 	private EditText mETNome, mETVia, mETNCiv, /**mETArea,*/ mETUtenza;
-	private AutoCompleteTextView mACTVComune;
-	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv, mVSArea, mVSUtenza;
+//	private AutoCompleteTextView mACTVComune;
+	private Spinner mAreaSpinner;
+	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv/**, mVSArea*/, mVSUtenza;
 
 	private Profile mProfile;
 	private MODE mActiveMode;
@@ -70,12 +67,15 @@ public class ProfileFragment extends Fragment implements ILocation {
 //	private String mLastString = "";
 //	private AsyncTask mCurrentTask;
 
+	private List<Area> comuneAreas = null;
+	private List<String> comuneAreasNames = null;	
+	
 	private Area area = null;
 	
 	private String[] saved;
 	private boolean mLocked;
 
-	protected boolean selected = false;
+//	protected boolean selected = false;
 
 	private final static String PROFILE_INDEX_KEY = "profile_index";
 
@@ -114,7 +114,12 @@ public class ProfileFragment extends Fragment implements ILocation {
 			mActiveMode = MODE.VIEW;
 		}
 
-		messageHandler = new MessageHandler();
+//		messageHandler = new MessageHandler();
+		comuneAreas = RifiutiHelper.readAreas();
+		comuneAreasNames = new ArrayList<String>(comuneAreas.size());
+		for (Area a : comuneAreas) {
+			comuneAreasNames.add(a.getComune());
+		}
 	}
 
 	@Override
@@ -220,13 +225,13 @@ public class ProfileFragment extends Fragment implements ILocation {
 			} catch (InvalidUtenzaExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETUtenza, null);
 			} catch (InvalidAreaExeption e) {
-				ValidatorHelper.highlight(getActivity(), mACTVComune, getResources().getString(R.string.err_unknown_area));
+				ValidatorHelper.highlight(getActivity(), mAreaSpinner, getResources().getString(R.string.err_unknown_area));
 			} catch (InvalidViaExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETVia, null);
 			} catch (InvalidNCivicoExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNCiv, null);
 			} catch (InvalidComuneExeption e) {
-				ValidatorHelper.highlight(getActivity(), mACTVComune, null);
+				ValidatorHelper.highlight(getActivity(), mAreaSpinner, null);
 			}
 
 		} else if (item.getItemId() == R.id.action_delete) {
@@ -277,7 +282,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 			if (area != null) {
 				outState.putString(SAVE_AREA, area.getNome());
 			}
-			outState.putString(SAVE_COMUNE, mACTVComune.getText().toString());
+//			outState.putString(SAVE_COMUNE, mARCTVComune.getText().toString());
+			outState.putString(SAVE_COMUNE, area.getComune());
 			outState.putString(SAVE_NAME, mETNome.getText().toString());
 			outState.putString(SAVE_NCIV, mETNCiv.getText().toString());
 			outState.putString(SAVE_UTENZA, mETUtenza.getText().toString());
@@ -325,6 +331,9 @@ public class ProfileFragment extends Fragment implements ILocation {
 				PreferenceUtils.addProfile(getActivity(), newProfile);
 				if (isFirstProfile()) {
 					PreferenceUtils.setCurrentProfilePosition(getActivity(), 0);
+				} else {
+					mProfile = newProfile;
+					setContent();
 				}
 			} catch (Exception e) {
 				Log.e(ProfileFragment.class.getName(), e.toString());
@@ -357,6 +366,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 			throw new InvalidUtenzaExeption();
 		if (area != null) {
 			p.setArea(area.getNome());
+			p.setComune(area.getComune());
 		} else {
 			throw new InvalidAreaExeption();
 		}
@@ -365,18 +375,18 @@ public class ProfileFragment extends Fragment implements ILocation {
 //		}
 //		else if (mProfile == null)
 //			throw new InvalidAreaExeption();
-		if (mETVia.getText().toString().trim().length() > 0)
-			p.setVia(mETVia.getText().toString());
-		else if (mProfile == null)
-			throw new InvalidViaExeption();
-		if (mETNCiv.getText().toString().trim().length() > 0)
-			p.setNCivico(mETNCiv.getText().toString());
-		else if (mProfile == null)
-			throw new InvalidNCivicoExeption();
-		if (mACTVComune.getText().toString().trim().length() > 0)
-			p.setComune(mACTVComune.getText().toString());
-		else if (mProfile == null)
-			throw new InvalidComuneExeption();
+//		if (mETVia.getText().toString().trim().length() > 0)
+//			p.setVia(mETVia.getText().toString());
+//		else if (mProfile == null)
+//			throw new InvalidViaExeption();
+//		if (mETNCiv.getText().toString().trim().length() > 0)
+//			p.setNCivico(mETNCiv.getText().toString());
+//		else if (mProfile == null)
+//			throw new InvalidNCivicoExeption();
+//		if (mACTVComune.getText().toString().trim().length() > 0)
+//			p.setComune(mACTVComune.getText().toString());
+//		else if (mProfile == null)
+//			throw new InvalidComuneExeption();
 		
 		return p;
 	}
@@ -384,7 +394,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 	private void switchMode() {
 		if (mActiveMode == MODE.VIEW) {
 			mActiveMode = MODE.EDIT;
-			mVSArea.showNext();
+//			mVSArea.showNext();
 			mVSComune.showNext();
 			mVSVia.showNext();
 			mVSNome.showNext();
@@ -393,7 +403,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 			if (mProfile != null) {
 //				mETArea.setHint(mProfile.getArea());
-				mACTVComune.setHint(mProfile.getComune());
+//				mACTVComune.setHint(mProfile.getComune());
 				mETNCiv.setHint(mProfile.getNCivico());
 				mETNome.setHint(mProfile.getName());
 				mETVia.setHint(mProfile.getVia());
@@ -401,7 +411,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 		} else {
 			mActiveMode = MODE.VIEW;
-			mVSArea.showPrevious();
+//			mVSArea.showPrevious();
 			mVSComune.showPrevious();
 			mVSVia.showPrevious();
 			mVSNome.showPrevious();
@@ -421,16 +431,26 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 //		mETArea = (EditText) getView().findViewById(R.id.profile_area_et);
 
-		mACTVComune = (AutoCompleteTextView) getView().findViewById(R.id.profile_comune_et);
-		mACTVComune.removeTextChangedListener(mTextListener);
-		mACTVComune.addTextChangedListener(mTextListener);
-
+//		mACTVComune = (AutoCompleteTextView) getView().findViewById(R.id.profile_comune_et);
+//		mACTVComune.removeTextChangedListener(mTextListener);
+//		mACTVComune.addTextChangedListener(mTextListener);
+		mAreaSpinner = (Spinner)getView().findViewById(R.id.profile_comune_spinner);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, comuneAreasNames);
+		mAreaSpinner.setAdapter(adapter);
+		mAreaSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+				area = comuneAreas.get(pos);
+			}
+			public void onNothingSelected(AdapterView<?> arg0) {}
+		});
+		
 		mETNome = (EditText) getView().findViewById(R.id.profile_name_et);
 		mETVia = (EditText) getView().findViewById(R.id.profile_indirizzo_et);
 		mETUtenza = (EditText) getView().findViewById(R.id.profile_utenza_et);
+		mETUtenza.setEnabled(false);
 		mETNCiv = (EditText) getView().findViewById(R.id.profile_nciv_et);
 
-		mVSArea = (ViewSwitcher) getView().findViewById(R.id.profile_area_vs);
+//		mVSArea = (ViewSwitcher) getView().findViewById(R.id.profile_area_vs);
 		mVSComune = (ViewSwitcher) getView().findViewById(R.id.profile_comune_vs);
 		mVSNome = (ViewSwitcher) getView().findViewById(R.id.profile_name_vs);
 		mVSVia = (ViewSwitcher) getView().findViewById(R.id.profile_indirizzo_vs);
@@ -440,7 +460,12 @@ public class ProfileFragment extends Fragment implements ILocation {
 		if (saved != null) {
 			area = RifiutiHelper.findArea(saved[0]);
 //			mETArea.setText(saved[0]);
-			mACTVComune.setText(saved[1]);
+//			mACTVComune.setText(saved[1]);
+			for (int i = 0; i < comuneAreas.size(); i++) {
+				if (saved[0].equals(comuneAreas.get(i).getNome())) {
+					mAreaSpinner.setSelection(i);
+				}
+			}
 			mETNome.setText(saved[2]);
 			mETNCiv.setText(saved[3]);
 			mETUtenza.setText(saved[4]);
@@ -454,6 +479,11 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 		mTVNome.setText(mProfile.getName());
 //		mTVArea.setText(mProfile.getArea());
+		for (int i = 0; i < comuneAreas.size(); i++) {
+			if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
+				mAreaSpinner.setSelection(i);
+			}
+		}
 		mTVComune.setText(mProfile.getComune());
 		mTVVia.setText(mProfile.getVia());
 		mTVUtenza.setText(mProfile.getUtenza().toString());
@@ -517,84 +547,90 @@ public class ProfileFragment extends Fragment implements ILocation {
 			// the user might have clicked back
 			if (getFragmentManager() != null && getFragmentManager().findFragmentById(R.id.content_frame) != null
 					&& getFragmentManager().findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setTitle(getString(R.string.dialog_gps_title));
-				String msg = String.format(getString(R.string.dialog_gps_msg), address.getStreet(),
-						(address.getHousenumber() != null) ? address.getHousenumber() : "", address.city());
-				builder.setMessage(msg);
-				builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+				for (int i = 0; i < comuneAreasNames.size(); i++) {
+					if (address.city().equalsIgnoreCase(comuneAreasNames.get(i))) {
+						final int pos = i;
+						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+						builder.setTitle(getString(R.string.dialog_gps_title));
+						String msg = String.format(getString(R.string.dialog_gps_msg), address.getStreet(),
+								(address.getHousenumber() != null) ? address.getHousenumber() : "", address.city());
+						builder.setMessage(msg);
+						builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						mACTVComune.setText(address.city());
-						mETVia.setText(address.getStreet());
-						mETNCiv.setText(address.getHousenumber());
-					}
-				});
-				builder.setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								mAreaSpinner.setSelection(pos);
+//								mACTVComune.setText(address.city());
+								mETVia.setText(address.getStreet());
+								mETNCiv.setText(address.getHousenumber());
+							}
+						});
+						builder.setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+							}
+						});
+						builder.create().show();
 					}
-				});
-				builder.create().show();
+				}
 			}
 			getActivity().setProgressBarIndeterminateVisibility(false);
 		}
 
 	}
 
-	private class LoadAreasTask extends AsyncTask<String, Area, Void> {
-
-		@Override
-		protected Void doInBackground(String... params) {
-			List<Area> areas = RifiutiHelper.readAreas(params[0]);
-			Area[] comuni = new Area[areas.size()];
-			if (!this.isCancelled()) {
-				areas.toArray(comuni);
-				publishProgress(comuni);
-			}
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Area... values) {
-			super.onProgressUpdate(values);
-			// the user might have clicked back
-
-			if (getFragmentManager().findFragmentById(R.id.content_frame) != null
-					&& getFragmentManager().findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
-				ArrayAdapter<Area> adapter = new ArrayAdapter<Area>(getActivity(), -1, values) {
-
-					@Override
-					public View getView(int position, View convertView, ViewGroup parent) {
-						if (convertView == null) {
-							LayoutInflater inflater = getActivity().getLayoutInflater();
-							convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-						}
-						((TextView) convertView).setText(getItem(position).getComune());
-						convertView.setTag(getItem(position));
-						return convertView;
-					}
-
-				};
-				mACTVComune.setAdapter(adapter);
-				mACTVComune.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-						selected = true;
-						mACTVComune.setText(((Area) arg1.getTag()).getComune());
-						area = (Area) arg1.getTag();
-						//mETArea.setText(((Area) arg1.getTag()).getNome());
-					}
-				});
-				mACTVComune.showDropDown();
-			}
-		}
-
-	}
+//	private class LoadAreasTask extends AsyncTask<String, Area, Void> {
+//
+//		@Override
+//		protected Void doInBackground(String... params) {
+//			List<Area> areas = RifiutiHelper.readAreas(params[0]);
+//			Area[] comuni = new Area[areas.size()];
+//			if (!this.isCancelled()) {
+//				areas.toArray(comuni);
+//				publishProgress(comuni);
+//			}
+//			return null;
+//		}
+//
+//		@Override
+//		protected void onProgressUpdate(Area... values) {
+//			super.onProgressUpdate(values);
+//			// the user might have clicked back
+//
+//			if (getFragmentManager().findFragmentById(R.id.content_frame) != null
+//					&& getFragmentManager().findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
+//				ArrayAdapter<Area> adapter = new ArrayAdapter<Area>(getActivity(), -1, values) {
+//
+//					@Override
+//					public View getView(int position, View convertView, ViewGroup parent) {
+//						if (convertView == null) {
+//							LayoutInflater inflater = getActivity().getLayoutInflater();
+//							convertView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+//						}
+//						((TextView) convertView).setText(getItem(position).getComune());
+//						convertView.setTag(getItem(position));
+//						return convertView;
+//					}
+//
+//				};
+//				mACTVComune.setAdapter(adapter);
+//				mACTVComune.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//					@Override
+//					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//						selected = true;
+//						mACTVComune.setText(((Area) arg1.getTag()).getComune());
+//						area = (Area) arg1.getTag();
+//						//mETArea.setText(((Area) arg1.getTag()).getNome());
+//					}
+//				});
+//				mACTVComune.showDropDown();
+//			}
+//		}
+//
+//	}
 
 	private static class InvalidNameExeption extends Exception {
 	}
@@ -614,39 +650,39 @@ public class ProfileFragment extends Fragment implements ILocation {
 	private static class InvalidUtenzaExeption extends Exception {
 	}
 
-	private TextWatcher mTextListener = new TextWatcher() {
-
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			if (!selected && s.length() > 1) {
-				Message msg = Message.obtain(messageHandler, 1, s.toString());
-				messageHandler.sendMessageDelayed(msg, 200);
-//				if (mCurrentTask != null)
-//					mCurrentTask.cancel(true);
-//				mCurrentTask = new LoadAreasTask().execute(s.toString());
-			}
-			if (selected) selected = false;
-		}
-
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			area = null;
-			messageHandler.removeMessages(1);
-		}
-
-		@Override
-		public void afterTextChanged(Editable s) {
-
-		}
-	};
-	
-	private class MessageHandler extends Handler {
-
-		@Override
-		public void handleMessage(Message msg) {
-			String enteredText = (String) msg.obj;
-			new LoadAreasTask().execute(enteredText);
-		}
-	}
-
+//	private TextWatcher mTextListener = new TextWatcher() {
+//
+//		@Override
+//		public void onTextChanged(CharSequence s, int start, int before, int count) {
+//			if (!selected && s.length() > 1) {
+//				Message msg = Message.obtain(messageHandler, 1, s.toString());
+//				messageHandler.sendMessageDelayed(msg, 200);
+////				if (mCurrentTask != null)
+////					mCurrentTask.cancel(true);
+////				mCurrentTask = new LoadAreasTask().execute(s.toString());
+//			}
+//			if (selected) selected = false;
+//		}
+//
+//		@Override
+//		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//			area = null;
+//			messageHandler.removeMessages(1);
+//		}
+//
+//		@Override
+//		public void afterTextChanged(Editable s) {
+//
+//		}
+//	};
+//	
+//	private class MessageHandler extends Handler {
+//
+//		@Override
+//		public void handleMessage(Message msg) {
+//			String enteredText = (String) msg.obj;
+//			new LoadAreasTask().execute(enteredText);
+//		}
+//	}
+//
 }

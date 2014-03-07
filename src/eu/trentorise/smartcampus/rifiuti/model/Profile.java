@@ -81,8 +81,12 @@ public class Profile implements Serializable {
 			profile.setName(json.getString(KEY_NAME));
 			profile.setUtenza(json.getString(KEY_UTENZA));
 			profile.setComune(json.getString(KEY_COMUNE));
-			profile.setVia(json.getString(KEY_VIA));
-			profile.setNCivico(json.getString(KEY_CIVICO));
+			if (json.has(KEY_VIA)) {
+				profile.setVia(json.getString(KEY_VIA));
+			}
+			if (json.has(KEY_CIVICO)) {
+				profile.setNCivico(json.getString(KEY_CIVICO));
+			}
 			profile.setArea(json.getString(KEY_AREA));
 		} catch (JSONException e) {
 			Log.e(Profile.class.getName(), e.toString());
@@ -95,7 +99,7 @@ public class Profile implements Serializable {
 	
 	@Override
 	public String toString() {
-		return mComune+", "+mVia+", "+mNCivico+", "+mUtenza;
+		return mUtenza+": " + mComune+(mVia == null? "": ", "+mVia)+(mNCivico == null? "": ", "+mNCivico);
 	}
 
 	public String getName() {

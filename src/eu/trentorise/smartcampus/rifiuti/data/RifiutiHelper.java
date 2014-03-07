@@ -605,6 +605,7 @@ public class RifiutiHelper {
 	}
 
 	/**
+	 * Find area by comune
 	 * @param string
 	 * @return
 	 */
@@ -622,6 +623,29 @@ public class RifiutiHelper {
 			//tmp.setVia(cursor.getString(2));
 			//tmp.setNumero(cursor.getString(3));
 			return tmp;	
+		} finally {
+			if (cursor != null) cursor.close();
+		}
+	}
+	/**
+	 * @return all areas 'real' areas
+	 */
+	public static List<Area> readAreas() {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			String query = "SELECT nome,parent,comune FROM aree WHERE "
+					+ "comune IS NOT NULL AND comune != ''";
+			cursor = db.rawQuery(query, null);
+			List<Area> result = new ArrayList<Area>();
+			while(cursor.moveToNext()){
+				Area tmp = new Area();
+				tmp.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+				tmp.setComune(cursor.getString(cursor.getColumnIndex("comune")));
+				tmp.setParent(cursor.getString(cursor.getColumnIndex("parent")));
+				result.add(tmp);
+			}
+			return result;
 		} finally {
 			if (cursor != null) cursor.close();
 		}
