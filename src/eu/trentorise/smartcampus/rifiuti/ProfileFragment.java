@@ -179,16 +179,16 @@ public class ProfileFragment extends Fragment implements ILocation {
 	public void onPrepareOptionsMenu(Menu menu) {
 		if (mActiveMode == MODE.VIEW) {
 			menu.getItem(0).setVisible(true);
-			menu.getItem(1).setVisible(false);
-			menu.getItem(2).setVisible(false);
-		} else {
-			menu.getItem(0).setVisible(false);
-			menu.getItem(2).setVisible(true);
 			if (mProfile != null
 					&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments().getInt(PROFILE_INDEX_KEY))
 				menu.getItem(1).setVisible(true);
 			else
 				menu.getItem(1).setVisible(false);
+			menu.getItem(2).setVisible(false);
+		} else {
+			menu.getItem(0).setVisible(false);
+			menu.getItem(2).setVisible(true);
+			menu.getItem(1).setVisible(false);
 		}
 		super.onPrepareOptionsMenu(menu);
 	}
@@ -232,7 +232,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 		} else if (item.getItemId() == R.id.action_delete) {
 			if (mProfile != null) {
 				showConfirmAndDelete();
-				switchMode();
+//				switchMode();
 			}
 
 		} else
@@ -323,7 +323,10 @@ public class ProfileFragment extends Fragment implements ILocation {
 		if (mProfile == null) {
 			try {
 				PreferenceUtils.addProfile(getActivity(), newProfile);
-			} catch (JSONException e) {
+				if (isFirstProfile()) {
+					PreferenceUtils.setCurrentProfilePosition(getActivity(), 0);
+				}
+			} catch (Exception e) {
 				Log.e(ProfileFragment.class.getName(), e.toString());
 			}
 		} else {
@@ -615,7 +618,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			System.err.println("!!!!!!!!"+selected);
 			if (!selected && s.length() > 1) {
 				Message msg = Message.obtain(messageHandler, 1, s.toString());
 				messageHandler.sendMessageDelayed(msg, 200);
@@ -643,7 +645,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 		@Override
 		public void handleMessage(Message msg) {
 			String enteredText = (String) msg.obj;
-			System.err.println("!!!!!!!????"+msg);
 			new LoadAreasTask().execute(enteredText);
 		}
 	}

@@ -131,6 +131,10 @@ public class PreferenceUtils {
 	public static void removeProfile(Context ctx, int position) throws Exception {
 		List<Profile> profiles = getProfiles(ctx);
 		if (profiles.size() > 1) {
+			int curr = getCurrentProfilePosition(ctx);
+			if (position < curr) {
+				setCurrentProfilePosition(ctx, curr-1);
+			}
 			profiles.remove(position);
 			JSONArray jsonArr = new JSONArray();
 			try {
