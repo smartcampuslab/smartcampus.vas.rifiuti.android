@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -45,6 +46,14 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 		return viewGroup;
 	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			abActivity.onBackPressed();
+			return true;
+		}
+		return false;
+	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
