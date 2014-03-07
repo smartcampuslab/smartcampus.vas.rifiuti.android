@@ -7,7 +7,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,11 +21,27 @@ public class RifiutiManagerContainerFragment extends Fragment {
 	private PagerTabStrip mPagerStrip;
 	private String tipologiaRifiuto = null;
 	private String tipologiaRaccolta = null;
+	private ActionBarActivity abActivity = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPagerTitles = getResources().getStringArray(R.array.rifiuti_container_titles);
+		abActivity = (ActionBarActivity) getActivity();
+
+		setHasOptionsMenu(true);
+
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			abActivity.finish();
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -78,7 +96,7 @@ public class RifiutiManagerContainerFragment extends Fragment {
 					return new RifiutiListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
 				}
 			case 1:
-				if (tipologiaRifiuto != null) { 
+				if (tipologiaRifiuto != null) {
 					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
 				} else if (tipologiaRaccolta != null) {
 					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);

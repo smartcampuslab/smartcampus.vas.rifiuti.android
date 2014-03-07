@@ -30,8 +30,7 @@ public class RifiutiManagerContainerActivity extends ActionBarActivity {
 
 		mContentFrameId = R.id.content_frame;
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
+
 		Intent intent = getIntent();
 		if (intent.getStringExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO)!=null) {
 			tipologiaRifiuti = intent.getStringExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);

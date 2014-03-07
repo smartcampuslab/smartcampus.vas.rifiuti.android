@@ -8,6 +8,7 @@ import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,19 @@ public class RifiutoDetailsFragment extends Fragment {
 	private String rifiuto = null;
 	private String tipologiaRifiuto = null;
 	List<PuntoRaccolta> puntiDiRaccolta = null;
+	private ActionBarActivity abActivity;
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
+
+		setHasOptionsMenu(true);
+
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_rifiuto_details, container, false);

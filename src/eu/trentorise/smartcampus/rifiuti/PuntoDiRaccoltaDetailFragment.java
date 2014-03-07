@@ -6,6 +6,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +26,19 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 	private PuntoRaccolta puntoDiRaccolta=null;
 	private List<Calendario> calendario = null;
 	private List<DatiTipologiaRaccolta> tipologie = null;
+	
+	private ActionBarActivity abActivity;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
+
+		setHasOptionsMenu(true);
+
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_puntodiraccolta_details, container, false);

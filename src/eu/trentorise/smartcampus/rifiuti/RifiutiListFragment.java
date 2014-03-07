@@ -5,6 +5,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,19 @@ public class RifiutiListFragment extends ListFragment {
 	private String tipologiaRifiuto = null;
 	private List<String> rifiuti = null;
 
+	private ActionBarActivity abActivity;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
+
+		setHasOptionsMenu(true);
+
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+	}
+	
 	public static RifiutiListFragment newIstanceTipologiaRaccolta(String raccolta) {
 		RifiutiListFragment rf = new RifiutiListFragment();
 		Bundle b = new Bundle();

@@ -27,11 +27,17 @@ import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 public class TipoRaccoltaListFragment extends ListFragment {
 
 	private List<List<DatiTipologiaRaccolta>> mTypes = null;
-	
+	private ActionBarActivity abActivity;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
+
 		setHasOptionsMenu(true);
+
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
