@@ -2,7 +2,10 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import android.app.AlertDialog;
+import android.location.Address;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,10 +17,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.maps.GeoPoint;
+
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Calendario;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
@@ -29,7 +37,6 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 	private PuntoRaccolta puntoDiRaccolta = null;
 	private List<Calendario> calendario = null;
 	private List<DatiTipologiaRaccolta> tipologie = null;
-
 	private ActionBarActivity abActivity;
 
 	@Override
@@ -95,6 +102,20 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 				fragmentTransaction.commit();
 			}
 		});
+
+		// directions
+		ImageView directionsBtn = (ImageView) getView().findViewById(R.id.puntodiraccolta_directions);
+		directionsBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (puntoDiRaccolta.getLocalizzazione() != null) {
+
+					bringMeThere(puntoDiRaccolta);
+				} else {
+					Toast.makeText(getActivity(), R.string.pdr_non_trovato_toast, Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 		ListView mOrari = (ListView) getActivity().findViewById(R.id.puntodiraccolta_listaorari);
 		CalendarioAdapter calendarAdapter = new CalendarioAdapter(getActivity(), R.layout.calendario_adapter,
 				calendario);
@@ -121,6 +142,34 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 		});
 	}
 
+	private void bringMeThere(PuntoRaccolta pdr) {
+		AlertDialog.Builder builder;
+
+		builder = new AlertDialog.Builder(getActivity());
+
+		callBringMeThere();
+
+		return;
+	}
+
+	protected void callBringMeThere() {
+		LatLng latLng = null;
+		Address to = new Address(Locale.getDefault());
+		String[] splittedLatLong=puntoDiRaccolta.getLocalizzazione().split(",");
+		latLng = new LatLng(Double.parseDouble(splittedLatLong[0]),Double.parseDouble(splittedLatLong[1]));
+		to.setLatitude(latLng.latitude);
+		to.setLongitude(latLng.longitude);
+		Address from = null;
+//		GeoPoint mylocation = MapManager.requestMyLocation(getActivity());
+//		if (mylocation != null) {
+//			from = new Address(Locale.getDefault());
+//			from.setLatitude(mylocation.getLatitudeE6() / 1E6);
+//			from.setLongitude(mylocation.getLongitudeE6() / 1E6);
+//		}
+//		DTHelper.bringmethere(getActivity(), from, to);
+
+	}
+	
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -129,4 +178,6 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 						+ puntoDiRaccolta.getTipologiaPuntiRaccolta() + " " + puntoDiRaccolta.getArea());
 
 	}
+	
+	
 }

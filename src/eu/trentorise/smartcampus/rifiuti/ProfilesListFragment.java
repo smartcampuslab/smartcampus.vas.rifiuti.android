@@ -22,10 +22,17 @@ import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 
 public class ProfilesListFragment extends ListFragment {
 
+	private ActionBarActivity abActivity;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
+
 		setHasOptionsMenu(true);
+
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
@@ -74,7 +81,7 @@ public class ProfilesListFragment extends ListFragment {
 		ProfileFragment pf;
 		pf = ProfileFragment.newInstance(position);
 		ft.addToBackStack(null);
-		ft.setCustomAnimations(R.anim.enter,R.anim.exit,R.anim.popenter,R.anim.popexit);
+		ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.popenter, R.anim.popexit);
 		ft.replace(R.id.content_frame, pf);
 		ft.commit();
 	}
@@ -90,21 +97,24 @@ public class ProfilesListFragment extends ListFragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Profile tmp = getItem(position);
 			if (convertView == null) {
-				LayoutInflater inflater = (LayoutInflater) getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.profile_row, parent,
-						false);
+				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
+						Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflater.inflate(R.layout.profile_row, parent, false);
 			}
-			TextView name = (TextView) convertView
-					.findViewById(R.id.row_profile_name);
+			TextView name = (TextView) convertView.findViewById(R.id.row_profile_name);
 			if (!name.getText().toString().equals(tmp.getName()))
 				name.setText(tmp.getName());
-			TextView stuff = (TextView) convertView
-					.findViewById(R.id.row_profile_stuff);
+			TextView stuff = (TextView) convertView.findViewById(R.id.row_profile_stuff);
 			if (!stuff.getText().toString().equals(tmp.toString()))
 				stuff.setText(tmp.toString());
 			return convertView;
 		}
 
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.profili_title));
 	}
 }

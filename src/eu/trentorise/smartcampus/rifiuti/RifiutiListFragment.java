@@ -98,9 +98,5 @@ public class RifiutiListFragment extends ListFragment {
 
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
 
-	}
 }

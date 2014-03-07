@@ -138,4 +138,10 @@ public class TipoRaccoltaListFragment extends ListFragment {
 		}
 
 	}
+	@Override
+	public void onStart() {
+		super.onStart();
+		abActivity.getSupportActionBar().setTitle(
+				abActivity.getString(R.string.tipologiediraccolta_label));
+	}
 }

@@ -287,4 +287,8 @@ public class MapManager {
 			}
 		}
 	}
+
+//	public static GeoPoint requestMyLocation(Context ctx) {
+//		return DTHelper.getLocationHelper().getLocation();
+//	}
 }

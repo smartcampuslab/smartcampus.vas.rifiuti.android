@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,16 @@ public class HomeFragment extends Fragment {
 	private ViewPager mPager;
 	private HomePagerAdapter mPagerAdapter;
 	private PagerTabStrip mPagerStrip;
+	private ActionBarActivity abActivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPagerTitles = getResources().getStringArray(R.array.home_pager_titles);
+		abActivity = (ActionBarActivity) getActivity();
+		setHasOptionsMenu(true);
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
@@ -36,21 +42,21 @@ public class HomeFragment extends Fragment {
 		// mPagerStrip.setTextColor(getResources().getColor(R.color.gray_dark));
 		// mPagerStrip.setTextSpacing(48);
 		// mPagerStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-		
+
 		mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-			
+
 			@Override
 			public void onPageSelected(int arg0) {
-				if(NotesHelper.notesActionMode!=null)
+				if (NotesHelper.notesActionMode != null)
 					NotesHelper.notesActionMode.finish();
 			}
-			
+
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				if(NotesHelper.notesActionMode!=null)
+				if (NotesHelper.notesActionMode != null)
 					NotesHelper.notesActionMode.finish();
 			}
-			
+
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 			}
@@ -70,6 +76,9 @@ public class HomeFragment extends Fragment {
 
 		// Page "Calendar" is default
 //		mPager.setCurrentItem(2);
+				abActivity.getSupportActionBar().setTitle(
+						abActivity.getString(R.string.application_title));
+
 	}
 
 	/**
@@ -103,8 +112,7 @@ public class HomeFragment extends Fragment {
 		public CharSequence getPageTitle(int position) {
 			return mPagerTitles[position];
 		}
-		
-		
+
 	}
 
 }

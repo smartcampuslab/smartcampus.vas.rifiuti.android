@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +52,7 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 	private GoogleMap mMap;
 	private Collection<PuntoRaccolta> mPuntiRaccolta;
 	private SupportMapFragment mMapFragment;
+	private ActionBarActivity abActivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,12 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 			Log.e(getClass().getName(), "Error reading punti di raccolta: " + e.getMessage());
 			mPuntiRaccolta = new ArrayList<PuntoRaccolta>();
 		}
+		abActivity = (ActionBarActivity) getActivity();
+
 		setHasOptionsMenu(true);
+
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
@@ -107,6 +114,10 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 	public void onStart() {
 		super.onStart();
 		initView();
+			if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
+				abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.punto_di_raccolta_title));
+			} else
+				abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.punti_di_raccolta_title));
 	}
 
 	public void onResume() {
@@ -156,6 +167,7 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 			}.execute(puntiRaccolta);
 		}
 	}
+
 	private void setMarkerListener(GoogleMap supportMap) {
 		supportMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 
@@ -183,6 +195,7 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		});
 
 	}
+
 	@Override
 	public void onCameraChange(CameraPosition position) {
 		render(mPuntiRaccolta);
