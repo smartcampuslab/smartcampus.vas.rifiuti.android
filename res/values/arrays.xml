@@ -7,7 +7,7 @@
         <!-- <item>@string/drawer_dove_butto</item> -->
         <item>@string/drawer_punti_raccolta</item>
         <item>@string/drawer_tipi_raccolta</item>
-<!--         <item>@string/drawer_tipi_rifiuti</item> -->
+        <!-- <item>@string/drawer_tipi_rifiuti</item> -->
         <!-- <item>@string/drawer_calendario</item> -->
         <!-- <item>@string/drawer_scadenze_note</item> -->
         <item>@string/drawer_feedback</item>
@@ -16,17 +16,17 @@
         <item>@string/drawer_info</item>
     </string-array>
     <string-array name="drawer_entries_drawables">
-        <item>@android:drawable/ic_menu_add</item>
+        <item>@drawable/ic_home</item>
         <!-- <item>@android:drawable/ic_menu_agenda</item> -->
-        <item>@android:drawable/ic_menu_always_landscape_portrait</item>
-        <item>@android:drawable/ic_menu_call</item>
-<!--         <item>@android:drawable/ic_menu_camera</item> -->
+        <item>@drawable/ic_punti_raccolta</item>
+        <item>@drawable/ic_tipi_raccolta</item>
+        <!-- <item>@drawable/ic_tipi_rifiuti</item> -->
         <!-- <item>@android:drawable/ic_menu_close_clear_cancel</item> -->
         <!-- <item>@android:drawable/ic_menu_compass</item> -->
-        <item>@android:drawable/ic_menu_crop</item>
-        <item>@android:drawable/ic_menu_day</item>
-        <item>@android:drawable/ic_menu_delete</item>
-        <item>@android:drawable/ic_menu_directions</item>
+        <item>@drawable/ic_segnala</item>
+        <item>@drawable/ic_profilo</item>
+        <item>@drawable/ic_tutorial</item>
+        <item>@drawable/ic_info</item>
     </string-array>
 
     <!-- Home pager titles -->
@@ -41,33 +41,33 @@
         <item>@string/home_pager_dovelobutto</item>
         <item>@string/home_pager_calendario</item>
     </string-array>
-    
+    <!-- Colors -->
     <string-array name="color_names">
         <item>VERDE</item>
-        <item>VERDE SCURO</item> 
+        <item>VERDE SCURO</item>
         <item>MARRONE</item>
         <item>GRIGIO</item>
-        <item>GRIGIO SCURO</item> 
-        <item>NERO</item> 
+        <item>GRIGIO SCURO</item>
+        <item>NERO</item>
         <item>BLU</item>
         <item>GIALLO SCURO</item>
         <item>GIALLO</item>
         <item>BIANCO</item>
         <item>AZZURRO</item>
     </string-array>
-    
+
     <integer-array name="color_values">
         <item>@color/w3c_green</item>
-        <item>@color/w3c_olive</item> 
+        <item>@color/w3c_olive</item>
         <item>@color/w3c_maroon</item>
         <item>@color/gray_light</item>
-        <item>@color/w3c_gray</item> 
-        <item>@color/w3c_black</item> 
+        <item>@color/w3c_gray</item>
+        <item>@color/w3c_black</item>
         <item>@color/w3c_blue</item>
         <item>@color/w3c_lime</item>
         <item>@color/w3c_yellow</item>
         <item>@color/w3c_white</item>
         <item>@color/w3c_aqua</item>
     </integer-array>
-    
+
 </resources>
