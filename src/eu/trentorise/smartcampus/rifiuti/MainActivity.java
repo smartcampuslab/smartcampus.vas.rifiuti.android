@@ -9,16 +9,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SpinnerAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
@@ -53,6 +52,22 @@ public class MainActivity extends ActionBarActivity implements
 
 		addNavDrawerButton();
 
+		RadioGroup rg = (RadioGroup) findViewById(R.id.profile_rg);
+		rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				Integer i = (Integer)findViewById(checkedId).getTag();
+				if (i != null) {
+					try {
+						PreferenceUtils.setCurrentProfilePosition(MainActivity.this, i);
+						setCurrentProfile();
+						mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 		try {
 			RifiutiHelper.init(this.getApplicationContext());
 			if (PreferenceUtils.getProfiles(this).isEmpty()) {
@@ -132,25 +147,52 @@ public class MainActivity extends ActionBarActivity implements
 
 	public void prepareNavDropdown(boolean loadHome) {
 		List<Profile> profiles = PreferenceUtils.getProfiles(this);
-		SpinnerAdapter adapter = new ArrayAdapter<Profile>(this,
-				android.R.layout.simple_spinner_dropdown_item, profiles) {
-
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				if (convertView == null) {
-					LayoutInflater inflater = getLayoutInflater();
-					convertView = inflater.inflate(
-							android.R.layout.simple_spinner_dropdown_item,
-							parent, false);
+		if (profiles.size() > 1) {
+			findViewById(R.id.curr_profile_tv).setVisibility(View.GONE);
+			RadioGroup rg = (RadioGroup) findViewById(R.id.profile_rg);
+			rg.setVisibility(View.VISIBLE);
+			rg.removeAllViews();
+			int curr = PreferenceUtils.getCurrentProfilePosition(this);
+			int i = 0;
+			for (Profile p : profiles) {
+				RadioButton rb = new RadioButton(this);
+				rb.setText(p.getName());
+				rb.setTextColor(getResources().getColor(android.R.color.white));
+				rb.setTag(i);
+				rg.addView(rb);
+				if (i == curr) {
+					rb.setChecked(true);
+				} else {
+					rb.setChecked(false);
 				}
-				((TextView) convertView).setText(getItem(position).getName());
-				return convertView;
+				i++;
 			}
+		} else {
+			((TextView)findViewById(R.id.curr_profile_tv)).setText(profiles.get(0).getName());
+			findViewById(R.id.curr_profile_tv).setVisibility(View.VISIBLE);
+			findViewById(R.id.profile_rg).setVisibility(View.GONE);
+		}
+		mDrawerToggle.syncState();
 
-		};
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		getSupportActionBar().setDisplayShowTitleEnabled(true);
-		getSupportActionBar().setListNavigationCallbacks(adapter, this);
+//		SpinnerAdapter adapter = new ArrayAdapter<Profile>(this,
+//				android.R.layout.simple_spinner_dropdown_item, profiles) {
+//
+//			@Override
+//			public View getView(int position, View convertView, ViewGroup parent) {
+//				if (convertView == null) {
+//					LayoutInflater inflater = getLayoutInflater();
+//					convertView = inflater.inflate(
+//							android.R.layout.simple_spinner_dropdown_item,
+//							parent, false);
+//				}
+//				((TextView) convertView).setText(getItem(position).getName());
+//				return convertView;
+//			}
+//
+//		};
+//		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+//		getSupportActionBar().setDisplayShowTitleEnabled(true);
+//		getSupportActionBar().setListNavigationCallbacks(adapter, this);
 		unlockDrawer();
 		if (loadHome) {
 			setCurrentProfile();
@@ -209,7 +251,7 @@ public class MainActivity extends ActionBarActivity implements
 			// Highlight the selected item, update the title, close the drawer
 			mDrawerList.setItemChecked(position, true);
 			// setTitle(mPlanetTitles[position]);
-			mDrawerLayout.closeDrawer(mDrawerList);
+			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
 		}
 	}
 
