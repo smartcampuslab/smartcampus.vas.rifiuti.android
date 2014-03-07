@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 	private final static String PROFILE_INDEX_KEY = "profile_index";
 
-	public static ProfileFragment newIstance(int position) {
+	public static ProfileFragment newInstance(int position) {
 		ProfileFragment pf = new ProfileFragment();
 		Bundle b = new Bundle();
 		b.putInt(PROFILE_INDEX_KEY, position);
@@ -87,6 +87,10 @@ public class ProfileFragment extends Fragment implements ILocation {
 		return pf;
 	}
 
+	private boolean isFirstProfile() {
+		return getArguments() == null || !getArguments().containsKey(PROFILE_INDEX_KEY);
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,10 +128,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 		initializeViews();
 
 		if (mActiveMode == MODE.VIEW) {
-			if (getArguments() != null
-					&& getArguments().containsKey(PROFILE_INDEX_KEY)) {
-				mProfile = PreferenceUtils.getProfile(getActivity(),
-						getArguments().getInt(PROFILE_INDEX_KEY));
+			if (!isFirstProfile()) {
+				mProfile = PreferenceUtils.getProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
 				if (mProfile != null) {
 					setContent();
 				} else {
@@ -207,8 +209,12 @@ public class ProfileFragment extends Fragment implements ILocation {
 				addOrModify(newProfile);
 				switchMode();
 				KeyboardUtils.hideKeyboard(abActivity, getView());
-				if (getActivity() instanceof MainActivity)
-					((MainActivity) getActivity()).prepareNavDropdown();
+				if (getActivity() instanceof MainActivity) {
+					if (isFirstProfile()) {
+						toggleDrawer();
+					}
+					((MainActivity) getActivity()).prepareNavDropdown(isFirstProfile());
+				} 
 			} catch (InvalidNameExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNome, null);
 			} catch (InvalidUtenzaExeption e) {
@@ -283,7 +289,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 	public void onBack() {
 		// if the fragment was started to create first profile, exit 
-		if ((getArguments() == null || !getArguments().containsKey(PROFILE_INDEX_KEY)) && getActivity() instanceof MainActivity) {
+		if ((isFirstProfile()) && getActivity() instanceof MainActivity) {
 			getActivity().finish();
 		}
 		KeyboardUtils.hideKeyboard(abActivity, getView());
@@ -317,7 +323,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 		if (mProfile == null) {
 			try {
 				PreferenceUtils.addProfile(getActivity(), newProfile);
-				onBack();
 			} catch (JSONException e) {
 				Log.e(ProfileFragment.class.getName(), e.toString());
 			}
@@ -461,7 +466,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 				try {
 					PreferenceUtils.removeProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
 					if (getActivity() instanceof MainActivity)
-						((MainActivity) getActivity()).prepareNavDropdown();
+						((MainActivity) getActivity()).prepareNavDropdown(false);
 
 				} catch (Exception e) {
 					Toast.makeText(getActivity(), getString(R.string.err_delete_profilo), Toast.LENGTH_SHORT).show();

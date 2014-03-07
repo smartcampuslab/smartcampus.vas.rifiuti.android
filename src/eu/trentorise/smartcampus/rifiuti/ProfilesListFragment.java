@@ -72,7 +72,7 @@ public class ProfilesListFragment extends ListFragment {
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		ProfileFragment pf;
-		pf = ProfileFragment.newIstance(position);
+		pf = ProfileFragment.newInstance(position);
 		ft.addToBackStack(null);
 		ft.setCustomAnimations(R.anim.enter,R.anim.exit,R.anim.popenter,R.anim.popexit);
 		ft.replace(R.id.content_frame, pf);
