@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_descr"
+        android:layout_marginBottom="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/feedback_text_et"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:minLines="5"
+            android:inputType="textMultiLine" 
+            android:hint="@string/feedback_text_hint">
+
+            <requestFocus />
+        </EditText>
+
+        <ImageView
+            android:id="@+id/feedback_img"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@android:drawable/ic_menu_camera" 
+            android:contentDescription="@string/feedback_photo_hint"
+            android:background="@color/gray_light"/>
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/feedback_gps"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_gps_hint" />
+
+    <Button
+        android:id="@+id/feedback_btn"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/feedback_send" />
+
+</LinearLayout>

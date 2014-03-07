@@ -21,10 +21,10 @@
     <string name="drawer_tipi_rifiuti">Tipi di rifiuti</string>
     <string name="drawer_calendario">Calendario</string>
     <string name="drawer_scadenze_note">Scadenze e note</string>
-    <string name="drawer_feedback">Feedback</string>
-    <string name="drawer_profilo">Profilo</string>
+    <string name="drawer_feedback">Segnala</string>
+    <string name="drawer_profilo">Gestione profili</string>
     <string name="drawer_tutorial">Tutorial</string>
-    <string name="drawer_info">Informazioni sull\'app</string>
+    <string name="drawer_info">Info</string>
 
     <!-- Home pager titles -->
     <string name="home_pager_scadenzenote">SCADENZE E NOTE</string>
@@ -92,5 +92,19 @@
     <string name="Tutorial_title">Tutorial</string>
     <string name="Informazioni_title">Informazioni</string>
     <string name="application_title">100% Rifiuti</string>
-
+    <string name="feedback_title">Segnalazione</string>
+    
+    <!-- FEEDBACK -->
+    <string name="feedback_descr">Inserisci un testo per la segnalazione. Puoi allegare una foto
+        e le coordinate GPS di dove ti trovi. Le informazioni verrano utilizzate per 
+        inviare una mail</string>
+    <string name="feedback_text_hint">Testo della segnalazione</string>    
+    <string name="feedback_photo_hint">Tocca qui per aggiungere una foto</string>    
+    <string name="feedback_gps_hint">Aggiungi le coordinate GPS</string>    
+    <string name="feedback_send">Segnala!</string>    
+    <string name="feedback_subject">Segnalazione</string>    
+    <string name="feedback_capture">Image</string>    
+    <string name="feedback_mail">Segnala</string>    
+    <string name="feedback_to">abc@abc.c</string>    
+    
 </resources>

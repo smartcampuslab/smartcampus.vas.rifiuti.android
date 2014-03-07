@@ -233,6 +233,9 @@ public class MainActivity extends ActionBarActivity implements
 		case 2:
 			fragment = new TipoRaccoltaListFragment();
 			break;
+		case 3:
+			fragment = new FeedbackFragment();
+			break;
 		case 4:
 			fragment = new ProfilesListFragment();
 			break;
