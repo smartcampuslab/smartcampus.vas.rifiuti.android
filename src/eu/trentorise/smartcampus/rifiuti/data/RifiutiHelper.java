@@ -470,14 +470,14 @@ public class RifiutiHelper {
 		Cursor cursor = null;
 		try {
 			List<Area> result = new ArrayList<Area>();
-			String query = "SELECT nome,parent FROM aree WHERE nome LIKE \"%" + comune
+			String query = "SELECT nome,parent,comune FROM aree WHERE nome LIKE \"%" + comune
 					+ "%\"";
 			cursor = db.rawQuery(query, null);
 			while(cursor.moveToNext()){
 				Area tmp = new Area();
-				tmp.setNome(cursor.getString(0));
-				tmp.setComune(cursor.getString(0));
-				tmp.setParent(cursor.getString(1));
+				tmp.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+				tmp.setComune(cursor.getString(cursor.getColumnIndex("comune")));
+				tmp.setParent(cursor.getString(cursor.getColumnIndex("parent")));
 				//tmp.setVia(cursor.getString(2));
 				//tmp.setNumero(cursor.getString(3));
 				result.add(tmp);
@@ -599,6 +599,29 @@ public class RifiutiHelper {
 				}
 			}
 			return result;
+		} finally {
+			if (cursor != null) cursor.close();
+		}
+	}
+
+	/**
+	 * @param string
+	 * @return
+	 */
+	public static Area findArea(String string) {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			String query = "SELECT nome,parent,comune FROM aree WHERE nome = '" + string + "'";
+			cursor = db.rawQuery(query, null);
+			cursor.moveToFirst();
+			Area tmp = new Area();
+			tmp.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+			tmp.setComune(cursor.getString(cursor.getColumnIndex("comune")));
+			tmp.setParent(cursor.getString(cursor.getColumnIndex("parent")));
+			//tmp.setVia(cursor.getString(2));
+			//tmp.setNumero(cursor.getString(3));
+			return tmp;	
 		} finally {
 			if (cursor != null) cursor.close();
 		}

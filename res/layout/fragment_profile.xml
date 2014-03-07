@@ -14,13 +14,13 @@
 
     <ViewSwitcher
         android:id="@+id/profile_name_vs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
             android:text="@string/profilo_nome"
@@ -47,14 +47,14 @@
 
     <ViewSwitcher
         android:id="@+id/profile_utenza_vs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inAnimation="@anim/expand"
         android:visibility="gone" >
 
         <TextView
             android:id="@+id/profile_utenza_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
             android:text="@string/profilo_utenza"
@@ -82,13 +82,13 @@
 
     <ViewSwitcher
         android:id="@+id/profile_comune_vs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_comune_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
             android:text="@string/profilo_comune"
@@ -114,13 +114,13 @@
 
     <ViewSwitcher
         android:id="@+id/profile_indirizzo_vs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_indirizzo_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
             android:text="@string/profilo_via"
@@ -146,13 +146,13 @@
 
     <ViewSwitcher
         android:id="@+id/profile_nciv_vs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inAnimation="@anim/expand" >
 
         <TextView
             android:id="@+id/profile_nciv_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
             android:text="@string/profilo_nciv"

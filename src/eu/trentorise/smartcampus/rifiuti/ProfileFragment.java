@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -32,6 +34,7 @@ import eu.trentorise.smartcampus.rifiuti.geo.OSMAddress;
 import eu.trentorise.smartcampus.rifiuti.geo.OSMGeocoder;
 import eu.trentorise.smartcampus.rifiuti.model.Area;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
+import eu.trentorise.smartcampus.rifiuti.utils.KeyboardUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
@@ -39,6 +42,8 @@ import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.ValidatorHelper;
 
 public class ProfileFragment extends Fragment implements ILocation {
+
+	private MessageHandler messageHandler = null;
 
 	private enum MODE {
 		VIEW, EDIT
@@ -54,19 +59,23 @@ public class ProfileFragment extends Fragment implements ILocation {
 	private static final String SAVE_UTENZA = "save_mode";
 	private static final String SAVE_AREA = "save_mode";
 
-	private TextView mTVNome, mTVComune, mTVVia, mTVNCiv, mTVArea, mTVUtenza;
-	private EditText mETNome, mETVia, mETNCiv, mETArea, mETUtenza;
+	private TextView mTVNome, mTVComune, mTVVia, mTVNCiv, /**mTVArea,*/ mTVUtenza;
+	private EditText mETNome, mETVia, mETNCiv, /**mETArea,*/ mETUtenza;
 	private AutoCompleteTextView mACTVComune;
 	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv, mVSArea, mVSUtenza;
 
 	private Profile mProfile;
 	private MODE mActiveMode;
 	private LocationUtils mLocUtils;
-	private String mLastString = "";
-	private AsyncTask mCurrentTask;
+//	private String mLastString = "";
+//	private AsyncTask mCurrentTask;
 
+	private Area area = null;
+	
 	private String[] saved;
 	private boolean mLocked;
+
+	protected boolean selected = false;
 
 	private final static String PROFILE_INDEX_KEY = "profile_index";
 
@@ -101,6 +110,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 			mActiveMode = MODE.VIEW;
 		}
 
+		messageHandler = new MessageHandler();
 	}
 
 	@Override
@@ -113,15 +123,19 @@ public class ProfileFragment extends Fragment implements ILocation {
 		super.onStart();
 		initializeViews();
 
-		if (getArguments() != null && getArguments().containsKey(PROFILE_INDEX_KEY)) {
-			mProfile = PreferenceUtils.getProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
-			if (mProfile != null)
-				setContent();
-			else
+		if (mActiveMode == MODE.VIEW) {
+			if (getArguments() != null
+					&& getArguments().containsKey(PROFILE_INDEX_KEY)) {
+				mProfile = PreferenceUtils.getProfile(getActivity(),
+						getArguments().getInt(PROFILE_INDEX_KEY));
+				if (mProfile != null) {
+					setContent();
+				} else {
+					switchMode();
+				}
+			} else {
 				switchMode();
-
-		} else {
-			switchMode();
+			}
 		}
 	}
 
@@ -192,6 +206,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 				newProfile = getNewProfile();
 				addOrModify(newProfile);
 				switchMode();
+				KeyboardUtils.hideKeyboard(abActivity, getView());
 				if (getActivity() instanceof MainActivity)
 					((MainActivity) getActivity()).prepareNavDropdown();
 			} catch (InvalidNameExeption e) {
@@ -199,7 +214,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 			} catch (InvalidUtenzaExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETUtenza, null);
 			} catch (InvalidAreaExeption e) {
-				ValidatorHelper.highlight(getActivity(), mETArea, null);
+				ValidatorHelper.highlight(getActivity(), mACTVComune, getResources().getString(R.string.err_unknown_area));
 			} catch (InvalidViaExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETVia, null);
 			} catch (InvalidNCivicoExeption e) {
@@ -252,7 +267,10 @@ public class ProfileFragment extends Fragment implements ILocation {
 			outState.putInt(PROFILE_INDEX_KEY, getArguments().getInt(PROFILE_INDEX_KEY));
 		} else {
 			outState.putInt(SAVE_MODE, 1);
-			outState.putString(SAVE_AREA, mETArea.getText().toString());
+//			outState.putString(SAVE_AREA, mETArea.getText().toString());
+			if (area != null) {
+				outState.putString(SAVE_AREA, area.getNome());
+			}
 			outState.putString(SAVE_COMUNE, mACTVComune.getText().toString());
 			outState.putString(SAVE_NAME, mETNome.getText().toString());
 			outState.putString(SAVE_NCIV, mETNCiv.getText().toString());
@@ -264,6 +282,12 @@ public class ProfileFragment extends Fragment implements ILocation {
 	}
 
 	public void onBack() {
+		// if the fragment was started to create first profile, exit 
+		if ((getArguments() == null || !getArguments().containsKey(PROFILE_INDEX_KEY)) && getActivity() instanceof MainActivity) {
+			getActivity().finish();
+		}
+		KeyboardUtils.hideKeyboard(abActivity, getView());
+		getActivity().setProgressBarIndeterminateVisibility(false);
 		getFragmentManager().popBackStack();
 		toggleDrawer();
 	}
@@ -315,7 +339,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 		else
 			// if it's a new one, every field is required
 			p = new Profile();
-		// TODO sanity check with the db
 		if (mETNome.getText().toString().trim().length() > 0)
 			p.setName(mETNome.getText().toString());
 		else if (mProfile == null)
@@ -324,10 +347,16 @@ public class ProfileFragment extends Fragment implements ILocation {
 			p.setUtenza(mETUtenza.getText().toString());
 		else if (mProfile == null)
 			throw new InvalidUtenzaExeption();
-		if (mETArea.getText().toString().trim().length() > 0)
-			p.setArea(mETArea.getText().toString());
-		else if (mProfile == null)
+		if (area != null) {
+			p.setArea(area.getNome());
+		} else {
 			throw new InvalidAreaExeption();
+		}
+//		if (mETArea.getText().toString().trim().length() > 0) {
+//			p.setArea(mETArea.getText().toString());
+//		}
+//		else if (mProfile == null)
+//			throw new InvalidAreaExeption();
 		if (mETVia.getText().toString().trim().length() > 0)
 			p.setVia(mETVia.getText().toString());
 		else if (mProfile == null)
@@ -340,6 +369,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 			p.setComune(mACTVComune.getText().toString());
 		else if (mProfile == null)
 			throw new InvalidComuneExeption();
+		
 		return p;
 	}
 
@@ -354,7 +384,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 			mVSNCiv.showNext();
 
 			if (mProfile != null) {
-				mETArea.setHint(mProfile.getArea());
+//				mETArea.setHint(mProfile.getArea());
 				mACTVComune.setHint(mProfile.getComune());
 				mETNCiv.setHint(mProfile.getNCivico());
 				mETNome.setHint(mProfile.getName());
@@ -374,36 +404,18 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 	private void initializeViews() {
 
-		mTVArea = (TextView) getView().findViewById(R.id.profile_area_tv);
+//		mTVArea = (TextView) getView().findViewById(R.id.profile_area_tv);
 		mTVComune = (TextView) getView().findViewById(R.id.profile_comune_tv);
 		mTVNome = (TextView) getView().findViewById(R.id.profile_name_tv);
 		mTVVia = (TextView) getView().findViewById(R.id.profile_indirizzo_tv);
 		mTVUtenza = (TextView) getView().findViewById(R.id.profile_utenza_tv);
 		mTVNCiv = (TextView) getView().findViewById(R.id.profile_nciv_tv);
 
-		mETArea = (EditText) getView().findViewById(R.id.profile_area_et);
+//		mETArea = (EditText) getView().findViewById(R.id.profile_area_et);
 
 		mACTVComune = (AutoCompleteTextView) getView().findViewById(R.id.profile_comune_et);
-		mACTVComune.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (s.length() > 1) {
-					if (mCurrentTask != null)
-						mCurrentTask.cancel(true);
-					mCurrentTask = new LoadAreasTask().execute(s.toString());
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-
-			}
-		});
+		mACTVComune.removeTextChangedListener(mTextListener);
+		mACTVComune.addTextChangedListener(mTextListener);
 
 		mETNome = (EditText) getView().findViewById(R.id.profile_name_et);
 		mETVia = (EditText) getView().findViewById(R.id.profile_indirizzo_et);
@@ -418,7 +430,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 		mVSNCiv = (ViewSwitcher) getView().findViewById(R.id.profile_nciv_vs);
 
 		if (saved != null) {
-			mETArea.setText(saved[0]);
+			area = RifiutiHelper.findArea(saved[0]);
+//			mETArea.setText(saved[0]);
 			mACTVComune.setText(saved[1]);
 			mETNome.setText(saved[2]);
 			mETNCiv.setText(saved[3]);
@@ -429,8 +442,10 @@ public class ProfileFragment extends Fragment implements ILocation {
 	}
 
 	private void setContent() {
+		area = RifiutiHelper.findArea(mProfile.getArea());
+
 		mTVNome.setText(mProfile.getName());
-		mTVArea.setText(mProfile.getArea());
+//		mTVArea.setText(mProfile.getArea());
 		mTVComune.setText(mProfile.getComune());
 		mTVVia.setText(mProfile.getVia());
 		mTVUtenza.setText(mProfile.getUtenza().toString());
@@ -492,7 +507,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 			super.onProgressUpdate(values);
 			final OSMAddress address = values[0];
 			// the user might have clicked back
-			if (getFragmentManager().findFragmentById(R.id.content_frame) != null
+			if (getFragmentManager() != null && getFragmentManager().findFragmentById(R.id.content_frame) != null
 					&& getFragmentManager().findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				builder.setTitle(getString(R.string.dialog_gps_title));
@@ -561,8 +576,10 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+						selected = true;
 						mACTVComune.setText(((Area) arg1.getTag()).getComune());
-						mETArea.setText(((Area) arg1.getTag()).getNome());
+						area = (Area) arg1.getTag();
+						//mETArea.setText(((Area) arg1.getTag()).getNome());
 					}
 				});
 				mACTVComune.showDropDown();
@@ -587,6 +604,43 @@ public class ProfileFragment extends Fragment implements ILocation {
 	}
 
 	private static class InvalidUtenzaExeption extends Exception {
+	}
+
+	private TextWatcher mTextListener = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			System.err.println("!!!!!!!!"+selected);
+			if (!selected && s.length() > 1) {
+				Message msg = Message.obtain(messageHandler, 1, s.toString());
+				messageHandler.sendMessageDelayed(msg, 200);
+//				if (mCurrentTask != null)
+//					mCurrentTask.cancel(true);
+//				mCurrentTask = new LoadAreasTask().execute(s.toString());
+			}
+			if (selected) selected = false;
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			area = null;
+			messageHandler.removeMessages(1);
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+
+		}
+	};
+	
+	private class MessageHandler extends Handler {
+
+		@Override
+		public void handleMessage(Message msg) {
+			String enteredText = (String) msg.obj;
+			System.err.println("!!!!!!!????"+msg);
+			new LoadAreasTask().execute(enteredText);
+		}
 	}
 
 }

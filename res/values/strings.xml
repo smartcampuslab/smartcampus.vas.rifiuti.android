@@ -47,6 +47,7 @@
     <string name="err_gps_off">Accendi il gps se vuoi velocizzare il processo!</string>
     <string name="dialog_gps_title">Vuoi usare questa posizione?</string>
     <string name="dialog_gps_msg">%1$s %2$s, %3$s</string>
+    <string name="err_unknown_area">Area specificata non e\' riconosciuta.</string>
 
     <!-- Actions -->
     <string name="action_edit">Modifica</string>
