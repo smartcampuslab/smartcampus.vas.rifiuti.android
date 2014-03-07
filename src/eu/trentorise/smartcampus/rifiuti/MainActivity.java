@@ -61,9 +61,7 @@ public class MainActivity extends ActionBarActivity implements
 				Toast.makeText(this, getString(R.string.toast_no_prof),
 						Toast.LENGTH_SHORT).show();
 			} else {
-				prepareNavDropdown();
-				setCurrentProfile();
-				loadFragment(0);
+				prepareNavDropdown(true);
 			}
 
 		} catch (Exception e) {
@@ -132,7 +130,7 @@ public class MainActivity extends ActionBarActivity implements
 					PreferenceUtils.getCurrentProfilePosition(this)));
 	}
 
-	public void prepareNavDropdown() {
+	public void prepareNavDropdown(boolean loadHome) {
 		List<Profile> profiles = PreferenceUtils.getProfiles(this);
 		SpinnerAdapter adapter = new ArrayAdapter<Profile>(this,
 				android.R.layout.simple_spinner_dropdown_item, profiles) {
@@ -154,6 +152,11 @@ public class MainActivity extends ActionBarActivity implements
 		getSupportActionBar().setDisplayShowTitleEnabled(true);
 		getSupportActionBar().setListNavigationCallbacks(adapter, this);
 		unlockDrawer();
+		if (loadHome) {
+			setCurrentProfile();
+			loadFragment(0);
+		}
+
 	}
 
 	private void addNavDrawerButton() {
