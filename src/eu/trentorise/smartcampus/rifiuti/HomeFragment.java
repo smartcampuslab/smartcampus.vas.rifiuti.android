@@ -14,11 +14,14 @@ import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
 
 public class HomeFragment extends Fragment {
 
+	private static final String PAGER_CURRENT_ITEM = "pagerCurrentItem";
+
 	private String[] mPagerTitles;
 	private ViewPager mPager;
 	private HomePagerAdapter mPagerAdapter;
 	private PagerTabStrip mPagerStrip;
 	private ActionBarActivity abActivity;
+	private Integer pagerPreviousItem = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,10 @@ public class HomeFragment extends Fragment {
 			}
 		});
 
+		if (savedInstanceState != null && savedInstanceState.containsKey(PAGER_CURRENT_ITEM)) {
+			pagerPreviousItem = savedInstanceState.getInt(PAGER_CURRENT_ITEM);
+		}
+
 		return viewGroup;
 	}
 
@@ -72,13 +79,23 @@ public class HomeFragment extends Fragment {
 		mPager.setAdapter(mPagerAdapter);
 
 		// Page "Dove lo butto?" is default
-		 mPager.setCurrentItem(1);
+		mPager.setCurrentItem(pagerPreviousItem != null ? pagerPreviousItem : 1);
 
 		// Page "Calendar" is default
-//		mPager.setCurrentItem(2);
-				abActivity.getSupportActionBar().setTitle(
-						abActivity.getString(R.string.application_title));
+		// mPager.setCurrentItem(2);
+		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.application_title));
+	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		pagerPreviousItem = mPager.getCurrentItem();
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(PAGER_CURRENT_ITEM, mPager.getCurrentItem());
 	}
 
 	/**

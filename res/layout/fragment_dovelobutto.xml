@@ -28,7 +28,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/dovelobutto_search_hint"
-                android:inputType="text" />
+                android:inputType="textNoSuggestions" />
 
             <ImageButton
                 android:id="@+id/dovelobutto_search_btn"

@@ -11,6 +11,31 @@ public class PuntoRaccolta implements Serializable {
 	private String localizzazione;
 	private String indirizzo;
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((indirizzo == null) ? 0 : indirizzo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PuntoRaccolta other = (PuntoRaccolta) obj;
+		if (indirizzo == null) {
+			if (other.indirizzo != null)
+				return false;
+		} else if (!indirizzo.equals(other.indirizzo))
+			return false;
+		return true;
+	}
+
 	public String getArea() {
 		return area;
 	}
