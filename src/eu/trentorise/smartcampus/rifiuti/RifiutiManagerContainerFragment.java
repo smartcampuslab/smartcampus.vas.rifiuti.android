@@ -76,6 +76,14 @@ public class RifiutiManagerContainerFragment extends Fragment {
 		mPager.setCurrentItem(0);
 		// if (bundle.containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA))
 		// mPager.setCurrentItem(1);
+		if (tipologiaRifiuto != null) {
+			abActivity.getSupportActionBar().setTitle(
+					abActivity.getString(R.string.tipo_di_rifiuto_title) +" : "+ tipologiaRifiuto);
+		} else if (tipologiaRaccolta != null) {
+			abActivity.getSupportActionBar().setTitle(
+					abActivity.getString(R.string.tipo_di_raccolta_title) +" : "+ tipologiaRaccolta);
+		}
+
 	}
 
 	/**

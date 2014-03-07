@@ -34,7 +34,7 @@ public class RifiutoDetailsFragment extends Fragment {
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
@@ -43,6 +43,7 @@ public class RifiutoDetailsFragment extends Fragment {
 		}
 		return false;
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_rifiuto_details, container, false);
@@ -96,4 +97,17 @@ public class RifiutoDetailsFragment extends Fragment {
 		});
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (rifiuto != null)
+			{
+			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.rifiuto_title) + " : " + rifiuto);
+			}
+		else if (tipologiaRifiuto!= null){
+			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.tipo_di_rifiuto_title) + " : " + tipologiaRifiuto);
+
+		}
+
+	}
 }

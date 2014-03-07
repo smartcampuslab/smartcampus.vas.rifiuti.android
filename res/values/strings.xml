@@ -75,4 +75,9 @@
     <string name="orario_label">ORARIO</string>
     <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
 
+    <!-- stringhe titoli fragment -->
+    <string name="tipo_di_rifiuto_title">Tipo di rifiuto</string>
+    <string name="tipo_di_raccolta_title">Tipo di raccolta</string>
+    <string name="rifiuto_title">Rifiuto</string>
+    <string name="punto_di_raccolta_title">Punto di raccolta</string>
 </resources>

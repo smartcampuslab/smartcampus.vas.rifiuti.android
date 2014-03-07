@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,10 +26,10 @@ import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class PuntoDiRaccoltaDetailFragment extends Fragment {
 
-	private PuntoRaccolta puntoDiRaccolta=null;
+	private PuntoRaccolta puntoDiRaccolta = null;
 	private List<Calendario> calendario = null;
 	private List<DatiTipologiaRaccolta> tipologie = null;
-	
+
 	private ActionBarActivity abActivity;
 
 	@Override
@@ -40,12 +42,13 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_puntodiraccolta_details, container, false);
 		return viewGroup;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
@@ -54,7 +57,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -63,10 +66,11 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 		if (bundle.containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA))
 			puntoDiRaccolta = (PuntoRaccolta) bundle.getSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 		try {
-			//get lista orari per punto di raccolta
+			// get lista orari per punto di raccolta
 			calendario = RifiutiHelper.getCalendars(puntoDiRaccolta);
-			//get lista tipologie per punto di raccolta
-			tipologie = RifiutiHelper.readTipologiaRaccoltaPerTipologiaPuntoRaccolta(puntoDiRaccolta.getTipologiaPuntiRaccolta());
+			// get lista tipologie per punto di raccolta
+			tipologie = RifiutiHelper.readTipologiaRaccoltaPerTipologiaPuntoRaccolta(puntoDiRaccolta
+					.getTipologiaPuntiRaccolta());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,7 +79,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 		mDettagli.setText(puntoDiRaccolta.getIndirizzo());
 		ImageView mappa = (ImageView) getActivity().findViewById(R.id.map_dettagli);
 		mappa.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -91,32 +95,38 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 				fragmentTransaction.commit();
 			}
 		});
-		ListView mOrari= (ListView) getActivity().findViewById(R.id.puntodiraccolta_listaorari);
-		CalendarioAdapter calendarAdapter = new CalendarioAdapter(getActivity(), R.layout.calendario_adapter,calendario);
+		ListView mOrari = (ListView) getActivity().findViewById(R.id.puntodiraccolta_listaorari);
+		CalendarioAdapter calendarAdapter = new CalendarioAdapter(getActivity(), R.layout.calendario_adapter,
+				calendario);
 		mOrari.setAdapter(calendarAdapter);
-				
-				
-		ListView mTipologieRaccolta= (ListView) getActivity().findViewById(R.id.puntodiraccolta_listatipologie);
-		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter,tipologie);
-		mTipologieRaccolta.setAdapter(tipologieAdapter);		
-		
-		
-//		listPuntiRaccolta.setOnItemClickListener(new OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//				PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
-//
-//				Bundle args = new Bundle();
-//				args.putParcelable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(arg2));
-//				fragment.setArguments(args);
-//				fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//				// fragmentTransaction.detach(this);
-//				fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
-//				fragmentTransaction.addToBackStack(fragment.getTag());
-//				fragmentTransaction.commit();
-//			}
-//		});
+
+		ListView mTipologieRaccolta = (ListView) getActivity().findViewById(R.id.puntodiraccolta_listatipologie);
+		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter,
+				tipologie);
+		mTipologieRaccolta.setAdapter(tipologieAdapter);
+
+		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				RifiutiManagerContainerFragment fragment = new RifiutiManagerContainerFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, tipologie.get(arg2).getTipologiaRaccolta());
+				fragment.setArguments(bundle);
+				fragmentTransaction.replace(R.id.content_frame, fragment, "tipologiaraccolta");
+				fragmentTransaction.addToBackStack(fragment.getTag());
+				fragmentTransaction.commit();
+			}
+		});
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		abActivity.getSupportActionBar().setTitle(
+				abActivity.getString(R.string.punto_di_raccolta_title) + " : "
+						+ puntoDiRaccolta.getTipologiaPuntiRaccolta() + " " + puntoDiRaccolta.getArea());
+
 	}
 }
