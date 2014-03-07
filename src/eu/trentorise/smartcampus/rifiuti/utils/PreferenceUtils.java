@@ -2,18 +2,14 @@ package eu.trentorise.smartcampus.rifiuti.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 import android.util.Log;
+import eu.trentorise.smartcampus.rifiuti.model.Profile;
 
 public class PreferenceUtils {
 

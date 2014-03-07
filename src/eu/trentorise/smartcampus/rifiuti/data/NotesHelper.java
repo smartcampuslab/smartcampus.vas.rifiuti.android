@@ -20,8 +20,6 @@ public class NotesHelper {
 
 	private DBHelper dbHelper = null;
 
-	private Context mContext = null;
-	
 
 	/**
 	 * Initialize data access layer support
@@ -39,7 +37,6 @@ public class NotesHelper {
 	 */
 	private NotesHelper(Context ctx) throws IOException {
 		super();
-		this.mContext = ctx;
 		dbHelper = new DBHelper(ctx, RifiutiHelper.DB_VERSION);
 //		dbHelper.openDataBase();
 	};

@@ -48,7 +48,6 @@ public class OSMGeocoder {
 	private Context mContext;
 	private Locale mLocale = Locale.getDefault();
 
-	private String ENC = "UTF-8";
 	private static final String LOC_PATH = "/core.geocoder/spring/location";
 	private static final String ADDR_PATH = "/core.geocoder/spring/address";
 	private String serverUrl;
