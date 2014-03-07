@@ -60,17 +60,18 @@
     <string name="puntodiraccolta_label">Punto di raccolta</string>
     <string name="action_list">Lista</string>
     <string name="action_map">Mappa</string>
-    
+
     <!-- NOTE -->
     <string name="note_add">Cosa vuoi ricordare?</string>
     <string name="no_notes">Non ci sono note</string>
     
-	<!-- Tipi Raccolta Fragment -->
+    <!-- Calendar and agenda -->
+    <string name="from_time_to_time">dalle %1$s alle %2$s</string>
+
+    <!-- Tipi Raccolta Fragment -->
     <string name="niente_tipi_raccolta">Nessun risultato trovato</string>
-    
-    
-    
-<!--     dettagli punto di raccolta -->
+
+    <!-- dettagli punto di raccolta -->
     <string name="dettagli_label">DETTAGLI</string>
     <string name="orario_label">ORARIO</string>
     <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
@@ -80,4 +81,5 @@
     <string name="tipo_di_raccolta_title">Tipo di raccolta</string>
     <string name="rifiuto_title">Rifiuto</string>
     <string name="punto_di_raccolta_title">Punto di raccolta</string>
+
 </resources>
