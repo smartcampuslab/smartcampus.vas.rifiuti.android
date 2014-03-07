@@ -29,9 +29,8 @@ public class RifiutoAdapter extends ArrayAdapter<String>{
 			row = inflater.inflate(layoutResourceId, parent, false);
 			e = new RifiutoPlaceholder();
 			e.mTxtRifiuto = (TextView) row.findViewById(R.id.rifiuto_placeholder_title);
-			
-		} else
-		{
+			row.setTag(e);
+		} else {
 			e = (RifiutoPlaceholder) row.getTag();
 		}
 		e.rifiuto = getItem(position);
