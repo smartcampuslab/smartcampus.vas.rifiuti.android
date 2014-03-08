@@ -20,11 +20,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,11 +54,21 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 	private SupportMapFragment mMapFragment;
 	private ActionBarActivity abActivity;
 
+	private boolean showAsList() {
+		return getArguments() == null || !getArguments().containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		try {
-			mPuntiRaccolta = RifiutiHelper.getPuntiRaccolta();
+			// if has elements explicitly passed take them, otherwise use all
+			if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA)) {
+				mPuntiRaccolta = (List<PuntoRaccolta>)getArguments().getSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
+			} else {
+				mPuntiRaccolta = RifiutiHelper.getPuntiRaccolta();
+			}
+			
 			for (Iterator<PuntoRaccolta> iterator = mPuntiRaccolta.iterator(); iterator.hasNext();) {
 				PuntoRaccolta point = iterator.next();
 				if (point.getLocalizzazione() == null || point.getLocalizzazione().trim().length() == 0) {
@@ -70,17 +80,20 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 			mPuntiRaccolta = new ArrayList<PuntoRaccolta>();
 		}
 		abActivity = (ActionBarActivity) getActivity();
-
 		setHasOptionsMenu(true);
 
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+		if (abActivity != null) {
+			abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+		}
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.map_menu, menu);
+		if (showAsList()) {
+			inflater.inflate(R.menu.map_menu, menu);
+		}
 	}
 
 	@Override
@@ -175,17 +188,20 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 			public boolean onMarkerClick(Marker marker) {
 				List<PuntoRaccolta> pdr = MapManager.ClusteringHelper.getFromGridId(marker.getTitle());
 				if (pdr.size() == 1) {
-					FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
-							.beginTransaction();
-					PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
-					Bundle args = new Bundle();
-					args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, pdr.get(0));
-					fragment.setArguments(args);
-					fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-					// fragmentTransaction.detach(this);
-					fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
-					fragmentTransaction.addToBackStack(fragment.getTag());
-					fragmentTransaction.commit();
+					Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
+					i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, pdr.get(0));
+					startActivity(i);
+//					FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
+//							.beginTransaction();
+//					PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
+//					Bundle args = new Bundle();
+//					args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, pdr.get(0));
+//					fragment.setArguments(args);
+//					fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//					// fragmentTransaction.detach(this);
+//					fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
+//					fragmentTransaction.addToBackStack(fragment.getTag());
+//					fragmentTransaction.commit();
 				} else if (pdr.size() > 1) {
 					// zoom
 					MapManager.fitMapWithOverlays(pdr, getSupportMap());

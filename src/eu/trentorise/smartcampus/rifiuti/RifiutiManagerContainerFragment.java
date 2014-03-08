@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -49,10 +51,19 @@ public class RifiutiManagerContainerFragment extends Fragment {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_rifiuti_container, container, false);
 
 		mPager = (ViewPager) viewGroup.findViewById(R.id.pager);
-
-		mPagerStrip = (PagerTabStrip) viewGroup.findViewById(R.id.pagerStrip);
-		mPagerStrip.setDrawFullUnderline(false);
-		mPagerStrip.setTabIndicatorColor(getResources().getColor(android.R.color.darker_gray));
+		mPager.setOnPageChangeListener(
+	            new ViewPager.SimpleOnPageChangeListener() {
+	                @Override
+	                public void onPageSelected(int position) {
+	                    // When swiping between pages, select the
+	                    // corresponding tab.
+	                    abActivity.getSupportActionBar().setSelectedNavigationItem(position);
+	                }
+	            });
+//
+//		mPagerStrip = (PagerTabStrip) viewGroup.findViewById(R.id.pagerStrip);
+//		mPagerStrip.setDrawFullUnderline(false);
+//		mPagerStrip.setTabIndicatorColor(getResources().getColor(android.R.color.darker_gray));
 		// mPagerStrip.setTextColor(getResources().getColor(R.color.gray_dark));
 		// mPagerStrip.setTextSpacing(48);
 		// mPagerStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
@@ -63,8 +74,31 @@ public class RifiutiManagerContainerFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		mPagerAdapter = new HomePagerAdapter(getChildFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
+		// Create a tab listener that is called when the user changes tabs.
+	    ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+	        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+	        	 mPager.setCurrentItem(tab.getPosition());
+	        }
+
+	        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+	            // hide the given tab
+	        }
+
+	        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+	            // probably ignore this event
+	        }
+	    };
+	    abActivity.getSupportActionBar().removeAllTabs();
+	    for (int i = 0; i < mPagerTitles.length; i++) {
+	        abActivity.getSupportActionBar().addTab(
+	        		abActivity.getSupportActionBar().newTab()
+	                        .setText(mPagerTitles[i])
+	                        .setTabListener(tabListener));
+	    }
+
 		// prendo il parametro e setto il parametro di default
 		Bundle bundle = getArguments();
 		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO)) {

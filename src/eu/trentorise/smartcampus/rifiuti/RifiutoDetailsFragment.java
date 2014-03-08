@@ -8,6 +8,7 @@ import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -100,6 +101,7 @@ public class RifiutoDetailsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		if (rifiuto != null)
 			{
 			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.rifiuto_title) + " : " + rifiuto);

@@ -3,6 +3,7 @@ package eu.trentorise.smartcampus.rifiuti;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -63,17 +64,20 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-		PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
-
-		Bundle args = new Bundle();
-		args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
-		fragment.setArguments(args);
-		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		// fragmentTransaction.detach(this);
-		fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
-		fragmentTransaction.addToBackStack(fragment.getTag());
-		fragmentTransaction.commit();
+		Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
+		i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
+		startActivity(i);
+//		FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//		PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
+//
+//		Bundle args = new Bundle();
+//		args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
+//		fragment.setArguments(args);
+//		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//		// fragmentTransaction.detach(this);
+//		fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
+//		fragmentTransaction.addToBackStack(fragment.getTag());
+//		fragmentTransaction.commit();
 	}
 	
 	

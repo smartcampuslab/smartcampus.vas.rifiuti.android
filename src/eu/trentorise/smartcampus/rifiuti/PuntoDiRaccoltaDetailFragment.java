@@ -9,6 +9,7 @@ import android.location.Address;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,14 +18,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.maps.GeoPoint;
 
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Calendario;
@@ -46,8 +45,10 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 
 		setHasOptionsMenu(true);
 
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+		if (abActivity != null) {
+			abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+		}
 	}
 
 	@Override
@@ -173,6 +174,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		abActivity.getSupportActionBar().setTitle(
 				abActivity.getString(R.string.punto_di_raccolta_title) + " : "
 						+ puntoDiRaccolta.getTipologiaPuntiRaccolta() + " " + puntoDiRaccolta.getArea());
