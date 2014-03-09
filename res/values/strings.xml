@@ -22,6 +22,7 @@
     <string name="drawer_calendario">Calendario</string>
     <string name="drawer_scadenze_note">Scadenze e note</string>
     <string name="drawer_feedback">Segnala</string>
+    <string name="drawer_contacts">Contatti</string>
     <string name="drawer_profilo">Gestione profili</string>
     <string name="drawer_tutorial">Tutorial</string>
     <string name="drawer_info">Info</string>
@@ -106,5 +107,13 @@
     <string name="feedback_capture">Image</string>    
     <string name="feedback_mail">Segnala</string>    
     <string name="feedback_to">abc@abc.c</string>    
+
+    <string name="contacts_container_institute">COMUNE</string>
+    <string name="contacts_container_org">GESTORE</string>
+    <string name="contacts_title">Contatti: %s</string>
+    <string name="contacts_descr_label">DESCRIZIONE</string>
+    <string name="contacts_address_label">INDIRIZZO E ORARIO</string>
+    <string name="contacts_tel_label">TELEFONO</string>
+    <string name="contacts_email_label">EMAIL</string>
     
 </resources>

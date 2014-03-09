@@ -32,6 +32,8 @@ import eu.trentorise.smartcampus.rifiuti.model.Area;
 import eu.trentorise.smartcampus.rifiuti.model.Calendario;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioItem;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
+import eu.trentorise.smartcampus.rifiuti.model.Gestore;
+import eu.trentorise.smartcampus.rifiuti.model.Istituzione;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 
@@ -649,5 +651,47 @@ public class RifiutiHelper {
 		} finally {
 			if (cursor != null) cursor.close();
 		}
+	}
+	
+	/**
+	 * @return 'gestore' of the user area
+	 */
+	public static Gestore getGestore() {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			String query = "SELECT * FROM gestori WHERE ragioneSociale IN (SELECT gestore FROM aree WHERE nome = '"+mHelper.mProfile.getArea()+"')";
+			cursor = db.rawQuery(query, null);
+			cursor.moveToFirst();
+			Gestore g = new Gestore();
+			g.setRagioneSociale(cursor.getString(cursor.getColumnIndex("ragioneSociale")));
+			g.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
+			g.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+			g.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
+			return g;	
+		} finally {
+			if (cursor != null) cursor.close();
+		}
+	}
+	/**
+	 * @return 'gestore' of the user area
+	 */
+	public static Istituzione getIstituzione() {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			String query = "SELECT * FROM istituzioni WHERE nome IN (SELECT istituzione FROM aree WHERE nome = '"+mHelper.mProfile.getArea()+"')";
+			cursor = db.rawQuery(query, null);
+			cursor.moveToFirst();
+			Istituzione i = new Istituzione();
+			i.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+			i.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
+			i.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+			i.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
+			return i;	
+		} finally {
+			if (cursor != null) cursor.close();
+		}
+		
 	}
 }

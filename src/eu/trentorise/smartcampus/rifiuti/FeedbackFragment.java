@@ -88,7 +88,7 @@ public class FeedbackFragment extends Fragment implements ILocation {
 	@Override
 	public void onStart() {
 		super.onStart();
-		((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.profili_title));
+		((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.feedback_title));
 
 		Button send = (Button) getView().findViewById(R.id.feedback_btn);
 		send.setOnClickListener(new OnClickListener() {
