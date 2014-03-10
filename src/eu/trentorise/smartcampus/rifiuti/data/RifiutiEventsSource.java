@@ -54,7 +54,6 @@ public class RifiutiEventsSource implements EventsSource<CalendarioEvent> {
 				event.setCalendarioItem(item);
 				// TODO: color?
 				events.add(event);
-
 			}
 			eventsByMonth.append(i + 1, events);
 		}
