@@ -5,12 +5,17 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.location.Address;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,13 +35,18 @@ import eu.trentorise.smartcampus.rifiuti.model.Calendario;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
 
-public class PuntoDiRaccoltaDetailFragment extends Fragment {
+public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation {
 
 	private PuntoRaccolta puntoDiRaccolta = null;
 	private List<Calendario> calendario = null;
 	private List<DatiTipologiaRaccolta> tipologie = null;
 	private ActionBarActivity abActivity;
+	private Location mLocation;
+	private LocationUtils mLocUtils;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -144,9 +154,6 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 	}
 
 	private void bringMeThere(PuntoRaccolta pdr) {
-		AlertDialog.Builder builder;
-
-		builder = new AlertDialog.Builder(getActivity());
 
 		callBringMeThere();
 
@@ -154,23 +161,11 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 	}
 
 	protected void callBringMeThere() {
-		LatLng latLng = null;
-		Address to = new Address(Locale.getDefault());
-		String[] splittedLatLong=puntoDiRaccolta.getLocalizzazione().split(",");
-		latLng = new LatLng(Double.parseDouble(splittedLatLong[0]),Double.parseDouble(splittedLatLong[1]));
-		to.setLatitude(latLng.latitude);
-		to.setLongitude(latLng.longitude);
-		Address from = null;
-//		GeoPoint mylocation = MapManager.requestMyLocation(getActivity());
-//		if (mylocation != null) {
-//			from = new Address(Locale.getDefault());
-//			from.setLatitude(mylocation.getLatitudeE6() / 1E6);
-//			from.setLongitude(mylocation.getLongitudeE6() / 1E6);
-//		}
-//		DTHelper.bringmethere(getActivity(), from, to);
+		getActivity().setProgressBarIndeterminateVisibility(true);
 
+		mLocUtils = new LocationUtils(getActivity(), PuntoDiRaccoltaDetailFragment.this);
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -180,6 +175,58 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 						+ puntoDiRaccolta.getTipologiaPuntiRaccolta() + " " + puntoDiRaccolta.getArea());
 
 	}
-	
-	
+
+	@Override
+	public void onLocationChaged(Location l) {
+		Log.i(ProfileFragment.class.getName(), l.toString());
+		mLocation = l;
+		getActivity().setProgressBarIndeterminateVisibility(false);
+		if (mLocUtils != null) {
+			mLocUtils.close();
+			mLocUtils = null;
+		}
+		Address from = new Address(Locale.getDefault());
+		from.setLatitude(mLocation.getLatitude());
+		from.setLongitude(mLocation.getLongitude());
+		LatLng latLng = null;
+		Address to = new Address(Locale.getDefault());
+		String[] splittedLatLong = puntoDiRaccolta.getLocalizzazione().split(",");
+		latLng = new LatLng(Double.parseDouble(splittedLatLong[0]), Double.parseDouble(splittedLatLong[1]));
+		to.setLatitude(latLng.latitude);
+		to.setLongitude(latLng.longitude);
+		callAppForDirections(from, to);
+
+	}
+
+	private void callAppForDirections(Address from, Address to) {
+		// intent for app
+		Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage("eu.trentorise.smartcampus.viaggiatrento");
+		if (intent == null) {
+			intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=eu.trentorise.smartcampus.viaggiatrento"));
+			getActivity().startActivity(intent);
+		}
+		intent.setAction(getString(R.string.direction_intent));
+		intent.putExtra(getString(R.string.from_for_direction), from);
+		intent.putExtra(getString(R.string.to_for_direction), to);
+		try {
+			getActivity().startActivity(intent);
+		} catch (ActivityNotFoundException e) {
+			Toast.makeText(getActivity(),getString(R.string.toast_app_not_installed) , Toast.LENGTH_LONG).show();
+
+		}
+	}
+
+	@Override
+	public void onErrorOccured(ErrorType ex, String provider) {
+		// Do nothing, the user should just type what it wants
+		Log.e(ProfileFragment.class.getName(), "Provider:" + provider + "\nErrorType:" + ex);
+	}
+
+	@Override
+	public void onStatusChanged(String provider, boolean isActive) {
+		if (!isActive) {
+			Toast.makeText(getActivity(), getString(R.string.err_gps_off), Toast.LENGTH_SHORT).show();
+		}
+	}
+
 }

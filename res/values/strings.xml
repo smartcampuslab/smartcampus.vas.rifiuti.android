@@ -65,23 +65,22 @@
     <!-- NOTE -->
     <string name="note_add">Cosa vuoi ricordare?</string>
     <string name="no_notes">Non ci sono note</string>
-    
+
     <!-- Calendar and agenda -->
     <string name="from_time_to_time">dalle %1$s alle %2$s</string>
 
     <!-- Tipi Raccolta Fragment -->
     <string name="niente_tipi_raccolta">Nessun risultato trovato</string>
-    
-    
-        <string name="pdr_non_trovato_toast">Punto di raccolta non trovato</string>
-    
-
+    <string name="pdr_non_trovato_toast">Punto di raccolta non trovato</string>
 
     <!-- dettagli punto di raccolta -->
     <string name="dettagli_label">DETTAGLI</string>
     <string name="orario_label">ORARIO</string>
     <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
-
+    <string name="direction_intent">eu.trentorise.smartcampus.jp.NAVIGATE</string>
+    <string name="from_for_direction">from</string>
+    <string name="to_for_direction">to</string>
+    <string name="toast_app_not_installed">L\'applicazione richiesta non è stata trovata</string>
     <!-- stringhe titoli fragment -->
     <string name="tipo_di_rifiuto_title">Tipo di rifiuto</string>
     <string name="tipo_di_raccolta_title">Tipo di raccolta</string>
@@ -94,20 +93,19 @@
     <string name="Informazioni_title">Informazioni</string>
     <string name="application_title">100% Rifiuti</string>
     <string name="feedback_title">Segnalazione</string>
-    
+
     <!-- FEEDBACK -->
     <string name="feedback_descr">Inserisci un testo per la segnalazione. Puoi allegare una foto
         e le coordinate GPS di dove ti trovi. Le informazioni verrano utilizzate per 
         inviare una mail</string>
-    <string name="feedback_text_hint">Testo della segnalazione</string>    
-    <string name="feedback_photo_hint">Tocca qui per aggiungere una foto</string>    
-    <string name="feedback_gps_hint">Aggiungi le coordinate GPS</string>    
-    <string name="feedback_send">Segnala!</string>    
-    <string name="feedback_subject">Segnalazione</string>    
-    <string name="feedback_capture">Image</string>    
-    <string name="feedback_mail">Segnala</string>    
-    <string name="feedback_to">abc@abc.c</string>    
-
+    <string name="feedback_text_hint">Testo della segnalazione</string>
+    <string name="feedback_photo_hint">Tocca qui per aggiungere una foto</string>
+    <string name="feedback_gps_hint">Aggiungi le coordinate GPS</string>
+    <string name="feedback_send">Segnala!</string>
+    <string name="feedback_subject">Segnalazione</string>
+    <string name="feedback_capture">Image</string>
+    <string name="feedback_mail">Segnala</string>
+    <string name="feedback_to">abc@abc.c</string>
     <string name="contacts_container_institute">COMUNE</string>
     <string name="contacts_container_org">GESTORE</string>
     <string name="contacts_title">Contatti: %s</string>
@@ -115,5 +113,5 @@
     <string name="contacts_address_label">INDIRIZZO E ORARIO</string>
     <string name="contacts_tel_label">TELEFONO</string>
     <string name="contacts_email_label">EMAIL</string>
-    
+
 </resources>
