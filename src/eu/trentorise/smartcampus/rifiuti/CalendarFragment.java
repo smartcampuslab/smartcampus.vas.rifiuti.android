@@ -24,7 +24,7 @@ public class CalendarFragment extends Fragment {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_calendar, container, false);
 		calendarView = (RifiutiCalendarView) viewGroup.findViewById(R.id.calendar_view);
 		calendarView.setDuplicatesAvoided(true);
-		calendarView.setMonthTextBackgroundColor(getResources().getColor(R.color.gray_light));
+		calendarView.setMonthTextBackgroundColor(getResources().getColor(R.color.rifiuti_light));
 		calendarView.setCalendarEventsSource(new RifiutiEventsSource());
 		return viewGroup;
 	}

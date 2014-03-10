@@ -26,7 +26,7 @@
         <!-- <item>@android:drawable/ic_menu_compass</item> -->
         <item>@drawable/ic_profilo</item>
         <item>@drawable/ic_segnala</item>
-        <item>@drawable/ic_segnala</item>
+        <item>@drawable/ic_contatti</item>
         <item>@drawable/ic_tutorial</item>
         <item>@drawable/ic_info</item>
     </string-array>
@@ -70,7 +70,7 @@
         <item>@color/w3c_green</item>
         <item>@color/w3c_olive</item>
         <item>@color/w3c_maroon</item>
-        <item>@color/gray_light</item>
+        <item>@color/w3c_silver</item>
         <item>@color/w3c_gray</item>
         <item>@color/w3c_black</item>
         <item>@color/w3c_blue</item>

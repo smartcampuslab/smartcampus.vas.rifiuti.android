@@ -78,9 +78,15 @@ public class DoveLoButtoFragment extends Fragment {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				if (s.toString().trim().length() > 0) {
+					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(
+							android.R.drawable.ic_menu_close_clear_cancel));
+				} else {
+					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_search));
+				}
+
 				if (s.toString().trim().length() < THRESHOLD) {
 					doveLoButtoResultsList.setVisibility(View.GONE);
-					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_search));
 				} else {
 					doveLoButtoAdapter.clear();
 					List<String> suggestions = RifiutiHelper.getRifiuti(s.toString().trim());
@@ -89,8 +95,6 @@ public class DoveLoButtoFragment extends Fragment {
 					}
 					doveLoButtoAdapter.notifyDataSetChanged();
 					doveLoButtoResultsList.setVisibility(View.VISIBLE);
-					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(
-							android.R.drawable.ic_menu_close_clear_cancel));
 				}
 			}
 		});
