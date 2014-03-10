@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
@@ -76,11 +75,28 @@ public class RifiutoDetailsFragment extends Fragment {
 			e.printStackTrace();
 		}
 		// setListAdapter(adapter);
-		TextView tipoRaccolta = (TextView) getActivity().findViewById(R.id.tipoRaccoltaLabel);
-		tipoRaccolta.setText(tipologiaRifiuto);
+		ListView mTipologieRaccolta = (ListView) getView().findViewById(R.id.tiporaccolta_list);
+		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter, datiTipologiaRaccoltaList);
+		mTipologieRaccolta.setAdapter(tipologieAdapter);
+
+		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+				RifiutiManagerContainerFragment fragment = new RifiutiManagerContainerFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, datiTipologiaRaccoltaList.get(arg2).getTipologiaRaccolta());
+				fragment.setArguments(bundle);
+				fragmentTransaction.replace(R.id.content_frame, fragment, "tipologiaraccolta");
+				fragmentTransaction.addToBackStack(fragment.getTag());
+				fragmentTransaction.commit();
+			}
+		});
+		
 		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.rifiuto_adapter,
 				puntiDiRaccolta);
-		ListView listPuntiRaccolta = (ListView) getActivity().findViewById(R.id.puntoraccolta_list);
+		ListView listPuntiRaccolta = (ListView) getView().findViewById(R.id.puntoraccolta_list);
 		listPuntiRaccolta.setAdapter(adapter);
 		listPuntiRaccolta.setOnItemClickListener(new OnItemClickListener() {
 

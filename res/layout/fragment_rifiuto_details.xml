@@ -11,12 +11,12 @@
         android:text="@string/tipodiraccolta_label"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
-    <TextView
-        android:id="@+id/tipoRaccoltaLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tipodiraccolta_label"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+	<ListView 
+	    android:id="@+id/tiporaccolta_list"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content">
+	    
+	</ListView>
 
     <TextView
         android:id="@+id/infoRaccoltaLabel"

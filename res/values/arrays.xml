@@ -98,44 +98,44 @@
         <item>OGGETTI IN METALLO</item>
         <item>OGGETTI IN PLASTICA</item>
         <item>OGGETTI IN VETRO</item>
-        <item>OLI</item>
+        <item>OLIO MINERALE</item>
+        <item>OLIO VEGETALE</item>
         <item>ORGANICO</item>
         <item>PERICOLOSI</item>
         <item>PILE</item>
         <item>PNEUMATICI</item>
         <item>RAEE</item>
         <item>RESIDUO</item>
-        <item>TESSILI</item>
         <item>VERDE E RAMAGLIE</item>
     </string-array>
 
     <!-- Tipi rifiuto icons -->
     <integer-array name="tipirifiuto_drawables">
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
-        <item>@drawable/event_square</item>
+        <item>@drawable/rif_ic_accumulatori</item>
+        <item>@drawable/rif_ic_carta</item>
+        <item>@drawable/rif_ic_cartone</item>
+        <item>@drawable/rif_ic_cartoni_bevande</item>
+        <item>@drawable/rif_ic_cartucce_toner_esaurite</item>
+        <item>@drawable/rif_ic_imballaggi_metallo</item>
+        <item>@drawable/rif_ic_imballaggi_plastica</item>
+        <item>@drawable/rif_ic_imballaggi_vetro</item>
+        <item>@drawable/rif_ic_indumenti_usati</item>
+        <item>@drawable/rif_ic_inerti</item>
+        <item>@drawable/rif_ic_ingombranti</item>
+        <item>@drawable/rif_ic_legno</item>
+        <item>@drawable/rif_ic_medicinali_scaduti</item>
+        <item>@drawable/rif_ic_oggetti_metallo</item>
+        <item>@drawable/rif_ic_oggetti_plastica</item>
+        <item>@drawable/rif_ic_oggetti_vetro</item>
+        <item>@drawable/rif_ic_oli_minerali</item>
+        <item>@drawable/rif_ic_oli_vegetali</item>
+        <item>@drawable/rif_ic_organico</item>
+        <item>@drawable/rif_ic_pericolosi</item>
+        <item>@drawable/rif_ic_pile</item>
+        <item>@drawable/rif_ic_pneumatici</item>
+        <item>@drawable/rif_ic_raee</item>
+        <item>@drawable/rif_ic_residuo</item>
+        <item>@drawable/rif_ic_verde_ramaglie</item>
     </integer-array>
 
 </resources>
