@@ -12,12 +12,18 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <TextView
-        android:id="@+id/tipoRifiutoLabel"
+        android:id="@+id/tipoRaccoltaLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tipodiraccolta_label"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-	    
+
+    <TextView
+        android:id="@+id/infoRaccoltaLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 	
     <TextView
         android:id="@+id/textView2"

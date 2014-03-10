@@ -6,6 +6,7 @@ public class DatiTipologiaRaccolta {
 	private String tipologiaPuntoRaccolta;
 	private String tipologiaRaccolta;
 	private String colore;
+	private String info;
 
 	public String getTipologiaPuntoRaccolta() {
 		return tipologiaPuntoRaccolta;
@@ -29,6 +30,14 @@ public class DatiTipologiaRaccolta {
 
 	public void setColore(String colore) {
 		this.colore = colore;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 	@Override
