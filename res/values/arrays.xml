@@ -42,14 +42,15 @@
         <item>@string/contacts_container_institute</item>
         <item>@string/contacts_container_org</item>
     </string-array>
-    
+
     <!-- Home pager titles -->
     <string-array name="home_pager_titles">
         <item>@string/home_pager_scadenzenote</item>
         <item>@string/home_pager_dovelobutto</item>
         <item>@string/home_pager_calendario</item>
     </string-array>
-    <!-- Colors -->
+
+    <!-- Colors names -->
     <string-array name="color_names">
         <item>VERDE</item>
         <item>VERDE SCURO</item>
@@ -64,6 +65,7 @@
         <item>AZZURRO</item>
     </string-array>
 
+    <!-- Colors values -->
     <integer-array name="color_values">
         <item>@color/w3c_green</item>
         <item>@color/w3c_olive</item>
@@ -76,6 +78,64 @@
         <item>@color/w3c_yellow</item>
         <item>@color/w3c_white</item>
         <item>@color/w3c_aqua</item>
+    </integer-array>
+
+    <!-- Tipi rifiuto strings -->
+    <string-array name="tipirifiuto_names">
+        <item>ACCUMULATORI</item>
+        <item>CARTA</item>
+        <item>CARTONE</item>
+        <item>CARTONI PER BEVANDE</item>
+        <item>CARTUCCE TONER ESAURITE</item>
+        <item>IMBALLAGGI IN METALLO</item>
+        <item>IMBALLAGGI IN PLASTICA</item>
+        <item>IMBALLAGGI IN VETRO</item>
+        <item>INDUMENTI USATI</item>
+        <item>INERTI</item>
+        <item>INGOMBRANTI</item>
+        <item>LEGNO</item>
+        <item>MEDICINALI SCADUTI</item>
+        <item>OGGETTI IN METALLO</item>
+        <item>OGGETTI IN PLASTICA</item>
+        <item>OGGETTI IN VETRO</item>
+        <item>OLI</item>
+        <item>ORGANICO</item>
+        <item>PERICOLOSI</item>
+        <item>PILE</item>
+        <item>PNEUMATICI</item>
+        <item>RAEE</item>
+        <item>RESIDUO</item>
+        <item>TESSILI</item>
+        <item>VERDE E RAMAGLIE</item>
+    </string-array>
+
+    <!-- Tipi rifiuto icons -->
+    <integer-array name="tipirifiuto_drawables">
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
+        <item>@drawable/event_square</item>
     </integer-array>
 
 </resources>
