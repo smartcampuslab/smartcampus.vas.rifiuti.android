@@ -11,75 +11,220 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
+           <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts_name_label"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/x11_White" />
+
+                <TextView
+                    android:id="@+id/contacts_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/x11_White" />
+
+            <LinearLayout
+                android:id="@+id/contacts_descr_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/contacts_descr_label"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/x11_White" />
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/contacts_descr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Medium Text"
-                android:textColor="@color/x11_White"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts_descr_label"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/x11_White" />
 
+                <TextView
+                    android:id="@+id/contacts_descr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/x11_White" />
+            </LinearLayout>
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/contacts_address_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/contacts_address_label"
-                android:textColor="@color/x11_White"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/contacts_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Medium Text"
-                android:textColor="@color/x11_White"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            
-            <TextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts_address_label"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/x11_White" />
+
+                <TextView
+                    android:id="@+id/contacts_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/x11_White" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contacts_web_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/contacts_tel_label"
-                android:textColor="@color/x11_White"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/contacts_tel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Medium Text"
-                android:textColor="@color/x11_White"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-            
-            <TextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts_web_label"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/x11_White" />
+
+                <TextView
+                    android:id="@+id/contacts_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autoLink="web"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/x11_White" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contacts_tel_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/contacts_email_label"
-                android:textColor="@color/x11_White"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/contacts_email"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts_tel_label"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/x11_White" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/contacts_tel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Medium Text"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/x11_White" />
+
+                    <ImageView
+                        android:id="@+id/contacts_tel_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@android:drawable/ic_menu_call" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contacts_email_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Medium Text"
-                android:textColor="@color/x11_White"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-       </LinearLayout>
+                android:orientation="vertical" >
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts_email_label"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/x11_White" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/contacts_email"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Medium Text"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/x11_White" />
+
+                    <ImageView
+                        android:id="@+id/contacts_email_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@android:drawable/ic_dialog_email" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contacts_pec_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts_pec_label"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/x11_White" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/contacts_pec"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Medium Text"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/x11_White" />
+
+                    <ImageView
+                        android:id="@+id/contacts_pec_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@android:drawable/ic_dialog_email" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contacts_fax_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts_fax_label"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/x11_White" />
+
+                <TextView
+                    android:id="@+id/contacts_fax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/x11_White" />
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

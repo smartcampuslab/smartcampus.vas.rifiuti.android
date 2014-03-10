@@ -283,7 +283,9 @@ public class ProfileFragment extends Fragment implements ILocation {
 				outState.putString(SAVE_AREA, area.getNome());
 			}
 //			outState.putString(SAVE_COMUNE, mARCTVComune.getText().toString());
-			outState.putString(SAVE_COMUNE, area.getComune());
+			if (area != null)  {
+				outState.putString(SAVE_COMUNE, area.getComune());
+			}
 			outState.putString(SAVE_NAME, mETNome.getText().toString());
 			outState.putString(SAVE_NCIV, mETNCiv.getText().toString());
 			outState.putString(SAVE_UTENZA, mETUtenza.getText().toString());

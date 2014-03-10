@@ -668,6 +668,9 @@ public class RifiutiHelper {
 			g.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
 			g.setEmail(cursor.getString(cursor.getColumnIndex("email")));
 			g.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
+			g.setFax(cursor.getString(cursor.getColumnIndex("fax")));
+			g.setSitoWeb(cursor.getString(cursor.getColumnIndex("sitoWeb")));
+
 			return g;	
 		} finally {
 			if (cursor != null) cursor.close();
@@ -684,10 +687,14 @@ public class RifiutiHelper {
 			cursor = db.rawQuery(query, null);
 			cursor.moveToFirst();
 			Istituzione i = new Istituzione();
+			i.setTipologia(cursor.getString(cursor.getColumnIndex("tipologia")));
 			i.setNome(cursor.getString(cursor.getColumnIndex("nome")));
 			i.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
 			i.setEmail(cursor.getString(cursor.getColumnIndex("email")));
 			i.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
+			i.setPec(cursor.getString(cursor.getColumnIndex("pec")));
+			i.setSitoIstituzionale(cursor.getString(cursor.getColumnIndex("sitoIstituzionale")));
+			i.setFax(cursor.getString(cursor.getColumnIndex("fax")));
 			return i;	
 		} finally {
 			if (cursor != null) cursor.close();

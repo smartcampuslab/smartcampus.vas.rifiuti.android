@@ -108,10 +108,14 @@
     <string name="feedback_to">abc@abc.c</string>
     <string name="contacts_container_institute">COMUNE</string>
     <string name="contacts_container_org">GESTORE</string>
-    <string name="contacts_title">Contatti: %s</string>
+    <string name="contacts_title">Contatti</string>
     <string name="contacts_descr_label">DESCRIZIONE</string>
     <string name="contacts_address_label">INDIRIZZO E ORARIO</string>
     <string name="contacts_tel_label">TELEFONO</string>
     <string name="contacts_email_label">EMAIL</string>
+    <string name="contacts_web_label">WEB</string>
+    <string name="contacts_pec_label">PEC</string>
+    <string name="contacts_fax_label">FAX</string>
+    <string name="contacts_name_label">NOME</string>
 
 </resources>

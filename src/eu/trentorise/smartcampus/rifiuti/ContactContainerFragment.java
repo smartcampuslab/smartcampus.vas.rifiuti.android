@@ -31,7 +31,6 @@ public class ContactContainerFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mPagerTitles = getResources().getStringArray(R.array.contacts_container_titles);
 		abActivity = (ActionBarActivity) getActivity();
 
 		setHasOptionsMenu(true);
@@ -39,8 +38,10 @@ public class ContactContainerFragment extends Fragment {
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 		
-		istituzione = getData(RifiutiHelper.getIstituzione());
+		Istituzione i = RifiutiHelper.getIstituzione();
+		istituzione = getData(i);
 		gestore = getData(RifiutiHelper.getGestore());
+		mPagerTitles = new String[]{i.getTipologia(), getResources().getString(R.string.contacts_container_org)};
 	}
 
 	@Override
@@ -64,7 +65,6 @@ public class ContactContainerFragment extends Fragment {
 	                    // When swiping between pages, select the
 	                    // corresponding tab.
 	                	abActivity.getSupportActionBar().setSelectedNavigationItem(position);
-	   	        	    updateTitle(position);
 	                }
 	            });
 		return viewGroup;
@@ -73,6 +73,7 @@ public class ContactContainerFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		abActivity.getActionBar().setTitle(R.string.contacts_title);
 		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		mPagerAdapter = new ContantsPagerAdapter(getChildFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
@@ -96,7 +97,6 @@ public class ContactContainerFragment extends Fragment {
 	    }
 
 		mPager.setCurrentItem(0);
-		updateTitle(0);
 	}
 
 	@Override
@@ -144,6 +144,9 @@ public class ContactContainerFragment extends Fragment {
 		res.put("address", null);
 		res.put("email", i.getEmail());
 		res.put("phone", i.getTelefono());
+		res.put("web", i.getSitoIstituzionale());
+		res.put("pec", i.getPec());
+		res.put("fax", i.getFax());
 		return res;
 	}
 	private HashMap<String, String> getData(Gestore i) {
@@ -153,10 +156,8 @@ public class ContactContainerFragment extends Fragment {
 		res.put("address", null);
 		res.put("email", i.getEmail());
 		res.put("phone", i.getTelefono());
+		res.put("web", i.getSitoWeb());
+		res.put("fax", i.getFax());
 		return res;
-	}
-	private void updateTitle(int position) {
-		String name = position == 0 ? istituzione.get("name") : gestore.get("name");
-		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.contacts_title, name));
 	}
 }
