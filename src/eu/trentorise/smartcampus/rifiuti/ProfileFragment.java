@@ -157,9 +157,11 @@ public class ProfileFragment extends Fragment implements ILocation {
 				if (mProfile != null) {
 					setContent();
 				} else {
+					mLocked=true;
 					switchMode();
 				}
 			} else {
+				mLocked=true;
 				switchMode();
 			}
 		}
@@ -648,8 +650,9 @@ public class ProfileFragment extends Fragment implements ILocation {
 						builder.create().show();
 					}
 				}
+				getActivity().setProgressBarIndeterminateVisibility(false);
 			}
-			getActivity().setProgressBarIndeterminateVisibility(false);
+			
 		}
 
 	}
