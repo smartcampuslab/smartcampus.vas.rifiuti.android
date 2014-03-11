@@ -220,10 +220,9 @@ public class ProfileFragment extends Fragment implements ILocation {
 			// .replace(R.id.content_frame, new HomeFragment())
 			// .addToBackStack(null).commit();
 			onBack();
-		} else if (item.getItemId() == R.id.action_edit){
+		} else if (item.getItemId() == R.id.action_edit) {
 			switchMode();
-		}
-		else if (item.getItemId() == R.id.action_save) {
+		} else if (item.getItemId() == R.id.action_save) {
 			Profile newProfile;
 			try {
 				newProfile = getNewProfile();
@@ -373,7 +372,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 					+ newProfile.getName());
 			Toast.makeText(getActivity(), getString(R.string.err_prof_name),
 					Toast.LENGTH_SHORT).show();
-			
+
 		} catch (JSONException e) {
 			Log.e(ProfileFragment.class.getName(), e.toString());
 			Toast.makeText(getActivity(),
@@ -707,21 +706,27 @@ public class ProfileFragment extends Fragment implements ILocation {
 	// }
 
 	private static class InvalidNameExeption extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	private static class InvalidComuneExeption extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	private static class InvalidViaExeption extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	private static class InvalidAreaExeption extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	private static class InvalidNCivicoExeption extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	private static class InvalidUtenzaExeption extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	// private TextWatcher mTextListener = new TextWatcher() {

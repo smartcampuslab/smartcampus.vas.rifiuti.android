@@ -2,6 +2,7 @@ package eu.trentorise.smartcampus.rifiuti.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,12 +108,13 @@ public class PreferenceUtils {
 	 * @param p
 	 *            he profile that must be added
 	 * @throws JSONException
-	 * @throws ProfileNameExists 
+	 * @throws ProfileNameExists
 	 * @throws Exception
 	 */
-	public static void addProfile(Context ctx, Profile p) throws JSONException, ProfileNameExistsException {
+	public static void addProfile(Context ctx, Profile p) throws JSONException,
+			ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		if(!isProfileInside(p,profiles))
+		if (!isProfileInside(p, profiles))
 			profiles.add(p);
 		else
 			throw new ProfileNameExistsException();
@@ -124,20 +126,21 @@ public class PreferenceUtils {
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
 	}
 
-	
 	/**
 	 * 
 	 * @param ctx
 	 * @param position
 	 *            of the profile that should be removed
-	 * @throws Exception if there's just one profile
+	 * @throws Exception
+	 *             if there's just one profile
 	 */
-	public static void removeProfile(Context ctx, int position) throws Exception {
+	public static void removeProfile(Context ctx, int position)
+			throws Exception {
 		List<Profile> profiles = getProfiles(ctx);
 		if (profiles.size() > 1) {
 			int curr = getCurrentProfilePosition(ctx);
 			if (position < curr) {
-				setCurrentProfilePosition(ctx, curr-1);
+				setCurrentProfilePosition(ctx, curr - 1);
 			}
 			profiles.remove(position);
 			JSONArray jsonArr = new JSONArray();
@@ -150,7 +153,7 @@ public class PreferenceUtils {
 			}
 			SharedPreferences sp = getProfilePreference(ctx);
 			sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
-		}else{
+		} else {
 			throw new LastElementException();
 		}
 	}
@@ -160,11 +163,12 @@ public class PreferenceUtils {
 	 * @param ctx
 	 * @param position
 	 *            of the profile that should be updated
-	 * @throws ProfileNameExistsException 
+	 * @throws ProfileNameExistsException
 	 */
-	public static void editProfile(Context ctx, int position, Profile newProfile) throws ProfileNameExistsException {
+	public static void editProfile(Context ctx, int position, Profile newProfile)
+			throws ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		if(!isProfileInside(newProfile, profiles))
+		if (!isProfileInside(newProfile, profiles))
 			profiles.set(position, newProfile);
 		else
 			throw new ProfileNameExistsException();
@@ -179,14 +183,23 @@ public class PreferenceUtils {
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
 	}
-	
+
 	private static boolean isProfileInside(Profile p, List<Profile> profiles) {
-		for(Profile cmp:profiles)
-			if(p.getName().trim().toLowerCase().equals(cmp.getName().trim().toLowerCase()))
+		for (Profile cmp : profiles)
+			if (p.getName()
+					.trim()
+					.toLowerCase(Locale.getDefault())
+					.equals(cmp.getName().trim()
+							.toLowerCase(Locale.getDefault())))
 				return true;
 		return false;
 	}
 
-	public static class ProfileNameExistsException extends Exception{};
-	public static class LastElementException extends Exception{};
+	public static class ProfileNameExistsException extends Exception {
+		private static final long serialVersionUID = 1L;
+	};
+
+	public static class LastElementException extends Exception {
+		private static final long serialVersionUID = 1L;
+	};
 }
