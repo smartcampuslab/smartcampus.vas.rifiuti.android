@@ -49,13 +49,13 @@ public class HomeFragment extends Fragment {
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 		
-//		mTutorialHelper = new ListViewTutorialHelper(RifiutiTutorialActivity.this, mTutorialProvider);
+		mTutorialHelper = new ListViewTutorialHelper(getActivity(), mHomeTutorialProvider);
 
-		if (RifiutiHelper.isFirstLaunch(getActivity())) {
-			openNavDrawerIfNeeded();
+		if (RifiutiHelper.isFirstLaunchMenu(getActivity())) {
+//			openNavDrawerIfNeeded();
 			
-			showTourDialog();
-			RifiutiHelper.disableFirstLaunch(getActivity());
+//			showTourDialog();
+			RifiutiHelper.disableFirstLaunchMenu(getActivity());
 		}
 	}
 
@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment {
 		}
 
 	}
-private TutorialProvider mTutorialProvider = new TutorialProvider() {
+private TutorialProvider mHomeTutorialProvider = new TutorialProvider() {
 		
 		TutorialItem[] tutorial = new TutorialItem[]{
 				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
@@ -184,7 +184,7 @@ private TutorialProvider mTutorialProvider = new TutorialProvider() {
 		
 		@Override
 		public TutorialItem getItemAt(int i) {
-//			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_item);
+			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_item);
 			return tutorial[i];
 		}
 		
@@ -194,18 +194,20 @@ private TutorialProvider mTutorialProvider = new TutorialProvider() {
 		}
 	};
 	
-	private boolean openNavDrawerIfNeeded() {
-		DrawerLayout mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-		if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT))
-		{
-			tutorialHasOpened=true;
-			mDrawerLayout.openDrawer(Gravity.LEFT);
-			return true;
-			
-		}
-		return false;
-	}
+//	private boolean openNavDrawerIfNeeded() {
+//		DrawerLayout mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+//		if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT))
+//		{
+//			tutorialHasOpened=true;
+//			mDrawerLayout.openDrawer(Gravity.LEFT);
+//			return true;
+//			
+//		}
+//		return false;
+//	}
 	
+	
+	///to call in case of pressing the option tutorial
 	private void showTourDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setMessage("bla bla")
 				.setPositiveButton(getString(R.string.begin_tut), new DialogInterface.OnClickListener() {

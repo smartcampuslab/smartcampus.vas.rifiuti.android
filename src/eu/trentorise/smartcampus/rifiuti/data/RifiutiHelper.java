@@ -52,7 +52,8 @@ public class RifiutiHelper {
 
 	private static final String TUT_PREFS = "tutorial preference";
 
-	private static final String FIRST_LAUNCH_PREFS = "first launch preference";
+	private static final String FIRST_LAUNCH_MENU_PREFS = "first launch menu preference";
+	private static final String FIRST_LAUNCH_HOME_PREFS = "first launch home preference";
 
 	private static final String TOUR_PREFS = "tour preference";
 
@@ -804,15 +805,27 @@ public class RifiutiHelper {
 		SharedPreferences out = ctx.getSharedPreferences(TUT_PREFS, Context.MODE_PRIVATE);
 		return out;
 	}
-	public static boolean isFirstLaunch(Context ctx) {
-		return getTutorialPreferences(ctx).getBoolean(FIRST_LAUNCH_PREFS, true);
+	
+	public static boolean isFirstLaunchMenu(Context ctx) {
+		return getTutorialPreferences(ctx).getBoolean(FIRST_LAUNCH_MENU_PREFS, true);
 	}
 	
-	public static void disableFirstLaunch(Context ctx) {
+	public static void disableFirstLaunchMenu(Context ctx) {
 		Editor edit = getTutorialPreferences(ctx).edit();
-		edit.putBoolean(FIRST_LAUNCH_PREFS, false);
+		edit.putBoolean(FIRST_LAUNCH_MENU_PREFS, false);
 		edit.commit();
 	}
+	
+	public static boolean isFirstLaunchHome(Context ctx) {
+		return getTutorialPreferences(ctx).getBoolean(FIRST_LAUNCH_HOME_PREFS, true);
+	}
+	
+	public static void disableFirstLaunchHome(Context ctx) {
+		Editor edit = getTutorialPreferences(ctx).edit();
+		edit.putBoolean(FIRST_LAUNCH_HOME_PREFS, false);
+		edit.commit();
+	}
+	
 	public static void setWantTour(Context ctx, boolean want) {
 		Editor edit = getTutorialPreferences(ctx).edit();
 		edit.putBoolean(TOUR_PREFS, want);
