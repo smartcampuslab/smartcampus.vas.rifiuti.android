@@ -85,6 +85,10 @@ public class RifiutiHelper {
 		this.mContext = ctx;
 		dbHelper = DBHelper.createDataBase(ctx, DB_VERSION);
 	};
+	
+	public static RifiutiHelper getInstance(){
+		return mHelper;
+	}
 
 	/**
 	 * Read 'tipi di rifiuti' for the specified user
