@@ -384,6 +384,7 @@ public class RifiutiHelper {
 						dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntoRaccolta")));
 						dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
 						result.add(dtr);
+						cursor.moveToNext();
 					}
 				}
 			}

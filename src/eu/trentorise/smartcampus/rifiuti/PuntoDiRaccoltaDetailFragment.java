@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.location.Address;
@@ -134,7 +133,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 
 		ListView mTipologieRaccolta = (ListView) getActivity().findViewById(R.id.puntodiraccolta_listatipologie);
 		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter,
-				tipologie);
+				tipologie, false);
 		mTipologieRaccolta.setAdapter(tipologieAdapter);
 
 		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {

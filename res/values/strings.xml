@@ -120,4 +120,7 @@
     <string name="contacts_fax_label">FAX</string>
     <string name="contacts_name_label">NOME</string>
 
+    <string name="tipologia_raccolta_ext">%1$s: %2$s</string>
+    
+    
 </resources>
