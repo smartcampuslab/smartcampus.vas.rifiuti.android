@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class RifiutiListFragment extends ListFragment {
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
-	
+
 	public static RifiutiListFragment newIstanceTipologiaRaccolta(String raccolta) {
 		RifiutiListFragment rf = new RifiutiListFragment();
 		Bundle b = new Bundle();
@@ -61,11 +62,13 @@ public class RifiutiListFragment extends ListFragment {
 		RifiutoDetailsFragment fragment = new RifiutoDetailsFragment();
 
 		Bundle args = new Bundle();
-//		if (tipologiaRaccolta != null)
-//			args.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, tipologiaRaccolta);
-//		else if (tipologiaRifiuto != null)
-//			args.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO, tipologiaRifiuto);
-		args.putString(ArgUtils.ARGUMENT_RIFIUTO,rifiuti.get(position));
+		// if (tipologiaRaccolta != null)
+		// args.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA,
+		// tipologiaRaccolta);
+		// else if (tipologiaRifiuto != null)
+		// args.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO,
+		// tipologiaRifiuto);
+		args.putString(ArgUtils.ARGUMENT_RIFIUTO, rifiuti.get(position));
 		fragment.setArguments(args);
 		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		// fragmentTransaction.detach(this);
@@ -90,13 +93,11 @@ public class RifiutiListFragment extends ListFragment {
 				rifiuti = RifiutiHelper.getRifiutoPerTipoRifiuti(tipologiaRifiuto);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(getClass().getSimpleName(), e.getMessage());
 		}
-		RifiutoAdapter adapter = new RifiutoAdapter(getActivity(), R.layout.rifiuto_adapter, rifiuti);
+
+		RifiutoAdapter adapter = new RifiutoAdapter(getActivity(), android.R.layout.simple_list_item_1, rifiuti);
 		setListAdapter(adapter);
-
 	}
-
 
 }

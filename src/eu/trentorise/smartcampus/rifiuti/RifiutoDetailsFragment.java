@@ -86,15 +86,16 @@ public class RifiutoDetailsFragment extends Fragment {
 				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 				RifiutiManagerContainerFragment fragment = new RifiutiManagerContainerFragment();
 				Bundle bundle = new Bundle();
-				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, datiTipologiaRaccoltaList.get(arg2).getTipologiaRaccolta());
+				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, datiTipologiaRaccoltaList.get(arg2)
+						.getTipologiaRaccolta());
 				fragment.setArguments(bundle);
 				fragmentTransaction.replace(R.id.content_frame, fragment, "tipologiaraccolta");
 				fragmentTransaction.addToBackStack(fragment.getTag());
 				fragmentTransaction.commit();
 			}
 		});
-		
-		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.rifiuto_adapter,
+
+		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), android.R.layout.simple_list_item_1,
 				puntiDiRaccolta);
 		ListView listPuntiRaccolta = (ListView) getView().findViewById(R.id.puntoraccolta_list);
 		listPuntiRaccolta.setAdapter(adapter);
@@ -121,12 +122,11 @@ public class RifiutoDetailsFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		if (rifiuto != null)
-			{
+		if (rifiuto != null) {
 			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.rifiuto_title) + " : " + rifiuto);
-			}
-		else if (tipologiaRifiuto!= null){
-			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.tipo_di_rifiuto_title) + " : " + tipologiaRifiuto);
+		} else if (tipologiaRifiuto != null) {
+			abActivity.getSupportActionBar().setTitle(
+					abActivity.getString(R.string.tipo_di_rifiuto_title) + " : " + tipologiaRifiuto);
 
 		}
 

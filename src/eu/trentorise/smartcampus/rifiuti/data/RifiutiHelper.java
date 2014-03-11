@@ -85,8 +85,8 @@ public class RifiutiHelper {
 		this.mContext = ctx;
 		dbHelper = DBHelper.createDataBase(ctx, DB_VERSION);
 	};
-	
-	public static RifiutiHelper getInstance(){
+
+	public static RifiutiHelper getInstance() {
 		return mHelper;
 	}
 
@@ -372,9 +372,9 @@ public class RifiutiHelper {
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
 			String query = "SELECT DISTINCT ra.tipologiaRaccolta, ra.tipologiaPuntoRaccolta, ra.colore, ra.infoRaccolta "
-					+ "FROM riciclabolario r, raccolta ra WHERE "
-					+ "r.nome = \"" + rifiuto + "\" AND r.area in " + aree + " AND r.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()+"\" AND "
-					+ "ra.area in "+aree +" AND ra.tipologiaUtenza = '" + mHelper.mProfile.getUtenza()+"' AND "
+					+ "FROM riciclabolario r, raccolta ra WHERE " + "r.nome = \"" + rifiuto + "\" AND r.area in " + aree
+					+ " AND r.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\" AND " + "ra.area in " + aree
+					+ " AND ra.tipologiaUtenza = '" + mHelper.mProfile.getUtenza() + "' AND "
 					+ "ra.tipologiaRifiuto = r.tipologiaRifiuto";
 			cursor = db.rawQuery(query, null);
 			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
@@ -394,9 +394,10 @@ public class RifiutiHelper {
 			}
 			return result;
 		} finally {
-			if (cursor != null) cursor.close();
+			if (cursor != null)
+				cursor.close();
 		}
-		
+
 	}
 
 	/**
@@ -411,7 +412,9 @@ public class RifiutiHelper {
 		try {
 			String query = "SELECT DISTINCT dataDa, dataA, il, dalle, alle FROM puntiRaccolta WHERE indirizzo = \""
 					+ pr.getIndirizzo() + "\" AND tipologiaUtenza = \"" + pr.getTipologiaUtenza() + "\" AND area = \""
-					+ pr.getArea() + "\"";
+					+ pr.getArea() + "\"" + " AND (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
+					+ " AND (puntiRaccolta.dataA IS NOT NULL AND puntiRaccolta.dataA != '')"
+					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')";
 			cursor = db.rawQuery(query, null);
 			List<Calendario> result = new ArrayList<Calendario>();
 			if (cursor != null) {
@@ -490,7 +493,7 @@ public class RifiutiHelper {
 			String query = "SELECT DISTINCT "
 					+ "puntiRaccolta.*, raccolta.colore FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
-					+ " WHERE " + " (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
+					+ " WHERE (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
 					+ " AND (puntiRaccolta.dataA IS NOT NULL AND puntiRaccolta.dataA != '')"
 					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')" + " AND puntiRaccolta.area IN " + aree
 					+ " AND raccolta.area IN " + aree + " AND puntiRaccolta.tipologiaUtenza = \""

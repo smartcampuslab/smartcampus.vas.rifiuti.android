@@ -13,15 +13,12 @@ import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 public class TipologieAdapter extends ArrayAdapter<DatiTipologiaRaccolta> {
 	private Context context;
 	private int layoutResourceId;
-	private List<DatiTipologiaRaccolta> calendari;
 	private boolean showTipoPuntoRaccolta;
 
-	
 	public TipologieAdapter(Context context, int resource, List<DatiTipologiaRaccolta> objects, boolean showTipoPuntoRaccolta) {
 		super(context, resource, objects);
 		this.context = context;
 		this.layoutResourceId = resource;
-		this.calendari = objects;
 		this.showTipoPuntoRaccolta = showTipoPuntoRaccolta;
 	}
 
@@ -36,7 +33,8 @@ public class TipologieAdapter extends ArrayAdapter<DatiTipologiaRaccolta> {
 		e.mTxtInfo = (TextView) row.findViewById(R.id.tipologiaraccolta_info);
 		e.tipologia = getItem(position);
 		if (showTipoPuntoRaccolta && e.tipologia.getTipologiaPuntoRaccolta() != null) {
-			e.mTxtTipologia.setText(context.getResources().getString(R.string.tipologia_raccolta_ext, e.tipologia.getTipologiaPuntoRaccolta(), e.tipologia.getTipologiaRaccolta()));
+			e.mTxtTipologia.setText(context.getResources().getString(R.string.tipologia_raccolta_ext,
+					e.tipologia.getTipologiaPuntoRaccolta(), e.tipologia.getTipologiaRaccolta()));
 		} else {
 			e.mTxtTipologia.setText(e.tipologia.getTipologiaRaccolta());
 		}
@@ -47,7 +45,7 @@ public class TipologieAdapter extends ArrayAdapter<DatiTipologiaRaccolta> {
 		} else {
 			e.mTxtInfo.setVisibility(View.GONE);
 		}
-		
+
 		return row;
 	}
 
