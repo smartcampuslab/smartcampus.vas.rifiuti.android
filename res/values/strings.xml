@@ -95,17 +95,18 @@
     <string name="feedback_title">Segnalazione</string>
 
     <!-- FEEDBACK -->
-    <string name="feedback_descr">Inserisci un testo per la segnalazione. Puoi allegare una foto
-        e le coordinate GPS di dove ti trovi. Le informazioni verrano utilizzate per 
-        inviare una mail</string>
+    <string name="feedback_descr">Questo modulo ti consente di impostare una mail
+        contenente una segnalazione da inviare direttamente all\'ente che si occupa
+        della gestione dei rifiuti e dell\'igiene urbana. E\' possibile allegare una 
+        fotografia e le coordinate GPS della tua posizione.</string>
     <string name="feedback_text_hint">Testo della segnalazione</string>
     <string name="feedback_photo_hint">Tocca qui per aggiungere una foto</string>
-    <string name="feedback_gps_hint">Aggiungi le coordinate GPS</string>
+    <string name="feedback_gps_hint">Coordinate GPS</string>
     <string name="feedback_send">Segnala!</string>
-    <string name="feedback_subject">Segnalazione</string>
+    <string name="feedback_subject">Segnalazione dalla app \"100% Riciclo\"</string>
     <string name="feedback_capture">Image</string>
-    <string name="feedback_mail">Segnala</string>
-    <string name="feedback_to">abc@abc.c</string>
+    <string name="feedback_mail">Seleziona l\'app per segnalazione</string>
+    <string name="feedback_to">rifiuti@comunitadellegiudicarie.it</string>
     <string name="contacts_container_institute">COMUNE</string>
     <string name="contacts_container_org">GESTORE</string>
     <string name="contacts_title">Contatti</string>
