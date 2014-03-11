@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,14 +44,29 @@ public class RifiutoDetailsFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		abActivity = (ActionBarActivity) getActivity();
-
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+
 		Bundle bundle = getArguments();
-		if (bundle == null)
+		if (bundle == null) {
 			bundle = savedInstanceState;
-		if (bundle.containsKey(ArgUtils.ARGUMENT_RIFIUTO))
+		}
+		if (bundle.containsKey(ArgUtils.ARGUMENT_RIFIUTO)) {
 			rifiuto = bundle.getString(ArgUtils.ARGUMENT_RIFIUTO);
+		}
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		if (rifiuto != null) {
+			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.rifiuto_title) + ": " + rifiuto);
+		} else if (tipologiaRifiuto != null) {
+			abActivity.getSupportActionBar().setTitle(
+					abActivity.getString(R.string.tipo_di_rifiuto_title) + ": " + tipologiaRifiuto);
+		}
 
 		try {
 			// if (tipologiaRaccolta != null) {
@@ -117,22 +133,18 @@ public class RifiutoDetailsFragment extends Fragment {
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-
-		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		if (rifiuto != null) {
-			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.rifiuto_title) + " : " + rifiuto);
-		} else if (tipologiaRifiuto != null) {
-			abActivity.getSupportActionBar().setTitle(
-					abActivity.getString(R.string.tipo_di_rifiuto_title) + " : " + tipologiaRifiuto);
-		}
-	}
-
-	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putAll(getArguments());
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			abActivity.finish();
+			return true;
+		}
+		return false;
 	}
 
 }

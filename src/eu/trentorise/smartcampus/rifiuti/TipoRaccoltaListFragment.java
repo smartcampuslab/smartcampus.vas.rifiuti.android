@@ -36,27 +36,28 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_tipi_list, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		abActivity = (ActionBarActivity) getActivity();
-
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.tipologiediraccolta_label));
+	}
 
-		List<DatiTipologiaRaccolta> alltypes = RifiutiHelper
-				.readTipologiaRaccolta();
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		List<DatiTipologiaRaccolta> alltypes = RifiutiHelper.readTipologiaRaccolta();
 		mTypes = new ArrayList<List<DatiTipologiaRaccolta>>();
 		LinkedHashMap<String, List<DatiTipologiaRaccolta>> map = new LinkedHashMap<String, List<DatiTipologiaRaccolta>>();
 		for (DatiTipologiaRaccolta dtr : alltypes) {
-			List<DatiTipologiaRaccolta> list = map.get(dtr
-					.getTipologiaRaccolta());
+			List<DatiTipologiaRaccolta> list = map.get(dtr.getTipologiaRaccolta());
 			if (list == null) {
 				list = new ArrayList<DatiTipologiaRaccolta>();
 				map.put(dtr.getTipologiaRaccolta(), list);
@@ -73,9 +74,10 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_add) {
 			goToDetail(-1);
-		} else
+		} else {
 			return super.onOptionsItemSelected(item);
-		((ActionBarActivity) getActivity()).supportInvalidateOptionsMenu();
+		}
+		abActivity.supportInvalidateOptionsMenu();
 		return true;
 	}
 
@@ -87,10 +89,8 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	}
 
 	private void goToDetail(int position) {
-		Intent intent = new Intent(getActivity(),
-				RifiutiManagerContainerActivity.class);
-		intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA,
-				mTypes.get(position).get(0).getTipologiaRaccolta());
+		Intent intent = new Intent(getActivity(), RifiutiManagerContainerActivity.class);
+		intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, mTypes.get(position).get(0).getTipologiaRaccolta());
 		startActivity(intent);
 
 		// FragmentManager fm = getFragmentManager();
@@ -103,11 +103,9 @@ public class TipoRaccoltaListFragment extends ListFragment {
 		// ft.commit();
 	}
 
-	private class TipoRaccoltaAdapter extends
-			ArrayAdapter<List<DatiTipologiaRaccolta>> {
+	private class TipoRaccoltaAdapter extends ArrayAdapter<List<DatiTipologiaRaccolta>> {
 
-		public TipoRaccoltaAdapter(Context context,
-				List<List<DatiTipologiaRaccolta>> objects) {
+		public TipoRaccoltaAdapter(Context context, List<List<DatiTipologiaRaccolta>> objects) {
 			super(context, R.layout.tipo_raccolta_row, objects);
 		}
 
@@ -116,20 +114,17 @@ public class TipoRaccoltaListFragment extends ListFragment {
 			List<DatiTipologiaRaccolta> tmpList = getItem(position);
 			DatiTipologiaRaccolta tmp = tmpList.get(0);
 			if (convertView == null) {
-				LayoutInflater inflater = (LayoutInflater) getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.tipo_raccolta_row,
-						parent, false);
+				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflater.inflate(R.layout.tipo_raccolta_row, parent, false);
 			}
-			TextView name = (TextView) convertView
-					.findViewById(R.id.row_type_name);
+			TextView name = (TextView) convertView.findViewById(R.id.row_type_name);
 			name.setText(tmp.getTipologiaRaccolta());
-			LinearLayout types = (LinearLayout) convertView
-					.findViewById(R.id.row_sub_type);
+			LinearLayout types = (LinearLayout) convertView.findViewById(R.id.row_sub_type);
 			types.removeAllViews();
 			for (DatiTipologiaRaccolta dtr : tmpList) {
 				ImageView iv = new ImageView(getActivity());
-				Drawable res = RifiutiHelper.getTypeColorResource(getActivity(), dtr.getTipologiaPuntoRaccolta(), dtr.getColore());
+				Drawable res = RifiutiHelper.getTypeColorResource(getActivity(), dtr.getTipologiaPuntoRaccolta(),
+						dtr.getColore());
 				if (res != null) {
 					iv.setImageDrawable(res);
 				}
@@ -141,10 +136,4 @@ public class TipoRaccoltaListFragment extends ListFragment {
 
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-		abActivity.getSupportActionBar().setTitle(
-				abActivity.getString(R.string.tipologiediraccolta_label));
-	}
 }

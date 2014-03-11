@@ -1,41 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:background="@color/rifiuti_light" >
 
-    <TextView
-        android:id="@+id/textView1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/rifiuti_middle"
-        android:padding="16dp"
-        android:text="@string/tipodiraccolta_label"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/rifiuti_dark" />
+        android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/tiporaccolta_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="@color/rifiuti_middle">
-    </ListView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rifiuti_middle"
+            android:padding="@dimen/fragment_horizontal_margin"
+            android:text="@string/tipodiraccolta_label"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/rifiuti_middle"
-        android:padding="16dp"
-        android:text="@string/puntodiraccolta_label"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/rifiuti_dark" />
+        <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
+            android:id="@+id/tiporaccolta_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <ListView
-        android:id="@+id/puntoraccolta_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="@color/rifiuti_middle">
-    </ListView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rifiuti_middle"
+            android:padding="@dimen/fragment_horizontal_margin"
+            android:text="@string/puntodiraccolta_label"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-</LinearLayout>
+        <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
+            android:id="@+id/puntoraccolta_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</ScrollView>
