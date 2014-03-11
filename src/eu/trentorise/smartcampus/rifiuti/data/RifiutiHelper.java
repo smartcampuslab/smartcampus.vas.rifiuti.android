@@ -56,7 +56,9 @@ public class RifiutiHelper {
 	private List<String> mAreas = null;
 
 	private Map<String, Integer> colorMap = null;
+	private Map<String, Drawable> typeColorMap;
 	private Map<String, Drawable> tipiRifiutoDrawablesMap = null;
+
 
 	/**
 	 * Initialize data access layer support
@@ -648,8 +650,27 @@ public class RifiutiHelper {
 		return colorMap;
 	}
 
+	private Map<String, Drawable> getTypeColorMap(Context ctx) {
+		if (typeColorMap == null) {
+			typeColorMap = new HashMap<String, Drawable>();
+			String[] array = ctx.getResources().getStringArray(R.array.type_icon_color_strings);
+			TypedArray valueArray = ctx.getResources().obtainTypedArray(R.array.type_icon_color_drawables);
+			for (int i = 0; i < array.length; i++) {
+				typeColorMap.put(array[i], valueArray.getDrawable(i));
+			}
+			valueArray.recycle();
+		}
+		return typeColorMap;
+	}
+
 	public static int getColorResource(Context ctx, String color) {
 		return mHelper.getColorMap(ctx).get(color);
+	}
+
+	public static Drawable getTypeColorResource(Context ctx, String type, String color) {
+		Drawable d = mHelper.getTypeColorMap(ctx).get(type+" "+color);
+		if (d == null) d = mHelper.getTypeColorMap(ctx).get(type);
+		return d;
 	}
 
 	private Map<String, Drawable> getTipiRifiutoDrawablesMap(Context ctx) {

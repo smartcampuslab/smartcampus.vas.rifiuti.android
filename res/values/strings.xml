@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Rifiuti</string>
     <string name="action_settings">Configurazione</string>
     <string name="empty"></string>
     <string name="dialog_confirm_title">Sei sicuro?</string>

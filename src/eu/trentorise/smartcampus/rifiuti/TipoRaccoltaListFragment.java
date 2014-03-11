@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -127,30 +128,14 @@ public class TipoRaccoltaListFragment extends ListFragment {
 					.findViewById(R.id.row_sub_type);
 			types.removeAllViews();
 			for (DatiTipologiaRaccolta dtr : tmpList) {
-				TextView tv = (TextView) getActivity().getLayoutInflater()
-						.inflate(R.layout.tipo_punto_raccolta_row, null);
-				tv.setText(dtr.getTipologiaPuntoRaccolta());
-				types.addView(tv);
-				if (dtr.getColore() != null && dtr.getColore().length() > 0) {
-					((GradientDrawable) tv.getBackground())
-							.setColor(RifiutiHelper.getColorResource(
-									getActivity(), tmp.getColore()));
-				} else {
-					((GradientDrawable) tv.getBackground())
-							.setColor(getResources().getColor(
-									R.color.rifiuti_light));
+				ImageView iv = new ImageView(getActivity());
+				Drawable res = RifiutiHelper.getTypeColorResource(getActivity(), dtr.getTipologiaPuntoRaccolta(), dtr.getColore());
+				if (res != null) {
+					iv.setImageDrawable(res);
 				}
+				types.addView(iv);
 			}
 
-			// type.setText(tmp.getTipologiaPuntoRaccolta());
-			// View colorView = convertView.findViewById(R.id.color_view);
-			// if (tmp.getColore() != null && tmp.getColore().length() > 0) {
-			// colorView.setVisibility(View.VISIBLE);
-			// ((GradientDrawable)colorView.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(),
-			// tmp.getColore()));
-			// } else {
-			// colorView.setVisibility(View.GONE);
-			// }
 			return convertView;
 		}
 

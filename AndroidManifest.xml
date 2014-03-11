@@ -19,13 +19,13 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/application_title"
         android:theme="@style/Theme.Rifiuti" >
         <activity
             android:name="eu.trentorise.smartcampus.rifiuti.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
              android:launchMode="singleTop"
-            android:label="@string/app_name" >
+            android:label="@string/application_title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,16 +35,16 @@
         <activity
             android:name="eu.trentorise.smartcampus.rifiuti.RifiutiManagerContainerActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/app_name" >
+            android:label="@string/application_title" >
         </activity>
         <activity
             android:name="eu.trentorise.smartcampus.rifiuti.CalendarAgendaActivity"
-            android:label="@string/app_name" >
+            android:label="@string/application_title" >
         </activity>
         <activity
             android:name="eu.trentorise.smartcampus.rifiuti.PuntoRaccoltaActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/app_name" >
+            android:label="@string/application_title" >
         </activity>
         
         <provider
