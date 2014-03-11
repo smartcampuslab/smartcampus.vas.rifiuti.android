@@ -25,6 +25,8 @@
         <item>Isola Ecologica AZZURRO</item>
         <item>Isola Ecologica ARANCIONE</item>
         <item>Isola Ecologica ROSSO</item>
+        <item>farmacia ROSSO</item>
+        <item>Rivenditore ROSSO</item>
         <item>Isola Ecologica</item>
         <item>CRM</item>
         </string-array>
@@ -51,6 +53,8 @@
         <item>@drawable/ic_isola_eco_blue</item>
         <item>@drawable/ic_isola_eco_darkyellow</item>
         <item>@drawable/ic_isola_eco_red</item>
+        <item>@drawable/ic_farmacia_red</item>
+        <item>@drawable/ic_rivenditore_red</item>
         <item>@drawable/ic_isola_eco_grey</item>
         <item>@drawable/ic_crm_grey</item>
     </integer-array>
