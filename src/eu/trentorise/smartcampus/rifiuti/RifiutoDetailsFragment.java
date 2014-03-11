@@ -86,10 +86,9 @@ public class RifiutoDetailsFragment extends Fragment {
 			e.printStackTrace();
 		}
 		// setListAdapter(adapter);
-		ListView mTipologieRaccolta = (ListView) getView().findViewById(
-				R.id.tiporaccolta_list);
-		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(),
-				R.layout.tipologiaraccolta_adapter, datiTipologiaRaccoltaList);
+
+		ListView mTipologieRaccolta = (ListView) getView().findViewById(R.id.tiporaccolta_list);
+		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter, datiTipologiaRaccoltaList, true);
 		mTipologieRaccolta.setAdapter(tipologieAdapter);
 
 		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {
@@ -101,9 +100,9 @@ public class RifiutoDetailsFragment extends Fragment {
 						.getSupportFragmentManager().beginTransaction();
 				RifiutiManagerContainerFragment fragment = new RifiutiManagerContainerFragment();
 				Bundle bundle = new Bundle();
-				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA,
-						datiTipologiaRaccoltaList.get(arg2)
-								.getTipologiaRaccolta());
+
+				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, datiTipologiaRaccoltaList.get(arg2)
+						.getTipologiaRaccolta());
 				fragment.setArguments(bundle);
 				fragmentTransaction.replace(R.id.content_frame, fragment,
 						"tipologiaraccolta");
@@ -112,10 +111,9 @@ public class RifiutoDetailsFragment extends Fragment {
 			}
 		});
 
-		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(
-				getActivity(), R.layout.rifiuto_adapter, puntiDiRaccolta);
-		ListView listPuntiRaccolta = (ListView) getView().findViewById(
-				R.id.puntoraccolta_list);
+		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), android.R.layout.simple_list_item_1,
+				puntiDiRaccolta);
+		ListView listPuntiRaccolta = (ListView) getView().findViewById(R.id.puntoraccolta_list);
 		listPuntiRaccolta.setAdapter(adapter);
 		listPuntiRaccolta.setOnItemClickListener(new OnItemClickListener() {
 
@@ -144,6 +142,7 @@ public class RifiutoDetailsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+
 		abActivity.getSupportActionBar().setNavigationMode(
 				ActionBar.NAVIGATION_MODE_STANDARD);
 		if (rifiuto != null) {
@@ -154,6 +153,7 @@ public class RifiutoDetailsFragment extends Fragment {
 			abActivity.getSupportActionBar().setTitle(
 					abActivity.getString(R.string.tipo_di_rifiuto_title)
 							+ " : " + tipologiaRifiuto);
+
 
 		}
 

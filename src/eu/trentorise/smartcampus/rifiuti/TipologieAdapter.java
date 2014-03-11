@@ -13,14 +13,13 @@ import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 public class TipologieAdapter extends ArrayAdapter<DatiTipologiaRaccolta> {
 	private Context context;
 	private int layoutResourceId;
-	private List<DatiTipologiaRaccolta> calendari;
+	private boolean showTipoPuntoRaccolta;
 
-	
-	public TipologieAdapter(Context context, int resource, List<DatiTipologiaRaccolta> objects) {
+	public TipologieAdapter(Context context, int resource, List<DatiTipologiaRaccolta> objects, boolean showTipoPuntoRaccolta) {
 		super(context, resource, objects);
 		this.context = context;
 		this.layoutResourceId = resource;
-		this.calendari = objects;
+		this.showTipoPuntoRaccolta = showTipoPuntoRaccolta;
 	}
 
 	@Override
@@ -30,9 +29,22 @@ public class TipologieAdapter extends ArrayAdapter<DatiTipologiaRaccolta> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		row = inflater.inflate(layoutResourceId, parent, false);
 		e = new RifiutoPlaceholder();
-		e.mTxtTipologia = (TextView) row.findViewById(R.id.tipologiaraccolta_descrizione);
+		e.mTxtTipologia = (TextView) row.findViewById(R.id.tipologiaraccolta);
+		e.mTxtInfo = (TextView) row.findViewById(R.id.tipologiaraccolta_info);
 		e.tipologia = getItem(position);
-		e.mTxtTipologia.setText(e.tipologia.getTipologiaRaccolta());
+		if (showTipoPuntoRaccolta && e.tipologia.getTipologiaPuntoRaccolta() != null) {
+			e.mTxtTipologia.setText(context.getResources().getString(R.string.tipologia_raccolta_ext,
+					e.tipologia.getTipologiaPuntoRaccolta(), e.tipologia.getTipologiaRaccolta()));
+		} else {
+			e.mTxtTipologia.setText(e.tipologia.getTipologiaRaccolta());
+		}
+		String info = e.tipologia.getInfo();
+		if (info != null && info.length() > 0) {
+			e.mTxtInfo.setText(info);
+			e.mTxtInfo.setVisibility(View.VISIBLE);
+		} else {
+			e.mTxtInfo.setVisibility(View.GONE);
+		}
 
 		return row;
 	}
@@ -40,5 +52,6 @@ public class TipologieAdapter extends ArrayAdapter<DatiTipologiaRaccolta> {
 	private class RifiutoPlaceholder {
 		private DatiTipologiaRaccolta tipologia;
 		private TextView mTxtTipologia;
+		private TextView mTxtInfo;
 	}
 }

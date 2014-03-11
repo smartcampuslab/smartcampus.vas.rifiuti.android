@@ -61,11 +61,13 @@ public class MapFragment extends Fragment implements OnCameraChangeListener,
 						ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		try {
 			// if has elements explicitly passed take them, otherwise use all
+
 			if (getArguments() != null
 					&& getArguments().containsKey(
 							ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA)) {
@@ -141,6 +143,7 @@ public class MapFragment extends Fragment implements OnCameraChangeListener,
 	public void onStart() {
 		super.onStart();
 		initView();
+
 		if (getArguments() != null
 				&& getArguments().containsKey(
 						ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
@@ -149,6 +152,7 @@ public class MapFragment extends Fragment implements OnCameraChangeListener,
 		} else
 			abActivity.getSupportActionBar().setTitle(
 					abActivity.getString(R.string.punti_di_raccolta_title));
+
 	}
 
 	public void onResume() {
@@ -182,8 +186,10 @@ public class MapFragment extends Fragment implements OnCameraChangeListener,
 				&& getArguments().containsKey(
 						ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
 			// get punto o punti di raccolta
+
 			puntiRaccolta = (List<PuntoRaccolta>) getArguments()
 					.getSerializable(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
+
 		} else
 			puntiRaccolta = (List<PuntoRaccolta>) mPuntiRaccolta;
 		if (puntiRaccolta != null) {
@@ -257,9 +263,11 @@ public class MapFragment extends Fragment implements OnCameraChangeListener,
 		if (getSupportMap() != null) {
 			getSupportMap().clear();
 			if (objects != null && getActivity() != null) {
+
 				List<MarkerOptions> cluster = MapManager.ClusteringHelper
 						.cluster(getActivity().getApplicationContext(),
 								getSupportMap(), objects);
+
 				MapManager.ClusteringHelper.render(getSupportMap(), cluster);
 			}
 		}
@@ -269,9 +277,11 @@ public class MapFragment extends Fragment implements OnCameraChangeListener,
 	private GoogleMap getSupportMap() {
 		if (mMap == null) {
 			mMap = mMapFragment.getMap();
-			if (mMap != null)
+
+			if (mMap != null) {
 				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
 						MapManager.DEFAULT_POINT, MapManager.ZOOM_DEFAULT));
+			}
 
 		}
 		return mMap;

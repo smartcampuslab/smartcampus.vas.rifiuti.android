@@ -13,33 +13,27 @@ import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 public class PuntoDiRaccoltaAdapter extends ArrayAdapter<PuntoRaccolta> {
 	private Context context;
 	private int layoutResourceId;
-	private List<PuntoRaccolta> puntiDiRaccolta;
 
 	public PuntoDiRaccoltaAdapter(Context context, int resource, List<PuntoRaccolta> objects) {
 		super(context, resource, objects);
 		this.context = context;
 		this.layoutResourceId = resource;
-		this.puntiDiRaccolta = objects;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View row = convertView;
-		RifiutoPlaceholder e = null;
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		row = inflater.inflate(layoutResourceId, parent, false);
-		e = new RifiutoPlaceholder();
-		e.mTxtPuntoDiRaccolta = (TextView) row.findViewById(R.id.rifiuto_placeholder_title);
+		TextView row;
 
-		e.puntoDiRaccolta = getItem(position);
-		e.mTxtPuntoDiRaccolta.setText(e.puntoDiRaccolta.getTipologiaPuntiRaccolta() + " - "
-				+ e.puntoDiRaccolta.getIndirizzo());
+		if (convertView == null) {
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			row = (TextView) inflater.inflate(layoutResourceId, parent, false);
+		} else {
+			row = (TextView) convertView;
+		}
+
+		PuntoRaccolta pr = getItem(position);
+		row.setText(context.getString(R.string.puntoraccolta_list_item, pr.getTipologiaPuntiRaccolta(), pr.getIndirizzo()));
 
 		return row;
-	}
-
-	private class RifiutoPlaceholder {
-		private PuntoRaccolta puntoDiRaccolta;
-		private TextView mTxtPuntoDiRaccolta;
 	}
 }

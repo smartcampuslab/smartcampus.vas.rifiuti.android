@@ -9,38 +9,31 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class RifiutoAdapter extends ArrayAdapter<String>{
+public class RifiutoAdapter extends ArrayAdapter<String> {
 	private Context context;
 	private int layoutResourceId;
-	private List<String> rifiuti;
-	
+
 	public RifiutoAdapter(Context context, int resource, List<String> objects) {
 		super(context, resource, objects);
 		this.context = context;
-		this.layoutResourceId=resource;
-		this.rifiuti=objects;
+		this.layoutResourceId = resource;
 	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View row = convertView;
-		RifiutoPlaceholder e = null;
-		if (row == null) {
+		TextView row;
+
+		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = inflater.inflate(layoutResourceId, parent, false);
-			e = new RifiutoPlaceholder();
-			e.mTxtRifiuto = (TextView) row.findViewById(R.id.rifiuto_placeholder_title);
-			row.setTag(e);
+			row = (TextView) inflater.inflate(layoutResourceId, parent, false);
 		} else {
-			e = (RifiutoPlaceholder) row.getTag();
+			row = (TextView) convertView;
 		}
-		e.rifiuto = getItem(position);
-		e.mTxtRifiuto.setText(e.rifiuto);
+
+		String rifiuto = getItem(position);
+		row.setText(rifiuto);
 
 		return row;
-	}
-	private class RifiutoPlaceholder{
-		private String rifiuto;
-		private TextView mTxtRifiuto;
 	}
 
 }

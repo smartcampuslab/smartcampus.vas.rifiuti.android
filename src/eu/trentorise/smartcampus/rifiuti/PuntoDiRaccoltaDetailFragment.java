@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.location.Address;
@@ -24,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,8 +44,8 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements
 		ILocation {
 
 	private PuntoRaccolta puntoDiRaccolta = null;
-	private List<Calendario> calendario = null;
-	private List<DatiTipologiaRaccolta> tipologie = null;
+	private List<Calendario> orariList = null;
+	private List<DatiTipologiaRaccolta> tipologieList = null;
 	private ActionBarActivity abActivity;
 	private Location mLocation;
 	private LocationUtils mLocUtils;
@@ -96,22 +96,21 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements
 						getActivity(), PreferenceUtils
 								.getCurrentProfilePosition(getActivity())));
 			}
-			calendario = RifiutiHelper.getCalendars(puntoDiRaccolta);
+			orariList = RifiutiHelper.getCalendars(puntoDiRaccolta);
 			// get lista tipologie per punto di raccolta
-			tipologie = RifiutiHelper
+			tipologieList = RifiutiHelper
 					.readTipologiaRaccoltaPerTipologiaPuntoRaccolta(puntoDiRaccolta
 							.getTipologiaPuntiRaccolta());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(getClass().getSimpleName(), e.getMessage());
 		}
 		TextView mDettagli = (TextView) getActivity().findViewById(
 				R.id.puntodiraccolta_dettagli);
+
 		mDettagli.setText(puntoDiRaccolta.getIndirizzo());
 		ImageView mappa = (ImageView) getActivity().findViewById(
 				R.id.map_dettagli);
 		mappa.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				FragmentTransaction fragmentTransaction = getActivity()
@@ -138,7 +137,6 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				if (puntoDiRaccolta.getLocalizzazione() != null) {
-
 					bringMeThere(puntoDiRaccolta);
 				} else {
 					Toast.makeText(getActivity(),
@@ -147,20 +145,45 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements
 				}
 			}
 		});
-		ListView mOrari = (ListView) getActivity().findViewById(
-				R.id.puntodiraccolta_listaorari);
-		CalendarioAdapter calendarAdapter = new CalendarioAdapter(
-				getActivity(), R.layout.calendario_adapter, calendario);
-		mOrari.setAdapter(calendarAdapter);
+
+		if (orariList == null || orariList.isEmpty()) {
+			LinearLayout orariLayout = (LinearLayout) getActivity()
+					.findViewById(R.id.puntodiraccolta_orari_layout);
+			orariLayout.setVisibility(View.GONE);
+		} else {
+			String orariText = new String();
+			for (int i = 0; i < orariList.size(); i++) {
+				Calendario orario = orariList.get(i);
+
+				if (i > 0
+						&& orario.getIl().equals(orariList.get(i - 1).getIl())) {
+					// same day of the week
+					orariText += getActivity().getString(
+							R.string.puntiraccoltadetails_orari_2,
+							orario.getDalle(), orario.getAlle());
+				} else {
+					if (i > 0) {
+						orariText += "\n";
+					}
+					orariText += getActivity()
+							.getString(R.string.puntiraccoltadetails_orari,
+									orario.getIl(), orario.getDalle(),
+									orario.getAlle());
+				}
+			}
+			TextView orariTextView = (TextView) getActivity().findViewById(
+					R.id.puntodiraccolta_orari_textview);
+			orariTextView.setText(orariText);
+		}
 
 		ListView mTipologieRaccolta = (ListView) getActivity().findViewById(
 				R.id.puntodiraccolta_listatipologie);
 		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(),
-				R.layout.tipologiaraccolta_adapter, tipologie);
+				R.layout.tipologiaraccolta_adapter, tipologieList, false);
+
 		mTipologieRaccolta.setAdapter(tipologieAdapter);
 
 		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -168,8 +191,9 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements
 						.getSupportFragmentManager().beginTransaction();
 				RifiutiManagerContainerFragment fragment = new RifiutiManagerContainerFragment();
 				Bundle bundle = new Bundle();
+
 				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA,
-						tipologie.get(arg2).getTipologiaRaccolta());
+						tipologieList.get(arg2).getTipologiaRaccolta());
 				fragment.setArguments(bundle);
 				fragmentTransaction.replace(R.id.content_frame, fragment,
 						"tipologiaraccolta");
@@ -180,9 +204,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements
 	}
 
 	private void bringMeThere(PuntoRaccolta pdr) {
-
 		callBringMeThere();
-
 		return;
 	}
 
@@ -199,9 +221,11 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements
 		abActivity.getSupportActionBar().setNavigationMode(
 				ActionBar.NAVIGATION_MODE_STANDARD);
 		abActivity.getSupportActionBar().setTitle(
-				abActivity.getString(R.string.punto_di_raccolta_title) + " : "
-						+ puntoDiRaccolta.getTipologiaPuntiRaccolta() + " "
-						+ puntoDiRaccolta.getArea());
+
+				abActivity.getString(R.string.puntiraccoltadetails_abtitle,
+						abActivity.getString(R.string.punto_di_raccolta_title),
+						puntoDiRaccolta.getTipologiaPuntiRaccolta(),
+						puntoDiRaccolta.getArea()));
 
 	}
 
@@ -246,6 +270,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements
 		try {
 			getActivity().startActivity(intent);
 		} catch (ActivityNotFoundException e) {
+
 			Toast.makeText(getActivity(),
 					getString(R.string.toast_app_not_installed),
 					Toast.LENGTH_LONG).show();

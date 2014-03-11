@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +32,8 @@ public class RifiutiListFragment extends ListFragment {
 		setHasOptionsMenu(true);
 	}
 
-	public static RifiutiListFragment newIstanceTipologiaRaccolta(
-			String raccolta) {
+	public static RifiutiListFragment newIstanceTipologiaRaccolta(String raccolta) {
+
 		RifiutiListFragment rf = new RifiutiListFragment();
 		Bundle b = new Bundle();
 		b.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, raccolta);
@@ -113,15 +114,14 @@ public class RifiutiListFragment extends ListFragment {
 				rifiuti = RifiutiHelper
 						.getRifiutoPerTipoRifiuti(tipologiaRifiuto);
 			}
-			RifiutoAdapter adapter = new RifiutoAdapter(getActivity(),
-					R.layout.rifiuto_adapter, rifiuti);
-			setListAdapter(adapter);
 		} catch (Exception e) {
-			e.printStackTrace();
-			
+			Log.e(getClass().getSimpleName(), e.getMessage());
 		}
 
+		RifiutoAdapter adapter = new RifiutoAdapter(getActivity(), android.R.layout.simple_list_item_1, rifiuti);
+		setListAdapter(adapter);
 	}
+
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -129,6 +129,4 @@ public class RifiutiListFragment extends ListFragment {
 		super.onSaveInstanceState(outState);
 	}
 	
-	
-
 }
