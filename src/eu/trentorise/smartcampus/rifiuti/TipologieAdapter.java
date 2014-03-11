@@ -13,12 +13,14 @@ import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 public class TipologieAdapter extends ArrayAdapter<DatiTipologiaRaccolta> {
 	private Context context;
 	private int layoutResourceId;
+	private List<DatiTipologiaRaccolta> calendari;
 	private boolean showTipoPuntoRaccolta;
 
 	public TipologieAdapter(Context context, int resource, List<DatiTipologiaRaccolta> objects, boolean showTipoPuntoRaccolta) {
 		super(context, resource, objects);
 		this.context = context;
 		this.layoutResourceId = resource;
+		this.calendari = objects;
 		this.showTipoPuntoRaccolta = showTipoPuntoRaccolta;
 	}
 
