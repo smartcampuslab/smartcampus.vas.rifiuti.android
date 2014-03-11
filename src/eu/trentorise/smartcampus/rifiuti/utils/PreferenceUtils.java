@@ -2,13 +2,17 @@ package eu.trentorise.smartcampus.rifiuti.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.util.Log;
+import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
+import eu.trentorise.smartcampus.rifiuti.model.Note;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 
 public class PreferenceUtils {
@@ -96,8 +100,7 @@ public class PreferenceUtils {
 	 * @throws Exception
 	 *             if the position is wrong
 	 */
-	public static void setCurrentProfilePosition(Context ctx, int position)
-			throws Exception {
+	public static void setCurrentProfilePosition(Context ctx, int position) {
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putInt(PROFILE_IN_USE_INDEX_KEY, position).commit();
 	}
@@ -108,11 +111,16 @@ public class PreferenceUtils {
 	 * @param p
 	 *            he profile that must be added
 	 * @throws JSONException
+	 * @throws ProfileNameExists
 	 * @throws Exception
 	 */
-	public static void addProfile(Context ctx, Profile p) throws JSONException {
+	public static void addProfile(Context ctx, Profile p) throws JSONException,
+			ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		profiles.add(p);
+		if (!isProfileInside(p, profiles))
+			profiles.add(p);
+		else
+			throw new ProfileNameExistsException();
 		JSONArray jsonArr = new JSONArray();
 		for (Profile tmp : profiles) {
 			jsonArr.put(tmp.toJSON());
@@ -126,14 +134,16 @@ public class PreferenceUtils {
 	 * @param ctx
 	 * @param position
 	 *            of the profile that should be removed
-	 * @throws Exception if there's just one profile
+	 * @throws Exception
+	 *             if there's just one profile
 	 */
-	public static void removeProfile(Context ctx, int position) throws Exception {
+	public static void removeProfile(Context ctx, int position)
+			throws Exception {
 		List<Profile> profiles = getProfiles(ctx);
 		if (profiles.size() > 1) {
 			int curr = getCurrentProfilePosition(ctx);
 			if (position < curr) {
-				setCurrentProfilePosition(ctx, curr-1);
+				setCurrentProfilePosition(ctx, curr - 1);
 			}
 			profiles.remove(position);
 			JSONArray jsonArr = new JSONArray();
@@ -146,8 +156,22 @@ public class PreferenceUtils {
 			}
 			SharedPreferences sp = getProfilePreference(ctx);
 			sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
-		}else{
-			throw new Exception("Last Element");
+			NotesHelper.init(ctx,position);
+			AsyncTask<Object, Void, Void> delTask= new AsyncTask<Object, Void, Void>() {
+
+				@Override
+				protected Void doInBackground(Object... params) {
+					List<Note> notes = NotesHelper.getNotes();
+					Note[] notesArr = new Note[notes.size()];
+					notes.toArray(notesArr);
+					NotesHelper.deleteNotes(notesArr);
+					return null;
+				}
+			};
+			delTask.execute();
+			
+		} else {
+			throw new LastElementException();
 		}
 	}
 
@@ -156,10 +180,15 @@ public class PreferenceUtils {
 	 * @param ctx
 	 * @param position
 	 *            of the profile that should be updated
+	 * @throws ProfileNameExistsException
 	 */
-	public static void editProfile(Context ctx, int position, Profile newProfile) {
+	public static void editProfile(Context ctx, int position, Profile newProfile)
+			throws ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		profiles.set(position, newProfile);
+		if (!isProfileInside(newProfile, profiles))
+			profiles.set(position, newProfile);
+		else
+			throw new ProfileNameExistsException();
 		JSONArray jsonArr = new JSONArray();
 		try {
 			for (Profile tmp : profiles) {
@@ -171,4 +200,23 @@ public class PreferenceUtils {
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
 	}
+
+	private static boolean isProfileInside(Profile p, List<Profile> profiles) {
+		for (Profile cmp : profiles)
+			if (p.getName()
+					.trim()
+					.toLowerCase(Locale.getDefault())
+					.equals(cmp.getName().trim()
+							.toLowerCase(Locale.getDefault())))
+				return true;
+		return false;
+	}
+
+	public static class ProfileNameExistsException extends Exception {
+		private static final long serialVersionUID = 1L;
+	};
+
+	public static class LastElementException extends Exception {
+		private static final long serialVersionUID = 1L;
+	};
 }
