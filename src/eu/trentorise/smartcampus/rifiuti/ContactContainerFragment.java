@@ -1,6 +1,8 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,8 +27,8 @@ public class ContactContainerFragment extends Fragment {
 	private ContantsPagerAdapter mPagerAdapter;
 	private ActionBarActivity abActivity = null;
 
-	private HashMap<String,String> istituzione = null;
-	private HashMap<String,String> gestore = null;
+	private ArrayList<HashMap<String,String>> istituzioni = null;
+	private ArrayList<HashMap<String,String>> gestori = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,10 +36,10 @@ public class ContactContainerFragment extends Fragment {
 
 		setHasOptionsMenu(true);
 
-		Istituzione i = RifiutiHelper.getIstituzione();
-		istituzione = getData(i);
-		gestore = getData(RifiutiHelper.getGestore());
-		mPagerTitles = new String[]{i.getTipologia(), getResources().getString(R.string.contacts_container_org)};
+		List<Istituzione> i = RifiutiHelper.getIstituzioni();
+		istituzioni = getIstituzioniData(i);
+		gestori = getGestoriData(RifiutiHelper.getGestori());
+		mPagerTitles = new String[]{i.get(0).getTipologia(), getResources().getString(R.string.contacts_container_org)};
 	}
 	
 	@Override
@@ -121,9 +123,9 @@ public class ContactContainerFragment extends Fragment {
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				return ContactsFragment.newInstance(istituzione);
+				return ContactsFragment.newInstance(istituzioni);
 			case 1:
-				return ContactsFragment.newInstance(gestore);
+				return ContactsFragment.newInstance(gestori);
 			default:
 				return new DummyFragment();
 			}
@@ -141,27 +143,39 @@ public class ContactContainerFragment extends Fragment {
 	}
 
 
-	private HashMap<String, String> getData(Istituzione i) {
-		HashMap<String, String> res = new HashMap<String, String>();
-		res.put("name", i.getNome());
-		res.put("description", i.getDescrizione());
-		res.put("address", null);
-		res.put("email", i.getEmail());
-		res.put("phone", i.getTelefono());
-		res.put("web", i.getSitoIstituzionale());
-		res.put("pec", i.getPec());
-		res.put("fax", i.getFax());
-		return res;
+	private ArrayList<HashMap<String, String>> getIstituzioniData(List<Istituzione> list) {
+		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
+		for (Istituzione i : list) {
+			HashMap<String, String> res = new HashMap<String, String>();
+			res.put("name", i.getNome());
+			res.put("description", i.getDescrizione());
+			res.put("email", i.getEmail());
+			res.put("phone", i.getTelefono());
+			res.put("web", i.getSitoIstituzionale());
+			res.put("pec", i.getPec());
+			res.put("fax", i.getFax());
+			res.put("address", i.getIndirizzo());
+			res.put("office", i.getUfficio());
+			res.put("opening", i.getOrarioUfficio());
+			data.add(res);
+		}
+		return data;
 	}
-	private HashMap<String, String> getData(Gestore i) {
-		HashMap<String, String> res = new HashMap<String, String>();
-		res.put("name", i.getRagioneSociale());
-		res.put("description", i.getDescrizione());
-		res.put("address", null);
-		res.put("email", i.getEmail());
-		res.put("phone", i.getTelefono());
-		res.put("web", i.getSitoWeb());
-		res.put("fax", i.getFax());
-		return res;
+	private ArrayList<HashMap<String, String>> getGestoriData(List<Gestore> list) {
+		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
+		for (Gestore i : list) {
+			HashMap<String, String> res = new HashMap<String, String>();
+			res.put("name", i.getRagioneSociale());
+			res.put("description", i.getDescrizione());
+			res.put("email", i.getEmail());
+			res.put("phone", i.getTelefono());
+			res.put("web", i.getSitoWeb());
+			res.put("fax", i.getFax());
+			res.put("address", i.getIndirizzo());
+			res.put("office", i.getUfficio());
+			res.put("opening", i.getOrarioUfficio());
+			data.add(res);
+		}
+		return data;
 	}
 }

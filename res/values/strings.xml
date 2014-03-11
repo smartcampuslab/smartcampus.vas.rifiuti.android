@@ -117,14 +117,16 @@
     <string name="contacts_container_org">GESTORE</string>
     <string name="contacts_title">Contatti</string>
     <string name="contacts_descr_label">DESCRIZIONE</string>
-    <string name="contacts_address_label">INDIRIZZO E ORARIO</string>
-    <string name="contacts_tel_label">TELEFONO</string>
-    <string name="contacts_email_label">EMAIL</string>
-    <string name="contacts_web_label">WEB</string>
-    <string name="contacts_pec_label">PEC</string>
-    <string name="contacts_fax_label">FAX</string>
+    <string name="contacts_address_label">INDIRIZZO</string>
+    <string name="contacts_contacts_label">CONTATTI</string>
+    <string name="contacts_tel_ph">TEL: %s</string>
+    <string name="contacts_email_ph">EMAIL: %s</string>
+    <string name="contacts_web_ph">WEB: %s</string>
+    <string name="contacts_pec_ph">PEC: %s</string>
+    <string name="contacts_fax_ph">FAX: %s</string>
     <string name="contacts_name_label">NOME</string>
-
+    <string name="contacts_opening_label">ORARIO</string>
+    
     
      <!-- TUTORIAL -->
     <string name="home_title">titolo 1</string>

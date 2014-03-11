@@ -63,22 +63,26 @@
         <item>GIALLO</item>
         <item>BIANCO</item>
         <item>AZZURRO</item>
-    </string-array>
+        <item>ARANCIONE</item>
+        <item>ROSSO</item>
+        </string-array>
 
     <!-- Colors values -->
     <integer-array name="color_values">
-        <item>@color/w3c_green</item>
-        <item>@color/w3c_olive</item>
-        <item>@color/w3c_maroon</item>
-        <item>@color/w3c_silver</item>
-        <item>@color/w3c_gray</item>
-        <item>@color/w3c_black</item>
-        <item>@color/w3c_blue</item>
-        <item>@color/w3c_lime</item>
-        <item>@color/w3c_yellow</item>
-        <item>@color/w3c_white</item>
-        <item>@color/w3c_aqua</item>
-    </integer-array>
+        <item>@color/x11_Green</item>
+        <item>@color/x11_DarkGreen</item>
+        <item>@color/x11_Maroon</item>
+        <item>@color/x11_Gray</item>
+        <item>@color/x11_DarkGray</item>
+        <item>@color/x11_Black</item>
+        <item>@color/x11_Blue</item>
+        <item>@color/x11_Yellow</item>
+        <item>@color/x11_LightYellow</item>
+        <item>@color/x11_White</item>
+        <item>@color/x11_Azure</item>
+        <item>@color/x11_Orange</item>
+        <item>@color/x11_Red</item>
+        </integer-array>
 
     <!-- Tipi rifiuto strings -->
     <string-array name="tipirifiuto_names">

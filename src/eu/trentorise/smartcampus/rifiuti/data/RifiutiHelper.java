@@ -782,23 +782,28 @@ public class RifiutiHelper {
 	/**
 	 * @return 'gestore' of the user area
 	 */
-	public static Gestore getGestore() {
+	public static List<Gestore> getGestori() {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			String query = "SELECT * FROM gestori WHERE ragioneSociale IN (SELECT gestore FROM aree WHERE nome = '"
 					+ mHelper.mProfile.getArea() + "')";
 			cursor = db.rawQuery(query, null);
-			cursor.moveToFirst();
-			Gestore g = new Gestore();
-			g.setRagioneSociale(cursor.getString(cursor.getColumnIndex("ragioneSociale")));
-			g.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
-			g.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-			g.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
-			g.setFax(cursor.getString(cursor.getColumnIndex("fax")));
-			g.setSitoWeb(cursor.getString(cursor.getColumnIndex("sitoWeb")));
-
-			return g;
+			List<Gestore> result = new ArrayList<Gestore>();
+			while (cursor.moveToNext()) {
+				Gestore g = new Gestore();
+				g.setRagioneSociale(cursor.getString(cursor.getColumnIndex("ragioneSociale")));
+				g.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
+				g.setUfficio(cursor.getString(cursor.getColumnIndex("ufficio")));
+				g.setOrarioUfficio(cursor.getString(cursor.getColumnIndex("orarioUfficio")));
+				g.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
+				g.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+				g.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
+				g.setFax(cursor.getString(cursor.getColumnIndex("fax")));
+				g.setSitoWeb(cursor.getString(cursor.getColumnIndex("sitoWeb")));
+				result.add(g);
+			}
+			return result;
 		} finally {
 			if (cursor != null)
 				cursor.close();
@@ -808,24 +813,30 @@ public class RifiutiHelper {
 	/**
 	 * @return 'gestore' of the user area
 	 */
-	public static Istituzione getIstituzione() {
+	public static List<Istituzione> getIstituzioni() {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			String query = "SELECT * FROM istituzioni WHERE nome IN (SELECT istituzione FROM aree WHERE nome = '"
 					+ mHelper.mProfile.getArea() + "')";
 			cursor = db.rawQuery(query, null);
-			cursor.moveToFirst();
-			Istituzione i = new Istituzione();
-			i.setTipologia(cursor.getString(cursor.getColumnIndex("tipologia")));
-			i.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-			i.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
-			i.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-			i.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
-			i.setPec(cursor.getString(cursor.getColumnIndex("pec")));
-			i.setSitoIstituzionale(cursor.getString(cursor.getColumnIndex("sitoIstituzionale")));
-			i.setFax(cursor.getString(cursor.getColumnIndex("fax")));
-			return i;
+			List<Istituzione> result = new ArrayList<Istituzione>();
+			while (cursor.moveToNext()) {
+				Istituzione i = new Istituzione();
+				i.setTipologia(cursor.getString(cursor.getColumnIndex("tipologia")));
+				i.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+				i.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
+				i.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
+				i.setUfficio(cursor.getString(cursor.getColumnIndex("ufficio")));
+				i.setOrarioUfficio(cursor.getString(cursor.getColumnIndex("orarioUfficio")));
+				i.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+				i.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
+				i.setPec(cursor.getString(cursor.getColumnIndex("pec")));
+				i.setSitoIstituzionale(cursor.getString(cursor.getColumnIndex("sitoIstituzionale")));
+				i.setFax(cursor.getString(cursor.getColumnIndex("fax")));
+				result.add(i);
+			}	
+			return result;
 		} finally {
 			if (cursor != null)
 				cursor.close();

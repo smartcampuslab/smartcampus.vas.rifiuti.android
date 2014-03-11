@@ -15,8 +15,17 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/rifiuti_dark"/>
 
-    <include 
-        android:id="@+id/contacts_details"
-        layout="@layout/contacts_details"/>
+        <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rifiuti_dark" />
+    
+    <ExpandableListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:divider="@color/rifiuti_dark"
+        android:dividerHeight="1dp">
+    </ExpandableListView>
     
 </LinearLayout>
