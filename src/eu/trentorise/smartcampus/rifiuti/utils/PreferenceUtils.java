@@ -96,8 +96,7 @@ public class PreferenceUtils {
 	 * @throws Exception
 	 *             if the position is wrong
 	 */
-	public static void setCurrentProfilePosition(Context ctx, int position)
-			throws Exception {
+	public static void setCurrentProfilePosition(Context ctx, int position) {
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putInt(PROFILE_IN_USE_INDEX_KEY, position).commit();
 	}
@@ -108,11 +107,15 @@ public class PreferenceUtils {
 	 * @param p
 	 *            he profile that must be added
 	 * @throws JSONException
+	 * @throws ProfileNameExists 
 	 * @throws Exception
 	 */
-	public static void addProfile(Context ctx, Profile p) throws JSONException {
+	public static void addProfile(Context ctx, Profile p) throws JSONException, ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		profiles.add(p);
+		if(!isProfileInside(p,profiles))
+			profiles.add(p);
+		else
+			throw new ProfileNameExistsException();
 		JSONArray jsonArr = new JSONArray();
 		for (Profile tmp : profiles) {
 			jsonArr.put(tmp.toJSON());
@@ -121,6 +124,7 @@ public class PreferenceUtils {
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
 	}
 
+	
 	/**
 	 * 
 	 * @param ctx
@@ -147,7 +151,7 @@ public class PreferenceUtils {
 			SharedPreferences sp = getProfilePreference(ctx);
 			sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
 		}else{
-			throw new Exception("Last Element");
+			throw new LastElementException();
 		}
 	}
 
@@ -156,10 +160,14 @@ public class PreferenceUtils {
 	 * @param ctx
 	 * @param position
 	 *            of the profile that should be updated
+	 * @throws ProfileNameExistsException 
 	 */
-	public static void editProfile(Context ctx, int position, Profile newProfile) {
+	public static void editProfile(Context ctx, int position, Profile newProfile) throws ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		profiles.set(position, newProfile);
+		if(!isProfileInside(newProfile, profiles))
+			profiles.set(position, newProfile);
+		else
+			throw new ProfileNameExistsException();
 		JSONArray jsonArr = new JSONArray();
 		try {
 			for (Profile tmp : profiles) {
@@ -171,4 +179,14 @@ public class PreferenceUtils {
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
 	}
+	
+	private static boolean isProfileInside(Profile p, List<Profile> profiles) {
+		for(Profile cmp:profiles)
+			if(p.getName().trim().toLowerCase().equals(cmp.getName().trim().toLowerCase()))
+				return true;
+		return false;
+	}
+
+	public static class ProfileNameExistsException extends Exception{};
+	public static class LastElementException extends Exception{};
 }

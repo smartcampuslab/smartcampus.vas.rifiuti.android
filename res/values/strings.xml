@@ -8,6 +8,7 @@
     <string name="dialog_confirm_msg">questa operazione comporta dei rischi, premi OK solo se sai cosa stai facendo.</string>
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
     <string name="toast_no_prof">Crea il tuo profilo!</string>
+     <string name="err_everything_go_lazy">Qualcosa è andato storto</string>
 
     <!-- Drawer titles -->
     <string name="drawer_open">Rifiuti</string>
@@ -48,7 +49,8 @@
     <string name="err_gps_off">Accendi il gps se vuoi velocizzare il processo!</string>
     <string name="dialog_gps_title">Vuoi usare questa posizione?</string>
     <string name="dialog_gps_msg">%1$s %2$s, %3$s</string>
-    <string name="err_unknown_area">Area specificata non e\' riconosciuta.</string>
+    <string name="err_unknown_area">Area specificata non è riconosciuta.</string>
+    <string name="err_prof_name">Il nome del profilo è già in uso</string>
 
     <!-- Actions -->
     <string name="action_edit">Modifica</string>

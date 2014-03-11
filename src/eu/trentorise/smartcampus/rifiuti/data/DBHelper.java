@@ -72,6 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String TABLE_NOTE = "note";
 	public static final String NOTE_ID = "_id";
 	public static final String NOTE_TXT = "txt";
+	public static final String NOTE_PROFILE = "profile";
 	public static final String NOTE_DATE = "ndate";
 
 	private static final String CREATE_NOTE_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -79,8 +80,9 @@ public class DBHelper extends SQLiteOpenHelper {
 			+ "("
 			+ NOTE_ID
 			+ " INTEGER PRIMARY KEY,"
-			+ NOTE_TXT
-			+ " TEXT," + NOTE_DATE + " INTEGER)";
+			+ NOTE_TXT + " TEXT,"
+			+ NOTE_PROFILE + " TEXT,"
+			+ NOTE_DATE + " INTEGER)";
 
 	/**
 	 * Creates a empty database on the system and rewrites it with your own
@@ -118,7 +120,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.i("boh", "!!!!CREATING");
 		db.execSQL(CREATE_NOTE_TABLE);
 		db.beginTransaction();
 		try {
