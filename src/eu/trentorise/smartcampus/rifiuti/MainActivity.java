@@ -2,13 +2,6 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
-import com.github.espiandev.showcaseview.ListViewTutorialHelper;
-import com.github.espiandev.showcaseview.TutorialHelper;
-import com.github.espiandev.showcaseview.TutorialItem;
-import com.github.espiandev.showcaseview.TutorialHelper.TutorialProvider;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -19,7 +12,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -28,13 +20,18 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.espiandev.showcaseview.ListViewTutorialHelper;
+import com.github.espiandev.showcaseview.TutorialHelper;
+import com.github.espiandev.showcaseview.TutorialHelper.TutorialProvider;
+import com.github.espiandev.showcaseview.TutorialItem;
+
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
-public class MainActivity extends ActionBarActivity implements
-		ActionBar.OnNavigationListener {
+public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener {
 
 	private int mContentFrameId;
 	private DrawerLayout mDrawerLayout;
@@ -54,33 +51,33 @@ public class MainActivity extends ActionBarActivity implements
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-		mDrawerList.setAdapter(new DrawerArrayAdapter(this,
-				R.layout.drawer_entry, getResources().getStringArray(
-						R.array.drawer_entries_strings)));
+		mDrawerList.setAdapter(new DrawerArrayAdapter(this, R.layout.drawer_entry, getResources().getStringArray(
+				R.array.drawer_entries_strings)));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		
-//		mDrawerLayout.setDrawerListener(new DrawerListener());
-//				mDrawerList.setOnFocusChangeListener(new OnFocusChangeListener() {
-//			
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				mTutorialHelper = new ListViewTutorialHelper(MainActivity.this, mNavDrawerTutorialProvider);
-//
-//				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-//					
-////					showTourDialog();
-//					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
-//				}
-//				
-//			}
-//		});
+
+		// mDrawerLayout.setDrawerListener(new DrawerListener());
+		// mDrawerList.setOnFocusChangeListener(new OnFocusChangeListener() {
+		//
+		// @Override
+		// public void onFocusChange(View v, boolean hasFocus) {
+		// mTutorialHelper = new ListViewTutorialHelper(MainActivity.this,
+		// mNavDrawerTutorialProvider);
+		//
+		// if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
+		//
+		// // showTourDialog();
+		// RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
+		// }
+		//
+		// }
+		// });
 		addNavDrawerButton();
 
 		RadioGroup rg = (RadioGroup) findViewById(R.id.profile_rg);
 		rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				Integer i = (Integer)findViewById(checkedId).getTag();
+				Integer i = (Integer) findViewById(checkedId).getTag();
 				if (i != null) {
 					try {
 						PreferenceUtils.setCurrentProfilePosition(MainActivity.this, i);
@@ -97,15 +94,13 @@ public class MainActivity extends ActionBarActivity implements
 			if (PreferenceUtils.getProfiles(this).isEmpty()) {
 				lockDrawer();
 				loadFragment(8);
-				Toast.makeText(this, getString(R.string.toast_no_prof),
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.toast_no_prof), Toast.LENGTH_SHORT).show();
 			} else {
 				prepareNavDropdown(true);
 			}
 
 		} catch (Exception e) {
-			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 			finish();
 		}
@@ -122,8 +117,7 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onBackPressed() {
 
-		Fragment f = getSupportFragmentManager().findFragmentById(
-				R.id.content_frame);
+		Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
 		if (f instanceof onBackListener)
 			((onBackListener) f).onBack();
 		else
@@ -165,8 +159,7 @@ public class MainActivity extends ActionBarActivity implements
 		if (PreferenceUtils.getCurrentProfilePosition(this) < 0)
 			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this, 0));
 		else
-			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this,
-					PreferenceUtils.getCurrentProfilePosition(this)));
+			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this, PreferenceUtils.getCurrentProfilePosition(this)));
 	}
 
 	public void prepareNavDropdown(boolean loadHome) {
@@ -192,31 +185,32 @@ public class MainActivity extends ActionBarActivity implements
 				i++;
 			}
 		} else {
-			((TextView)findViewById(R.id.curr_profile_tv)).setText(profiles.get(0).getName());
+			((TextView) findViewById(R.id.curr_profile_tv)).setText(profiles.get(0).getName());
 			findViewById(R.id.curr_profile_tv).setVisibility(View.VISIBLE);
 			findViewById(R.id.profile_rg).setVisibility(View.GONE);
 		}
 		mDrawerToggle.syncState();
 
-//		SpinnerAdapter adapter = new ArrayAdapter<Profile>(this,
-//				android.R.layout.simple_spinner_dropdown_item, profiles) {
-//
-//			@Override
-//			public View getView(int position, View convertView, ViewGroup parent) {
-//				if (convertView == null) {
-//					LayoutInflater inflater = getLayoutInflater();
-//					convertView = inflater.inflate(
-//							android.R.layout.simple_spinner_dropdown_item,
-//							parent, false);
-//				}
-//				((TextView) convertView).setText(getItem(position).getName());
-//				return convertView;
-//			}
-//
-//		};
-//		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-//		getSupportActionBar().setDisplayShowTitleEnabled(true);
-//		getSupportActionBar().setListNavigationCallbacks(adapter, this);
+		// SpinnerAdapter adapter = new ArrayAdapter<Profile>(this,
+		// android.R.layout.simple_spinner_dropdown_item, profiles) {
+		//
+		// @Override
+		// public View getView(int position, View convertView, ViewGroup parent)
+		// {
+		// if (convertView == null) {
+		// LayoutInflater inflater = getLayoutInflater();
+		// convertView = inflater.inflate(
+		// android.R.layout.simple_spinner_dropdown_item,
+		// parent, false);
+		// }
+		// ((TextView) convertView).setText(getItem(position).getName());
+		// return convertView;
+		// }
+		//
+		// };
+		// getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		// getSupportActionBar().setDisplayShowTitleEnabled(true);
+		// getSupportActionBar().setListNavigationCallbacks(adapter, this);
 		unlockDrawer();
 		if (loadHome) {
 			setCurrentProfile();
@@ -226,8 +220,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void addNavDrawerButton() {
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
@@ -236,8 +229,8 @@ public class MainActivity extends ActionBarActivity implements
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-					
-//					showTourDialog();
+
+					// showTourDialog();
 					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
 				}
 			}
@@ -281,8 +274,7 @@ public class MainActivity extends ActionBarActivity implements
 
 		if (fragment != null) {
 			// Insert the fragment by replacing any existing fragment
-			getSupportFragmentManager().beginTransaction()
-					.replace(mContentFrameId, fragment).commit();
+			getSupportFragmentManager().beginTransaction().replace(mContentFrameId, fragment).commit();
 			// Highlight the selected item, update the title, close the drawer
 			mDrawerList.setItemChecked(position, true);
 			// setTitle(mPlanetTitles[position]);
@@ -293,8 +285,7 @@ public class MainActivity extends ActionBarActivity implements
 	// USE WITH CARE!!
 	public void lockDrawer() {
 		if (mDrawerLayout != null) {
-			mDrawerLayout
-					.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			getSupportActionBar().setHomeButtonEnabled(false);
 		}
 	}
@@ -324,17 +315,16 @@ public class MainActivity extends ActionBarActivity implements
 	/**
 	 * Drawer item click listener
 	 */
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			loadFragment(position);
 		}
 	}
-private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
-		
-		TutorialItem[] tutorial = new TutorialItem[]{
+
+	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
+
+		TutorialItem[] tutorial = new TutorialItem[] {
 				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
 				new TutorialItem("punti raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
 				new TutorialItem("tipi raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
@@ -342,64 +332,58 @@ private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
 				new TutorialItem("segnala", null, 0, R.string.segnala_title, R.string.segnala_tut),
 				new TutorialItem("contatti", null, 0, R.string.contatti_title, R.string.contatti_tut),
 				new TutorialItem("tutorial", null, 0, R.string.tutorial_title, R.string.tutorial_tut),
-				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut),
+				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut), };
 
-
-
-}; 
 		@Override
 		public void onTutorialFinished() {
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}
-		
+
 		@Override
 		public void onTutorialCancelled() {
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}
-		
+
 		@Override
 		public TutorialItem getItemAt(int i) {
 			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_item);
 			return tutorial[i];
 		}
-		
+
 		@Override
 		public int size() {
 			return tutorial.length;
 		}
 	};
-	
-	 class DrawerListener implements DrawerLayout.DrawerListener {
-	        @Override
-	        public void onDrawerOpened(View drawerView) {
-	            mDrawerToggle.onDrawerOpened(drawerView);
-//	            getActionBar().on.onDrawerOpened();
-	            mTutorialHelper = new ListViewTutorialHelper(MainActivity.this, mNavDrawerTutorialProvider);
-	            
-	            				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-	            					
-//	            					showTourDialog();
-	            					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
-	            				}
-	        }
 
-	        @Override
-	        public void onDrawerClosed(View drawerView) {
-	            mDrawerToggle.onDrawerClosed(drawerView);
-//	            mActionBar.onDrawerClosed();
-	        }
+	class DrawerListener implements DrawerLayout.DrawerListener {
+		@Override
+		public void onDrawerOpened(View drawerView) {
+			mDrawerToggle.onDrawerOpened(drawerView);
+			// getActionBar().on.onDrawerOpened();
+			mTutorialHelper = new ListViewTutorialHelper(MainActivity.this, mNavDrawerTutorialProvider);
 
-	        @Override
-	        public void onDrawerSlide(View drawerView, float slideOffset) {
-	            mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
-	        }
+			if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
+				// showTourDialog();
+				RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
+			}
+		}
 
-	        @Override
-	        public void onDrawerStateChanged(int newState) {
-	            mDrawerToggle.onDrawerStateChanged(newState);
-	        }
-	    }
+		@Override
+		public void onDrawerClosed(View drawerView) {
+			mDrawerToggle.onDrawerClosed(drawerView);
+			// mActionBar.onDrawerClosed();
+		}
 
-	
+		@Override
+		public void onDrawerSlide(View drawerView, float slideOffset) {
+			mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
+		}
+
+		@Override
+		public void onDrawerStateChanged(int newState) {
+			mDrawerToggle.onDrawerStateChanged(newState);
+		}
+	}
 
 }

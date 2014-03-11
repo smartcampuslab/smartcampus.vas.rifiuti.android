@@ -25,7 +25,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,10 +111,10 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		} catch (Exception e) {
 			Log.e(getClass().getSimpleName(), e.getMessage());
 		}
-		
+
 		TextView mDettagli = (TextView) getActivity().findViewById(R.id.puntodiraccolta_dettagli);
 		mDettagli.setText(puntoDiRaccolta.getIndirizzo());
-		
+
 		ImageView mappa = (ImageView) getActivity().findViewById(R.id.map_dettagli);
 		mappa.setOnClickListener(new OnClickListener() {
 			@Override
@@ -191,9 +190,10 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 				fragmentTransaction.commit();
 			}
 		});
-		
-		ScrollView sv = (ScrollView) getActivity().findViewById(R.id.puntodiraccolta_dettagli_scrollview);
-		sv.focusSearch(ScrollView.FOCUS_UP);
+
+		// ScrollView sv = (ScrollView)
+		// getActivity().findViewById(R.id.puntodiraccolta_dettagli_scrollview);
+		// sv.focusSearch(ScrollView.FOCUS_UP);
 	}
 
 	private void bringMeThere(PuntoRaccolta pdr) {
