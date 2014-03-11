@@ -57,18 +57,19 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 	private boolean showAsList() {
 		return getArguments() == null || !getArguments().containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		try {
 			// if has elements explicitly passed take them, otherwise use all
 			if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA)) {
-				mPuntiRaccolta = (List<PuntoRaccolta>)getArguments().getSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
+				mPuntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 			} else {
 				mPuntiRaccolta = RifiutiHelper.getPuntiRaccolta();
 			}
-			
+
 			for (Iterator<PuntoRaccolta> iterator = mPuntiRaccolta.iterator(); iterator.hasNext();) {
 				PuntoRaccolta point = iterator.next();
 				if (point.getLocalizzazione() == null || point.getLocalizzazione().trim().length() == 0) {
@@ -127,10 +128,10 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 	public void onStart() {
 		super.onStart();
 		initView();
-			if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
-				abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.punto_di_raccolta_title));
-			} else
-				abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.punti_di_raccolta_title));
+		if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
+			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.punto_di_raccolta_title));
+		} else
+			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.punti_di_raccolta_title));
 	}
 
 	public void onResume() {
@@ -162,8 +163,7 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		List<PuntoRaccolta> puntiRaccolta = null;
 		if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
 			// get punto o punti di raccolta
-			puntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(
-					ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
+			puntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
 		} else
 			puntiRaccolta = (List<PuntoRaccolta>) mPuntiRaccolta;
 		if (puntiRaccolta != null) {
@@ -191,17 +191,21 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 					Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
 					i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, pdr.get(0));
 					startActivity(i);
-//					FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
-//							.beginTransaction();
-//					PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
-//					Bundle args = new Bundle();
-//					args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, pdr.get(0));
-//					fragment.setArguments(args);
-//					fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//					// fragmentTransaction.detach(this);
-//					fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
-//					fragmentTransaction.addToBackStack(fragment.getTag());
-//					fragmentTransaction.commit();
+					// FragmentTransaction fragmentTransaction =
+					// getActivity().getSupportFragmentManager()
+					// .beginTransaction();
+					// PuntoDiRaccoltaDetailFragment fragment = new
+					// PuntoDiRaccoltaDetailFragment();
+					// Bundle args = new Bundle();
+					// args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA,
+					// pdr.get(0));
+					// fragment.setArguments(args);
+					// fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+					// // fragmentTransaction.detach(this);
+					// fragmentTransaction.replace(R.id.content_frame, fragment,
+					// "puntodiraccolta");
+					// fragmentTransaction.addToBackStack(fragment.getTag());
+					// fragmentTransaction.commit();
 				} else if (pdr.size() > 1) {
 					// zoom
 					MapManager.fitMapWithOverlays(pdr, getSupportMap());
@@ -230,8 +234,8 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		if (getSupportMap() != null) {
 			getSupportMap().clear();
 			if (objects != null && getActivity() != null) {
-				List<MarkerOptions> cluster = MapManager.ClusteringHelper.cluster(
-						getActivity().getApplicationContext(), getSupportMap(), objects);
+				List<MarkerOptions> cluster = MapManager.ClusteringHelper.cluster(getActivity().getApplicationContext(),
+						getSupportMap(), objects);
 				MapManager.ClusteringHelper.render(getSupportMap(), cluster);
 			}
 		}
@@ -241,9 +245,9 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 	private GoogleMap getSupportMap() {
 		if (mMap == null) {
 			mMap = mMapFragment.getMap();
-			if (mMap != null)
+			if (mMap != null) {
 				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MapManager.DEFAULT_POINT, MapManager.ZOOM_DEFAULT));
-
+			}
 		}
 		return mMap;
 	}

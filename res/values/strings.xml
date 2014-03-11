@@ -73,7 +73,10 @@
     <string name="niente_tipi_raccolta">Nessun risultato trovato</string>
     <string name="pdr_non_trovato_toast">Punto di raccolta non trovato</string>
 
-    <!-- dettagli punto di raccolta -->
+    <!-- Punti di raccolta - Lista-->
+    <string name="puntoraccolta_list_item">%1$s - %2$s</string>
+    
+    <!-- Punto di raccolta - Dettagli-->
     <string name="dettagli_label">DETTAGLI</string>
     <string name="orario_label">ORARIO</string>
     <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
@@ -81,6 +84,8 @@
     <string name="from_for_direction">from</string>
     <string name="to_for_direction">to</string>
     <string name="toast_app_not_installed">L\'applicazione richiesta non è stata trovata</string>
+    <string name="puntiraccoltadetails_abtitle">%1$s: %2$s %3$s</string>
+    <string name="puntiraccoltadetails_orari">%1$s: %2$s - %3$s</string>
     <!-- stringhe titoli fragment -->
     <string name="tipo_di_rifiuto_title">Tipo di rifiuto</string>
     <string name="tipo_di_raccolta_title">Tipo di raccolta</string>

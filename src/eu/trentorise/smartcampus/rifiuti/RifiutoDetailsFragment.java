@@ -76,7 +76,7 @@ public class RifiutoDetailsFragment extends Fragment {
 		}
 		// setListAdapter(adapter);
 		ListView mTipologieRaccolta = (ListView) getView().findViewById(R.id.tiporaccolta_list);
-		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter, datiTipologiaRaccoltaList);
+		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_item, datiTipologiaRaccoltaList);
 		mTipologieRaccolta.setAdapter(tipologieAdapter);
 
 		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {

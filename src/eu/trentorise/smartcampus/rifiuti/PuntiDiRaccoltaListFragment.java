@@ -32,11 +32,10 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 		abActivity = (ActionBarActivity) getActivity();
 
 		setHasOptionsMenu(true);
-
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
-	
+
 	public static PuntiDiRaccoltaListFragment newIstanceTipologiaRaccolta(String raccolta) {
 		PuntiDiRaccoltaListFragment rf = new PuntiDiRaccoltaListFragment();
 		Bundle b = new Bundle();
@@ -59,55 +58,60 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 		return viewGroup;
 	}
 
-	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		Bundle bundle = getArguments();
+		if (bundle != null) {
+			if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA)) {
+				tipologiaRaccolta = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
+			}
+			if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO)) {
+				tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
+			}
+		}
+
+		try {
+			if (tipologiaRaccolta != null) {
+				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRaccolta(tipologiaRaccolta);
+			} else if (tipologiaRifiuto != null) {
+				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
+			} else {
+				puntiDiRaccolta = RifiutiHelper.getPuntiRaccolta();
+				hasMenu = true;
+				setHasOptionsMenu(true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			puntiDiRaccolta = new ArrayList<PuntoRaccolta>();
+		}
+
+		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), android.R.layout.simple_list_item_1, puntiDiRaccolta);
+		// android.R.layout.simple_list_item_1
+		setListAdapter(adapter);
+	}
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
 		i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
 		startActivity(i);
-//		FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//		PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
-//
-//		Bundle args = new Bundle();
-//		args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
-//		fragment.setArguments(args);
-//		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//		// fragmentTransaction.detach(this);
-//		fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
-//		fragmentTransaction.addToBackStack(fragment.getTag());
-//		fragmentTransaction.commit();
-	}
-	
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		Bundle bundle = getArguments();
-		if (bundle != null) {
-			if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA))
-				tipologiaRaccolta = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
-			if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO))
-				tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
-		}
-		
-		try {
-			if (tipologiaRaccolta != null) {
-				puntiDiRaccolta=RifiutiHelper.getPuntiRaccoltaPerTipoRaccolta(tipologiaRaccolta);
-			} else if (tipologiaRifiuto != null) {
-				puntiDiRaccolta=RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
-			} else {
-				puntiDiRaccolta=RifiutiHelper.getPuntiRaccolta();
-				hasMenu = true;
-				setHasOptionsMenu(true);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			puntiDiRaccolta = new ArrayList<PuntoRaccolta>();
-		}
-		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.puntodiraccolta_adapter, puntiDiRaccolta);
-		setListAdapter(adapter); 
+		// FragmentTransaction fragmentTransaction =
+		// getActivity().getSupportFragmentManager().beginTransaction();
+		// PuntoDiRaccoltaDetailFragment fragment = new
+		// PuntoDiRaccoltaDetailFragment();
+		//
+		// Bundle args = new Bundle();
+		// args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA,
+		// puntiDiRaccolta.get(position));
+		// fragment.setArguments(args);
+		// fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		// // fragmentTransaction.detach(this);
+		// fragmentTransaction.replace(R.id.content_frame, fragment,
+		// "puntodiraccolta");
+		// fragmentTransaction.addToBackStack(fragment.getTag());
+		// fragmentTransaction.commit();
 	}
 
 	@Override
@@ -116,7 +120,7 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 		if (hasMenu) {
 			inflater.inflate(R.menu.point_menu, menu);
 		}
-	}	
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -126,14 +130,13 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 			getFragmentManager().beginTransaction().replace(R.id.content_frame, rf).commit();
 			return true;
 		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
-	
 	@Override
 	public void onStart() {
 		super.onStart();
-
 	}
+
 }
