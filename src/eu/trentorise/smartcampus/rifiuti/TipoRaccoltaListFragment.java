@@ -136,15 +136,6 @@ public class TipoRaccoltaListFragment extends ListFragment {
 				types.addView(iv);
 			}
 
-			// type.setText(tmp.getTipologiaPuntoRaccolta());
-			// View colorView = convertView.findViewById(R.id.color_view);
-			// if (tmp.getColore() != null && tmp.getColore().length() > 0) {
-			// colorView.setVisibility(View.VISIBLE);
-			// ((GradientDrawable)colorView.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(),
-			// tmp.getColore()));
-			// } else {
-			// colorView.setVisibility(View.GONE);
-			// }
 			return convertView;
 		}
 
