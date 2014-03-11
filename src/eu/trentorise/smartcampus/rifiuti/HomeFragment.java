@@ -56,11 +56,11 @@ public class HomeFragment extends Fragment {
 		
 		mTutorialHelper = new ListViewTutorialHelper(getActivity(), mHomeTutorialProvider);
 
-		if (RifiutiHelper.isFirstLaunchMenu(getActivity())) {
+		if (RifiutiHelper.isFirstLaunchHome(getActivity())) {
 //			openNavDrawerIfNeeded();
 			
 //			showTourDialog();
-			RifiutiHelper.disableFirstLaunchMenu(getActivity());
+			RifiutiHelper.disableFirstLaunchHome(getActivity());
 		}
 	}
 

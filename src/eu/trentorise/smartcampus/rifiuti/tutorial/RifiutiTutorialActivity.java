@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.rifiuti;
+package eu.trentorise.smartcampus.rifiuti.tutorial;
 
 import android.view.View;
 

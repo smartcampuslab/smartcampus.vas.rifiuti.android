@@ -58,22 +58,8 @@ public class MainActivity extends ActionBarActivity implements
 				R.layout.drawer_entry, getResources().getStringArray(
 						R.array.drawer_entries_strings)));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		
-//		mDrawerLayout.setDrawerListener(new DrawerListener());
-//				mDrawerList.setOnFocusChangeListener(new OnFocusChangeListener() {
-//			
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				mTutorialHelper = new ListViewTutorialHelper(MainActivity.this, mNavDrawerTutorialProvider);
-//
-//				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-//					
-////					showTourDialog();
-//					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
-//				}
-//				
-//			}
-//		});
+		mTutorialHelper = new ListViewTutorialHelper(this, mNavDrawerTutorialProvider);
+
 		addNavDrawerButton();
 
 		RadioGroup rg = (RadioGroup) findViewById(R.id.profile_rg);
@@ -238,6 +224,7 @@ public class MainActivity extends ActionBarActivity implements
 				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
 					
 //					showTourDialog();
+					mTutorialHelper.showTutorials();
 					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
 				}
 			}
