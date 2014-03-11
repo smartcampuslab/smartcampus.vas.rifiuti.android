@@ -101,10 +101,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		abActivity = (ActionBarActivity) getActivity();
 		setHasOptionsMenu(true);
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
 		toggleDrawer();
 
@@ -132,6 +129,14 @@ public class ProfileFragment extends Fragment implements ILocation {
 		for (Area a : comuneAreas) {
 			comuneAreasNames.add(a.getComune());
 		}
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override

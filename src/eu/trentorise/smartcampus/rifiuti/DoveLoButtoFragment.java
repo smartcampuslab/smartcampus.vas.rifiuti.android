@@ -38,16 +38,16 @@ public class DoveLoButtoFragment extends Fragment {
 	private List<String> tipiRifiutiEntries;
 	private ArrayAdapter<String> doveLoButtoAdapter;
 	private TipiRifiutiAdapter tipiRifiutiAdapter;
-	
-	
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		try {
-			if(RifiutiHelper.getInstance()==null){
-			RifiutiHelper.init(getActivity());
-			RifiutiHelper.setProfile(PreferenceUtils.getProfile(getActivity(), PreferenceUtils.getCurrentProfilePosition(getActivity())));
+			if (RifiutiHelper.getInstance() == null) {
+				RifiutiHelper.init(getActivity());
+				RifiutiHelper.setProfile(PreferenceUtils.getProfile(
+						getActivity(), PreferenceUtils
+								.getCurrentProfilePosition(getActivity())));
 			}
 			tipiRifiutiEntries = RifiutiHelper.readTipologiaRifiuti();// getResources().getStringArray(R.array.tipirifiuti_entries);
 		} catch (IOException e) {
@@ -55,8 +55,6 @@ public class DoveLoButtoFragment extends Fragment {
 			getFragmentManager().popBackStack();
 		}
 	}
-
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

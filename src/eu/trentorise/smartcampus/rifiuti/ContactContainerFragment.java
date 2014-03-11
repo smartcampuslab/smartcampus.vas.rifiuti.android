@@ -31,17 +31,21 @@ public class ContactContainerFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		abActivity = (ActionBarActivity) getActivity();
 
 		setHasOptionsMenu(true);
 
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
-		
 		Istituzione i = RifiutiHelper.getIstituzione();
 		istituzione = getData(i);
 		gestore = getData(RifiutiHelper.getGestore());
 		mPagerTitles = new String[]{i.getTipologia(), getResources().getString(R.string.contacts_container_org)};
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
@@ -73,7 +77,7 @@ public class ContactContainerFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		abActivity.getActionBar().setTitle(R.string.contacts_title);
+		abActivity.getSupportActionBar().setTitle(R.string.contacts_title);
 		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		mPagerAdapter = new ContantsPagerAdapter(getChildFragmentManager());
 		mPager.setAdapter(mPagerAdapter);

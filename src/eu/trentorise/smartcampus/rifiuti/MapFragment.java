@@ -47,7 +47,8 @@ import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
-public class MapFragment extends Fragment implements OnCameraChangeListener, MapObjectContainer {
+public class MapFragment extends Fragment implements OnCameraChangeListener,
+		MapObjectContainer {
 
 	private GoogleMap mMap;
 	private Collection<PuntoRaccolta> mPuntiRaccolta;
@@ -55,37 +56,40 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 	private ActionBarActivity abActivity;
 
 	private boolean showAsList() {
-		return getArguments() == null || !getArguments().containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
+		return getArguments() == null
+				|| !getArguments().containsKey(
+						ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		try {
 			// if has elements explicitly passed take them, otherwise use all
-			if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA)) {
-				mPuntiRaccolta = (List<PuntoRaccolta>)getArguments().getSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
+			if (getArguments() != null
+					&& getArguments().containsKey(
+							ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA)) {
+				mPuntiRaccolta = (List<PuntoRaccolta>) getArguments()
+						.getSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 			} else {
 				mPuntiRaccolta = RifiutiHelper.getPuntiRaccolta();
 			}
-			
-			for (Iterator<PuntoRaccolta> iterator = mPuntiRaccolta.iterator(); iterator.hasNext();) {
+
+			for (Iterator<PuntoRaccolta> iterator = mPuntiRaccolta.iterator(); iterator
+					.hasNext();) {
 				PuntoRaccolta point = iterator.next();
-				if (point.getLocalizzazione() == null || point.getLocalizzazione().trim().length() == 0) {
+				if (point.getLocalizzazione() == null
+						|| point.getLocalizzazione().trim().length() == 0) {
 					iterator.remove();
 				}
 			}
 		} catch (Exception e) {
-			Log.e(getClass().getName(), "Error reading punti di raccolta: " + e.getMessage());
+			Log.e(getClass().getName(),
+					"Error reading punti di raccolta: " + e.getMessage());
 			mPuntiRaccolta = new ArrayList<PuntoRaccolta>();
 		}
-		abActivity = (ActionBarActivity) getActivity();
 		setHasOptionsMenu(true);
 
-		if (abActivity != null) {
-			abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
-		}
 	}
 
 	@Override
@@ -101,7 +105,8 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		switch (item.getItemId()) {
 		case R.id.action_list:
 			PuntiDiRaccoltaListFragment rf = new PuntiDiRaccoltaListFragment();
-			getFragmentManager().beginTransaction().replace(R.id.content_frame, rf).commit();
+			getFragmentManager().beginTransaction()
+					.replace(R.id.content_frame, rf).commit();
 			return true;
 		default:
 		}
@@ -111,26 +116,39 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
+		abActivity = (ActionBarActivity) getActivity();
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+
 		FragmentManager fm = getChildFragmentManager();
-		mMapFragment = (SupportMapFragment) fm.findFragmentById(R.id.map_container);
+		mMapFragment = (SupportMapFragment) fm
+				.findFragmentById(R.id.map_container);
 		if (mMapFragment == null) {
 			mMapFragment = SupportMapFragment.newInstance();
-			fm.beginTransaction().replace(R.id.map_container, mMapFragment).commit();
+			fm.beginTransaction().replace(R.id.map_container, mMapFragment)
+					.commit();
 		}
 	}
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_map_container, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_map_container, container,
+				false);
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
 		initView();
-			if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
-				abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.punto_di_raccolta_title));
-			} else
-				abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.punti_di_raccolta_title));
+		if (getArguments() != null
+				&& getArguments().containsKey(
+						ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
+			abActivity.getSupportActionBar().setTitle(
+					abActivity.getString(R.string.punto_di_raccolta_title));
+		} else
+			abActivity.getSupportActionBar().setTitle(
+					abActivity.getString(R.string.punti_di_raccolta_title));
 	}
 
 	public void onResume() {
@@ -160,16 +178,19 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 			setMarkerListener(getSupportMap());
 		}
 		List<PuntoRaccolta> puntiRaccolta = null;
-		if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
+		if (getArguments() != null
+				&& getArguments().containsKey(
+						ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA)) {
 			// get punto o punti di raccolta
-			puntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(
-					ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
+			puntiRaccolta = (List<PuntoRaccolta>) getArguments()
+					.getSerializable(ArgUtils.ARGUMENT_LISTA_PUNTO_DI_RACCOLTA);
 		} else
 			puntiRaccolta = (List<PuntoRaccolta>) mPuntiRaccolta;
 		if (puntiRaccolta != null) {
 			new AsyncTask<List<PuntoRaccolta>, Void, List<PuntoRaccolta>>() {
 				@Override
-				protected List<PuntoRaccolta> doInBackground(List<PuntoRaccolta>... params) {
+				protected List<PuntoRaccolta> doInBackground(
+						List<PuntoRaccolta>... params) {
 					return params[0];
 				}
 
@@ -186,22 +207,28 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 
 			@Override
 			public boolean onMarkerClick(Marker marker) {
-				List<PuntoRaccolta> pdr = MapManager.ClusteringHelper.getFromGridId(marker.getTitle());
+				List<PuntoRaccolta> pdr = MapManager.ClusteringHelper
+						.getFromGridId(marker.getTitle());
 				if (pdr.size() == 1) {
-					Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
+					Intent i = new Intent(getActivity(),
+							PuntoRaccoltaActivity.class);
 					i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, pdr.get(0));
 					startActivity(i);
-//					FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager()
-//							.beginTransaction();
-//					PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
-//					Bundle args = new Bundle();
-//					args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, pdr.get(0));
-//					fragment.setArguments(args);
-//					fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//					// fragmentTransaction.detach(this);
-//					fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
-//					fragmentTransaction.addToBackStack(fragment.getTag());
-//					fragmentTransaction.commit();
+					// FragmentTransaction fragmentTransaction =
+					// getActivity().getSupportFragmentManager()
+					// .beginTransaction();
+					// PuntoDiRaccoltaDetailFragment fragment = new
+					// PuntoDiRaccoltaDetailFragment();
+					// Bundle args = new Bundle();
+					// args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA,
+					// pdr.get(0));
+					// fragment.setArguments(args);
+					// fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+					// // fragmentTransaction.detach(this);
+					// fragmentTransaction.replace(R.id.content_frame, fragment,
+					// "puntodiraccolta");
+					// fragmentTransaction.addToBackStack(fragment.getTag());
+					// fragmentTransaction.commit();
 				} else if (pdr.size() > 1) {
 					// zoom
 					MapManager.fitMapWithOverlays(pdr, getSupportMap());
@@ -230,8 +257,9 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		if (getSupportMap() != null) {
 			getSupportMap().clear();
 			if (objects != null && getActivity() != null) {
-				List<MarkerOptions> cluster = MapManager.ClusteringHelper.cluster(
-						getActivity().getApplicationContext(), getSupportMap(), objects);
+				List<MarkerOptions> cluster = MapManager.ClusteringHelper
+						.cluster(getActivity().getApplicationContext(),
+								getSupportMap(), objects);
 				MapManager.ClusteringHelper.render(getSupportMap(), cluster);
 			}
 		}
@@ -242,7 +270,8 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 		if (mMap == null) {
 			mMap = mMapFragment.getMap();
 			if (mMap != null)
-				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MapManager.DEFAULT_POINT, MapManager.ZOOM_DEFAULT));
+				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+						MapManager.DEFAULT_POINT, MapManager.ZOOM_DEFAULT));
 
 		}
 		return mMap;

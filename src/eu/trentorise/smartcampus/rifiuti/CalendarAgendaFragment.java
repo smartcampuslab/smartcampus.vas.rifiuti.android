@@ -37,17 +37,22 @@ public class CalendarAgendaFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		abActivity = (ActionBarActivity) getActivity();
-
+		
 		setHasOptionsMenu(true);
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
 		if (getArguments().containsKey(ArgUtils.ARGUMENT_CALENDAR_DAY)) {
 			day = (Day<CalendarioEvent>) getArguments().getSerializable(ArgUtils.ARGUMENT_CALENDAR_DAY);
 			cal = Calendar.getInstance(Locale.getDefault());
 			cal.set(day.getYear(), day.getMonth(), day.getDay());
 		}
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
+		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
