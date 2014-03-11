@@ -54,7 +54,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="eu.trentorise.smartcampus.rifiuti.RifiutiTutorialActivity"
+            android:name="eu.trentorise.smartcampus.rifiuti.tutorial.RifiutiTutorialActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:theme="@style/TutorialTheme" >
             <intent-filter>

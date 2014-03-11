@@ -7,8 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,19 +34,8 @@ public class RifiutoDetailsFragment extends Fragment {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			abActivity.onBackPressed();
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(
-				R.layout.fragment_rifiuto_details, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_rifiuto_details, container, false);
 		return viewGroup;
 	}
 
@@ -67,45 +56,38 @@ public class RifiutoDetailsFragment extends Fragment {
 			// if (tipologiaRaccolta != null) {
 			if (RifiutiHelper.getInstance() == null) {
 				RifiutiHelper.init(getActivity());
-				RifiutiHelper.setProfile(PreferenceUtils.getProfile(
-						getActivity(), PreferenceUtils
-								.getCurrentProfilePosition(getActivity())));
+				RifiutiHelper.setProfile(PreferenceUtils.getProfile(getActivity(),
+						PreferenceUtils.getCurrentProfilePosition(getActivity())));
 			}
 			tipologiaRifiuto = RifiutiHelper.getTipoRifiuto(rifiuto);
 			if (tipologiaRifiuto != null) {
-				puntiDiRaccolta = RifiutiHelper
-						.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
+				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
 			}
-			datiTipologiaRaccoltaList = RifiutiHelper
-					.getDatiTipologiaRaccolta(rifiuto);
+			datiTipologiaRaccoltaList = RifiutiHelper.getDatiTipologiaRaccolta(rifiuto);
 			// } else if (tipologiaRifiuto != null) {
 			// list = RifiutiHelper.getRifiutoPerTipoRifiuti(tipologiaRifiuto);
 			// }
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(getClass().getSimpleName(), e.getMessage());
 		}
 		// setListAdapter(adapter);
 
 		ListView mTipologieRaccolta = (ListView) getView().findViewById(R.id.tiporaccolta_list);
-		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter, datiTipologiaRaccoltaList, true);
+		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter,
+				datiTipologiaRaccoltaList, true);
 		mTipologieRaccolta.setAdapter(tipologieAdapter);
 
 		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				FragmentTransaction fragmentTransaction = getActivity()
-						.getSupportFragmentManager().beginTransaction();
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 				RifiutiManagerContainerFragment fragment = new RifiutiManagerContainerFragment();
 				Bundle bundle = new Bundle();
 
 				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, datiTipologiaRaccoltaList.get(arg2)
 						.getTipologiaRaccolta());
 				fragment.setArguments(bundle);
-				fragmentTransaction.replace(R.id.content_frame, fragment,
-						"tipologiaraccolta");
+				fragmentTransaction.replace(R.id.content_frame, fragment, "tipologiaraccolta");
 				fragmentTransaction.addToBackStack(fragment.getTag());
 				fragmentTransaction.commit();
 			}
@@ -118,21 +100,16 @@ public class RifiutoDetailsFragment extends Fragment {
 		listPuntiRaccolta.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				FragmentTransaction fragmentTransaction = getActivity()
-						.getSupportFragmentManager().beginTransaction();
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 				PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
 
 				Bundle args = new Bundle();
-				args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA,
-						puntiDiRaccolta.get(arg2));
+				args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(arg2));
 				fragment.setArguments(args);
-				fragmentTransaction
-						.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+				fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 				// fragmentTransaction.detach(this);
-				fragmentTransaction.replace(R.id.content_frame, fragment,
-						"puntodiraccolta");
+				fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
 				fragmentTransaction.addToBackStack(fragment.getTag());
 				fragmentTransaction.commit();
 			}
@@ -143,20 +120,13 @@ public class RifiutoDetailsFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		abActivity.getSupportActionBar().setNavigationMode(
-				ActionBar.NAVIGATION_MODE_STANDARD);
+		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		if (rifiuto != null) {
-			abActivity.getSupportActionBar().setTitle(
-					abActivity.getString(R.string.rifiuto_title) + " : "
-							+ rifiuto);
+			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.rifiuto_title) + " : " + rifiuto);
 		} else if (tipologiaRifiuto != null) {
 			abActivity.getSupportActionBar().setTitle(
-					abActivity.getString(R.string.tipo_di_rifiuto_title)
-							+ " : " + tipologiaRifiuto);
-
-
+					abActivity.getString(R.string.tipo_di_rifiuto_title) + " : " + tipologiaRifiuto);
 		}
-
 	}
 
 	@Override
@@ -164,4 +134,5 @@ public class RifiutoDetailsFragment extends Fragment {
 		outState.putAll(getArguments());
 		super.onSaveInstanceState(outState);
 	}
+
 }
