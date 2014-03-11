@@ -32,7 +32,6 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-
 	}
 
 	@Override
@@ -67,6 +66,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 						}
 					});
 			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
 		} catch (IOException e) {
 			Log.e(NotesHelper.class.getName(), e.toString());
 		}

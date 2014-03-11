@@ -110,13 +110,14 @@ public class FeedbackFragment extends Fragment implements ILocation {
 			}
 		});
 		
-		ImageView img = (ImageView) getView().findViewById(R.id.feedback_img);
-		img.setOnClickListener(new OnClickListener() {
+		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startCamera();
 			}
-		});
+		};
+		getView().findViewById(R.id.feedback_img).setOnClickListener(clickListener);
+		getView().findViewById(R.id.feedback_img_text).setOnClickListener(clickListener);
 		
 		CheckBox check = (CheckBox) getView().findViewById(R.id.feedback_gps);
 		check.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -217,7 +218,8 @@ public class FeedbackFragment extends Fragment implements ILocation {
 												fi.getAbsolutePath(), null, null));
 						imageUri = imgUri.toString();
 					    Bitmap myBitmap = BitmapFactory.decodeFile(fi.getAbsolutePath());
-						ImageView myImage = (ImageView) getView().findViewById(R.id.feedback_img);
+						ImageView myImage = (ImageView) getView().findViewById(R.id.feedback_img_result);
+						myImage.setVisibility(View.VISIBLE);
 						myImage.setImageBitmap(myBitmap);
 					} catch (Exception e) {
 						e.printStackTrace();

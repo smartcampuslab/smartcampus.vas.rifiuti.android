@@ -29,13 +29,20 @@ public class RifiutiManagerContainerFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPagerTitles = getResources().getStringArray(R.array.rifiuti_container_titles);
-		abActivity = (ActionBarActivity) getActivity();
-
 		setHasOptionsMenu(true);
+	}
+	
+	
 
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
+
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

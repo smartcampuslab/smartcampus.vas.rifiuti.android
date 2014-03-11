@@ -65,7 +65,9 @@ public class RifiutiHelper {
 	private List<String> mAreas = null;
 
 	private Map<String, Integer> colorMap = null;
+	private Map<String, Drawable> typeColorMap;
 	private Map<String, Drawable> tipiRifiutoDrawablesMap = null;
+
 
 	/**
 	 * Initialize data access layer support
@@ -94,6 +96,10 @@ public class RifiutiHelper {
 		this.mContext = ctx;
 		dbHelper = DBHelper.createDataBase(ctx, DB_VERSION);
 	};
+
+	public static RifiutiHelper getInstance() {
+		return mHelper;
+	}
 
 	/**
 	 * Read 'tipi di rifiuti' for the specified user
@@ -377,9 +383,9 @@ public class RifiutiHelper {
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
 			String query = "SELECT DISTINCT ra.tipologiaRaccolta, ra.tipologiaPuntoRaccolta, ra.colore, ra.infoRaccolta "
-					+ "FROM riciclabolario r, raccolta ra WHERE "
-					+ "r.nome = \"" + rifiuto + "\" AND r.area in " + aree + " AND r.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()+"\" AND "
-					+ "ra.area in "+aree +" AND ra.tipologiaUtenza = '" + mHelper.mProfile.getUtenza()+"' AND "
+					+ "FROM riciclabolario r, raccolta ra WHERE " + "r.nome = \"" + rifiuto + "\" AND r.area in " + aree
+					+ " AND r.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\" AND " + "ra.area in " + aree
+					+ " AND ra.tipologiaUtenza = '" + mHelper.mProfile.getUtenza() + "' AND "
 					+ "ra.tipologiaRifiuto = r.tipologiaRifiuto";
 			cursor = db.rawQuery(query, null);
 			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
@@ -393,14 +399,16 @@ public class RifiutiHelper {
 						dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntoRaccolta")));
 						dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
 						result.add(dtr);
+						cursor.moveToNext();
 					}
 				}
 			}
 			return result;
 		} finally {
-			if (cursor != null) cursor.close();
+			if (cursor != null)
+				cursor.close();
 		}
-		
+
 	}
 
 	/**
@@ -415,7 +423,9 @@ public class RifiutiHelper {
 		try {
 			String query = "SELECT DISTINCT dataDa, dataA, il, dalle, alle FROM puntiRaccolta WHERE indirizzo = \""
 					+ pr.getIndirizzo() + "\" AND tipologiaUtenza = \"" + pr.getTipologiaUtenza() + "\" AND area = \""
-					+ pr.getArea() + "\"";
+					+ pr.getArea() + "\"" + " AND (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
+					+ " AND (puntiRaccolta.dataA IS NOT NULL AND puntiRaccolta.dataA != '')"
+					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')";
 			cursor = db.rawQuery(query, null);
 			List<Calendario> result = new ArrayList<Calendario>();
 			if (cursor != null) {
@@ -494,7 +504,7 @@ public class RifiutiHelper {
 			String query = "SELECT DISTINCT "
 					+ "puntiRaccolta.*, raccolta.colore FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
-					+ " WHERE " + " (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
+					+ " WHERE (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
 					+ " AND (puntiRaccolta.dataA IS NOT NULL AND puntiRaccolta.dataA != '')"
 					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')" + " AND puntiRaccolta.area IN " + aree
 					+ " AND raccolta.area IN " + aree + " AND puntiRaccolta.tipologiaUtenza = \""
@@ -649,8 +659,27 @@ public class RifiutiHelper {
 		return colorMap;
 	}
 
+	private Map<String, Drawable> getTypeColorMap(Context ctx) {
+		if (typeColorMap == null) {
+			typeColorMap = new HashMap<String, Drawable>();
+			String[] array = ctx.getResources().getStringArray(R.array.type_icon_color_strings);
+			TypedArray valueArray = ctx.getResources().obtainTypedArray(R.array.type_icon_color_drawables);
+			for (int i = 0; i < array.length; i++) {
+				typeColorMap.put(array[i], valueArray.getDrawable(i));
+			}
+			valueArray.recycle();
+		}
+		return typeColorMap;
+	}
+
 	public static int getColorResource(Context ctx, String color) {
 		return mHelper.getColorMap(ctx).get(color);
+	}
+
+	public static Drawable getTypeColorResource(Context ctx, String type, String color) {
+		Drawable d = mHelper.getTypeColorMap(ctx).get(type+" "+color);
+		if (d == null) d = mHelper.getTypeColorMap(ctx).get(type);
+		return d;
 	}
 
 	private Map<String, Drawable> getTipiRifiutoDrawablesMap(Context ctx) {

@@ -44,8 +44,13 @@ public class HomeFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPagerTitles = getResources().getStringArray(R.array.home_pager_titles);
-		abActivity = (ActionBarActivity) getActivity();
 		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		abActivity = (ActionBarActivity) getActivity();
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 		
@@ -60,14 +65,17 @@ public class HomeFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		ViewGroup viewGroup = (ViewGroup) inflater.inflate(
+				R.layout.fragment_home, container, false);
 
 		mPager = (ViewPager) viewGroup.findViewById(R.id.pager);
 
 		mPagerStrip = (PagerTabStrip) viewGroup.findViewById(R.id.pagerStrip);
 		mPagerStrip.setDrawFullUnderline(false);
-		mPagerStrip.setTabIndicatorColor(getResources().getColor(android.R.color.darker_gray));
+		mPagerStrip.setTabIndicatorColor(getResources().getColor(
+				android.R.color.darker_gray));
 		// mPagerStrip.setTextColor(getResources().getColor(R.color.gray_dark));
 		// mPagerStrip.setTextSpacing(48);
 		// mPagerStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
@@ -91,7 +99,8 @@ public class HomeFragment extends Fragment {
 			}
 		});
 
-		if (savedInstanceState != null && savedInstanceState.containsKey(PAGER_CURRENT_ITEM)) {
+		if (savedInstanceState != null
+				&& savedInstanceState.containsKey(PAGER_CURRENT_ITEM)) {
 			pagerPreviousItem = savedInstanceState.getInt(PAGER_CURRENT_ITEM);
 		}
 
@@ -109,7 +118,8 @@ public class HomeFragment extends Fragment {
 
 		// Page "Calendar" is default
 		// mPager.setCurrentItem(2);
-		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.application_title));
+		abActivity.getSupportActionBar().setTitle(
+				abActivity.getString(R.string.application_title));
 	}
 
 	@Override
@@ -117,7 +127,7 @@ public class HomeFragment extends Fragment {
 		super.onPause();
 		pagerPreviousItem = mPager.getCurrentItem();
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

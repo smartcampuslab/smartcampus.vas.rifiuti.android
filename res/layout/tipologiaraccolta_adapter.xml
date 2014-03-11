@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:textColor="@color/x11_Black">
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/fragment_horizontal_margin"
+    android:paddingRight="@dimen/fragment_horizontal_margin" >
 
     <TextView
-        android:id="@+id/tipologiaraccolta_descrizione"
-        android:layout_width="wrap_content"
+        android:id="@+id/tipologiaraccolta"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Medium Text"
-        android:textColor="@color/x11_White"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tipologiaraccolta_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

@@ -22,7 +22,6 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
@@ -32,17 +31,16 @@ public class MapManager {
 	public static final int ZOOM_DEFAULT = 15;
 	public static final LatLng DEFAULT_POINT = new LatLng(45.89096, 11.04014); // Rovereto
 	public static final int MAX_VISIBLE_DISTANCE = 20;
-//	private static Map<Marker,PuntoRaccolta> puntiDiRaccolta = new HashMap<Marker, PuntoRaccolta>();
-//	private static Map<MarkerOptions,PuntoRaccolta> markerPunti = new HashMap<MarkerOptions,PuntoRaccolta>();
+
+	// private static Map<Marker,PuntoRaccolta> puntiDiRaccolta = new
+	// HashMap<Marker, PuntoRaccolta>();
+	// private static Map<MarkerOptions,PuntoRaccolta> markerPunti = new
+	// HashMap<MarkerOptions,PuntoRaccolta>();
 
 	/*
 	 * CLUSTERING
 	 */
 	public static class ClusteringHelper {
-		/**
-		 * 
-		 */
-
 		private static final String TAG = "MapManager.ClusteringHelper";
 
 		private static final int DENSITY_X = 5;
@@ -51,11 +49,11 @@ public class MapManager {
 		private static List<List<List<PuntoRaccolta>>> grid = new ArrayList<List<List<PuntoRaccolta>>>();
 		private static SparseArray<int[]> item2group = new SparseArray<int[]>();
 
-		public synchronized static <T extends PuntoRaccolta> List<MarkerOptions> cluster(Context mContext,
-				GoogleMap map, Collection<T> objects) {
+		public synchronized static <T extends PuntoRaccolta> List<MarkerOptions> cluster(Context mContext, GoogleMap map,
+				Collection<T> objects) {
 			item2group.clear();
-//			puntiDiRaccolta.clear();
-//			markerPunti.clear();
+			// puntiDiRaccolta.clear();
+			// markerPunti.clear();
 			// 2D array with some configurable, fixed density
 			grid.clear();
 
@@ -91,9 +89,8 @@ public class MapManager {
 				for (PuntoRaccolta basicObject : objects) {
 					LatLng objLatLng = getLatLngFromBasicObject(basicObject);
 
-					if (objLatLng != null && (objLatLng.longitude * 1E6) >= startX
-							&& (objLatLng.longitude * 1E6) <= endX && (objLatLng.latitude * 1E6) >= startY
-							&& (objLatLng.latitude * 1E6) <= endY) {
+					if (objLatLng != null && (objLatLng.longitude * 1E6) >= startX && (objLatLng.longitude * 1E6) <= endX
+							&& (objLatLng.latitude * 1E6) >= startY && (objLatLng.latitude * 1E6) <= endY) {
 						int binX = (int) (Math.abs((objLatLng.longitude * 1E6) - startX) / step);
 						int binY = (int) (Math.abs((objLatLng.latitude * 1E6) - startY) / step);
 
@@ -149,33 +146,33 @@ public class MapManager {
 		}
 
 		public static boolean maxZoom(GoogleMap map) {
-			return map.getCameraPosition().zoom >= MAX_ZOOM;//map.getMaxZoomLevel(); 
+			return map.getCameraPosition().zoom >= MAX_ZOOM;// map.getMaxZoomLevel();
 		}
 
 		private static LatLng getLatLngFromBasicObject(PuntoRaccolta object) {
 			LatLng latLng = null;
-			String[] splittedLatLong=object.getLocalizzazione().split(",");
-			latLng = new LatLng(Double.parseDouble(splittedLatLong[0]),Double.parseDouble(splittedLatLong[1]));
+			String[] splittedLatLong = object.getLocalizzazione().split(",");
+			latLng = new LatLng(Double.parseDouble(splittedLatLong[0]), Double.parseDouble(splittedLatLong[1]));
 			return latLng;
 		}
 
 		public static void render(GoogleMap map, List<MarkerOptions> markers) {
 			for (MarkerOptions mo : markers) {
-				Marker marker = map.addMarker(mo);
-//				puntiDiRaccolta.put(marker, markerPunti.get(mo));
-
+				map.addMarker(mo);
+				// Marker marker = map.addMarker(mo);
+				// puntiDiRaccolta.put(marker, markerPunti.get(mo));
 			}
 		}
 
 		private static MarkerOptions createSingleMarker(PuntoRaccolta item, int x, int y) {
 			LatLng latLng = getLatLngFromBasicObject(item);
 			MarkerOptions marker = new MarkerOptions().position(latLng).title(x + ":" + y);
-//			markerPunti.put(marker, item);
+			// markerPunti.put(marker, item);
 			return marker;
 		}
 
-		private static MarkerOptions createGroupMarker(Context mContext, GoogleMap map, List<PuntoRaccolta> markerList,
-				int x, int y) {
+		private static MarkerOptions createGroupMarker(Context mContext, GoogleMap map, List<PuntoRaccolta> markerList, int x,
+				int y) {
 			PuntoRaccolta item = markerList.get(0);
 			LatLng latLng = getLatLngFromBasicObject(item);
 
@@ -233,8 +230,8 @@ public class MapManager {
 			if (srcLatLng != null && currLatLng != null) {
 				float[] dist = new float[3];
 
-				Location.distanceBetween(srcLatLng.latitude, srcLatLng.longitude, currLatLng.latitude,
-						currLatLng.longitude, dist);
+				Location.distanceBetween(srcLatLng.latitude, srcLatLng.longitude, currLatLng.latitude, currLatLng.longitude,
+						dist);
 
 				if (dist[0] < MAX_VISIBLE_DISTANCE) {
 					src.addAll(curr);
@@ -246,7 +243,7 @@ public class MapManager {
 		}
 
 	}
-	
+
 	public static void fitMapWithOverlays(Collection<PuntoRaccolta> objects, GoogleMap map) {
 		double[] ll = null, rr = null;
 		if (objects != null) {
@@ -269,11 +266,11 @@ public class MapManager {
 		}
 		fit(map, ll, rr, objects != null && objects.size() > 1);
 	}
-	
-//	public static PuntoRaccolta getPuntoDiRaccoltaFromMarker(Marker marker){
-//		return puntiDiRaccolta.get(marker);
-//	}
-	
+
+	// public static PuntoRaccolta getPuntoDiRaccoltaFromMarker(Marker marker){
+	// return puntiDiRaccolta.get(marker);
+	// }
+
 	private static void fit(GoogleMap map, double[] ll, double[] rr, boolean zoomIn) {
 		if (ll != null && rr != null) {
 			float[] dist = new float[3];
@@ -288,7 +285,7 @@ public class MapManager {
 		}
 	}
 
-//	public static GeoPoint requestMyLocation(Context ctx) {
-//		return DTHelper.getLocationHelper().getLocation();
-//	}
+	// public static GeoPoint requestMyLocation(Context ctx) {
+	// return DTHelper.getLocationHelper().getLocation();
+	// }
 }

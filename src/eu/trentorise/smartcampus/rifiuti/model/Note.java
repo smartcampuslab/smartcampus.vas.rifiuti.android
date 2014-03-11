@@ -8,49 +8,53 @@ import eu.trentorise.smartcampus.rifiuti.data.DBHelper;
 public class Note {
 	private int mID;
 	private String mText;
+	private Profile mProfile;
 	private Date mDate;
 
-	public Note(int mID, String mText, Date mDate) {
+	public Note(int id, String text, Profile p, Date date) {
 		super();
-		this.mID = mID;
-		this.mText = mText;
-		this.mDate = mDate;
+		this.mID = id;
+		this.mText = text;
+		this.mProfile = p;
+		this.mDate = date;
 	}
 
-	public Note(String mText, Date mDate) {
+	public Note(String text, Profile p, Date date) {
 		super();
-		this.mText = mText;
-		this.mDate = mDate;
+		this.mText = text;
+		this.mProfile = p;
+		this.mDate = date;
 	}
 
 	public int getID() {
 		return mID;
 	}
 
-	public void setID(int mID) {
-		this.mID = mID;
+	public void setID(int id) {
+		this.mID = id;
 	}
 
 	public String getText() {
 		return mText;
 	}
 
-	public void setText(String mText) {
-		this.mText = mText;
+	public void setText(String text) {
+		this.mText = text;
 	}
 
 	public Date getDate() {
 		return mDate;
 	}
 
-	public void setmDate(Date mDate) {
-		this.mDate = mDate;
+	public void setmDate(Date date) {
+		this.mDate = date;
 	}
 
-	public static ContentValues toContentValues(String s) {
+	public static ContentValues toContentValues(String s, Profile p) {
 		ContentValues cv = new ContentValues();
 		cv.put(DBHelper.NOTE_TXT, s);
 		cv.put(DBHelper.NOTE_DATE, new Date().getTime());
+		cv.put(DBHelper.NOTE_PROFILE, p.getName());
 		return cv;
 	}
 
@@ -58,6 +62,7 @@ public class Note {
 		ContentValues cv = new ContentValues();
 		cv.put(DBHelper.NOTE_TXT, this.mText);
 		cv.put(DBHelper.NOTE_DATE, this.mDate.getTime());
+		cv.put(DBHelper.NOTE_PROFILE, this.mProfile.getName());
 		return cv;
 	}
 
@@ -65,7 +70,13 @@ public class Note {
 	public String toString() {
 		return mText;
 	}
-	
-	
+
+	public Profile getProfile() {
+		return mProfile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.mProfile = profile;
+	}
 
 }
