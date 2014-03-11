@@ -97,10 +97,9 @@
     <string name="feedback_title">Segnalazione</string>
 
     <!-- FEEDBACK -->
-    <string name="feedback_descr">Questo modulo ti consente di impostare una mail
-        contenente una segnalazione da inviare direttamente all\'ente che si occupa
-        della gestione dei rifiuti e dell\'igiene urbana. E\' possibile allegare una 
-        fotografia e le coordinate GPS della tua posizione.</string>
+    <string name="feedback_descr">Invia una email per segnalare un problema 
+        direttamente all\'ente che si occupa della gestione dei rifiuti. Puoi 
+        anche allegare una foto e le coordinate GPS della tua posizione.</string>
     <string name="feedback_text_hint">Testo della segnalazione</string>
     <string name="feedback_photo_hint">Tocca qui per aggiungere una foto</string>
     <string name="feedback_gps_hint">Coordinate GPS</string>
