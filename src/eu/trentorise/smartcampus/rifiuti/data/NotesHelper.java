@@ -118,7 +118,6 @@ public class NotesHelper {
 			whereArgs[i] = "" + notes[i].getID();
 		}
 		int rows = db.delete(DBHelper.TABLE_NOTE, whereClause, whereArgs);
-		Log.i("sql", whereClause + "" + whereArgs[0]);
 		Log.i("deleted", rows + "");
 		db.close();
 	}

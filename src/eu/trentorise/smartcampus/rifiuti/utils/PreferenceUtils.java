@@ -9,7 +9,10 @@ import org.json.JSONException;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.util.Log;
+import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
+import eu.trentorise.smartcampus.rifiuti.model.Note;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 
 public class PreferenceUtils {
@@ -153,6 +156,20 @@ public class PreferenceUtils {
 			}
 			SharedPreferences sp = getProfilePreference(ctx);
 			sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
+			NotesHelper.init(ctx,position);
+			AsyncTask<Object, Void, Void> delTask= new AsyncTask<Object, Void, Void>() {
+
+				@Override
+				protected Void doInBackground(Object... params) {
+					List<Note> notes = NotesHelper.getNotes();
+					Note[] notesArr = new Note[notes.size()];
+					notes.toArray(notesArr);
+					NotesHelper.deleteNotes(notesArr);
+					return null;
+				}
+			};
+			delTask.execute();
+			
 		} else {
 			throw new LastElementException();
 		}
