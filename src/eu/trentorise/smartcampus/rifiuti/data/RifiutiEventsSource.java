@@ -49,7 +49,7 @@ public class RifiutiEventsSource implements EventsSource<CalendarioEvent> {
 				}
 				event = new CalendarioEvent(start, end, item);
 				event.setName(item.getPoint().getTipologiaPuntiRaccolta());
-				event.setDescription(item.getPoint().getIndirizzo());
+				event.setDescription(item.getPoint().dettaglio());
 				event.setLocation(item.getPoint().getLocalizzazione());
 				event.setCalendarioItem(item);
 				// TODO: color?

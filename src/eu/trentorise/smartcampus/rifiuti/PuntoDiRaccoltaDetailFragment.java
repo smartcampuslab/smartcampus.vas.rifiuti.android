@@ -113,7 +113,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		}
 
 		TextView mDettagli = (TextView) getActivity().findViewById(R.id.puntodiraccolta_dettagli);
-		mDettagli.setText(puntoDiRaccolta.getIndirizzo());
+		mDettagli.setText(puntoDiRaccolta.dettaglio());
 
 		ImageView mappa = (ImageView) getActivity().findViewById(R.id.map_dettagli);
 		mappa.setOnClickListener(new OnClickListener() {

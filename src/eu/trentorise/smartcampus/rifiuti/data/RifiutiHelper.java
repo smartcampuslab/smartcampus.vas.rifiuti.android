@@ -287,7 +287,8 @@ public class RifiutiHelper {
 					+ "puntiRaccolta.tipologiaPuntiRaccolta,"
 					+ "puntiRaccolta.tipologiaUtenza,"
 					+ "puntiRaccolta.localizzazione,"
-					+ "puntiRaccolta.indirizzo FROM puntiRaccolta "
+					+ "puntiRaccolta.indirizzo,"
+					+ "puntiRaccolta.dettaglioIndirizzo FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
 					+ " WHERE puntiRaccolta.area IN " + aree + " AND raccolta.area IN " + aree
 					+ " AND puntiRaccolta.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
@@ -317,7 +318,7 @@ public class RifiutiHelper {
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
 			String query = "SELECT DISTINCT " + "area, " + "tipologiaPuntiRaccolta," + "tipologiaUtenza," + "localizzazione,"
-					+ "indirizzo FROM puntiRaccolta " + " WHERE puntiRaccolta.area IN " + aree + " AND area IN " + aree
+					+ "indirizzo, dettaglioIndirizzo FROM puntiRaccolta " + " WHERE puntiRaccolta.area IN " + aree + " AND area IN " + aree
 					+ " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 
 			cursor = db.rawQuery(query, null);
@@ -344,6 +345,7 @@ public class RifiutiHelper {
 				pr.setTipologiaUtenza(cursor.getString(cursor.getColumnIndex("tipologiaUtenza")));
 				pr.setLocalizzazione(cursor.getString(cursor.getColumnIndex("localizzazione")));
 				pr.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
+				pr.setDettaglioIndirizzo(cursor.getString(cursor.getColumnIndex("dettaglioIndirizzo")));
 				result.add(pr);
 				cursor.moveToNext();
 			}
@@ -526,6 +528,7 @@ public class RifiutiHelper {
 					PuntoRaccolta pr = new PuntoRaccolta();
 					pr.setArea(cursor.getString(cursor.getColumnIndex("area")));
 					pr.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
+					pr.setDettaglioIndirizzo(cursor.getString(cursor.getColumnIndex("dettaglioIndirizzo")));
 					pr.setLocalizzazione(cursor.getString(cursor.getColumnIndex("localizzazione")));
 					pr.setTipologiaPuntiRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntiRaccolta")));
 					pr.setTipologiaUtenza(cursor.getString(cursor.getColumnIndex("tipologiaUtenza")));

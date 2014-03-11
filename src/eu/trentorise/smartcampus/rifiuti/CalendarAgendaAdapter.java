@@ -48,7 +48,7 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 			holder.separator.setVisibility(View.GONE);
 		}
 
-		holder.title.setText(cae.getPuntoRaccolta().getIndirizzo());
+		holder.title.setText(cae.getPuntoRaccolta().dettaglio());
 
 		String description = "";
 		for (int i = 0; i < cae.getEvents().size(); i++) {

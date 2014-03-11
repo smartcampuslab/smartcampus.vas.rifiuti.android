@@ -32,7 +32,7 @@ public class PuntoDiRaccoltaAdapter extends ArrayAdapter<PuntoRaccolta> {
 		}
 
 		PuntoRaccolta pr = getItem(position);
-		row.setText(context.getString(R.string.puntoraccolta_list_item, pr.getTipologiaPuntiRaccolta(), pr.getIndirizzo()));
+		row.setText(context.getString(R.string.puntoraccolta_list_item, pr.getTipologiaPuntiRaccolta(), pr.dettaglio()));
 
 		return row;
 	}

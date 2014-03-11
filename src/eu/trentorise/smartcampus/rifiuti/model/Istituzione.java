@@ -6,6 +6,9 @@ public class Istituzione {
 	private String nome;
 	private String tipologia;
 	private String descrizione;
+	private String ufficio;
+	private String indirizzo;
+	private String orarioUfficio;
 	private String sitoIstituzionale;
 	private String pec;
 	private String email;
@@ -17,6 +20,18 @@ public class Istituzione {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	public String getUfficio() {
+		return ufficio;
+	}
+	public void setUfficio(String ufficio) {
+		this.ufficio = ufficio;
+	}
+	public String getIndirizzo() {
+		return indirizzo;
+	}
+	public void setIndirizzo(String indirizzo) {
+		this.indirizzo = indirizzo;
 	}
 	public String getTipologia() {
 		return tipologia;
@@ -32,6 +47,12 @@ public class Istituzione {
 	}
 	public String getSitoIstituzionale() {
 		return sitoIstituzionale;
+	}
+	public String getOrarioUfficio() {
+		return orarioUfficio;
+	}
+	public void setOrarioUfficio(String orarioUfficio) {
+		this.orarioUfficio = orarioUfficio;
 	}
 	public void setSitoIstituzionale(String sitoIstituzionale) {
 		this.sitoIstituzionale = sitoIstituzionale;

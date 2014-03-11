@@ -10,6 +10,7 @@ public class PuntoRaccolta implements Serializable {
 	private String tipologiaUtenza;
 	private String localizzazione;
 	private String indirizzo;
+	private String dettaglioIndirizzo;
 
 	@Override
 	public int hashCode() {
@@ -75,7 +76,19 @@ public class PuntoRaccolta implements Serializable {
 	public void setIndirizzo(String indirizzo) {
 		this.indirizzo = indirizzo;
 	}
+	public String getDettaglioIndirizzo() {
+		return dettaglioIndirizzo;
+	}
 
+	public void setDettaglioIndirizzo(String dettaglioIndirizzo) {
+		this.dettaglioIndirizzo = dettaglioIndirizzo;
+	}
+
+	public String dettaglio() {
+		if (dettaglioIndirizzo != null && dettaglioIndirizzo.length() > 0) return dettaglioIndirizzo;
+		return indirizzo;
+	}
+	
 	@Override
 	public String toString() {
 		return "PuntoRaccolta [area=" + area + ", tipologiaPuntiRaccolta=" + tipologiaPuntiRaccolta + ", tipologiaUtenza="

@@ -5,6 +5,9 @@ public class Gestore {
 
 	private String ragioneSociale;
 	private String descrizione;
+	private String ufficio;
+	private String indirizzo;
+	private String orarioUfficio;
 	private String sitoWeb;
 	private String email;
 	private String telefono;
@@ -21,6 +24,24 @@ public class Gestore {
 	}
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
+	}
+	public String getUfficio() {
+		return ufficio;
+	}
+	public void setUfficio(String ufficio) {
+		this.ufficio = ufficio;
+	}
+	public String getIndirizzo() {
+		return indirizzo;
+	}
+	public void setIndirizzo(String indirizzo) {
+		this.indirizzo = indirizzo;
+	}
+	public String getOrarioUfficio() {
+		return orarioUfficio;
+	}
+	public void setOrarioUfficio(String orarioUfficio) {
+		this.orarioUfficio = orarioUfficio;
 	}
 	public String getSitoWeb() {
 		return sitoWeb;
