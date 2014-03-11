@@ -8,7 +8,7 @@
     <string name="dialog_confirm_msg">questa operazione comporta dei rischi, premi OK solo se sai cosa stai facendo.</string>
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
     <string name="toast_no_prof">Crea il tuo profilo!</string>
-     <string name="err_everything_go_lazy">Qualcosa è andato storto</string>
+    <string name="err_everything_go_lazy">Qualcosa è andato storto</string>
 
     <!-- Drawer titles -->
     <string name="drawer_open">Rifiuti</string>
@@ -75,10 +75,10 @@
     <string name="niente_tipi_raccolta">Nessun risultato trovato</string>
     <string name="pdr_non_trovato_toast">Punto di raccolta non trovato</string>
 
-    <!-- Punti di raccolta - Lista-->
+    <!-- Punti di raccolta - Lista -->
     <string name="puntoraccolta_list_item">%1$s - %2$s</string>
-    
-    <!-- Punto di raccolta - Dettagli-->
+
+    <!-- Punto di raccolta - Dettagli -->
     <string name="dettagli_label">DETTAGLI</string>
     <string name="orario_label">ORARIO</string>
     <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
@@ -87,7 +87,8 @@
     <string name="to_for_direction">to</string>
     <string name="toast_app_not_installed">L\'applicazione richiesta non è stata trovata</string>
     <string name="puntiraccoltadetails_abtitle">%1$s: %2$s %3$s</string>
-    <string name="puntiraccoltadetails_orari">%1$s: %2$s - %3$s</string>
+    <string name="puntiraccoltadetails_orari">%1$s: %2$s-%3$s</string>
+    <string name="puntiraccoltadetails_orari_2">, %1$s-%2$s</string>
     <!-- stringhe titoli fragment -->
     <string name="tipo_di_rifiuto_title">Tipo di rifiuto</string>
     <string name="tipo_di_raccolta_title">Tipo di raccolta</string>

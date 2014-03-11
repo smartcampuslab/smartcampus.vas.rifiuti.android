@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,17 +126,29 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 			}
 		});
 
-		String orariText = new String();
-		for (int i = 0; i < orariList.size(); i++) {
-			Calendario orario = orariList.get(i);
-			orariText += getActivity().getString(R.string.puntiraccoltadetails_orari, orario.getIl(), orario.getDalle(),
-					orario.getAlle());
-			if ((i + 1) < orariList.size()) {
-				orariText += "\n";
+		if (orariList == null || orariList.isEmpty()) {
+			LinearLayout orariLayout = (LinearLayout) getActivity().findViewById(R.id.puntodiraccolta_orari_layout);
+			orariLayout.setVisibility(View.GONE);
+		} else {
+			String orariText = new String();
+			for (int i = 0; i < orariList.size(); i++) {
+				Calendario orario = orariList.get(i);
+
+				if (i > 0 && orario.getIl().equals(orariList.get(i - 1).getIl())) {
+					// same day of the week
+					orariText += getActivity().getString(R.string.puntiraccoltadetails_orari_2, orario.getDalle(),
+							orario.getAlle());
+				} else {
+					if (i > 0) {
+						orariText += "\n";
+					}
+					orariText += getActivity().getString(R.string.puntiraccoltadetails_orari, orario.getIl(),
+							orario.getDalle(), orario.getAlle());
+				}
 			}
+			TextView orariTextView = (TextView) getActivity().findViewById(R.id.puntodiraccolta_orari_textview);
+			orariTextView.setText(orariText);
 		}
-		TextView orariTextView = (TextView) getActivity().findViewById(R.id.puntodiraccolta_textorari);
-		orariTextView.setText(orariText);
 
 		ListView mTipologieRaccolta = (ListView) getActivity().findViewById(R.id.puntodiraccolta_listatipologie);
 		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), android.R.layout.simple_list_item_1,
