@@ -100,9 +100,9 @@
     <string name="feedback_descr">Invia una email per segnalare un problema 
         direttamente all\'ente che si occupa della gestione dei rifiuti. Puoi 
         anche allegare una foto e le coordinate GPS della tua posizione.</string>
-    <string name="feedback_text_hint">Testo della segnalazione</string>
-    <string name="feedback_photo_hint">Tocca qui per aggiungere una foto</string>
-    <string name="feedback_gps_hint">Coordinate GPS</string>
+    <string name="feedback_text_hint">Inserisci qui il testo della segnalazione</string>
+    <string name="feedback_photo_hint">Scatta una foto</string>
+    <string name="feedback_gps_hint">Allega la tua posizione</string>
     <string name="feedback_send">Segnala!</string>
     <string name="feedback_subject">Segnalazione dalla app \"100% Riciclo\"</string>
     <string name="feedback_capture">Image</string>
