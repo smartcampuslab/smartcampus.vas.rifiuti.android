@@ -7,7 +7,7 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_light" >
+        android:background="@color/rifiuti_light" >
     </FrameLayout>
 
     <LinearLayout
@@ -15,10 +15,10 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/background_dark"
+        android:background="@color/rifiuti_dark"
+        android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:clickable="true"
         android:orientation="vertical" >
 
         <TextView
@@ -38,16 +38,15 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@color/rifiuti_middle" />
 
         <ListView
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@android:color/background_dark"
             android:choiceMode="singleChoice"
-            android:divider="@android:color/darker_gray"
+            android:divider="@color/rifiuti_middle"
             android:dividerHeight="0.1dp" />
     </LinearLayout>
 

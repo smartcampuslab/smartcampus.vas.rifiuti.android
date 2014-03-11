@@ -2,12 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@color/x11_Black">
+    android:orientation="vertical"
+    android:background="@color/rifiuti_light"
+    android:padding="16dp">
     <TextView 
         android:id="@+id/rifiuto_placeholder_title"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textColor="@color/x11_White"/>
+        android:textColor="@color/rifiuti_dark"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        
 
 </LinearLayout>

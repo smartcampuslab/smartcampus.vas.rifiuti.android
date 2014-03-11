@@ -6,29 +6,36 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/rifiuti_middle"
+        android:padding="16dp"
         android:text="@string/tipodiraccolta_label"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    
-    <TextView
-        android:id="@+id/tipoRifiutoLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tipodiraccolta_label"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-	    
-	
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/rifiuti_dark" />
+
+    <ListView
+        android:id="@+id/tiporaccolta_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:background="@color/rifiuti_middle">
+    </ListView>
+
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/rifiuti_middle"
+        android:padding="16dp"
         android:text="@string/puntodiraccolta_label"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-	<ListView 
-	    android:id="@+id/puntoraccolta_list"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content">
-	    
-	</ListView>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/rifiuti_dark" />
+
+    <ListView
+        android:id="@+id/puntoraccolta_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:background="@color/rifiuti_middle">
+    </ListView>
+
 </LinearLayout>
