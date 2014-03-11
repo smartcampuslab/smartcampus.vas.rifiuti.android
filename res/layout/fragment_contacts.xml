@@ -7,28 +7,30 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/x11_Black" >
+        android:background="@color/rifiuti_light" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-           <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/contacts_name_label"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/x11_White" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/contacts_name_label"
+                android:background="@color/rifiuti_middle"
+                android:padding="16dp"
+                android:textColor="@color/rifiuti_dark" 
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <TextView
-                    android:id="@+id/contacts_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Medium Text"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/x11_White" />
+            <TextView
+                android:id="@+id/contacts_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="16dp"
+                android:textColor="@color/rifiuti_dark" 
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <LinearLayout
                 android:id="@+id/contacts_descr_layout"
@@ -39,18 +41,21 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/rifiuti_middle"
+                    android:padding="16dp"
                     android:text="@string/contacts_descr_label"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/x11_White" />
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <TextView
                     android:id="@+id/contacts_descr"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:padding="16dp"
                     android:text="Medium Text"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/x11_White" />
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
             </LinearLayout>
 
             <LinearLayout
@@ -62,18 +67,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/rifiuti_middle"
+                    android:padding="16dp"
                     android:text="@string/contacts_address_label"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/x11_White" />
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <TextView
                     android:id="@+id/contacts_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Medium Text"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/x11_White" />
+                    android:padding="16dp"
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
             </LinearLayout>
 
             <LinearLayout
@@ -85,19 +92,21 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/rifiuti_middle"
+                    android:padding="16dp"
                     android:text="@string/contacts_web_label"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/x11_White" />
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <TextView
                     android:id="@+id/contacts_web"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autoLink="web"
-                    android:text="Medium Text"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/x11_White" />
+                    android:padding="16dp"
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
             </LinearLayout>
 
             <LinearLayout
@@ -109,28 +118,31 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/rifiuti_middle"
+                    android:padding="16dp"
                     android:text="@string/contacts_tel_label"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/x11_White" />
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:padding="16dp" 
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/contacts_tel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Medium Text"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/x11_White" />
+                        android:textColor="@color/rifiuti_dark" 
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <ImageView
                         android:id="@+id/contacts_tel_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@android:drawable/ic_menu_call" />
+                        android:src="@android:drawable/ic_menu_call"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -143,28 +155,32 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/rifiuti_middle"
+                    android:padding="16dp"
                     android:text="@string/contacts_email_label"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/x11_White" />
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:padding="16dp" 
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/contacts_email"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Medium Text"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/x11_White" />
+                        android:textColor="@color/rifiuti_dark" 
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <ImageView
                         android:id="@+id/contacts_email_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@android:drawable/ic_dialog_email" />
+                        android:src="@android:drawable/ic_dialog_email" 
+                        android:tint="@color/rifiuti_dark"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -177,28 +193,32 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/rifiuti_middle"
+                    android:padding="16dp"
                     android:text="@string/contacts_pec_label"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/x11_White" />
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:padding="16dp" 
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/contacts_pec"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Medium Text"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/x11_White" />
+                        android:textColor="@color/rifiuti_dark" 
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <ImageView
                         android:id="@+id/contacts_pec_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@android:drawable/ic_dialog_email" />
+                        android:src="@android:drawable/ic_dialog_email" 
+                        android:tint="@color/rifiuti_dark"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -211,18 +231,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/rifiuti_middle"
+                    android:padding="16dp"
                     android:text="@string/contacts_fax_label"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/x11_White" />
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <TextView
                     android:id="@+id/contacts_fax"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Medium Text"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/x11_White" />
+                    android:padding="16dp"
+                    android:textColor="@color/rifiuti_dark" 
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

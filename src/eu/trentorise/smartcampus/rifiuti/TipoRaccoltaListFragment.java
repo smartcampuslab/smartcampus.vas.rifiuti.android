@@ -40,6 +40,11 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_tipi_list, container, false);
+	}
+	
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
@@ -58,7 +63,6 @@ public class TipoRaccoltaListFragment extends ListFragment {
 			mTypes.add(entry.getValue());
 		}
 		setListAdapter(new TipoRaccoltaAdapter(getActivity(), mTypes));
-		setEmptyText(getString(R.string.niente_tipi_raccolta));
 	}
 
 	@Override
