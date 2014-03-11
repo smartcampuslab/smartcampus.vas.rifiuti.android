@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 		
-		mTutorialHelper = new ListViewTutorialHelper(RifiutiTutorialActivity.this, mTutorialProvider);
+//		mTutorialHelper = new ListViewTutorialHelper(RifiutiTutorialActivity.this, mTutorialProvider);
 
 		if (RifiutiHelper.isFirstLaunch(getActivity())) {
 			openNavDrawerIfNeeded();
@@ -184,7 +184,7 @@ private TutorialProvider mTutorialProvider = new TutorialProvider() {
 		
 		@Override
 		public TutorialItem getItemAt(int i) {
-			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_item);
+//			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_item);
 			return tutorial[i];
 		}
 		

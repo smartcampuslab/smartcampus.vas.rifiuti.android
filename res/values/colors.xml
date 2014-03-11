@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="gray_light">#EEEEEE</color>
-    <color name="gray_light_50">#7FEEEEEE</color>
+    <color name="black_background">#333</color>
+    <color name="silver">#ccc</color>
+
+    <!-- Rifiuti colors -->
+    <color name="rifiuti_dark">#3c3c3b</color>
+    <color name="rifiuti_middle">#cecece</color>
+    <color name="rifiuti_light">#eeeeee</color>
 
 </resources>

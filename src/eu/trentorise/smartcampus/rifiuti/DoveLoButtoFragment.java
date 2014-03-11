@@ -33,12 +33,13 @@ public class DoveLoButtoFragment extends Fragment {
 	private ExpandedListView doveLoButtoResultsList;
 	private ExpandedGridView tipiRifiutiGrid;
 	private List<String> tipiRifiutiEntries;
-	private ArrayAdapter<String> mAdapter;
+	private ArrayAdapter<String> doveLoButtoAdapter;
+	private TipiRifiutiAdapter tipiRifiutiAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		tipiRifiutiEntries = RifiutiHelper.readTipologiaRifiuti();//getResources().getStringArray(R.array.tipirifiuti_entries);
+		tipiRifiutiEntries = RifiutiHelper.readTipologiaRifiuti();// getResources().getStringArray(R.array.tipirifiuti_entries);
 	}
 
 	@Override
@@ -56,8 +57,8 @@ public class DoveLoButtoFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		mAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
-		doveLoButtoResultsList.setAdapter(mAdapter);
+		doveLoButtoAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+		doveLoButtoResultsList.setAdapter(doveLoButtoAdapter);
 
 		doveLoButtoSearchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -77,19 +78,23 @@ public class DoveLoButtoFragment extends Fragment {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (s.toString().trim().length() < THRESHOLD) {
-					doveLoButtoResultsList.setVisibility(View.GONE);
-					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_search));
-				} else {
-					mAdapter.clear();
-					List<String> suggestions = RifiutiHelper.getRifiuti(s.toString().trim());
-					for (String suggestion : suggestions) {
-						mAdapter.add(suggestion);
-					}
-					mAdapter.notifyDataSetChanged();
-					doveLoButtoResultsList.setVisibility(View.VISIBLE);
+				if (s.toString().trim().length() > 0) {
 					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(
 							android.R.drawable.ic_menu_close_clear_cancel));
+				} else {
+					doveLoButtoSearchButton.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_search));
+				}
+
+				if (s.toString().trim().length() < THRESHOLD) {
+					doveLoButtoResultsList.setVisibility(View.GONE);
+				} else {
+					doveLoButtoAdapter.clear();
+					List<String> suggestions = RifiutiHelper.getRifiuti(s.toString().trim());
+					for (String suggestion : suggestions) {
+						doveLoButtoAdapter.add(suggestion);
+					}
+					doveLoButtoAdapter.notifyDataSetChanged();
+					doveLoButtoResultsList.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -101,25 +106,24 @@ public class DoveLoButtoFragment extends Fragment {
 				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 				RifiutoDetailsFragment fragment = new RifiutoDetailsFragment();
 				Bundle args = new Bundle();
-				args.putString(ArgUtils.ARGUMENT_RIFIUTO,mAdapter.getItem(position));
+				args.putString(ArgUtils.ARGUMENT_RIFIUTO, doveLoButtoAdapter.getItem(position));
 				fragment.setArguments(args);
 				fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 				fragmentTransaction.replace(R.id.content_frame, fragment, "rifiuti");
 				fragmentTransaction.addToBackStack(fragment.getTag());
 				fragmentTransaction.commit();
-				
+
 			}
 		});
-		
-		tipiRifiutiGrid.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.tipirifiuti_entry, tipiRifiutiEntries));
-		tipiRifiutiGrid.setOnItemClickListener(new OnItemClickListener() {
 
+		tipiRifiutiAdapter = new TipiRifiutiAdapter(getActivity(), R.layout.tipirifiuti_entry, tipiRifiutiEntries);
+		tipiRifiutiGrid.setAdapter(tipiRifiutiAdapter);
+		tipiRifiutiGrid.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(getActivity(), RifiutiManagerContainerActivity.class);
-				intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO, tipiRifiutiEntries.get(arg2));
+				intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO, tipiRifiutiEntries.get(position));
 				startActivity(intent);
-				
 			}
 		});
 	}

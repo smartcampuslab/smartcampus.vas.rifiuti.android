@@ -40,6 +40,11 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_tipi_list, container, false);
+	}
+	
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
@@ -53,12 +58,11 @@ public class TipoRaccoltaListFragment extends ListFragment {
 				map.put(dtr.getTipologiaRaccolta(), list);
 			}
 			list.add(dtr);
-		} 
+		}
 		for (Entry<String, List<DatiTipologiaRaccolta>> entry : map.entrySet()) {
 			mTypes.add(entry.getValue());
 		}
 		setListAdapter(new TipoRaccoltaAdapter(getActivity(), mTypes));
-		setEmptyText(getString(R.string.niente_tipi_raccolta));
 	}
 
 	@Override
@@ -83,14 +87,14 @@ public class TipoRaccoltaListFragment extends ListFragment {
 		intent.putExtra(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, mTypes.get(position).get(0).getTipologiaRaccolta());
 		startActivity(intent);
 
-//		FragmentManager fm = getFragmentManager();
-//		FragmentTransaction ft = fm.beginTransaction();
-//		ProfileFragment pf;
-//		pf = ProfileFragment.newIstance(position);
-//		ft.addToBackStack(null);
-//		ft.setCustomAnimations(R.anim.enter,R.anim.exit,R.anim.popenter,R.anim.popexit);
-//		ft.replace(R.id.content_frame, pf);
-//		ft.commit();
+		// FragmentManager fm = getFragmentManager();
+		// FragmentTransaction ft = fm.beginTransaction();
+		// ProfileFragment pf;
+		// pf = ProfileFragment.newIstance(position);
+		// ft.addToBackStack(null);
+		// ft.setCustomAnimations(R.anim.enter,R.anim.exit,R.anim.popenter,R.anim.popexit);
+		// ft.replace(R.id.content_frame, pf);
+		// ft.commit();
 	}
 
 	private class TipoRaccoltaAdapter extends ArrayAdapter<List<DatiTipologiaRaccolta>> {
@@ -104,43 +108,42 @@ public class TipoRaccoltaListFragment extends ListFragment {
 			List<DatiTipologiaRaccolta> tmpList = getItem(position);
 			DatiTipologiaRaccolta tmp = tmpList.get(0);
 			if (convertView == null) {
-				LayoutInflater inflater = (LayoutInflater) getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.tipo_raccolta_row, parent,
-						false);
+				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflater.inflate(R.layout.tipo_raccolta_row, parent, false);
 			}
 			TextView name = (TextView) convertView.findViewById(R.id.row_type_name);
 			name.setText(tmp.getTipologiaRaccolta());
 			LinearLayout types = (LinearLayout) convertView.findViewById(R.id.row_sub_type);
 			types.removeAllViews();
 			for (DatiTipologiaRaccolta dtr : tmpList) {
-				TextView tv = (TextView)getActivity().getLayoutInflater().inflate(R.layout.tipo_punto_raccolta_row, null);
+				TextView tv = (TextView) getActivity().getLayoutInflater().inflate(R.layout.tipo_punto_raccolta_row, null);
 				tv.setText(dtr.getTipologiaPuntoRaccolta());
 				types.addView(tv);
 				if (dtr.getColore() != null && dtr.getColore().length() > 0) {
-					((GradientDrawable) tv.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(), tmp.getColore()));
+					((GradientDrawable) tv.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(),
+							tmp.getColore()));
 				} else {
-					((GradientDrawable) tv.getBackground()).setColor(getResources().getColor(R.color.gray_light));
-					
+					((GradientDrawable) tv.getBackground()).setColor(getResources().getColor(R.color.rifiuti_light));
 				}
 			}
-			
-//			type.setText(tmp.getTipologiaPuntoRaccolta());
-//			View colorView = convertView.findViewById(R.id.color_view);
-//			if (tmp.getColore() != null && tmp.getColore().length() > 0) {
-//				colorView.setVisibility(View.VISIBLE);
-//				((GradientDrawable)colorView.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(), tmp.getColore()));
-//			} else {
-//				colorView.setVisibility(View.GONE);
-//			}
+
+			// type.setText(tmp.getTipologiaPuntoRaccolta());
+			// View colorView = convertView.findViewById(R.id.color_view);
+			// if (tmp.getColore() != null && tmp.getColore().length() > 0) {
+			// colorView.setVisibility(View.VISIBLE);
+			// ((GradientDrawable)colorView.getBackground()).setColor(RifiutiHelper.getColorResource(getActivity(),
+			// tmp.getColore()));
+			// } else {
+			// colorView.setVisibility(View.GONE);
+			// }
 			return convertView;
 		}
 
 	}
+
 	@Override
 	public void onStart() {
 		super.onStart();
-		abActivity.getSupportActionBar().setTitle(
-				abActivity.getString(R.string.tipologiediraccolta_label));
+		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.tipologiediraccolta_label));
 	}
 }
