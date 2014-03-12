@@ -117,7 +117,7 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 											android.R.drawable.ic_menu_close_clear_cancel));
 				} else {
 					doveLoButtoSearchButton.setImageDrawable(getResources()
-							.getDrawable(android.R.drawable.ic_menu_search));
+							.getDrawable(R.drawable.ic_search));
 				}
 
 				if (s.toString().trim().length() < THRESHOLD) {

@@ -8,7 +8,6 @@
         <item>CRM MARRONE</item>
         <item>CRM GRIGIO</item>
         <item>CRM BLU</item>
-        <item>CRM GIALLO SCURO</item>
         <item>CRM GIALLO</item>
         <item>CRM BIANCO</item>
         <item>CRM AZZURRO</item>
@@ -19,7 +18,6 @@
         <item>Isola Ecologica MARRONE</item>
         <item>Isola Ecologica GRIGIO</item>
         <item>Isola Ecologica BLU</item>
-        <item>Isola Ecologica GIALLO SCURO</item>
         <item>Isola Ecologica GIALLO</item>
         <item>Isola Ecologica BIANCO</item>
         <item>Isola Ecologica AZZURRO</item>
@@ -31,27 +29,26 @@
         <item>CRM</item>
         </string-array>
     <integer-array name="type_icon_color_drawables">
+ 
         <item>@drawable/ic_crm_green</item>
         <item>@drawable/ic_crm_olivegreen</item>
         <item>@drawable/ic_crm_brown</item>
         <item>@drawable/ic_crm_grey</item>
         <item>@drawable/ic_crm_blue</item>
-        <item>@drawable/ic_crm_darkyellow</item>
         <item>@drawable/ic_crm_yellow</item>
         <item>@drawable/ic_crm_white</item>
         <item>@drawable/ic_crm_blue</item>
-        <item>@drawable/ic_crm_darkyellow</item>
+        <item>@drawable/ic_crm_orange</item>
         <item>@drawable/ic_crm_red</item>
         <item>@drawable/ic_isola_eco_green</item>
         <item>@drawable/ic_isola_eco_olivegreen</item>
         <item>@drawable/ic_isola_eco_brown</item>
         <item>@drawable/ic_isola_eco_grey</item>
         <item>@drawable/ic_isola_eco_blue</item>
-        <item>@drawable/ic_isola_eco_darkyellow</item>
         <item>@drawable/ic_isola_eco_yellow</item>
         <item>@drawable/ic_isola_eco_white</item>
         <item>@drawable/ic_isola_eco_blue</item>
-        <item>@drawable/ic_isola_eco_darkyellow</item>
+        <item>@drawable/ic_isola_eco_orange</item>
         <item>@drawable/ic_isola_eco_red</item>
         <item>@drawable/ic_farmacia_red</item>
         <item>@drawable/ic_rivenditore_red</item>

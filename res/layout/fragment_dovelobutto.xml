@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/empty"
-                android:src="@android:drawable/ic_menu_search" />
+                android:src="@drawable/ic_search" />
         </LinearLayout>
 
         <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
