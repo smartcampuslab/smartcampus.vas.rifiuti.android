@@ -23,8 +23,8 @@
         <activity
             android:name="eu.trentorise.smartcampus.rifiuti.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-             android:launchMode="singleTop"
-            android:label="@string/application_title" >
+            android:label="@string/application_title"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,6 +47,14 @@
         </activity>
         <activity
             android:name="com.github.espiandev.showcaseview.TutorialActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+            android:theme="@style/TutorialTheme" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.github.espiandev.showcaseview.TourActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:theme="@style/TutorialTheme" >
             <intent-filter>

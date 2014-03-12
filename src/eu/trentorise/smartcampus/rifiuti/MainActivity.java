@@ -2,6 +2,7 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -215,7 +216,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
 					
 					mTutorialHelper.showTutorials();
-					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
+//					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
 				}
 			}
 		};
@@ -306,68 +307,153 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		}
 	}
 
-	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
+//	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
+//
+//		TutorialItem[] tutorial = new TutorialItem[] {
+//				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
+//				new TutorialItem("punti di raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
+//				new TutorialItem("tipi di raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
+//				new TutorialItem("gestione profili", null, 0, R.string.gestione_profili_title, R.string.gestione_profili_tut),
+//				new TutorialItem("segnala", null, 0, R.string.segnala_title, R.string.segnala_tut),
+//				new TutorialItem("contatti", null, 0, R.string.contatti_title, R.string.contatti_tut),
+//				new TutorialItem("tutorial", null, 0, R.string.tutorial_title, R.string.tutorial_tut),
+//				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut) };
+//
+//		@Override
+//		public void onTutorialFinished() {
+//			mDrawerLayout.closeDrawer(mDrawerList);
+//		}
+//
+//		@Override
+//		public void onTutorialCancelled() {
+//			mDrawerLayout.closeDrawer(mDrawerList);
+//		}
+//
+//		@Override
+//		public TutorialItem getItemAt(int i) {
+//			fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_icon);
+//			return tutorial[i];
+//		}
+//
+//		@Override
+//		public int size() {
+//			return tutorial.length;
+//		}showTourDialog
+//	};
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		mTutorialHelper.onTutorialActivityResult(requestCode, resultCode, data);
 
-		TutorialItem[] tutorial = new TutorialItem[] {
+	}
+	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
+		
+		TutorialItem[] tutorial = new TutorialItem[]{
 				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
-				new TutorialItem("punti raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
-				new TutorialItem("tipi raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
+				new TutorialItem("punti di raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
+				new TutorialItem("tipi di raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
 				new TutorialItem("gestione profili", null, 0, R.string.gestione_profili_title, R.string.gestione_profili_tut),
 				new TutorialItem("segnala", null, 0, R.string.segnala_title, R.string.segnala_tut),
 				new TutorialItem("contatti", null, 0, R.string.contatti_title, R.string.contatti_tut),
 				new TutorialItem("tutorial", null, 0, R.string.tutorial_title, R.string.tutorial_tut),
-				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut), };
+				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut) };
 
+		
 		@Override
 		public void onTutorialFinished() {
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}
-
+		
 		@Override
 		public void onTutorialCancelled() {
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}
-
+		
 		@Override
 		public TutorialItem getItemAt(int i) {
-			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_item);
+			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_icon);
 			return tutorial[i];
 		}
-
+		
 		@Override
 		public int size() {
 			return tutorial.length;
 		}
 	};
-
-	class DrawerListener implements DrawerLayout.DrawerListener {
-		@Override
-		public void onDrawerOpened(View drawerView) {
-			mDrawerToggle.onDrawerOpened(drawerView);
-			// getActionBar().on.onDrawerOpened();
-			mTutorialHelper = new ListViewTutorialHelper(MainActivity.this, mNavDrawerTutorialProvider);
-
-			if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-				// showTourDialog();
-				RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
-			}
-		}
-
-		@Override
-		public void onDrawerClosed(View drawerView) {
-			mDrawerToggle.onDrawerClosed(drawerView);
-			// mActionBar.onDrawerClosed();
-		}
-
-		@Override
-		public void onDrawerSlide(View drawerView, float slideOffset) {
-			mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
-		}
-
-		@Override
-		public void onDrawerStateChanged(int newState) {
-			mDrawerToggle.onDrawerStateChanged(newState);
-		}
-	}
+//	private void fillTutorialItemParams(TutorialItem item, int index, ListView listView, int itemId) {
+//		if (listView != null) {
+//		
+//			int firstVisible = listView.getFirstVisiblePosition();
+//			int lastVisible = listView.getLastVisiblePosition();
+//			int page = lastVisible - firstVisible;
+//			int shift = 0;
+//			View v = null;
+//			if (index <= firstVisible) {
+//				v = listView.getChildAt(index);
+//				shift = -v.getTop();
+//				if (v != null && v.findViewById(itemId) != null)
+//
+//				listView.setSelection(index);
+//				
+//				
+//			}else if (index >= lastVisible && listView.getChildAt(index - firstVisible) != null) {
+//				v = listView.getChildAt(index - firstVisible);
+//				if (listView.getAdapter().getCount() - lastVisible <= page) {
+//					// last items < one page
+//					v = listView.getChildAt(lastVisible-firstVisible-2);		
+//					if (v != null && v.findViewById(itemId) != null)
+//						listView.setSelection(firstVisible+2);
+//				} else {
+//					shift = -v.getTop()-20;
+//					if (v != null && v.findViewById(itemId) != null)
+//						listView.setSelection(index);
+//					
+//				}
+//
+//			}else {
+//				v = listView.getChildAt(index - firstVisible);
+//			}
+//			if (v != null) {
+//				View logo = v.findViewById(itemId);
+//				if (logo != null) {
+//					item.width = logo.getWidth();
+//					item.position = new int[2];
+//					logo.getLocationOnScreen(item.position);
+//					item.position[1] += shift;
+//				}
+//			}
+//		}
+//	}
+//	class DrawerListener implements DrawerLayout.DrawerListener {
+//		@Override
+//		public void onDrawerOpened(View drawerView) {
+//			mDrawerToggle.onDrawerOpened(drawerView);
+//			// getActionBar().on.onDrawerOpened();
+//			mTutorialHelper = new ListViewTutorialHelper(MainActivity.this, mNavDrawerTutorialProvider);
+//
+//			if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
+//				// showTourDialog();
+//				mTutorialHelper.showTutorials();
+////				RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
+//
+//			}
+//		}
+//
+//		@Override
+//		public void onDrawerClosed(View drawerView) {
+//			mDrawerToggle.onDrawerClosed(drawerView);
+//			// mActionBar.onDrawerClosed();
+//		}
+//
+//		@Override
+//		public void onDrawerSlide(View drawerView, float slideOffset) {
+//			mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
+//		}
+//
+//		@Override
+//		public void onDrawerStateChanged(int newState) {
+//			mDrawerToggle.onDrawerStateChanged(newState);
+//		}
+//	}
 
 }
