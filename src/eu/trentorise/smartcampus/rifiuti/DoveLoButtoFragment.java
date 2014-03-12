@@ -3,6 +3,10 @@ package eu.trentorise.smartcampus.rifiuti;
 import java.io.IOException;
 import java.util.List;
 
+import com.github.espiandev.showcaseview.TutorialHelper;
+import com.github.espiandev.showcaseview.TutorialHelper.TutorialProvider;
+import com.github.espiandev.showcaseview.TutorialItem;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,11 +29,14 @@ import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.KeyboardUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 
-public class DoveLoButtoFragment extends Fragment {
+public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 
 	private static final int NUM_COLUMNS = 3;
 
 	protected static final int THRESHOLD = 3;
+	
+	private static final int sDISTANCEDP=70;
+	private static final int sWIDTHDP=50;
 
 	private EditText doveLoButtoSearchField;
 	private ImageButton doveLoButtoSearchButton;
@@ -38,6 +45,7 @@ public class DoveLoButtoFragment extends Fragment {
 	private List<String> tipiRifiutiEntries;
 	private ArrayAdapter<String> doveLoButtoAdapter;
 	private TipiRifiutiAdapter tipiRifiutiAdapter;
+	private TutorialHelper mTutorialHelper;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,6 +58,7 @@ public class DoveLoButtoFragment extends Fragment {
 								.getCurrentProfilePosition(getActivity())));
 			}
 			tipiRifiutiEntries = RifiutiHelper.readTipologiaRifiuti();// getResources().getStringArray(R.array.tipirifiuti_entries);
+
 		} catch (IOException e) {
 			Log.e(DoveLoButtoFragment.class.getName(), e.toString());
 			getFragmentManager().popBackStack();
@@ -163,6 +172,90 @@ public class DoveLoButtoFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
+
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		getView().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				if (RifiutiHelper.isFirstLaunchDoveLoButto(getActivity())) {
+					mTutorialHelper = new TutorialHelper(getActivity(),
+							DoveLoButtoFragment.this);
+					mTutorialHelper.showTutorials();
+				}
+			}
+		}, 100);
+
+	}
+
+	@Override
+	public void onTutorialCancelled() {
+		// RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
+	}
+
+	@Override
+	public void onTutorialFinished() {
+		// RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
+	}
+
+	@Override
+	public TutorialItem getItemAt(int pos) {
+		View v = null;
+		int[] location = new int[2];
+		switch (pos) {
+		case 0:
+			v = getView().findViewById(R.id.dovelobutto_search_btn);
+			if (v.isShown()) {
+				v.getLocationOnScreen(location);
+				location[1]-=(int) RifiutiHelper.convertDpToPixel(8,
+						getActivity());
+				return new TutorialItem("search", location, v.getWidth(),
+						"asd0", "asd0");
+			}
+			return null;
+		case 1:
+			v = tipiRifiutiGrid.getChildAt(4);
+			if (v != null) {
+				v.getLocationOnScreen(location);
+				return new TutorialItem("tipo", location, v.getWidth(), "asd1",
+				"asd");
+			}
+			return null;
+		case 2:
+			location[0] = 0;
+			location[1] = (int) RifiutiHelper.convertDpToPixel(sDISTANCEDP,
+					getActivity());
+			return new TutorialItem("note", location,
+					(int) RifiutiHelper.convertDpToPixel(sWIDTHDP, getActivity()),
+					"asd2", "asd");
+		case 3:
+			location[0] = (int) (getActivity().getWindowManager()
+					.getDefaultDisplay().getWidth() - RifiutiHelper
+					.convertDpToPixel(sWIDTHDP, getActivity()));
+			location[1] = (int) RifiutiHelper.convertDpToPixel(sDISTANCEDP,
+					getActivity());
+			return new TutorialItem("calendario", location,
+					(int) RifiutiHelper.convertDpToPixel(sWIDTHDP, getActivity()),
+					"asd3", "asd");
+		case 4:
+			location[0] = 0;
+			location[1] = (int) RifiutiHelper.convertDpToPixel(30, getActivity());
+			return new TutorialItem("menu", location,
+					(int) RifiutiHelper.convertDpToPixel(sWIDTHDP, getActivity()),
+					"Menu", "asd");
+		default:
+			return null;
+
+		}
+	}
+
+	@Override
+	public int size() {
+		return 5;
 	}
 
 }
