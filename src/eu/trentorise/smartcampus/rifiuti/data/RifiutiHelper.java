@@ -869,8 +869,14 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
+<<<<<<< HEAD
 			String query = "SELECT nome,parent,comune FROM aree WHERE "
 					+ "comune IS NOT NULL AND comune != ''";
+=======
+			String query = "SELECT nome,parent,comune FROM aree "
+					+ "WHERE " + "comune IS NOT NULL AND comune != '' "
+					+ "ORDER BY comune";
+>>>>>>> branch 'master' of https://github.com/smartcampuslab/smartcampus.vas.rifiuti.android.git
 			cursor = db.rawQuery(query, null);
 			List<Area> result = new ArrayList<Area>();
 			while (cursor.moveToNext()) {
