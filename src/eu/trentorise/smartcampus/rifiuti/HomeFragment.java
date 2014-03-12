@@ -34,9 +34,7 @@ public class HomeFragment extends Fragment {
 	private PagerTabStrip mPagerStrip;
 	private ActionBarActivity abActivity;
 	private Integer pagerPreviousItem = null;
-	private TutorialHelper mTutorialHelper = null;
 	public static DrawerLayout mDrawerLayout;
-	private boolean tutorialHasOpened = false;
 	public static ListView mDrawerList;
 
 
@@ -56,9 +54,7 @@ public class HomeFragment extends Fragment {
 		
 
 		if (RifiutiHelper.isFirstLaunchHome(getActivity())) {
-//			openNavDrawerIfNeeded();
-			
-//			showTourDialog();
+
 			RifiutiHelper.disableFirstLaunchHome(getActivity());
 		}
 	}
