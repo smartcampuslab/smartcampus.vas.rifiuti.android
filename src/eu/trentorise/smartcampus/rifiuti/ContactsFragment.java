@@ -65,9 +65,6 @@ public class ContactsFragment extends Fragment {
 			}
 			OfficeListAdapter adapter = new OfficeListAdapter(getActivity(), array);
 			lv.setAdapter(adapter);
-			for (int i = 0; i < adapter.getGroupCount(); i++) {
-				lv.expandGroup(i);
-			}
 		} else if (data.size() == 1) {
 //			View child = getActivity().getLayoutInflater().inflate(R.layout.contacts_details, (ViewGroup)getView());
 			createOfficeView(getView().findViewById(R.id.contacts_details), data.get(0));
@@ -165,7 +162,7 @@ public class ContactsFragment extends Fragment {
 	 * @param data
 	 */
 	public void createOfficeView(View view, Map<String, String> data) {
-		prepareField(view, data.get("description"), R.id.contacts_descr_layout, R.id.contacts_descr, null);
+		prepareField(view, data.get("description"), R.id.contacts_descr, R.id.contacts_descr, null);
 		prepareField(view, data.get("address"), R.id.contacts_address_layout, R.id.contacts_address, null);
 		prepareField(view, data.get("opening"), R.id.contacts_opening_layout, R.id.contacts_opening, null);
 		prepareField(view, data.get("web"), R.id.contacts_web, R.id.contacts_web, R.string.contacts_web_ph);
@@ -239,7 +236,7 @@ public class ContactsFragment extends Fragment {
 		    }
 			Map<String,String> data = getChild(groupPosition, childPosition);
 			createOfficeView(convertView, data);
-			convertView.findViewById(R.id.contacts_descr_label).setVisibility(View.GONE);
+//			convertView.findViewById(R.id.contacts_descr_label).setVisibility(View.GONE);
 			return convertView;
 		}
 		@Override
