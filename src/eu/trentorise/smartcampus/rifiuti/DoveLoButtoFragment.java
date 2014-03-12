@@ -194,12 +194,12 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 
 	@Override
 	public void onTutorialCancelled() {
-		// RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
+		 RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
 	}
 
 	@Override
 	public void onTutorialFinished() {
-		// RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
+		 RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
 	}
 
 	@Override
