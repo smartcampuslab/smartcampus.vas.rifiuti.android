@@ -178,17 +178,17 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	@Override
 	public void onResume() {
 		super.onResume();
-		getView().postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				if (RifiutiHelper.isFirstLaunchDoveLoButto(getActivity())) {
-					mTutorialHelper = new TutorialHelper(getActivity(),
-							DoveLoButtoFragment.this);
-					mTutorialHelper.showTutorials();
-				}
-			}
-		}, 100);
+//		getView().postDelayed(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				if (RifiutiHelper.isFirstLaunchDoveLoButto(getActivity())) {
+//					mTutorialHelper = new TutorialHelper(getActivity(),
+//							DoveLoButtoFragment.this);
+//					mTutorialHelper.showTutorials();
+//				}
+//			}
+//		}, 100);
 
 	}
 
