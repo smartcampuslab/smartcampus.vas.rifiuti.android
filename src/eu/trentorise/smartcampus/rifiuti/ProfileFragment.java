@@ -368,7 +368,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 			} else {
 				PreferenceUtils.editProfile(getActivity(), getArguments()
-						.getInt(PROFILE_INDEX_KEY), newProfile);
+						.getInt(PROFILE_INDEX_KEY), newProfile,mProfile);
 				mProfile = newProfile;
 				setContent();
 

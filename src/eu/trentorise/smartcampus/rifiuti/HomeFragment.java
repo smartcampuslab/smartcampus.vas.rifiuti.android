@@ -54,7 +54,6 @@ public class HomeFragment extends Fragment {
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 		
-		mTutorialHelper = new ListViewTutorialHelper(getActivity(), mHomeTutorialProvider);
 
 		if (RifiutiHelper.isFirstLaunchHome(getActivity())) {
 //			openNavDrawerIfNeeded();
@@ -166,76 +165,5 @@ public class HomeFragment extends Fragment {
 			return mPagerTitles[position];
 		}
 
-	}
-private TutorialProvider mHomeTutorialProvider = new TutorialProvider() {
-		
-		TutorialItem[] tutorial = new TutorialItem[]{
-				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
-				new TutorialItem("punti raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
-				new TutorialItem("tipi raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
-				new TutorialItem("gestione profili", null, 0, R.string.gestione_profili_title, R.string.gestione_profili_tut),
-				new TutorialItem("segnala", null, 0, R.string.segnala_title, R.string.segnala_tut),
-				new TutorialItem("contatti", null, 0, R.string.contatti_title, R.string.contatti_tut),
-				new TutorialItem("tutorial", null, 0, R.string.tutorial_title, R.string.tutorial_tut),
-				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut),
-
-
-
-}; 
-		@Override
-		public void onTutorialFinished() {
-			mDrawerLayout.closeDrawer(mDrawerList);
-		}
-		
-		@Override
-		public void onTutorialCancelled() {
-			mDrawerLayout.closeDrawer(mDrawerList);
-		}
-		
-		@Override
-		public TutorialItem getItemAt(int i) {
-			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i, mDrawerList, R.id.drawer_menu_item);
-			return tutorial[i];
-		}
-		
-		@Override
-		public int size() {
-			return tutorial.length;
-		}
-	};
-	
-//	private boolean openNavDrawerIfNeeded() {
-//		DrawerLayout mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-//		if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT))
-//		{
-//			tutorialHasOpened=true;
-//			mDrawerLayout.openDrawer(Gravity.LEFT);
-//			return true;
-//			
-//		}
-//		return false;
-//	}
-	
-	
-	///to call in case of pressing the option tutorial
-	private void showTourDialog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setMessage("bla bla")
-				.setPositiveButton(getString(R.string.begin_tut), new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						RifiutiHelper.setWantTour(getActivity(), true);
-						mTutorialHelper.showTutorials();
-//						showTutorial();
-					}
-				}).setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						RifiutiHelper.setWantTour(getActivity(), false);
-						dialog.dismiss();
-					}
-				});
-		builder.create().show();
 	}
 }

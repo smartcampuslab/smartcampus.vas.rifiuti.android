@@ -182,13 +182,16 @@ public class PreferenceUtils {
 	 *            of the profile that should be updated
 	 * @throws ProfileNameExistsException
 	 */
-	public static void editProfile(Context ctx, int position, Profile newProfile)
+	public static void editProfile(Context ctx, int position, Profile newProfile,Profile oldProfile)
 			throws ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		if (!isProfileInside(newProfile, profiles))
-			profiles.set(position, newProfile);
+		if (isProfileInside(newProfile, profiles))
+			if(isDifferent(oldProfile,newProfile))
+				profiles.set(position, newProfile);
+			else
+				throw new ProfileNameExistsException();
 		else
-			throw new ProfileNameExistsException();
+			profiles.set(position, newProfile);
 		JSONArray jsonArr = new JSONArray();
 		try {
 			for (Profile tmp : profiles) {
@@ -199,6 +202,22 @@ public class PreferenceUtils {
 		}
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
+	}
+
+	private static boolean isDifferent(Profile oldProfile, Profile newProfile) {
+		if(!oldProfile.getComune().equals(newProfile.getComune()))
+			return true;
+		if(!oldProfile.getArea().equals(newProfile.getArea()))
+			return true;
+		if(!oldProfile.getName().equals(newProfile.getName()))
+			return true;
+		if(!oldProfile.getNCivico().equals(newProfile.getNCivico()))
+			return true;
+		if(!oldProfile.getUtenza().equals(newProfile.getUtenza()))
+			return true;
+		if(!oldProfile.getVia().equals(newProfile.getVia()))
+			return true;
+		return false;
 	}
 
 	private static boolean isProfileInside(Profile p, List<Profile> profiles) {
