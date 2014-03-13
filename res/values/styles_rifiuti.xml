@@ -54,11 +54,23 @@
         <item name="backgroundStacked">@drawable/ab_stacked_solid_rifiuti</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_rifiuti</item>
         <item name="progressBarStyle">@style/ProgressBar.Rifiuti</item>
+        <item name="titleTextStyle">@style/ActionBar.TitleTextStyle</item>
+        <item name="subtitleTextStyle">@style/ActionBar.SubtitleTextStyle</item>
     </style>
 
     <style name="ActionBar.Transparent.Rifiuti" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@drawable/ab_transparent_rifiuti</item>
         <item name="progressBarStyle">@style/ProgressBar.Rifiuti</item>
+        <item name="titleTextStyle">@style/ActionBar.TitleTextStyle</item>
+        <item name="subtitleTextStyle">@style/ActionBar.SubtitleTextStyle</item>
+    </style>
+
+    <style name="ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="ActionBar.SubtitleTextStyle" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <style name="PopupMenu.Rifiuti" parent="@style/Widget.AppCompat.PopupMenu">

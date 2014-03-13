@@ -25,11 +25,11 @@
         <item name="android:background">@drawable/rifiuti_edit_text_holo_light</item>
     </style>
 
-    <style name="Buttonrifiuti" parent="android:Widget.Holo.Light.Button">
+    <style name="ButtonRifiuti" parent="android:Widget.Holo.Light.Button">
         <item name="android:background">@drawable/rifiuti_btn_default_holo_light</item>
     </style>
 
-    <style name="ImageButtonrifiuti" parent="android:Widget.Holo.Light.ImageButton">
+    <style name="ImageButtonRifiuti" parent="android:Widget.Holo.Light.ImageButton">
         <item name="android:background">@drawable/rifiuti_btn_default_holo_light</item>
     </style>
 
