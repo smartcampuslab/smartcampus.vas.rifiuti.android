@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
@@ -109,25 +111,26 @@ public class RifiutoDetailsFragment extends Fragment {
 			}
 		});
 
-		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), android.R.layout.simple_list_item_1,
+		final PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.puntoraccolta_group_light,  android.R.layout.simple_list_item_1,
 				puntiDiRaccolta);
-		ListView listPuntiRaccolta = (ListView) getView().findViewById(R.id.puntoraccolta_list);
+		ExpandableListView listPuntiRaccolta = (ExpandableListView) getView().findViewById(R.id.puntoraccolta_list);
 		listPuntiRaccolta.setAdapter(adapter);
-		listPuntiRaccolta.setOnItemClickListener(new OnItemClickListener() {
-
+		listPuntiRaccolta.setOnChildClickListener(new OnChildClickListener() {
+			
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 				PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
 
 				Bundle args = new Bundle();
-				args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(arg2));
+				args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, adapter.getChild(groupPosition, childPosition));
 				fragment.setArguments(args);
 				fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 				// fragmentTransaction.detach(this);
 				fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
 				fragmentTransaction.addToBackStack(fragment.getTag());
 				fragmentTransaction.commit();
+				return true;
 			}
 		});
 	}
