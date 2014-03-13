@@ -140,13 +140,13 @@ public class RifiutiManagerContainerFragment extends Fragment {
 			switch (position) {
 			case 0:
 				if (tipologiaRifiuto != null) {
-					return new RifiutiListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
 				} else if (tipologiaRaccolta != null) {
 					return new RifiutiListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
 				}
 			case 1:
 				if (tipologiaRifiuto != null) {
-					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+					return new RifiutiListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
 				} else if (tipologiaRaccolta != null) {
 					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
 				}
@@ -162,6 +162,20 @@ public class RifiutiManagerContainerFragment extends Fragment {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
+			switch (position) {
+			case 0:
+				if (tipologiaRifiuto != null) {
+					return mPagerTitles[1];
+				} else if (tipologiaRaccolta != null) {
+					return mPagerTitles[0];
+				}
+			case 1:
+				if (tipologiaRifiuto != null) {
+					return mPagerTitles[0];
+				} else if (tipologiaRaccolta != null) {
+					return mPagerTitles[0];
+				}
+			}
 			return mPagerTitles[position];
 		}
 	}
