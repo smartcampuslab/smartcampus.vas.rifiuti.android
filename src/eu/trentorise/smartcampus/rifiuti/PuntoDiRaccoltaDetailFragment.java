@@ -94,7 +94,9 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		abActivity.getSupportActionBar().setTitle(
 				abActivity.getString(R.string.puntiraccoltadetails_abtitle,
-						abActivity.getString(R.string.punto_di_raccolta_title), puntoDiRaccolta.getTipologiaPuntiRaccolta(),
+						abActivity.getString(R.string.punto_di_raccolta_title)));
+		abActivity.getSupportActionBar().setSubtitle(abActivity.getString(R.string.puntiraccoltadetails_absubtitle,
+				puntoDiRaccolta.getTipologiaPuntiRaccolta(),
 						puntoDiRaccolta.getArea()));
 
 		try {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.Rifiuti" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:editTextBackground">@drawable/rifiuti_edit_text_holo_light</item>
+        <item name="android:textColorHighlight">#9963ac3d</item>
+        <item name="android:textSelectHandleLeft">@drawable/rifiuti_text_select_handle_left</item>
+        <item name="android:textSelectHandleRight">@drawable/rifiuti_text_select_handle_right</item>
+        <item name="android:textSelectHandle">@drawable/rifiuti_text_select_handle_middle</item>
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewRifiuti</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/rifiuti_btn_check_holo_light</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/rifiuti_btn_radio_holo_light</item>
+        <item name="android:buttonStyle">@style/ButtonRifiuti</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonRifiuti</item>
+        <item name="android:dropDownSpinnerStyle">@style/SpinnerRifiuti</item>
+        <item name="android:listChoiceBackgroundIndicator">@drawable/rifiuti_list_selector_holo_light</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/rifiuti_activated_background_holo_light</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/rifiuti_fastscroll_thumb_holo</item>
+    </style>
+
+    <style name="AutoCompleteTextViewrifiuti" parent="android:Widget.Holo.Light.AutoCompleteTextView">
+        <item name="android:dropDownSelector">@drawable/rifiuti_list_selector_holo_light</item>
+        <item name="android:background">@drawable/rifiuti_edit_text_holo_light</item>
+    </style>
+
+    <style name="Buttonrifiuti" parent="android:Widget.Holo.Light.Button">
+        <item name="android:background">@drawable/rifiuti_btn_default_holo_light</item>
+    </style>
+
+    <style name="ImageButtonrifiuti" parent="android:Widget.Holo.Light.ImageButton">
+        <item name="android:background">@drawable/rifiuti_btn_default_holo_light</item>
+    </style>
+
+    <style name="SpinnerRifiuti" parent="android:Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/rifiuti_spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/rifiuti_list_selector_holo_light</item>
+    </style>
+
+</resources>

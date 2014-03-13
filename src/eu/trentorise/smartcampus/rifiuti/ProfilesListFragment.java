@@ -43,7 +43,7 @@ public class ProfilesListFragment extends ListFragment {
 		setListAdapter(new ProfileAdapter(getActivity(), profiles));
 		setEmptyText(getString(R.string.niente_profili));
 
-		// we can't let the user switch fragment whithout having a profile
+		// we can't let the user switch fragment without having a profile
 		if (getActivity() instanceof MainActivity) {
 			if (profiles.isEmpty()) {
 				((MainActivity) getActivity()).lockDrawer();
@@ -69,6 +69,7 @@ public class ProfilesListFragment extends ListFragment {
 			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 			abActivity.supportInvalidateOptionsMenu();
 		}
+		getListView().setPadding(0, 4, 0, 0);
 	}
 
 	@Override

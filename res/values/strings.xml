@@ -85,7 +85,8 @@
     <string name="from_for_direction">from</string>
     <string name="to_for_direction">to</string>
     <string name="toast_app_not_installed">L\'applicazione richiesta non è stata trovata</string>
-    <string name="puntiraccoltadetails_abtitle">%1$s: %2$s %3$s</string>
+    <string name="puntiraccoltadetails_abtitle">%1$s</string>
+    <string name="puntiraccoltadetails_absubtitle">%1$s %2$s</string>
     <string name="puntiraccoltadetails_orari">%1$s: %2$s-%3$s</string>
     <string name="puntiraccoltadetails_orari_2">, %1$s-%2$s</string>
     <!-- stringhe titoli fragment -->

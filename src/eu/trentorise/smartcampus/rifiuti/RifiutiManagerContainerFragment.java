@@ -1,5 +1,6 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class RifiutiManagerContainerFragment extends Fragment {
@@ -119,10 +121,13 @@ public class RifiutiManagerContainerFragment extends Fragment {
 		// mPager.setCurrentItem(1);
 		if (tipologiaRifiuto != null) {
 			abActivity.getSupportActionBar().setTitle(
-					abActivity.getString(R.string.tipo_di_rifiuto_title) +" : "+ tipologiaRifiuto);
+					abActivity.getString(R.string.tipo_di_rifiuto_title) );
+			abActivity.getSupportActionBar().setSubtitle(tipologiaRifiuto);
 		} else if (tipologiaRaccolta != null) {
 			abActivity.getSupportActionBar().setTitle(
-					abActivity.getString(R.string.tipo_di_raccolta_title) +" : "+ tipologiaRaccolta);
+					abActivity.getString(R.string.tipo_di_raccolta_title));
+			abActivity.getSupportActionBar().setSubtitle(tipologiaRaccolta);
+
 		}
 
 	}
@@ -140,13 +145,13 @@ public class RifiutiManagerContainerFragment extends Fragment {
 			switch (position) {
 			case 0:
 				if (tipologiaRifiuto != null) {
-					return new RifiutiListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
 				} else if (tipologiaRaccolta != null) {
 					return new RifiutiListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
 				}
 			case 1:
 				if (tipologiaRifiuto != null) {
-					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+					return new RifiutiListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
 				} else if (tipologiaRaccolta != null) {
 					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
 				}
@@ -162,6 +167,20 @@ public class RifiutiManagerContainerFragment extends Fragment {
 
 		@Override
 		public CharSequence getPageTitle(int position) {
+			switch (position) {
+			case 0:
+				if (tipologiaRifiuto != null) {
+					return mPagerTitles[1];
+				} else if (tipologiaRaccolta != null) {
+					return mPagerTitles[0];
+				}
+			case 1:
+				if (tipologiaRifiuto != null) {
+					return mPagerTitles[0];
+				} else if (tipologiaRaccolta != null) {
+					return mPagerTitles[0];
+				}
+			}
 			return mPagerTitles[position];
 		}
 	}
