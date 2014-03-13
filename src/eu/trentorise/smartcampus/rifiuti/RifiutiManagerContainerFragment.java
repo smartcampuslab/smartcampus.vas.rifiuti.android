@@ -1,5 +1,6 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class RifiutiManagerContainerFragment extends Fragment {
@@ -119,10 +121,13 @@ public class RifiutiManagerContainerFragment extends Fragment {
 		// mPager.setCurrentItem(1);
 		if (tipologiaRifiuto != null) {
 			abActivity.getSupportActionBar().setTitle(
-					abActivity.getString(R.string.tipo_di_rifiuto_title) +" : "+ tipologiaRifiuto);
+					abActivity.getString(R.string.tipo_di_rifiuto_title) );
+			abActivity.getSupportActionBar().setSubtitle(tipologiaRifiuto);
 		} else if (tipologiaRaccolta != null) {
 			abActivity.getSupportActionBar().setTitle(
-					abActivity.getString(R.string.tipo_di_raccolta_title) +" : "+ tipologiaRaccolta);
+					abActivity.getString(R.string.tipo_di_raccolta_title));
+			abActivity.getSupportActionBar().setSubtitle(tipologiaRaccolta);
+
 		}
 
 	}
