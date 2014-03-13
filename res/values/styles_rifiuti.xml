@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<!--
+     File created by the Android Action Bar Style Generator
 
      Copyright (C) 2011 The Android Open Source Project
      Copyright (C) 2012 readyState Software Ltd
@@ -17,9 +18,9 @@
      limitations under the License.
 -->
 
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Rifiuti" parent="@style/Theme.AppCompat.Light">
+    <style name="Theme.Rifiuti" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_rifiuti</item>
         <item name="popupMenuStyle">@style/PopupMenu.Rifiuti</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Rifiuti</item>
@@ -30,47 +31,52 @@
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_rifiuti</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Rifiuti</item>
 
-        
+        <!-- Light.DarkActionBar specific -->
+        <item name="actionBarWidgetTheme">@style/Theme.Rifiuti.Widget</item>
     </style>
 
-    <style name="ActionBar.Solid.Rifiuti" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+    <style name="ActionBar.Solid.Rifiuti" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_rifiuti</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_rifiuti</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_rifiuti</item>
         <item name="progressBarStyle">@style/ProgressBar.Rifiuti</item>
     </style>
 
-    <style name="ActionBar.Transparent.Rifiuti" parent="@style/Widget.AppCompat.Light.ActionBar">
+    <style name="ActionBar.Transparent.Rifiuti" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@drawable/ab_transparent_rifiuti</item>
         <item name="progressBarStyle">@style/ProgressBar.Rifiuti</item>
     </style>
-	
-    <style name="PopupMenu.Rifiuti" parent="@style/Widget.AppCompat.Light.PopupMenu">	
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_rifiuti</item>	
-    </style>
-	
-    <style name="DropDownListView.Rifiuti" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_rifiuti</item>
+
+    <style name="PopupMenu.Rifiuti" parent="@style/Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_rifiuti</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
     </style>
 
-    <style name="ActionBarTabStyle.Rifiuti" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+    <style name="DropDownListView.Rifiuti" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_rifiuti</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Rifiuti" parent="@style/Widget.AppCompat.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_rifiuti</item>
     </style>
-	
-    <style name="DropDownNav.Rifiuti" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+
+    <style name="DropDownNav.Rifiuti" parent="@style/Widget.AppCompat.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/spinner_background_ab_rifiuti</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_rifiuti</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_rifiuti</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_rifiuti</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
     </style>
-    
+
     <style name="ProgressBar.Rifiuti" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_rifiuti</item>
     </style>
-    
-    <style name="ActionButton.CloseMode.Rifiuti" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
+
+    <style name="ActionButton.CloseMode.Rifiuti" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_rifiuti</item>
     </style>
-    
+
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Rifiuti.Widget" parent="@style/Theme.AppCompat">
         <item name="popupMenuStyle">@style/PopupMenu.Rifiuti</item>
