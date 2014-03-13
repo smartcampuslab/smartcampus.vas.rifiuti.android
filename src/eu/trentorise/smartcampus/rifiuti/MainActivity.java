@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private TutorialHelper mTutorialHelper = null;
+//	private TutorialHelper mTutorialHelper = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		mDrawerList.setAdapter(new DrawerArrayAdapter(this, R.layout.drawer_entry, getResources().getStringArray(
 				R.array.drawer_entries_strings)));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		mTutorialHelper = new ListViewTutorialHelper(this, mNavDrawerTutorialProvider);
+//		mTutorialHelper = new ListViewTutorialHelper(this, mNavDrawerTutorialProvider);
 		addNavDrawerButton();
 
 		RadioGroup rg = (RadioGroup) findViewById(R.id.profile_rg);
@@ -194,7 +194,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 				super.onDrawerOpened(drawerView);
 				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
 					
-					mTutorialHelper.showTutorials();
+//					mTutorialHelper.showTutorials();
 					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
 				}
 			}
@@ -287,46 +287,46 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	}
 
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		mTutorialHelper.onTutorialActivityResult(requestCode, resultCode, data);
-
-	}
-	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
-		
-		TutorialItem[] tutorial = new TutorialItem[]{
-				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
-				new TutorialItem("punti di raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
-				new TutorialItem("tipi di raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
-				new TutorialItem("gestione profili", null, 0, R.string.gestione_profili_title, R.string.gestione_profili_tut),
-				new TutorialItem("segnala", null, 0, R.string.segnala_title, R.string.segnala_tut),
-				new TutorialItem("contatti", null, 0, R.string.contatti_title, R.string.contatti_tut),
-				new TutorialItem("tutorial", null, 0, R.string.tutorial_title, R.string.tutorial_tut),
-				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut) };
-
-		
-		@Override
-		public void onTutorialFinished() {
-			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
-		}
-		
-		@Override
-		public void onTutorialCancelled() {
-			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
-		}
-		
-		@Override
-		public TutorialItem getItemAt(int i) {
-			ListViewTutorialHelper.fillTutorialItemParamsWithCorrection(tutorial[i], i, mDrawerList, R.id.drawer_menu_icon,0,-12);
-			return tutorial[i];
-		}
-		
-		@Override
-		public int size() {
-			return tutorial.length;
-		}
-	};
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);
+//		mTutorialHelper.onTutorialActivityResult(requestCode, resultCode, data);
+//
+//	}
+//	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
+//		
+//		TutorialItem[] tutorial = new TutorialItem[]{
+//				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
+//				new TutorialItem("punti di raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
+//				new TutorialItem("tipi di raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
+//				new TutorialItem("gestione profili", null, 0, R.string.gestione_profili_title, R.string.gestione_profili_tut),
+//				new TutorialItem("segnala", null, 0, R.string.segnala_title, R.string.segnala_tut),
+//				new TutorialItem("contatti", null, 0, R.string.contatti_title, R.string.contatti_tut),
+//				new TutorialItem("tutorial", null, 0, R.string.tutorial_title, R.string.tutorial_tut),
+//				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut) };
+//
+//		
+//		@Override
+//		public void onTutorialFinished() {
+//			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+//		}
+//		
+//		@Override
+//		public void onTutorialCancelled() {
+//			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+//		}
+//		
+//		@Override
+//		public TutorialItem getItemAt(int i) {
+//			ListViewTutorialHelper.fillTutorialItemParamsWithCorrection(tutorial[i], i, mDrawerList, R.id.drawer_menu_icon,0,-12);
+//			return tutorial[i];
+//		}
+//		
+//		@Override
+//		public int size() {
+//			return tutorial.length;
+//		}
+//	};
 
 
 }
