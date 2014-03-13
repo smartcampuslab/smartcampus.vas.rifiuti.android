@@ -204,7 +204,6 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 	}
 
 	protected void callBringMeThere() {
-		getActivity().setProgressBarIndeterminateVisibility(true);
 		mLocUtils = new LocationUtils(getActivity(), PuntoDiRaccoltaDetailFragment.this);
 	}
 
@@ -213,7 +212,6 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		Log.i(ProfileFragment.class.getName(), l.toString());
 		mLocation = l;
 		if (getActivity() == null) return;
-		getActivity().setProgressBarIndeterminateVisibility(false);
 		if (mLocUtils != null) {
 			mLocUtils.close();
 			mLocUtils = null;

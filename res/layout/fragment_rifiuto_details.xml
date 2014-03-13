@@ -39,7 +39,11 @@
 	        android:divider="@color/rifiuti_light"
 	        android:childDivider="@color/rifiuti_middle"
 	        android:dividerHeight="1dp"
-	        android:drawSelectorOnTop="false" />
+	        android:drawSelectorOnTop="false" 
+	        android:listSelector="@color/rifiuti_green_light_o50" />
+	    
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
+	    	    
     </LinearLayout>
 
 </ScrollView>

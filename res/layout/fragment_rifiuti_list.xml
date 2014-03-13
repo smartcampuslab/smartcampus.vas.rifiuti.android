@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/rifiuti_light"
     android:orientation="vertical" >
 
     <ListView
@@ -10,6 +11,10 @@
         android:layout_height="wrap_content"
         android:background="@color/rifiuti_light"
         android:drawSelectorOnTop="false"
+        android:divider="@color/rifiuti_middle"
+        android:dividerHeight="1dp"
         android:listSelector="@color/rifiuti_green_light_o50" />
 
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
+    
 </LinearLayout>

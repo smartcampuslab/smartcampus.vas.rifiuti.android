@@ -12,7 +12,7 @@
         android:layout_weight="1"
         android:divider="@color/rifiuti_middle"
         android:dividerHeight="1dp"
-        android:drawSelectorOnTop="false"
+        android:drawSelectorOnTop="true"
         android:listSelector="@color/rifiuti_green_light_o50" />
 
 </LinearLayout>

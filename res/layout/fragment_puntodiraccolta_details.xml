@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/puntodiraccolta_dettagli_scrollview"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/rifiuti_light" >
 
     <LinearLayout
@@ -13,9 +13,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/rifiuti_middle"
             android:padding="@dimen/fragment_horizontal_margin"
             android:text="@string/dettagli_label"
+            android:background="@color/rifiuti_green_dark"
+            android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
@@ -56,7 +57,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/rifiuti_middle"
+	            android:background="@color/rifiuti_green_dark"
+	            android:textColor="@android:color/white"
                 android:padding="@dimen/fragment_horizontal_margin"
                 android:text="@string/orario_label"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -78,7 +80,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/rifiuti_middle"
+	            android:background="@color/rifiuti_green_dark"
+	            android:textColor="@android:color/white"
                 android:padding="@dimen/fragment_horizontal_margin"
                 android:text="@string/tipologiediraccolta_label"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -88,9 +91,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/rifiuti_light"
-                android:drawSelectorOnTop="false" >
+                android:divider="@color/rifiuti_middle"
+                android:dividerHeight="1dp"
+                android:drawSelectorOnTop="false" 
+                android:listSelector="@color/rifiuti_green_light_o50" >
             </eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView>
         </LinearLayout>
+    	<View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
     </LinearLayout>
 
 </ScrollView>
