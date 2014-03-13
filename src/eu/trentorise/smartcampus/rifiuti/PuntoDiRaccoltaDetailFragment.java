@@ -212,6 +212,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 	public void onLocationChaged(Location l) {
 		Log.i(ProfileFragment.class.getName(), l.toString());
 		mLocation = l;
+		if (getActivity() == null) return;
 		getActivity().setProgressBarIndeterminateVisibility(false);
 		if (mLocUtils != null) {
 			mLocUtils.close();

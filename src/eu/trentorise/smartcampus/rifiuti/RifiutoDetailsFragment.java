@@ -64,10 +64,12 @@ public class RifiutoDetailsFragment extends Fragment {
 
 		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		if (rifiuto != null) {
-			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.rifiuto_title) + ": " + rifiuto);
+			abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.rifiuto_title));
+			abActivity.getSupportActionBar().setSubtitle(rifiuto);
 		} else if (tipologiaRifiuto != null) {
 			abActivity.getSupportActionBar().setTitle(
-					abActivity.getString(R.string.tipo_di_rifiuto_title) + ": " + tipologiaRifiuto);
+					abActivity.getString(R.string.tipo_di_rifiuto_title));
+			abActivity.getSupportActionBar().setSubtitle( rifiuto);
 		}
 
 		try {
