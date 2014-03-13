@@ -51,11 +51,6 @@ public class HomeFragment extends Fragment {
 		abActivity = (ActionBarActivity) getActivity();
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
-
-		if (RifiutiHelper.isFirstLaunchHome(getActivity())) {
-
-			RifiutiHelper.disableFirstLaunchHome(getActivity());
-		}
 	}
 
 	@Override

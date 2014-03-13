@@ -187,8 +187,8 @@ public class MainActivity extends ActionBarActivity implements
 			findViewById(R.id.profile_rg).setVisibility(View.GONE);
 		}
 		mDrawerToggle.syncState();
-
 		unlockDrawer();
+		showDrawer();
 		if (loadHome) {
 			setCurrentProfile();
 			loadFragment(0);
