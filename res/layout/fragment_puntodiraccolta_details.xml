@@ -37,14 +37,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/ic_map" />
+                android:src="@drawable/ic_map_green" />
 
             <ImageView
                 android:id="@+id/puntodiraccolta_directions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/ic_place" />
+                android:src="@drawable/ic_directions" />
         </LinearLayout>
 
         <LinearLayout

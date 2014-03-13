@@ -8,5 +8,9 @@
     <color name="rifiuti_dark">#3c3c3b</color>
     <color name="rifiuti_middle">#cecece</color>
     <color name="rifiuti_light">#eeeeee</color>
+    <color name="rifiuti_green_dark">#47772b</color>
+    <color name="rifiuti_green_middle">#63ac3d</color>
+    <color name="rifiuti_green_light">#8de058</color>
+    <color name="rifiuti_green_light_o50">#778de058</color>
 
 </resources>

@@ -98,7 +98,7 @@
     <string name="profili_title">Profili</string>
     <string name="Tutorial_title">Tutorial</string>
     <string name="Informazioni_title">Informazioni</string>
-    <string name="application_title">100% Rifiuti</string>
+    <string name="application_title">100% Riciclo</string>
     <string name="feedback_title">Segnalazione</string>
 
     <!-- FEEDBACK -->
@@ -129,21 +129,21 @@
     
     
      <!-- TUTORIAL -->
-    <string name="home_title">titolo 1</string>
+    <string name="home_title">Home</string>
     <string name="home_tut">testo 1</string>
-    <string name="punti_raccolta_title">titolo 2</string>
+    <string name="punti_raccolta_title">Punti di raccolta</string>
     <string name="punti_raccolta_tut">testo 2</string>
-    <string name="tipi_raccolta_title">titolo 3</string>
+    <string name="tipi_raccolta_title">Tipi di raccolta</string>
     <string name="tipi_raccolta_tut">testo 3</string>
-    <string name="gestione_profili_title">titolo 4</string>
+    <string name="gestione_profili_title">Gestione profili</string>
     <string name="gestione_profili_tut">testo 4</string>
-    <string name="segnala_title">titolo 5</string>
+    <string name="segnala_title">Segnala</string>
     <string name="segnala_tut">testo 5</string>
-    <string name="contatti_title">titolo 6</string>
+    <string name="contatti_title">Contatti</string>
     <string name="contatti_tut">testo 6</string>
-    <string name="tutorial_title">titolo 7</string>
+    <string name="tutorial_title">Tutorial</string>
     <string name="tutorial_tut">testo 7</string>
-    <string name="info_title">titolo 8</string>
+    <string name="info_title">Info</string>
     <string name="info_tut">testo 8</string>
     <string name="tipologia_raccolta_ext">%1$s: %2$s</string>
     

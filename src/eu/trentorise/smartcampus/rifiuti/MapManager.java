@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 
 public class MapManager {
@@ -166,7 +167,8 @@ public class MapManager {
 
 		private static MarkerOptions createSingleMarker(PuntoRaccolta item, int x, int y) {
 			LatLng latLng = getLatLngFromBasicObject(item);
-			MarkerOptions marker = new MarkerOptions().position(latLng).title(x + ":" + y);
+			int markerIcon = RifiutiHelper.getMarkerIcon(item);
+			MarkerOptions marker = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(markerIcon)).title(x + ":" + y);
 			// markerPunti.put(marker, item);
 			return marker;
 		}

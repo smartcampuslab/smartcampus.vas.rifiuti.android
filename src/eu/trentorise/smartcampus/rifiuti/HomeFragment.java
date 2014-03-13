@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
 		mPagerStrip = (PagerTabStrip) viewGroup.findViewById(R.id.pagerStrip);
 		mPagerStrip.setDrawFullUnderline(false);
 		mPagerStrip.setTabIndicatorColor(getResources().getColor(
-				android.R.color.darker_gray));
+				R.color.rifiuti_green_dark));
 		// mPagerStrip.setTextColor(getResources().getColor(R.color.gray_dark));
 		// mPagerStrip.setTextSpacing(48);
 		// mPagerStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);

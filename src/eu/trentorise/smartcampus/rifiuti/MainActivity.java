@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity implements
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private TutorialHelper mTutorialHelper = null;
+//	private TutorialHelper mTutorialHelper = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +57,9 @@ public class MainActivity extends ActionBarActivity implements
 				R.layout.drawer_entry, getResources().getStringArray(
 						R.array.drawer_entries_strings)));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		mTutorialHelper = new ListViewTutorialHelper(this,
-				mNavDrawerTutorialProvider);
+
+//		mTutorialHelper = new ListViewTutorialHelper(this, mNavDrawerTutorialProvider);
+
 		addNavDrawerButton();
 
 		RadioGroup rg = (RadioGroup) findViewById(R.id.profile_rg);
@@ -73,6 +74,7 @@ public class MainActivity extends ActionBarActivity implements
 						setCurrentProfile();
 						mDrawerLayout
 								.closeDrawer(findViewById(R.id.drawer_wrapper));
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -186,26 +188,6 @@ public class MainActivity extends ActionBarActivity implements
 		}
 		mDrawerToggle.syncState();
 
-		// SpinnerAdapter adapter = new ArrayAdapter<Profile>(this,
-		// android.R.layout.simple_spinner_dropdown_item, profiles) {
-		//
-		// @Override
-		// public View getView(int position, View convertView, ViewGroup parent)
-		// {
-		// if (convertView == null) {
-		// LayoutInflater inflater = getLayoutInflater();
-		// convertView = inflater.inflate(
-		// android.R.layout.simple_spinner_dropdown_item,
-		// parent, false);
-		// }
-		// ((TextView) convertView).setText(getItem(position).getName());
-		// return convertView;
-		// }
-		//
-		// };
-		// getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		// getSupportActionBar().setDisplayShowTitleEnabled(true);
-		// getSupportActionBar().setListNavigationCallbacks(adapter, this);
 		unlockDrawer();
 		if (loadHome) {
 			setCurrentProfile();
@@ -225,8 +207,8 @@ public class MainActivity extends ActionBarActivity implements
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-
-					mTutorialHelper.showTutorials();
+					
+//					mTutorialHelper.showTutorials();
 					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
 				}
 			}
@@ -333,81 +315,46 @@ public class MainActivity extends ActionBarActivity implements
 		super.onActivityResult(arg0, arg1, arg2);
 	}
 
-	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);
+//		mTutorialHelper.onTutorialActivityResult(requestCode, resultCode, data);
+//
+//	}
+//	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
+//		
+//		TutorialItem[] tutorial = new TutorialItem[]{
+//				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
+//				new TutorialItem("punti di raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
+//				new TutorialItem("tipi di raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
+//				new TutorialItem("gestione profili", null, 0, R.string.gestione_profili_title, R.string.gestione_profili_tut),
+//				new TutorialItem("segnala", null, 0, R.string.segnala_title, R.string.segnala_tut),
+//				new TutorialItem("contatti", null, 0, R.string.contatti_title, R.string.contatti_tut),
+//				new TutorialItem("tutorial", null, 0, R.string.tutorial_title, R.string.tutorial_tut),
+//				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut) };
+//
+//		
+//		@Override
+//		public void onTutorialFinished() {
+//			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+//		}
+//		
+//		@Override
+//		public void onTutorialCancelled() {
+//			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+//		}
+//		
+//		@Override
+//		public TutorialItem getItemAt(int i) {
+//			ListViewTutorialHelper.fillTutorialItemParamsWithCorrection(tutorial[i], i, mDrawerList, R.id.drawer_menu_icon,0,-12);
+//			return tutorial[i];
+//		}
+//		
+//		@Override
+//		public int size() {
+//			return tutorial.length;
+//		}
+//	};
 
-		TutorialItem[] tutorial = new TutorialItem[] {
-				new TutorialItem("home", null, 0, R.string.home_title,
-						R.string.home_tut),
-				new TutorialItem("punti raccolta", null, 0,
-						R.string.punti_raccolta_title,
-						R.string.punti_raccolta_tut),
-				new TutorialItem("tipi raccolta", null, 0,
-						R.string.tipi_raccolta_title,
-						R.string.tipi_raccolta_tut),
-				new TutorialItem("gestione profili", null, 0,
-						R.string.gestione_profili_title,
-						R.string.gestione_profili_tut),
-				new TutorialItem("segnala", null, 0, R.string.segnala_title,
-						R.string.segnala_tut),
-				new TutorialItem("contatti", null, 0, R.string.contatti_title,
-						R.string.contatti_tut),
-				new TutorialItem("tutorial", null, 0, R.string.tutorial_title,
-						R.string.tutorial_tut),
-				new TutorialItem("info", null, 0, R.string.info_title,
-						R.string.info_tut), };
-
-		@Override
-		public void onTutorialFinished() {
-			mDrawerLayout.closeDrawer(mDrawerList);
-		}
-
-		@Override
-		public void onTutorialCancelled() {
-			mDrawerLayout.closeDrawer(mDrawerList);
-		}
-
-		@Override
-		public TutorialItem getItemAt(int i) {
-			ListViewTutorialHelper.fillTutorialItemParams(tutorial[i], i,
-					mDrawerList, R.id.drawer_menu_item);
-			return tutorial[i];
-		}
-
-		@Override
-		public int size() {
-			return tutorial.length;
-		}
-	};
-
-	class DrawerListener implements DrawerLayout.DrawerListener {
-		@Override
-		public void onDrawerOpened(View drawerView) {
-			mDrawerToggle.onDrawerOpened(drawerView);
-			// getActionBar().on.onDrawerOpened();
-			mTutorialHelper = new ListViewTutorialHelper(MainActivity.this,
-					mNavDrawerTutorialProvider);
-
-			if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-				// showTourDialog();
-				RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
-			}
-		}
-
-		@Override
-		public void onDrawerClosed(View drawerView) {
-			mDrawerToggle.onDrawerClosed(drawerView);
-			// mActionBar.onDrawerClosed();
-		}
-
-		@Override
-		public void onDrawerSlide(View drawerView, float slideOffset) {
-			mDrawerToggle.onDrawerSlide(drawerView, slideOffset);
-		}
-
-		@Override
-		public void onDrawerStateChanged(int newState) {
-			mDrawerToggle.onDrawerStateChanged(newState);
-		}
-	}
 
 }

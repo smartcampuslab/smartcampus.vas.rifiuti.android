@@ -71,6 +71,7 @@ public class RifiutiHelper {
 	private Map<String, Integer> colorMap = null;
 	private Map<String, Drawable> typeColorMap;
 	private Map<String, Drawable> tipiRifiutoDrawablesMap = null;
+	private Map<String, Integer> tipiPuntoMarkerMap = null;
 
 	/**
 	 * Initialize data access layer support
@@ -798,6 +799,23 @@ public class RifiutiHelper {
 		return tipiRifiutoDrawablesMap;
 	}
 
+	private Map<String, Integer> getTipiPuntoMarkerMap(Context ctx) {
+		if (tipiPuntoMarkerMap == null) {
+			tipiPuntoMarkerMap = new HashMap<String, Integer>();
+			String[] array = ctx.getResources().getStringArray(
+					R.array.type_marker_strings);
+			TypedArray valueArray = ctx.getResources().obtainTypedArray(
+					R.array.type_marker_drawables);
+			for (int i = 0; i < array.length; i++) {
+				tipiPuntoMarkerMap.put(
+						array[i].toLowerCase(Locale.getDefault()),
+						valueArray.getResourceId(i, 0));
+			}
+			valueArray.recycle();
+		}
+		return tipiPuntoMarkerMap;
+	}
+
 	public static Drawable getTipiRifiutoDrawable(Context ctx,
 			String tipoRifiuto) {
 		return mHelper.getTipiRifiutoDrawablesMap(ctx).get(
@@ -1044,5 +1062,14 @@ public class RifiutiHelper {
 		Editor edit = getTutorialPreferences(ctx).edit();
 		edit.putBoolean(TOUR_PREFS, want);
 		edit.commit();
+	}
+
+	/**
+	 * @param item
+	 * @return
+	 */
+	public static int getMarkerIcon(PuntoRaccolta item) {
+		return mHelper.getTipiPuntoMarkerMap(mHelper.mContext).get(
+				item.getTipologiaPuntiRaccolta().toLowerCase(Locale.getDefault()));
 	}
 }

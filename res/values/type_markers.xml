@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Drawer entries titles and drawabels -->
+    <string-array name="type_marker_strings">
+        <item>CRM</item>
+        <item>Isola Ecologica</item>
+        <item>Farmacia</item>
+        <item>Rivenditore</item>
+    </string-array>
+    <integer-array name="type_marker_drawables">
+        <item>@drawable/ic_poi_crm</item>
+        <item>@drawable/ic_poi_isolaeco</item>
+        <item>@drawable/ic_poi_farmacia</item>
+        <item>@drawable/ic_poi_rivenditore</item>
+    </integer-array>
+
+</resources>
