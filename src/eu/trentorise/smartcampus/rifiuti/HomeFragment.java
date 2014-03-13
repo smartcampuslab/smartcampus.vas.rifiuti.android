@@ -2,6 +2,7 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,7 +38,6 @@ public class HomeFragment extends Fragment {
 	public static DrawerLayout mDrawerLayout;
 	public static ListView mDrawerList;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,7 +51,6 @@ public class HomeFragment extends Fragment {
 		abActivity = (ActionBarActivity) getActivity();
 		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
-		
 
 		if (RifiutiHelper.isFirstLaunchHome(getActivity())) {
 
@@ -127,6 +126,13 @@ public class HomeFragment extends Fragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(PAGER_CURRENT_ITEM, mPager.getCurrentItem());
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		int index = mPager.getCurrentItem();
+		Fragment f = mPagerAdapter.getItem(index);
+		f.onActivityResult(requestCode, resultCode, data);
 	}
 
 	/**
