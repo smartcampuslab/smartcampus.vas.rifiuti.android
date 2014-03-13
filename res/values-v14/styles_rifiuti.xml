@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<!--
+     File created by the Android Action Bar Style Generator
 
      Copyright (C) 2011 The Android Open Source Project
      Copyright (C) 2012 readyState Software Ltd
@@ -29,10 +30,23 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_rifiuti</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_rifiuti</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Rifiuti</item>
-        
-                <!-- Light.DarkActionBar specific -->
+
+        <!-- Light.DarkActionBar specific -->
         <item name="android:actionBarWidgetTheme">@style/Theme.Rifiuti.Widget</item>
 
+        <!-- Android Holo Colors Generator entries -->
+        <item name="android:editTextStyle">@style/EditTextRifiuti</item>
+        <item name="android:textColorHighlight">#9963ac3d</item>
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewRifiuti</item>
+        <item name="android:checkboxStyle">@style/CheckBoxRifiuti</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonRifiuti</item>
+        <item name="android:buttonStyle">@style/ButtonRifiuti</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonRifiuti</item>
+        <item name="android:spinnerStyle">@style/SpinnerRifiuti</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemRifiuti</item>
+        <item name="android:listViewStyle">@style/ListViewRifiuti</item>
+        <item name="android:listViewWhiteStyle">@style/ListViewRifiuti.White</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItemRifiuti</item>
     </style>
 
     <style name="ActionBar.Solid.Rifiuti" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
@@ -46,7 +60,7 @@
         <item name="android:background">@drawable/ab_transparent_rifiuti</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Rifiuti</item>
     </style>
-    
+
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Rifiuti.Widget" parent="@style/Theme.AppCompat">
         <item name="android:popupMenuStyle">@style/PopupMenu.Rifiuti</item>

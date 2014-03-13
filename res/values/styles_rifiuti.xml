@@ -33,6 +33,20 @@
 
         <!-- Light.DarkActionBar specific -->
         <item name="actionBarWidgetTheme">@style/Theme.Rifiuti.Widget</item>
+
+        <!-- Android Holo Colors Generator entries -->
+        <item name="android:editTextStyle">@style/EditTextRifiuti</item>
+        <item name="android:textColorHighlight">#9963ac3d</item>
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewRifiuti</item>
+        <item name="android:checkboxStyle">@style/CheckBoxRifiuti</item>
+        <item name="android:radioButtonStyle">@style/RadioButtonRifiuti</item>
+        <item name="android:buttonStyle">@style/ButtonRifiuti</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonRifiuti</item>
+        <item name="android:spinnerStyle">@style/SpinnerRifiuti</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemRifiuti</item>
+        <item name="android:listViewStyle">@style/ListViewRifiuti</item>
+        <item name="android:listViewWhiteStyle">@style/ListViewRifiuti.White</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItemRifiuti</item>
     </style>
 
     <style name="ActionBar.Solid.Rifiuti" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
@@ -81,6 +95,58 @@
     <style name="Theme.Rifiuti.Widget" parent="@style/Theme.AppCompat">
         <item name="popupMenuStyle">@style/PopupMenu.Rifiuti</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Rifiuti</item>
+    </style>
+
+    <!-- Android Holo Colors Generator styles -->
+    <style name="EditTextRifiuti" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/rifiuti_edit_text_holo_light</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="AutoCompleteTextViewRifiuti" parent="android:Widget.AutoCompleteTextView">
+        <item name="android:dropDownSelector">@drawable/rifiuti_list_selector_holo_light</item>
+        <item name="android:background">@drawable/rifiuti_edit_text_holo_light</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="CheckBoxRifiuti" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/rifiuti_btn_check_holo_light</item>
+    </style>
+
+    <style name="RadioButtonRifiuti" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/rifiuti_btn_radio_holo_light</item>
+    </style>
+
+    <style name="ButtonRifiuti" parent="android:Widget.Button">
+        <item name="android:background">@drawable/rifiuti_btn_default_holo_light</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">64dip</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="ImageButtonRifiuti" parent="android:Widget.ImageButton">
+        <item name="android:background">@drawable/rifiuti_btn_default_holo_light</item>
+    </style>
+
+    <style name="SpinnerRifiuti" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/rifiuti_spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/rifiuti_list_selector_holo_light</item>
+    </style>
+
+    <style name="SpinnerDropDownItemRifiuti" parent="android:Widget.DropDownItem.Spinner">
+        <item name="android:checkMark">@drawable/rifiuti_btn_radio_holo_light</item>
+    </style>
+
+    <style name="ListViewRifiuti" parent="android:Widget.ListView">
+        <item name="android:listSelector">@drawable/rifiuti_list_selector_holo_light</item>
+    </style>
+
+    <style name="ListViewRifiuti.White" parent="android:Widget.ListView.White">
+        <item name="android:listSelector">@drawable/rifiuti_list_selector_holo_light</item>
+    </style>
+
+    <style name="SpinnerItemRifiuti" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">#000000</item>
     </style>
 
 </resources>
