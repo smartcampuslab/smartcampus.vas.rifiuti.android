@@ -79,7 +79,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 	private Area area = null;
 
 	private String[] saved;
-	private boolean mLocked;
 
 	// protected boolean selected = false;
 
@@ -102,8 +101,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-
-		toggleDrawer();
 
 		if (savedInstanceState != null) {
 			mActiveMode = (savedInstanceState.getInt(SAVE_MODE) == 0) ? MODE.VIEW
@@ -130,7 +127,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 			comuneAreasNames.add(a.getComune());
 		}
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -149,7 +146,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 	public void onStart() {
 		super.onStart();
 		initializeViews();
-
 		if (mActiveMode == MODE.VIEW) {
 			if (!isFirstProfile()) {
 				mProfile = PreferenceUtils.getProfile(getActivity(),
@@ -157,21 +153,25 @@ public class ProfileFragment extends Fragment implements ILocation {
 				if (mProfile != null) {
 					setContent();
 				} else {
-					mLocked=true;
 					switchMode();
 				}
 			} else {
-				mLocked=true;
 				switchMode();
 			}
+		}
+		if (abActivity instanceof MainActivity) {
+			((MainActivity) abActivity).hideDrawer();
+			((MainActivity) abActivity).lockDrawer();
+			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+			abActivity.supportInvalidateOptionsMenu();
 		}
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
+		getActivity().setProgressBarIndeterminateVisibility(false);
 		if (mLocUtils != null) {
-			getActivity().setProgressBarIndeterminateVisibility(false);
 			mLocUtils.close();
 			mLocUtils = null;
 		}
@@ -189,6 +189,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 	@Override
 	public void onStop() {
 		super.onPause();
+		getActivity().setProgressBarIndeterminateVisibility(false);
 		if (mLocUtils != null) {
 			mLocUtils.close();
 			mLocUtils = null;
@@ -236,9 +237,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 				addOrModify(newProfile);
 				KeyboardUtils.hideKeyboard(abActivity, getView());
 				if (getActivity() instanceof MainActivity) {
-					if (isFirstProfile()) {
-						toggleDrawer();
-					}
 					((MainActivity) getActivity())
 							.prepareNavDropdown(isFirstProfile());
 				}
@@ -329,24 +327,8 @@ public class ProfileFragment extends Fragment implements ILocation {
 		KeyboardUtils.hideKeyboard(abActivity, getView());
 		getActivity().setProgressBarIndeterminateVisibility(false);
 		getFragmentManager().popBackStack();
-		toggleDrawer();
 	}
 
-	private void toggleDrawer() {
-		if (getActivity() instanceof MainActivity) {
-			if (mLocked) {
-				((MainActivity) getActivity()).unlockDrawer();
-				((MainActivity) getActivity()).showDrawer();
-				mLocked = false;
-			} else {
-				mLocked = true;
-				((MainActivity) getActivity()).hideDrawer();
-				((MainActivity) getActivity()).lockDrawer();
-				((MainActivity) getActivity()).getSupportActionBar()
-						.setHomeButtonEnabled(true);
-			}
-		}
-	}
 
 	private boolean isInDB(Location l) {
 		// TODO check with db
@@ -368,7 +350,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 			} else {
 				PreferenceUtils.editProfile(getActivity(), getArguments()
-						.getInt(PROFILE_INDEX_KEY), newProfile,mProfile);
+						.getInt(PROFILE_INDEX_KEY), newProfile, mProfile);
 				mProfile = newProfile;
 				setContent();
 
@@ -650,9 +632,11 @@ public class ProfileFragment extends Fragment implements ILocation {
 						builder.create().show();
 					}
 				}
-				getActivity().setProgressBarIndeterminateVisibility(false);
+
 			}
-			
+			if (getActivity() != null)
+				getActivity().setProgressBarIndeterminateVisibility(false);
+
 		}
 
 	}
