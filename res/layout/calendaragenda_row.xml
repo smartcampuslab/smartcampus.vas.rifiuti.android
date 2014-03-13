@@ -8,25 +8,23 @@
         android:id="@+id/separator_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/rifiuti_light"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
+        android:background="@color/rifiuti_middle"
+        android:padding="@dimen/fragment_horizontal_margin"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/title_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:paddingLeft="@dimen/fragment_horizontal_margin"
+        android:paddingRight="@dimen/fragment_horizontal_margin"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/description_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" />
+        android:paddingLeft="@dimen/fragment_horizontal_margin"
+        android:paddingRight="@dimen/fragment_horizontal_margin" />
 
 </LinearLayout>
