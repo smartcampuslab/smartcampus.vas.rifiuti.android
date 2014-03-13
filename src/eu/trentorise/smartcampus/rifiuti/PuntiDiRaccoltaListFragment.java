@@ -98,30 +98,6 @@ public class PuntiDiRaccoltaListFragment extends Fragment {
 			}
 		});
 	}
-
-//	@Override
-//	public void onListItemClick(ListView l, View v, int position, long id) {
-//		super.onListItemClick(l, v, position, id);
-//		Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
-//		i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
-//		startActivity(i);
-//		// FragmentTransaction fragmentTransaction =
-//		// getActivity().getSupportFragmentManager().beginTransaction();
-//		// PuntoDiRaccoltaDetailFragment fragment = new
-//		// PuntoDiRaccoltaDetailFragment();
-//		//
-//		// Bundle args = new Bundle();
-//		// args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA,
-//		// puntiDiRaccolta.get(position));
-//		// fragment.setArguments(args);
-//		// fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//		// // fragmentTransaction.detach(this);
-//		// fragmentTransaction.replace(R.id.content_frame, fragment,
-//		// "puntodiraccolta");
-//		// fragmentTransaction.addToBackStack(fragment.getTag());
-//		// fragmentTransaction.commit();
-//	}
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
