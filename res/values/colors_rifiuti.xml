@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="rifiuti_color">#63ac3d</color>
+    <color name="tut_color">#f7931e</color>
+    <color name="tut_color">#b5631a</color>
 </resources>

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/rifiuti_light"
-        android:drawSelectorOnTop="false" />
+        android:drawSelectorOnTop="false"
+        android:listSelector="@color/rifiuti_green_light_o50" />
 
 </LinearLayout>
