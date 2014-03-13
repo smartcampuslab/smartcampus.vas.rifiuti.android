@@ -34,9 +34,9 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	private static final int NUM_COLUMNS = 3;
 
 	protected static final int THRESHOLD = 3;
-	
-	private static final int sDISTANCEDP=70;
-	private static final int sWIDTHDP=50;
+
+	private static final int DEFAULT_DISTANCE = 60;
+	private static final int DEFAULT_WIDTH = 50;
 
 	private EditText doveLoButtoSearchField;
 	private ImageButton doveLoButtoSearchButton;
@@ -173,33 +173,28 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 			}
 		});
 
-	}
+		getView().postDelayed(new Runnable() {
 
-	@Override
-	public void onResume() {
-		super.onResume();
-//		getView().postDelayed(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				if (RifiutiHelper.isFirstLaunchDoveLoButto(getActivity())) {
-//					mTutorialHelper = new TutorialHelper(getActivity(),
-//							DoveLoButtoFragment.this);
-//					mTutorialHelper.showTutorials();
-//				}
-//			}
-//		}, 100);
+			@Override
+			public void run() {
+				if (RifiutiHelper.isFirstLaunchDoveLoButto(getActivity())) {
+					mTutorialHelper = new TutorialHelper(getActivity(),
+							DoveLoButtoFragment.this);
+					mTutorialHelper.showTutorials();
+				}
+			}
+		}, 100);
 
 	}
 
 	@Override
 	public void onTutorialCancelled() {
-		 RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
+		RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
 	}
 
 	@Override
 	public void onTutorialFinished() {
-		 RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
+		RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
 	}
 
 	@Override
@@ -211,8 +206,8 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 			v = getView().findViewById(R.id.dovelobutto_search_btn);
 			if (v.isShown()) {
 				v.getLocationOnScreen(location);
-				location[1]-=(int) RifiutiHelper.convertDpToPixel(8,
-						getActivity());
+				location[1] -= (int) RifiutiHelper.convertDpToPixel(
+						DEFAULT_WIDTH / 5, getActivity());
 				return new TutorialItem("search", location, v.getWidth(),
 						"asd0", "asd0");
 			}
@@ -222,40 +217,56 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 			if (v != null) {
 				v.getLocationOnScreen(location);
 				return new TutorialItem("tipo", location, v.getWidth(), "asd1",
-				"asd");
+						"asd");
 			}
 			return null;
 		case 2:
-			location[0] = 0;
-			location[1] = (int) RifiutiHelper.convertDpToPixel(sDISTANCEDP,
-					getActivity());
+			location[0] = (int) RifiutiHelper.convertDpToPixel(
+					DEFAULT_DISTANCE / 10, getActivity());
+			location[1] = (int) RifiutiHelper.convertDpToPixel(
+					DEFAULT_DISTANCE, getActivity());
 			return new TutorialItem("note", location,
-					(int) RifiutiHelper.convertDpToPixel(sWIDTHDP, getActivity()),
-					"asd2", "asd");
+					(int) RifiutiHelper.convertDpToPixel(DEFAULT_WIDTH,
+							getActivity()), "asd2", "asd");
 		case 3:
 			location[0] = (int) (getActivity().getWindowManager()
 					.getDefaultDisplay().getWidth() - RifiutiHelper
-					.convertDpToPixel(sWIDTHDP, getActivity()));
-			location[1] = (int) RifiutiHelper.convertDpToPixel(sDISTANCEDP,
-					getActivity());
+					.convertDpToPixel(DEFAULT_WIDTH + DEFAULT_WIDTH / 10,
+							getActivity()));
+			location[1] = (int) RifiutiHelper.convertDpToPixel(DEFAULT_DISTANCE
+					- DEFAULT_DISTANCE / 12, getActivity());
 			return new TutorialItem("calendario", location,
-					(int) RifiutiHelper.convertDpToPixel(sWIDTHDP, getActivity()),
-					"asd3", "asd");
+					(int) RifiutiHelper.convertDpToPixel(DEFAULT_WIDTH
+							+ DEFAULT_WIDTH / 6, getActivity()), "asd3", "asd");
 		case 4:
 			location[0] = 0;
-			location[1] = (int) RifiutiHelper.convertDpToPixel(30, getActivity());
+			location[1] = (int) RifiutiHelper.convertDpToPixel(
+					DEFAULT_DISTANCE / 2.5f, getActivity());
 			return new TutorialItem("menu", location,
-					(int) RifiutiHelper.convertDpToPixel(sWIDTHDP, getActivity()),
-					"Menu", "asd");
-		default:
-			return null;
+					(int) RifiutiHelper.convertDpToPixel(DEFAULT_WIDTH,
+							getActivity()), "Menu", "asd");
 
 		}
+		return null;
 	}
 
 	@Override
 	public int size() {
 		return 5;
+	}
+	
+	
+	
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		//super.onActivityResult(requestCode, resultCode, data);
+		tutorialActivityFinishedOrCanceled(requestCode, resultCode, data);
+	}
+
+	public void tutorialActivityFinishedOrCanceled(int requestCode,int resultCode,Intent data){
+		RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity().getApplicationContext());
 	}
 
 }
