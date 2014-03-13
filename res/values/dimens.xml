@@ -7,8 +7,12 @@
     <dimen name="fragment_horizontal_margin">8dp</dimen>
     <dimen name="fragment_vertical_margin">8dp</dimen>
     
-    <!-- Default navigation drawer dimensions -->
+    <!-- Navigation drawer -->
     <dimen name="navigation_drawer_item_height">48dp</dimen>
     <dimen name="navigation_drawer_horizontal_drawable_padding">12dp</dimen>
+    
+    <!-- List with cards -->
+    <dimen name="card_padding_horizontal">8dp</dimen>
+    <dimen name="card_padding_vertical">4dp</dimen>
 
 </resources>
