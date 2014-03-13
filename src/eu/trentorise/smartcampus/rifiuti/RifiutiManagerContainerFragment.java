@@ -1,5 +1,8 @@
 package eu.trentorise.smartcampus.rifiuti;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -83,9 +86,25 @@ public class RifiutiManagerContainerFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+
+		// prendo il parametro e setto il parametro di default
+		Bundle bundle = getArguments();
+		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO) && bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO) != null) {
+			tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
+			String[] mPagerTitlesInv = new String[mPagerTitles.length];
+			for (int i = 0; i < mPagerTitlesInv.length; i++) {
+				mPagerTitlesInv[i] = mPagerTitles[mPagerTitlesInv.length-1-i];
+			}
+			mPagerTitles = mPagerTitlesInv;
+		}
+		else if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA)) {
+			tipologiaRaccolta = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
+		}
+
 		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		mPagerAdapter = new HomePagerAdapter(getChildFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
+		
 		// Create a tab listener that is called when the user changes tabs.
 	    ActionBar.TabListener tabListener = new ActionBar.TabListener() {
 	        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -108,14 +127,6 @@ public class RifiutiManagerContainerFragment extends Fragment {
 	                        .setTabListener(tabListener));
 	    }
 
-		// prendo il parametro e setto il parametro di default
-		Bundle bundle = getArguments();
-		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO)) {
-			tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
-		}
-		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA)) {
-			tipologiaRaccolta = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
-		}
 		mPager.setCurrentItem(0);
 		// if (bundle.containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA))
 		// mPager.setCurrentItem(1);
