@@ -5,7 +5,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,12 +13,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
-public class PuntiDiRaccoltaListFragment extends ListFragment {
+public class PuntiDiRaccoltaListFragment extends Fragment {
 
 	private String tipologiaRaccolta = null;
 	private String tipologiaRifiuto = null;
@@ -49,7 +50,7 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_rifiuti_list, container, false);
+		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_puntiraccolta_list, container, false);
 		return viewGroup;
 	}
 
@@ -84,34 +85,19 @@ public class PuntiDiRaccoltaListFragment extends ListFragment {
 			puntiDiRaccolta = new ArrayList<PuntoRaccolta>();
 		}
 
-		PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), android.R.layout.simple_list_item_1, puntiDiRaccolta);
+		ExpandableListView elv = (ExpandableListView) getView().findViewById(android.R.id.list);
+		final PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.puntoraccolta_group, android.R.layout.simple_list_item_1, puntiDiRaccolta);
 		// android.R.layout.simple_list_item_1
-		setListAdapter(adapter);
+		elv.setAdapter(adapter);
+		elv.setOnChildClickListener(new OnChildClickListener() {
+			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+				Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
+				i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, adapter.getChild(groupPosition, childPosition));
+				startActivity(i);
+				return true;
+			}
+		});
 	}
-
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
-		i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, puntiDiRaccolta.get(position));
-		startActivity(i);
-		// FragmentTransaction fragmentTransaction =
-		// getActivity().getSupportFragmentManager().beginTransaction();
-		// PuntoDiRaccoltaDetailFragment fragment = new
-		// PuntoDiRaccoltaDetailFragment();
-		//
-		// Bundle args = new Bundle();
-		// args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA,
-		// puntiDiRaccolta.get(position));
-		// fragment.setArguments(args);
-		// fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		// // fragmentTransaction.detach(this);
-		// fragmentTransaction.replace(R.id.content_frame, fragment,
-		// "puntodiraccolta");
-		// fragmentTransaction.addToBackStack(fragment.getTag());
-		// fragmentTransaction.commit();
-	}
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);

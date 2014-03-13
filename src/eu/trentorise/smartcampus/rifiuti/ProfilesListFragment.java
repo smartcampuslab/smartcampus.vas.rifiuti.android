@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
@@ -27,9 +28,7 @@ public class ProfilesListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setHasOptionsMenu(true);
-
 	}
 
 	@Override
@@ -45,12 +44,23 @@ public class ProfilesListFragment extends ListFragment {
 		setEmptyText(getString(R.string.niente_profili));
 
 		// we can't let the user switch fragment whithout having a profile
-		if (getActivity() instanceof MainActivity)
-			if (profiles.isEmpty())
+		if (getActivity() instanceof MainActivity) {
+			if (profiles.isEmpty()) {
 				((MainActivity) getActivity()).lockDrawer();
-			else
+			} else {
 				((MainActivity) getActivity()).unlockDrawer();
+			}
+		}
+	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.profili_title));
+
+		getListView().setDividerHeight(0);
+		getListView().setClipToPadding(false);
+		getListView().setScrollBarStyle(ScrollView.SCROLLBARS_OUTSIDE_OVERLAY);
 	}
 
 	@Override
@@ -82,8 +92,7 @@ public class ProfilesListFragment extends ListFragment {
 		ProfileFragment pf;
 		pf = ProfileFragment.newInstance(position);
 		ft.addToBackStack(null);
-		ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.popenter,
-				R.anim.popexit);
+		ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.popenter, R.anim.popexit);
 		ft.replace(R.id.content_frame, pf);
 		ft.commit();
 	}
@@ -92,35 +101,23 @@ public class ProfilesListFragment extends ListFragment {
 
 		public ProfileAdapter(Context context, List<Profile> objects) {
 			super(context, R.layout.profile_row, objects);
-
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Profile tmp = getItem(position);
 			if (convertView == null) {
-				LayoutInflater inflater = (LayoutInflater) getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflater.inflate(R.layout.profile_row, parent,
-						false);
+				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflater.inflate(R.layout.profile_row, parent, false);
 			}
-			TextView name = (TextView) convertView
-					.findViewById(R.id.row_profile_name);
+			TextView name = (TextView) convertView.findViewById(R.id.row_profile_name);
 			if (!name.getText().toString().equals(tmp.getName()))
 				name.setText(tmp.getName());
-			TextView stuff = (TextView) convertView
-					.findViewById(R.id.row_profile_stuff);
+			TextView stuff = (TextView) convertView.findViewById(R.id.row_profile_stuff);
 			if (!stuff.getText().toString().equals(tmp.toString()))
 				stuff.setText(tmp.toString());
 			return convertView;
 		}
 
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		abActivity.getSupportActionBar().setTitle(
-				abActivity.getString(R.string.profili_title));
 	}
 }

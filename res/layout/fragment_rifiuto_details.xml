@@ -30,10 +30,15 @@
             android:text="@string/puntodiraccolta_label"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
-            android:id="@+id/puntoraccolta_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+	    <eu.trentorise.smartcampus.rifiuti.custom.ExpandedExpandableListView
+		    android:background="@color/rifiuti_light"
+	        android:id="@+id/puntoraccolta_list"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" 
+	        android:divider="@color/rifiuti_middle"
+	        android:childDivider="@color/rifiuti_middle"
+	        android:dividerHeight="1dp"
+	        android:drawSelectorOnTop="false" />
     </LinearLayout>
 
 </ScrollView>
