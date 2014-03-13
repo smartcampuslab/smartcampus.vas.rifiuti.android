@@ -132,9 +132,7 @@ public class HomeFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		int index = mPager.getCurrentItem();
 		Fragment f = mPagerAdapter.getItem(index);
-		if ( f!=null && f instanceof DoveLoButtoFragment  )
-			((DoveLoButtoFragment)f).tutorialActivityFinishedOrCanceled(requestCode, resultCode, data);
-		return;
+		f.onActivityResult(requestCode, resultCode, data);
 	}
 
 	/**

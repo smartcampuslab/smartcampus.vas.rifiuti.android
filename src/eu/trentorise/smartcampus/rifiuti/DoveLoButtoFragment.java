@@ -180,7 +180,10 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 				if (RifiutiHelper.isFirstLaunchDoveLoButto(getActivity())) {
 					mTutorialHelper = new TutorialHelper(getActivity(),
 							DoveLoButtoFragment.this);
-					mTutorialHelper.showTutorials();
+					if (DoveLoButtoFragment.this.isVisible()) {
+						mTutorialHelper.showTutorials();
+						RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
+					}
 				}
 			}
 		}, 100);
@@ -207,17 +210,19 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 			if (v.isShown()) {
 				v.getLocationOnScreen(location);
 				location[1] -= (int) RifiutiHelper.convertDpToPixel(
-						DEFAULT_WIDTH / 5, getActivity());
-				return new TutorialItem("search", location, v.getWidth(),
-						"asd0", "asd0");
+						DEFAULT_WIDTH / 3.5f, getActivity());
+				return new TutorialItem("search", location, DEFAULT_WIDTH,
+						getString(R.string.tut_dove_title_search),
+						getString(R.string.tut_dove_desc_search));
 			}
 			return null;
 		case 1:
 			v = tipiRifiutiGrid.getChildAt(4);
 			if (v != null) {
 				v.getLocationOnScreen(location);
-				return new TutorialItem("tipo", location, v.getWidth(), "asd1",
-						"asd");
+				return new TutorialItem("tipo", location, v.getWidth(),
+						getString(R.string.tut_dove_title_kind),
+						getString(R.string.tut_dove_desc_kind));
 			}
 			return null;
 		case 2:
@@ -227,7 +232,9 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 					DEFAULT_DISTANCE, getActivity());
 			return new TutorialItem("note", location,
 					(int) RifiutiHelper.convertDpToPixel(DEFAULT_WIDTH,
-							getActivity()), "asd2", "asd");
+							getActivity()),
+					getString(R.string.tut_dove_title_notes),
+					getString(R.string.tut_dove_desc_notes));
 		case 3:
 			location[0] = (int) (getActivity().getWindowManager()
 					.getDefaultDisplay().getWidth() - RifiutiHelper
@@ -237,14 +244,16 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 					- DEFAULT_DISTANCE / 12, getActivity());
 			return new TutorialItem("calendario", location,
 					(int) RifiutiHelper.convertDpToPixel(DEFAULT_WIDTH
-							+ DEFAULT_WIDTH / 6, getActivity()), "asd3", "asd");
+							+ DEFAULT_WIDTH / 6, getActivity()),
+					getString(R.string.tut_dove_title_cal),
+					getString(R.string.tut_dove_desc_cal));
 		case 4:
 			location[0] = 0;
 			location[1] = (int) RifiutiHelper.convertDpToPixel(
 					DEFAULT_DISTANCE / 2.5f, getActivity());
 			return new TutorialItem("menu", location,
 					(int) RifiutiHelper.convertDpToPixel(DEFAULT_WIDTH,
-							getActivity()), "Menu", "asd");
+							getActivity()), getString(R.string.tut_dove_title_menu), getString(R.string.tut_dove_desc_menu));
 
 		}
 		return null;
@@ -253,20 +262,6 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	@Override
 	public int size() {
 		return 5;
-	}
-	
-	
-	
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-		//super.onActivityResult(requestCode, resultCode, data);
-		tutorialActivityFinishedOrCanceled(requestCode, resultCode, data);
-	}
-
-	public void tutorialActivityFinishedOrCanceled(int requestCode,int resultCode,Intent data){
-		RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity().getApplicationContext());
 	}
 
 }

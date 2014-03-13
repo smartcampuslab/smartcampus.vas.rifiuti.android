@@ -126,9 +126,8 @@
     <string name="contacts_fax_ph">FAX: %s</string>
     <string name="contacts_name_label">NOME</string>
     <string name="contacts_opening_label">ORARIO</string>
-    
-    
-     <!-- TUTORIAL -->
+
+    <!-- TUTORIAL -->
     <string name="home_title">Home</string>
     <string name="home_tut">testo 1</string>
     <string name="punti_raccolta_title">Punti di raccolta</string>
@@ -146,6 +145,16 @@
     <string name="info_title">Info</string>
     <string name="info_tut">testo 8</string>
     <string name="tipologia_raccolta_ext">%1$s: %2$s</string>
-    
-    
+
+    <!-- TUTORAL DOVE LO BUTTO -->
+    <string name="tut_dove_title_search">Benvenuto!</string>
+    <string name="tut_dove_desc_search">Questo tutorial ti illustrerà il funzionamento della app.\nPer sapere dove buttare uno specifico rifiuto, scrivine il nome qui e premi sulla lente d\'ingrandimento.</string>
+    <string name="tut_dove_title_kind">Tipologie di rifiuto</string>
+    <string name="tut_dove_desc_kind">Scopri quali rifiuti appartengono ad una certa categoria e dove possono essere conferiti.</string>
+    <string name="tut_dove_title_notes">Scadenze e note</string>
+    <string name="tut_dove_desc_notes">Tieni sotto controllo le scadenze della raccolta porta a porta e aggiungi delle note personali</string>
+    <string name="tut_dove_title_cal">Calendario</string>
+    <string name="tut_dove_desc_cal">Verifica quali rifiuti vengono raccolti oggi e quali punti di raccolta sono aperti.</string>
+    <string name="tut_dove_title_menu">Menù laterale</string>
+    <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità</string>
 </resources>
