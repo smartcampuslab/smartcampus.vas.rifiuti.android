@@ -1,15 +1,10 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -17,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class RifiutiManagerContainerFragment extends Fragment {
@@ -25,7 +19,6 @@ public class RifiutiManagerContainerFragment extends Fragment {
 	private String[] mPagerTitles;
 	private ViewPager mPager;
 	private HomePagerAdapter mPagerAdapter;
-	private PagerTabStrip mPagerStrip;
 	private String tipologiaRifiuto = null;
 	private String tipologiaRaccolta = null;
 	private ActionBarActivity abActivity = null;
@@ -33,7 +26,6 @@ public class RifiutiManagerContainerFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mPagerTitles = getResources().getStringArray(R.array.rifiuti_container_titles);
 		setHasOptionsMenu(true);
 	}
 	
@@ -89,6 +81,7 @@ public class RifiutiManagerContainerFragment extends Fragment {
 
 		// prendo il parametro e setto il parametro di default
 		Bundle bundle = getArguments();
+		mPagerTitles = getResources().getStringArray(R.array.rifiuti_container_titles);
 		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO) && bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO) != null) {
 			tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
 			String[] mPagerTitlesInv = new String[mPagerTitles.length];
@@ -156,15 +149,15 @@ public class RifiutiManagerContainerFragment extends Fragment {
 			switch (position) {
 			case 0:
 				if (tipologiaRifiuto != null) {
-					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+					return PuntiDiRaccoltaListFragment.newIstanceTipologiaRifiuto(tipologiaRifiuto);
 				} else if (tipologiaRaccolta != null) {
-					return new RifiutiListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
+					return RifiutiListFragment.newIstanceTipologiaRaccolta(tipologiaRaccolta);
 				}
 			case 1:
 				if (tipologiaRifiuto != null) {
-					return new RifiutiListFragment().newIstanceTipologiaRifiuto(tipologiaRifiuto);
+					return RifiutiListFragment.newIstanceTipologiaRifiuto(tipologiaRifiuto);
 				} else if (tipologiaRaccolta != null) {
-					return new PuntiDiRaccoltaListFragment().newIstanceTipologiaRaccolta(tipologiaRaccolta);
+					return PuntiDiRaccoltaListFragment.newIstanceTipologiaRaccolta(tipologiaRaccolta);
 				}
 			default:
 				return new DummyFragment();
