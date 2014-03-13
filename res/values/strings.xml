@@ -158,4 +158,13 @@
     <string name="tut_dove_desc_cal">Verifica quali rifiuti vengono raccolti oggi e quali punti di raccolta sono aperti.</string>
     <string name="tut_dove_title_menu">Menù laterale</string>
     <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità</string>
+    
+    <!-- INFO FRAGMENT -->
+    <string name="info_intro">100% Riciclo è un\'app realizzata da Smart Campus in collaborazione con:</string>
+    <string name="info_cdc">CDC</string>
+    <string name="info_giudicarie">Comunità delle giudicarie \n http://www.comunitadellegiudicarie.it/</string>
+    <string name="info_ladurner">Ladurner Energy\n www.ladurnerambiente.it</string>
+    <string name="info_fbk">fbk</string>
+    <string name="info_mail">Per eventuali segnalazioni o richieste di informazioni contattateci scrivendo a rifiuti@smartcampuslab.it</string>
+    
 </resources>

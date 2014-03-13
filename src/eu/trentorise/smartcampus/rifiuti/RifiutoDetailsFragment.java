@@ -70,6 +70,7 @@ public class RifiutoDetailsFragment extends Fragment {
 			abActivity.getSupportActionBar().setTitle(
 					abActivity.getString(R.string.tipo_di_rifiuto_title));
 			abActivity.getSupportActionBar().setSubtitle( rifiuto);
+			
 		}
 
 		try {
