@@ -47,6 +47,7 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	private TipiRifiutiAdapter tipiRifiutiAdapter;
 	private TutorialHelper mTutorialHelper;
 
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -85,7 +86,6 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	@Override
 	public void onStart() {
 		super.onStart();
-
 		doveLoButtoAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1);
 		doveLoButtoResultsList.setAdapter(doveLoButtoAdapter);
@@ -181,7 +181,8 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 					mTutorialHelper = new TutorialHelper(getActivity(),
 							DoveLoButtoFragment.this);
 					if (DoveLoButtoFragment.this.isVisible()) {
-						//mTutorialHelper.setColor(getResources().getColor(R.color.tut_color));
+						mTutorialHelper.setColor(getResources().getColor(
+								R.color.tut_color));
 						mTutorialHelper.showTutorials();
 						RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
 					}
@@ -254,7 +255,9 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 					DEFAULT_DISTANCE / 2.5f, getActivity());
 			return new TutorialItem("menu", location,
 					(int) RifiutiHelper.convertDpToPixel(DEFAULT_WIDTH,
-							getActivity()), getString(R.string.tut_dove_title_menu), getString(R.string.tut_dove_desc_menu));
+							getActivity()),
+					getString(R.string.tut_dove_title_menu),
+					getString(R.string.tut_dove_desc_menu));
 
 		}
 		return null;
@@ -264,5 +267,6 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	public int size() {
 		return 5;
 	}
+
 
 }
