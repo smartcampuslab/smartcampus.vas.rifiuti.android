@@ -27,9 +27,9 @@ public class ContactContainerFragment extends Fragment {
 	private ContantsPagerAdapter mPagerAdapter;
 	private ActionBarActivity abActivity = null;
 
-	private ArrayList<HashMap<String,String>> istituzioni = null;
-	private ArrayList<HashMap<String,String>> gestori = null;
-	
+	private ArrayList<HashMap<String, String>> istituzioni = null;
+	private ArrayList<HashMap<String, String>> gestori = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,9 +39,9 @@ public class ContactContainerFragment extends Fragment {
 		List<Istituzione> i = RifiutiHelper.getIstituzioni();
 		istituzioni = getIstituzioniData(i);
 		gestori = getGestoriData(RifiutiHelper.getGestori());
-		mPagerTitles = new String[]{i.get(0).getTipologia(), getResources().getString(R.string.contacts_container_org)};
+		mPagerTitles = new String[] { i.get(0).getTipologia(), getResources().getString(R.string.contacts_container_org) };
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -64,15 +64,14 @@ public class ContactContainerFragment extends Fragment {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_rifiuti_container, container, false);
 
 		mPager = (ViewPager) viewGroup.findViewById(R.id.pager);
-		mPager.setOnPageChangeListener(
-	            new ViewPager.SimpleOnPageChangeListener() {
-	                @Override
-	                public void onPageSelected(int position) {
-	                    // When swiping between pages, select the
-	                    // corresponding tab.
-	                	abActivity.getSupportActionBar().setSelectedNavigationItem(position);
-	                }
-	            });
+		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				// When swiping between pages, select the
+				// corresponding tab.
+				abActivity.getSupportActionBar().setSelectedNavigationItem(position);
+			}
+		});
 		return viewGroup;
 	}
 
@@ -84,23 +83,23 @@ public class ContactContainerFragment extends Fragment {
 		mPagerAdapter = new ContantsPagerAdapter(getChildFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 		// Create a tab listener that is called when the user changes tabs.
-	    ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-	        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-	        	 mPager.setCurrentItem(tab.getPosition());
-	        }
-	        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-	        }
-	        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-	        }
-	    };
-	    abActivity.getSupportActionBar().removeAllTabs();
-	    for (int i = 0; i < mPagerTitles.length; i++) {
-	        abActivity.getSupportActionBar().addTab(
-	        		abActivity.getSupportActionBar().newTab()
-	                        .setText(mPagerTitles[i])
-	                        .setTag("contacts"+i)
-	                        .setTabListener(tabListener));
-	    }
+		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+				mPager.setCurrentItem(tab.getPosition());
+			}
+
+			public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+			}
+
+			public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+			}
+		};
+		abActivity.getSupportActionBar().removeAllTabs();
+		for (int i = 0; i < mPagerTitles.length; i++) {
+			abActivity.getSupportActionBar().addTab(
+					abActivity.getSupportActionBar().newTab().setText(mPagerTitles[i]).setTag("contacts" + i)
+							.setTabListener(tabListener));
+		}
 
 		mPager.setCurrentItem(0);
 	}
@@ -110,7 +109,7 @@ public class ContactContainerFragment extends Fragment {
 		super.onStop();
 		abActivity.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 	}
-	
+
 	/**
 	 * Adapter for the home viewPager
 	 */
@@ -142,9 +141,8 @@ public class ContactContainerFragment extends Fragment {
 		}
 	}
 
-
 	private ArrayList<HashMap<String, String>> getIstituzioniData(List<Istituzione> list) {
-		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 		for (Istituzione i : list) {
 			HashMap<String, String> res = new HashMap<String, String>();
 			res.put("name", i.getNome());
@@ -161,8 +159,9 @@ public class ContactContainerFragment extends Fragment {
 		}
 		return data;
 	}
+
 	private ArrayList<HashMap<String, String>> getGestoriData(List<Gestore> list) {
-		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 		for (Gestore i : list) {
 			HashMap<String, String> res = new HashMap<String, String>();
 			res.put("name", i.getRagioneSociale());

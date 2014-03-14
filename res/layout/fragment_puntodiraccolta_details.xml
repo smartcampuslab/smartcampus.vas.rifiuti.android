@@ -13,11 +13,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/rifiuti_green_dark"
             android:padding="@dimen/fragment_horizontal_margin"
             android:text="@string/dettagli_label"
-            android:background="@color/rifiuti_green_dark"
-            android:textColor="@android:color/white"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,6 +44,7 @@
                 android:id="@+id/puntodiraccolta_directions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fragment_horizontal_margin"
                 android:contentDescription="@string/empty"
                 android:src="@drawable/ic_directions" />
         </LinearLayout>
@@ -57,11 +58,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-	            android:background="@color/rifiuti_green_dark"
-	            android:textColor="@android:color/white"
+                android:background="@color/rifiuti_green_dark"
                 android:padding="@dimen/fragment_horizontal_margin"
                 android:text="@string/orario_label"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:id="@+id/puntodiraccolta_orari_textview"
@@ -80,11 +81,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-	            android:background="@color/rifiuti_green_dark"
-	            android:textColor="@android:color/white"
+                android:background="@color/rifiuti_green_dark"
                 android:padding="@dimen/fragment_horizontal_margin"
                 android:text="@string/tipologiediraccolta_label"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white" />
 
             <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
                 android:id="@+id/puntodiraccolta_listatipologie"
@@ -93,11 +94,15 @@
                 android:background="@color/rifiuti_light"
                 android:divider="@color/rifiuti_middle"
                 android:dividerHeight="1dp"
-                android:drawSelectorOnTop="false" 
+                android:drawSelectorOnTop="false"
                 android:listSelector="@color/rifiuti_green_light_o50" >
             </eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView>
         </LinearLayout>
-    	<View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rifiuti_middle" />
     </LinearLayout>
 
 </ScrollView>

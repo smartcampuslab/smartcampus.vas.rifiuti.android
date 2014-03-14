@@ -26,33 +26,31 @@ import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
-public class MainActivity extends ActionBarActivity implements
-		ActionBar.OnNavigationListener {
+public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener {
 
 	private int mContentFrameId;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-//	private TutorialHelper mTutorialHelper = null;
+
+	// private TutorialHelper mTutorialHelper = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
 		setContentView(R.layout.activity_main);
 
 		mContentFrameId = R.id.content_frame;
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-		mDrawerList.setAdapter(new DrawerArrayAdapter(this,
-				R.layout.drawer_entry, getResources().getStringArray(
-						R.array.drawer_entries_strings)));
+		mDrawerList.setAdapter(new DrawerArrayAdapter(this, R.layout.drawer_entry, getResources().getStringArray(
+				R.array.drawer_entries_strings)));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-//		mTutorialHelper = new ListViewTutorialHelper(this, mNavDrawerTutorialProvider);
+		// mTutorialHelper = new ListViewTutorialHelper(this,
+		// mNavDrawerTutorialProvider);
 
 		addNavDrawerButton();
 
@@ -63,11 +61,9 @@ public class MainActivity extends ActionBarActivity implements
 				Integer i = (Integer) findViewById(checkedId).getTag();
 				if (i != null) {
 					try {
-						PreferenceUtils.setCurrentProfilePosition(
-								MainActivity.this, i);
+						PreferenceUtils.setCurrentProfilePosition(MainActivity.this, i);
 						setCurrentProfile();
-						mDrawerLayout
-								.closeDrawer(findViewById(R.id.drawer_wrapper));
+						mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -80,19 +76,15 @@ public class MainActivity extends ActionBarActivity implements
 			if (PreferenceUtils.getProfiles(this).isEmpty()) {
 				lockDrawer();
 				loadFragment(8);
-				Toast.makeText(this, getString(R.string.toast_no_prof),
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.toast_no_prof), Toast.LENGTH_SHORT).show();
 			} else {
 				prepareNavDropdown(true);
 			}
-
 		} catch (Exception e) {
-			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 			finish();
 		}
-
 	}
 
 	@Override
@@ -105,8 +97,7 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onBackPressed() {
 
-		Fragment f = getSupportFragmentManager().findFragmentById(
-				R.id.content_frame);
+		Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
 		if (f instanceof onBackListener)
 			((onBackListener) f).onBack();
 		else
@@ -141,15 +132,14 @@ public class MainActivity extends ActionBarActivity implements
 		} catch (Exception e) {
 			return false;
 		}
-
 	}
 
 	private void setCurrentProfile() {
-		if (PreferenceUtils.getCurrentProfilePosition(this) < 0)
+		if (PreferenceUtils.getCurrentProfilePosition(this) < 0) {
 			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this, 0));
-		else
-			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this,
-					PreferenceUtils.getCurrentProfilePosition(this)));
+		} else {
+			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this, PreferenceUtils.getCurrentProfilePosition(this)));
+		}
 	}
 
 	public void prepareNavDropdown(boolean loadHome) {
@@ -175,8 +165,7 @@ public class MainActivity extends ActionBarActivity implements
 				i++;
 			}
 		} else {
-			((TextView) findViewById(R.id.curr_profile_tv)).setText(profiles
-					.get(0).getName());
+			((TextView) findViewById(R.id.curr_profile_tv)).setText(profiles.get(0).getName());
 			findViewById(R.id.curr_profile_tv).setVisibility(View.VISIBLE);
 			findViewById(R.id.profile_rg).setVisibility(View.GONE);
 		}
@@ -187,12 +176,10 @@ public class MainActivity extends ActionBarActivity implements
 			setCurrentProfile();
 			loadFragment(0);
 		}
-
 	}
 
 	private void addNavDrawerButton() {
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
@@ -201,8 +188,7 @@ public class MainActivity extends ActionBarActivity implements
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-					
-//					mTutorialHelper.showTutorials();
+					// mTutorialHelper.showTutorials();
 					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
 				}
 			}
@@ -253,8 +239,7 @@ public class MainActivity extends ActionBarActivity implements
 
 		if (fragment != null) {
 			// Insert the fragment by replacing any existing fragment
-			getSupportFragmentManager().beginTransaction()
-					.replace(mContentFrameId, fragment).commit();
+			getSupportFragmentManager().beginTransaction().replace(mContentFrameId, fragment).commit();
 			// Highlight the selected item, update the title, close the drawer
 			mDrawerList.setItemChecked(position, true);
 			// setTitle(mPlanetTitles[position]);
@@ -262,15 +247,14 @@ public class MainActivity extends ActionBarActivity implements
 		}
 	}
 
-	
 	private void prepareTutorial() {
 		RifiutiHelper.resetTutorialDoveLoButto(getApplicationContext());
 	}
+
 	// USE WITH CARE!!
 	public void lockDrawer() {
 		if (mDrawerLayout != null) {
-			mDrawerLayout
-					.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+			mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			getSupportActionBar().setHomeButtonEnabled(false);
 		}
 	}
@@ -300,66 +284,72 @@ public class MainActivity extends ActionBarActivity implements
 	/**
 	 * Drawer item click listener
 	 */
-	private class DrawerItemClickListener implements
-			ListView.OnItemClickListener {
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			loadFragment(position);
 		}
 	}
 
 	@Override
-	protected void onActivityResult(int arg0, int arg1, Intent arg2) {		
-		Fragment f = getSupportFragmentManager().findFragmentById(
-				mContentFrameId);
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		Fragment f = getSupportFragmentManager().findFragmentById(mContentFrameId);
 		if (f != null && f instanceof DoveLoButtoFragment && f.isVisible()) {
-			getSupportFragmentManager().findFragmentById(mContentFrameId)
-					.onActivityResult(arg0, arg1, arg2);
+			getSupportFragmentManager().findFragmentById(mContentFrameId).onActivityResult(arg0, arg1, arg2);
 		}
 		super.onActivityResult(arg0, arg1, arg2);
 	}
 
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		super.onActivityResult(requestCode, resultCode, data);
-//		mTutorialHelper.onTutorialActivityResult(requestCode, resultCode, data);
-//
-//	}
-//	private TutorialProvider mNavDrawerTutorialProvider = new TutorialProvider() {
-//		
-//		TutorialItem[] tutorial = new TutorialItem[]{
-//				new TutorialItem("home", null, 0, R.string.home_title, R.string.home_tut),
-//				new TutorialItem("punti di raccolta", null, 0, R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
-//				new TutorialItem("tipi di raccolta", null, 0, R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
-//				new TutorialItem("gestione profili", null, 0, R.string.gestione_profili_title, R.string.gestione_profili_tut),
-//				new TutorialItem("segnala", null, 0, R.string.segnala_title, R.string.segnala_tut),
-//				new TutorialItem("contatti", null, 0, R.string.contatti_title, R.string.contatti_tut),
-//				new TutorialItem("tutorial", null, 0, R.string.tutorial_title, R.string.tutorial_tut),
-//				new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut) };
-//
-//		
-//		@Override
-//		public void onTutorialFinished() {
-//			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
-//		}
-//		
-//		@Override
-//		public void onTutorialCancelled() {
-//			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
-//		}
-//		
-//		@Override
-//		public TutorialItem getItemAt(int i) {
-//			ListViewTutorialHelper.fillTutorialItemParamsWithCorrection(tutorial[i], i, mDrawerList, R.id.drawer_menu_icon,0,-12);
-//			return tutorial[i];
-//		}
-//		
-//		@Override
-//		public int size() {
-//			return tutorial.length;
-//		}
-//	};
-
+	// @Override
+	// protected void onActivityResult(int requestCode, int resultCode, Intent
+	// data) {
+	// super.onActivityResult(requestCode, resultCode, data);
+	// mTutorialHelper.onTutorialActivityResult(requestCode, resultCode, data);
+	//
+	// }
+	// private TutorialProvider mNavDrawerTutorialProvider = new
+	// TutorialProvider() {
+	//
+	// TutorialItem[] tutorial = new TutorialItem[]{
+	// new TutorialItem("home", null, 0, R.string.home_title,
+	// R.string.home_tut),
+	// new TutorialItem("punti di raccolta", null, 0,
+	// R.string.punti_raccolta_title, R.string.punti_raccolta_tut),
+	// new TutorialItem("tipi di raccolta", null, 0,
+	// R.string.tipi_raccolta_title, R.string.tipi_raccolta_tut),
+	// new TutorialItem("gestione profili", null, 0,
+	// R.string.gestione_profili_title, R.string.gestione_profili_tut),
+	// new TutorialItem("segnala", null, 0, R.string.segnala_title,
+	// R.string.segnala_tut),
+	// new TutorialItem("contatti", null, 0, R.string.contatti_title,
+	// R.string.contatti_tut),
+	// new TutorialItem("tutorial", null, 0, R.string.tutorial_title,
+	// R.string.tutorial_tut),
+	// new TutorialItem("info", null, 0, R.string.info_title, R.string.info_tut)
+	// };
+	//
+	//
+	// @Override
+	// public void onTutorialFinished() {
+	// mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+	// }
+	//
+	// @Override
+	// public void onTutorialCancelled() {
+	// mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+	// }
+	//
+	// @Override
+	// public TutorialItem getItemAt(int i) {
+	// ListViewTutorialHelper.fillTutorialItemParamsWithCorrection(tutorial[i],
+	// i, mDrawerList, R.id.drawer_menu_icon,0,-12);
+	// return tutorial[i];
+	// }
+	//
+	// @Override
+	// public int size() {
+	// return tutorial.length;
+	// }
+	// };
 
 }
