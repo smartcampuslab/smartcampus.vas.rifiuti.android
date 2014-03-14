@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.tyczj.extendedcalendarview.Day;
 import com.tyczj.extendedcalendarview.Event;
@@ -111,4 +113,11 @@ public class CalendarAgendaFragment extends ListFragment {
 		return false;
 	}
 
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
+		i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, adapter.getItem(position).getPuntoRaccolta());
+		startActivity(i);
+	}
 }

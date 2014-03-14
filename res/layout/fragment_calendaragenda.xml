@@ -9,7 +9,11 @@
         android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbarStyle="outsideOverlay" >
+        android:scrollbarStyle="outsideOverlay" 
+        android:listSelector="@color/rifiuti_green_light_o50"
+        android:drawSelectorOnTop="false">
     </ListView>
-
+    
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
+    
 </LinearLayout>
