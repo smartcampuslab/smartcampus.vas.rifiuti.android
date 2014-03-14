@@ -449,31 +449,87 @@ public class RifiutiHelper {
 					+ "' AND "
 					+ "ra.tipologiaRifiuto = r.tipologiaRifiuto";
 			cursor = db.rawQuery(query, null);
-			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
-			if (cursor != null) {
-				if (cursor != null) {
-					cursor.moveToFirst();
-					for (int i = 0; i < cursor.getCount(); i++) {
-						DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
-						dtr.setColore(cursor.getString(cursor
-								.getColumnIndex("colore")));
-						dtr.setInfo(cursor.getString(cursor
-								.getColumnIndex("infoRaccolta")));
-						dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor
-								.getColumnIndex("tipologiaPuntoRaccolta")));
-						dtr.setTipologiaRaccolta(cursor.getString(cursor
-								.getColumnIndex("tipologiaRaccolta")));
-						result.add(dtr);
-						cursor.moveToNext();
-					}
-				}
-			}
+			List<DatiTipologiaRaccolta> result = processDatiTipologiaRaccoltaCursor(cursor);
 			return result;
 		} finally {
 			if (cursor != null)
 				cursor.close();
 		}
 
+	}
+	public static List<DatiTipologiaRaccolta> getDatiTipologiaRaccoltaPerTipologiaRaccolta(
+			String tipoRaccolta) {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			String aree = getAreeForQuery(mHelper.mAreas);
+			String query = "SELECT DISTINCT ra.tipologiaRaccolta, ra.tipologiaPuntoRaccolta, ra.colore, ra.infoRaccolta "
+					+ "FROM raccolta ra WHERE "
+					+ "ra.tipologiaRaccolta = \""
+					+ tipoRaccolta
+					+ "\" AND "
+					+ "ra.area in "
+					+ aree
+					+ " AND ra.tipologiaUtenza = '"
+					+ mHelper.mProfile.getUtenza() + "'";
+			cursor = db.rawQuery(query, null);
+			List<DatiTipologiaRaccolta> result = processDatiTipologiaRaccoltaCursor(cursor);
+			return result;
+		} finally {
+			if (cursor != null)
+				cursor.close();
+		}
+
+	}
+	public static List<DatiTipologiaRaccolta> getDatiTipologiaRaccoltaPerTipologiaRifiuto(
+			String tipoRifiuto) {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			String aree = getAreeForQuery(mHelper.mAreas);
+			String query = "SELECT DISTINCT ra.tipologiaRaccolta, ra.tipologiaPuntoRaccolta, ra.colore, ra.infoRaccolta "
+					+ "FROM raccolta ra WHERE "
+					+ "ra.tipologiaRifiuto = \""
+					+ tipoRifiuto 
+					+ "\" AND "
+					+ "ra.area in "
+					+ aree
+					+ " AND ra.tipologiaUtenza = '"
+					+ mHelper.mProfile.getUtenza() + "'";
+			cursor = db.rawQuery(query, null);
+			List<DatiTipologiaRaccolta> result = processDatiTipologiaRaccoltaCursor(cursor);
+			return result;
+		} finally {
+			if (cursor != null)
+				cursor.close();
+		}
+
+	}
+
+	/**
+	 * @param cursor
+	 * @return
+	 */
+	public static List<DatiTipologiaRaccolta> processDatiTipologiaRaccoltaCursor(
+			Cursor cursor) {
+		List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
+		if (cursor != null) {
+			cursor.moveToFirst();
+			for (int i = 0; i < cursor.getCount(); i++) {
+				DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
+				dtr.setColore(cursor.getString(cursor
+						.getColumnIndex("colore")));
+				dtr.setInfo(cursor.getString(cursor
+						.getColumnIndex("infoRaccolta")));
+				dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor
+						.getColumnIndex("tipologiaPuntoRaccolta")));
+				dtr.setTipologiaRaccolta(cursor.getString(cursor
+						.getColumnIndex("tipologiaRaccolta")));
+				result.add(dtr);
+				cursor.moveToNext();
+			}
+		}
+		return result;
 	}
 
 	/**

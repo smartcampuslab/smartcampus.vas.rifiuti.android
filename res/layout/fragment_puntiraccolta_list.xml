@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAlignedChildIndex="@color/rifiuti_light"
+    android:background="@color/rifiuti_light"
     android:orientation="vertical" >
 
     <ExpandableListView
@@ -13,6 +14,9 @@
         android:childDivider="@color/rifiuti_middle"
         android:divider="@color/rifiuti_light"
         android:dividerHeight="1dp"
-        android:drawSelectorOnTop="false" />
-
+        android:drawSelectorOnTop="false"  
+	        android:listSelector="@color/rifiuti_green_light_o50" />
+    
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
+    
 </LinearLayout>

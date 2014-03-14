@@ -12,11 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
@@ -93,29 +90,29 @@ public class RifiutoDetailsFragment extends Fragment {
 		}
 		// setListAdapter(adapter);
 
-		ListView mTipologieRaccolta = (ListView) getView().findViewById(R.id.tiporaccolta_list);
-		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter,
-				datiTipologiaRaccoltaList, true);
-		mTipologieRaccolta.setAdapter(tipologieAdapter);
+//		ListView mTipologieRaccolta = (ListView) getView().findViewById(R.id.tiporaccolta_list);
+//		TipologieAdapter tipologieAdapter = new TipologieAdapter(getActivity(), R.layout.tipologiaraccolta_adapter,
+//				datiTipologiaRaccoltaList, true);
+//		mTipologieRaccolta.setAdapter(tipologieAdapter);
+//
+//		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//				RifiutiManagerContainerFragment fragment = new RifiutiManagerContainerFragment();
+//				Bundle bundle = new Bundle();
+//
+//				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, datiTipologiaRaccoltaList.get(arg2)
+//						.getTipologiaRaccolta());
+//				fragment.setArguments(bundle);
+//				fragmentTransaction.replace(R.id.content_frame, fragment, "tipologiaraccolta");
+//				fragmentTransaction.addToBackStack(fragment.getTag());
+//				fragmentTransaction.commit();
+//			}
+//		});
 
-		mTipologieRaccolta.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-				RifiutiManagerContainerFragment fragment = new RifiutiManagerContainerFragment();
-				Bundle bundle = new Bundle();
-
-				bundle.putString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA, datiTipologiaRaccoltaList.get(arg2)
-						.getTipologiaRaccolta());
-				fragment.setArguments(bundle);
-				fragmentTransaction.replace(R.id.content_frame, fragment, "tipologiaraccolta");
-				fragmentTransaction.addToBackStack(fragment.getTag());
-				fragmentTransaction.commit();
-			}
-		});
-
-		final PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.puntoraccolta_group_light,  android.R.layout.simple_list_item_1,
-				puntiDiRaccolta);
+		final PuntoDiRaccoltaGroupAdapter adapter = new PuntoDiRaccoltaGroupAdapter(getActivity(), R.layout.puntoraccolta_info_group,  android.R.layout.simple_list_item_1,
+				puntiDiRaccolta, datiTipologiaRaccoltaList);
 		ExpandableListView listPuntiRaccolta = (ExpandableListView) getView().findViewById(R.id.puntoraccolta_list);
 		listPuntiRaccolta.setAdapter(adapter);
 		listPuntiRaccolta.setOnChildClickListener(new OnChildClickListener() {

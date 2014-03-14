@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
+import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
@@ -70,11 +71,14 @@ public class PuntiDiRaccoltaListFragment extends Fragment {
 			}
 		}
 
+		List<DatiTipologiaRaccolta> data = null;
 		try {
 			if (tipologiaRaccolta != null) {
 				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRaccolta(tipologiaRaccolta);
+				data = RifiutiHelper.getDatiTipologiaRaccoltaPerTipologiaRaccolta(tipologiaRaccolta);
 			} else if (tipologiaRifiuto != null) {
 				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
+				data = RifiutiHelper.getDatiTipologiaRaccoltaPerTipologiaRifiuto(tipologiaRifiuto);
 			} else {
 				puntiDiRaccolta = RifiutiHelper.getPuntiRaccolta();
 				hasMenu = true;
@@ -86,7 +90,7 @@ public class PuntiDiRaccoltaListFragment extends Fragment {
 		}
 
 		ExpandableListView elv = (ExpandableListView) getView().findViewById(android.R.id.list);
-		final PuntoDiRaccoltaAdapter adapter = new PuntoDiRaccoltaAdapter(getActivity(), R.layout.puntoraccolta_group, android.R.layout.simple_list_item_1, puntiDiRaccolta);
+		final PuntoDiRaccoltaGroupAdapter adapter = new PuntoDiRaccoltaGroupAdapter(getActivity(), R.layout.puntoraccolta_info_group, android.R.layout.simple_list_item_1, puntiDiRaccolta, data);
 		// android.R.layout.simple_list_item_1
 		elv.setAdapter(adapter);
 		elv.setOnChildClickListener(new OnChildClickListener() {
