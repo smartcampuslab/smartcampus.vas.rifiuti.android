@@ -123,7 +123,7 @@
             android:id="@+id/contacts_tel_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_call" />
+            android:src="@drawable/ic_call" />
     </LinearLayout>
 
     <LinearLayout
@@ -145,8 +145,7 @@
             android:id="@+id/contacts_email_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_dialog_email"
-            android:tint="@color/rifiuti_dark" />
+            android:src="@drawable/ic_mail"/>
     </LinearLayout>
 
     <LinearLayout
@@ -168,8 +167,7 @@
             android:id="@+id/contacts_pec_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_dialog_email"
-            android:tint="@color/rifiuti_dark" />
+            android:src="@drawable/ic_mail"/>
     </LinearLayout>
 
     <TextView
