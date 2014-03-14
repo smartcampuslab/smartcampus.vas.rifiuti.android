@@ -47,7 +47,6 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	private TipiRifiutiAdapter tipiRifiutiAdapter;
 	private TutorialHelper mTutorialHelper;
 
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -86,6 +85,7 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	@Override
 	public void onStart() {
 		super.onStart();
+
 		doveLoButtoAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1);
 		doveLoButtoResultsList.setAdapter(doveLoButtoAdapter);
@@ -258,7 +258,6 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 							getActivity()),
 					getString(R.string.tut_dove_title_menu),
 					getString(R.string.tut_dove_desc_menu));
-
 		}
 		return null;
 	}
@@ -267,6 +266,5 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	public int size() {
 		return 5;
 	}
-
 
 }

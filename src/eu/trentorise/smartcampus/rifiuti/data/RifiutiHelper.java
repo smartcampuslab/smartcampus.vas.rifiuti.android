@@ -1103,6 +1103,12 @@ public class RifiutiHelper {
 		edit.commit();
 	}
 
+	public static void resetTutorialDoveLoButto(Context ctx) {
+		Editor edit = getTutorialPreferences(ctx).edit();
+		edit.putBoolean(FIRST_LAUNCH_DOVEBUTTO_PREFS, true);
+		edit.commit();
+	}
+	
 	public static boolean isFirstLaunchDoveLoButto(Context ctx) {
 		return getTutorialPreferences(ctx).getBoolean(
 				FIRST_LAUNCH_DOVEBUTTO_PREFS, true);

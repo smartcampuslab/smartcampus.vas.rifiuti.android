@@ -21,12 +21,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.github.espiandev.showcaseview.ListViewTutorialHelper;
-import com.github.espiandev.showcaseview.TutorialHelper;
-import com.github.espiandev.showcaseview.TutorialHelper.TutorialProvider;
-import com.github.espiandev.showcaseview.TutorialItem;
-
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
@@ -242,6 +236,13 @@ public class MainActivity extends ActionBarActivity implements
 		case 5:
 			fragment = new ContactContainerFragment();
 			break;
+		case 6:
+			prepareTutorial();
+			fragment = new HomeFragment();
+			break;
+		case 7:
+			fragment = new InfoFragment();
+			break;
 		case 8:
 			fragment = new ProfileFragment();
 			break;
@@ -261,6 +262,10 @@ public class MainActivity extends ActionBarActivity implements
 		}
 	}
 
+	
+	private void prepareTutorial() {
+		RifiutiHelper.resetTutorialDoveLoButto(getApplicationContext());
+	}
 	// USE WITH CARE!!
 	public void lockDrawer() {
 		if (mDrawerLayout != null) {
