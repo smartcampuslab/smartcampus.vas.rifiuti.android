@@ -182,7 +182,8 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 							DoveLoButtoFragment.this);
 					if (DoveLoButtoFragment.this.isVisible()) {
 						mTutorialHelper.setColor(getResources().getColor(
-								R.color.tut_color));
+								R.color.tut_color),getResources().getColor(
+										R.color.tut_exit_button_color));
 						mTutorialHelper.showTutorials();
 						RifiutiHelper.disableFirstLaunchDoveLoButto(getActivity());
 					}
