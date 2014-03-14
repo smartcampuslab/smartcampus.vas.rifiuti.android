@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -199,43 +202,45 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 	}
 
 	private void bringMeThere(PuntoRaccolta pdr) {
-		callBringMeThere();
-		return;
-	}
-
-	protected void callBringMeThere() {
-		mLocUtils = new LocationUtils(getActivity(), PuntoDiRaccoltaDetailFragment.this);
+		try {
+			getActivity().getPackageManager().getApplicationInfo("eu.trentorise.smartcampus.viaggiatrento", 0);
+		} catch (NameNotFoundException e) {
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=eu.trentorise.smartcampus.viaggiatrento"));
+			getActivity().startActivity(intent);
+			return;
+		}
+		new LocalizeAsyncTask().execute();
 	}
 
 	@Override
 	public void onLocationChaged(Location l) {
 		Log.i(ProfileFragment.class.getName(), l.toString());
 		mLocation = l;
-		if (getActivity() == null) return;
 		if (mLocUtils != null) {
 			mLocUtils.close();
 			mLocUtils = null;
 		}
+	}
+
+	private void callAppForDirections() {
+		if (mLocUtils != null) {
+			mLocUtils.close();
+			mLocUtils = null;
+		}
+
 		Address from = new Address(Locale.getDefault());
-		from.setLatitude(mLocation.getLatitude());
-		from.setLongitude(mLocation.getLongitude());
+		if (mLocation != null) {
+			from.setLatitude(mLocation.getLatitude());
+			from.setLongitude(mLocation.getLongitude());
+		}
 		LatLng latLng = null;
 		Address to = new Address(Locale.getDefault());
 		String[] splittedLatLong = puntoDiRaccolta.getLocalizzazione().split(",");
 		latLng = new LatLng(Double.parseDouble(splittedLatLong[0]), Double.parseDouble(splittedLatLong[1]));
 		to.setLatitude(latLng.latitude);
 		to.setLongitude(latLng.longitude);
-		callAppForDirections(from, to);
-	}
 
-	private void callAppForDirections(Address from, Address to) {
-		// intent for app
-		Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage("eu.trentorise.smartcampus.viaggiatrento");
-		if (intent == null) {
-			intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=eu.trentorise.smartcampus.viaggiatrento"));
-			getActivity().startActivity(intent);
-		}
-		intent.setAction(getString(R.string.direction_intent));
+		Intent intent = new Intent(getString(R.string.direction_intent));
 		intent.putExtra(getString(R.string.from_for_direction), from);
 		intent.putExtra(getString(R.string.to_for_direction), to);
 		try {
@@ -264,4 +269,34 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		super.onSaveInstanceState(outState);
 	}
 
+	private class LocalizeAsyncTask extends AsyncTask<Void, Void, Void> {
+		private ProgressDialog progress = null;
+
+		@Override
+		protected void onPreExecute() {
+			if (getActivity() == null) return;
+			
+			progress  = ProgressDialog.show(getActivity(), "", getString(R.string.geocoding), true);
+			mLocUtils = new LocationUtils(getActivity(), PuntoDiRaccoltaDetailFragment.this);
+		}
+		@Override
+		protected Void doInBackground(Void... params) {
+			long start = System.currentTimeMillis();
+			while (mLocation == null && System.currentTimeMillis()-start < 10000) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+				}
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			callAppForDirections();
+			if (progress != null) {
+				progress.cancel();
+			}
+		}
+	}
 }

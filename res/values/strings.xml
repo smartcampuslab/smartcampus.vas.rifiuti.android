@@ -167,4 +167,5 @@
     <string name="info_fbk">fbk</string>
     <string name="info_mail">Per eventuali segnalazioni o richieste di informazioni contattateci scrivendo a rifiuti@smartcampuslab.it</string>
     
+    <string name="geocoding">Ricerca della posizione...</string>
 </resources>
