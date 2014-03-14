@@ -463,7 +463,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 		mAreaSpinner = (Spinner) getView().findViewById(
 				R.id.profile_comune_spinner);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_spinner_item, comuneAreasNames);
+				R.layout.spinner_row, comuneAreasNames);
 		mAreaSpinner.setAdapter(adapter);
 		mAreaSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view,

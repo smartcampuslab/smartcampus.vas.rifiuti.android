@@ -5,20 +5,28 @@
     android:background="@color/rifiuti_light"
     android:orientation="vertical" >
 
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_light" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rifiuti_light" />
+
     <TextView
         android:id="@+id/contacts_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/rifiuti_dark"
+        android:background="@color/rifiuti_middle"
         android:padding="16dp"
-        android:text="Comunita delle Giudicarie"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/rifiuti_light"/>
+        android:textColor="@color/rifiuti_green_dark"
+        android:textStyle="bold" />
 
-    <include 
+    <include
         android:id="@+id/contacts_details"
-        layout="@layout/contacts_details"/>
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
-    
+        layout="@layout/contacts_details" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rifiuti_middle" />
+
 </LinearLayout>
