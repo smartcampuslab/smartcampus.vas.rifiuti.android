@@ -24,9 +24,7 @@ import eu.trentorise.smartcampus.rifiuti.AddNoteFragment.OnAddListener;
 import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Note;
 
-public class NotesListFragment extends ListFragment implements OnAddListener,
-		ActionMode.Callback {
-
+public class NotesListFragment extends ListFragment implements OnAddListener, ActionMode.Callback {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,38 +37,32 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 		super.onActivityCreated(savedInstanceState);
 		try {
 			NotesHelper.init(getActivity());
-			setListAdapter(new NotesAdapter(getActivity(),
-					android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+			setListAdapter(new NotesAdapter(getActivity(), android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
 			setEmptyText(getString(R.string.no_notes));
 
-			getListView().setOnItemLongClickListener(
-					new AdapterView.OnItemLongClickListener() {
+			getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long arg3) {
+					if (NotesHelper.notesActionMode != null) {
+						return false;
+					}
 
-						@Override
-						public boolean onItemLongClick(AdapterView<?> arg0,
-								View view, int position, long arg3) {
-							if (NotesHelper.notesActionMode != null) {
-								return false;
-							}
+					// Start the CAB using the ActionMode.Callback
+					// defined above
+					if (getActivity() instanceof ActionBarActivity) {
+						NotesHelper.notesActionMode = ((ActionBarActivity) getActivity())
+								.startSupportActionMode(NotesListFragment.this);
+					}
 
-							// Start the CAB using the ActionMode.Callback
-							// defined above
-							if (getActivity() instanceof ActionBarActivity)
-								NotesHelper.notesActionMode = ((ActionBarActivity) getActivity())
-										.startSupportActionMode(NotesListFragment.this);
-							
-							getListView().setItemChecked(position, true);
-							toggleBackground(getListView(), position, view);
-							return true;
-
-						}
-					});
+					getListView().setItemChecked(position, true);
+					toggleBackground(getListView(), position, view);
+					return true;
+				}
+			});
 			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
 		} catch (IOException e) {
 			Log.e(NotesHelper.class.getName(), e.toString());
 		}
-
 	}
 
 	@Override
@@ -94,25 +86,25 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 		super.onListItemClick(l, v, position, id);
 		if (NotesHelper.notesActionMode != null) {
 			boolean check = getListView().isItemChecked(position);
-			//hack because when in actionmode check is always true
+			// hack because when in actionmode check is always true
 			getListView().setItemChecked(position, check);
 			toggleBackground(l, position, v);
+
 			getListView().post(new Runnable() {
-				
 				@Override
 				public void run() {
 					SparseBooleanArray pos = getListView().getCheckedItemPositions();
-					for(int i=0;i<pos.size();i++){
-						if(pos.get(i))
+					for (int i = 0; i < pos.size(); i++) {
+						if (pos.get(i))
 							return;
 					}
-					//no element's checked
+					// no element's checked
 					NotesHelper.notesActionMode.finish();
 				}
-			}); 
-		} else
+			});
+		} else {
 			goToDetail(position);
-
+		}
 	}
 
 	@Override
@@ -123,108 +115,98 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 	}
 
 	@Override
-	public boolean onPrepareActionMode(ActionMode arg0, Menu arg1) {
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 		return false;
 	}
 
 	@Override
-	public boolean onActionItemClicked(ActionMode arg0, MenuItem arg1) {
-		if (arg1.getItemId() == R.id.action_delete) {
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		if (item.getItemId() == R.id.action_delete) {
 			SparseBooleanArray pos = getListView().getCheckedItemPositions();
 			new DeleteNotesTask().execute(pos);
 			getActivity().setProgressBarIndeterminateVisibility(true);
-			arg0.finish();
+			mode.finish();
 		}
 		return false;
 	}
 
 	@Override
-	public void onDestroyActionMode(ActionMode arg0) {
+	public void onDestroyActionMode(ActionMode mode) {
 		NotesHelper.notesActionMode = null;
-		
-		//clean background
+
+		// clean background
 		getListView().post(new Runnable() {
-			
 			@Override
 			public void run() {
 				SparseBooleanArray pos = getListView().getCheckedItemPositions();
-				for(int i=0;i<pos.size();i++){
-					if(pos.get(i)){
+				for (int i = 0; i < pos.size(); i++) {
+					if (pos.get(i)) {
 						getListView().setItemChecked(i, false);
 						toggleBackground(getListView(), i, getListView().getChildAt(i));
 					}
 				}
 			}
-		}); 
+		});
 	}
 
 	@Override
 	public void onAdd(String s) {
 		NotesHelper.addNote(s);
-		setListAdapter(new ArrayAdapter<Note>(getActivity(),
-				android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+		setListAdapter(new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
 	}
 
 	private void goToDetail(int position) {
 		Log.d("not implemented", "yet");
 	}
-	
-	private void toggleBackground(ListView l,int pos,View v){
-		if(l.isItemChecked(pos))
-			v.setBackgroundColor(Color.CYAN);
-		else
-			v.setBackgroundColor(Color.TRANSPARENT);
-		
-	}
-	
-	private class NotesAdapter extends ArrayAdapter<Note>{
 
-		public NotesAdapter(Context context, int resource,List<Note> list) {
-			super(context, resource,list);
+	private void toggleBackground(ListView l, int pos, View v) {
+		if (l.isItemChecked(pos)) {
+			v.setBackgroundColor(getResources().getColor(R.color.rifiuti_green_light_o50));
+		} else {
+			v.setBackgroundColor(Color.TRANSPARENT);
+		}
+	}
+
+	private class NotesAdapter extends ArrayAdapter<Note> {
+
+		public NotesAdapter(Context context, int resource, List<Note> list) {
+			super(context, resource, list);
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View rootview =super.getView(position, convertView, parent);
+			View rootview = super.getView(position, convertView, parent);
 			rootview.setTag(getItem(position));
 			return rootview;
 		}
-		
 	}
-	
-	private class DeleteNotesTask extends AsyncTask<SparseBooleanArray, Void, Void>{
 
+	private class DeleteNotesTask extends AsyncTask<SparseBooleanArray, Void, Void> {
 		@Override
 		protected Void doInBackground(SparseBooleanArray... params) {
 			SparseBooleanArray pos = params[0];
-			for(int i =0;i<pos.size();i++){
-				NotesHelper.deleteNotes(((Note)getListView().getItemAtPosition(i)));
+			for (int i = 0; i < pos.size(); i++) {
+				NotesHelper.deleteNotes(((Note) getListView().getItemAtPosition(i)));
 			}
 			publishProgress();
 			return null;
 		}
-		
-		
-		
+
 		@Override
 		protected void onProgressUpdate(Void... values) {
 			super.onProgressUpdate(values);
-			if(getListView()!=null){
-				setListAdapter(new ArrayAdapter<Note>(getActivity(),
-						android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+			if (getListView() != null) {
+				setListAdapter(new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1,
+						NotesHelper.getNotes()));
 			}
 		}
-
-
 
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			getActivity().setProgressBarIndeterminateVisibility(false);
 		}
-		
-		
-		
+
 	}
 
 }

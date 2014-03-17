@@ -24,9 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
@@ -69,8 +69,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 					try {
 						PreferenceUtils.setCurrentProfilePosition(MainActivity.this, i);
 						setCurrentProfile();
-//						mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
-
+						// mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -104,10 +103,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	public void onBackPressed() {
 
 		Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-		if (f instanceof onBackListener)
+		if (f instanceof onBackListener) {
 			((onBackListener) f).onBack();
-		else
+		} else {
 			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -309,7 +309,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	@Override
 	public void onLocationChaged(Location l) {
 		RifiutiHelper.setCurrentLocation(l);
-		
 	}
 
 	@Override

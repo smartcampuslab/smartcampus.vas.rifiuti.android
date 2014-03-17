@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/action_delete"
-        android:icon="@android:drawable/ic_menu_delete"
+        android:icon="@drawable/ic_menu_delete"
         android:showAsAction="always"
         android:title="@string/action_delete"
         smartcampus.vas.rifiuti.android:showAsAction="always"/>
