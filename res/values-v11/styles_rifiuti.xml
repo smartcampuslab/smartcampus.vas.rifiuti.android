@@ -11,7 +11,7 @@
         <item name="android:textSelectHandle">@drawable/rifiuti_text_select_handle_middle</item>
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewRifiuti</item>
         <item name="android:listChoiceIndicatorMultiple">@drawable/rifiuti_btn_check_holo_light</item>
-        <item name="android:listChoiceIndicatorSingle">@drawable/rifiuti_btn_radio_holo_light</item>
+        <item name="android:listChoiceIndicatorSingle">@drawable/rifiuti_btn_radio_holo_dark</item>
         <item name="android:buttonStyle">@style/ButtonRifiuti</item>
         <item name="android:imageButtonStyle">@style/ImageButtonRifiuti</item>
         <item name="android:dropDownSpinnerStyle">@style/SpinnerRifiuti</item>

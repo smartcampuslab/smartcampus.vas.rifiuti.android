@@ -126,7 +126,7 @@
     </style>
 
     <style name="RadioButtonRifiuti" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:button">@drawable/rifiuti_btn_radio_holo_light</item>
+        <item name="android:button">@drawable/rifiuti_btn_radio_holo_dark</item>
     </style>
 
     <style name="ButtonRifiuti" parent="android:Widget.Button">
@@ -146,7 +146,7 @@
     </style>
 
     <style name="SpinnerDropDownItemRifiuti" parent="android:Widget.DropDownItem.Spinner">
-        <item name="android:checkMark">@drawable/rifiuti_btn_radio_holo_light</item>
+        <item name="android:checkMark">@drawable/rifiuti_btn_radio_holo_dark</item>
     </style>
 
     <style name="ListViewRifiuti" parent="android:Widget.ListView">
