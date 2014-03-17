@@ -152,8 +152,8 @@ public class MapManager {
 
 		private static LatLng getLatLngFromBasicObject(PuntoRaccolta object) {
 			LatLng latLng = null;
-			String[] splittedLatLong = object.getLocalizzazione().split(",");
-			latLng = new LatLng(Double.parseDouble(splittedLatLong[0]), Double.parseDouble(splittedLatLong[1]));
+			double[] coords = object.location();
+			latLng = new LatLng(coords[0],coords[1]);
 			return latLng;
 		}
 
@@ -250,10 +250,7 @@ public class MapManager {
 		double[] ll = null, rr = null;
 		if (objects != null) {
 			for (PuntoRaccolta o : objects) {
-				String[] loc = o.getLocalizzazione().split(",");
-				double[] location = new double[2];
-				location[0] = Double.parseDouble(loc[0]);
-				location[1] = Double.parseDouble(loc[1]);
+				double[] location = o.location();
 				if (ll == null) {
 					ll = location.clone();
 					rr = ll.clone();

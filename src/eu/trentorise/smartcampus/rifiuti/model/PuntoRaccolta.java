@@ -2,6 +2,8 @@ package eu.trentorise.smartcampus.rifiuti.model;
 
 import java.io.Serializable;
 
+import android.util.Log;
+
 public class PuntoRaccolta implements Serializable {
 	private static final long serialVersionUID = -2577147915158632199L;
 
@@ -12,6 +14,8 @@ public class PuntoRaccolta implements Serializable {
 	private String indirizzo;
 	private String dettaglioIndirizzo;
 
+	private transient double[] location;
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -87,6 +91,18 @@ public class PuntoRaccolta implements Serializable {
 	public String dettaglio() {
 		if (dettaglioIndirizzo != null && dettaglioIndirizzo.length() > 0) return dettaglioIndirizzo;
 		return indirizzo;
+	}
+	
+	public double[] location() {
+		if (location == null) {
+			try {
+				String[] splittedLatLong = localizzazione.split(",");
+				location = new double[]{Double.parseDouble(splittedLatLong[0]), Double.parseDouble(splittedLatLong[1])};
+			} catch (Exception e) {
+				Log.e("PuntoRaccolta", "error parsing location: "+e.getMessage());
+			}
+		}
+		return location;
 	}
 	
 	@Override

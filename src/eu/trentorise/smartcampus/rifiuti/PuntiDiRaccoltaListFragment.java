@@ -90,7 +90,7 @@ public class PuntiDiRaccoltaListFragment extends Fragment {
 		}
 
 		ExpandableListView elv = (ExpandableListView) getView().findViewById(android.R.id.list);
-		final PuntoDiRaccoltaGroupAdapter adapter = new PuntoDiRaccoltaGroupAdapter(getActivity(), R.layout.puntoraccolta_info_group, android.R.layout.simple_list_item_1, puntiDiRaccolta, data);
+		final PuntoDiRaccoltaGroupAdapter adapter = new PuntoDiRaccoltaGroupAdapter(getActivity(), R.layout.puntoraccolta_info_group, R.layout.puntoraccolta_row, puntiDiRaccolta, data);
 		// android.R.layout.simple_list_item_1
 		elv.setAdapter(adapter);
 		elv.setOnChildClickListener(new OnChildClickListener() {

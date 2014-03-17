@@ -235,8 +235,8 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		}
 		LatLng latLng = null;
 		Address to = new Address(Locale.getDefault());
-		String[] splittedLatLong = puntoDiRaccolta.getLocalizzazione().split(",");
-		latLng = new LatLng(Double.parseDouble(splittedLatLong[0]), Double.parseDouble(splittedLatLong[1]));
+		double[] coords = puntoDiRaccolta.location();
+		latLng = new LatLng(coords[0],coords[1]);
 		to.setLatitude(latLng.latitude);
 		to.setLongitude(latLng.longitude);
 

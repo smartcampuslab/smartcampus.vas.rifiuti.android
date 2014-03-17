@@ -111,7 +111,7 @@ public class RifiutoDetailsFragment extends Fragment {
 //			}
 //		});
 
-		final PuntoDiRaccoltaGroupAdapter adapter = new PuntoDiRaccoltaGroupAdapter(getActivity(), R.layout.puntoraccolta_info_group,  android.R.layout.simple_list_item_1,
+		final PuntoDiRaccoltaGroupAdapter adapter = new PuntoDiRaccoltaGroupAdapter(getActivity(), R.layout.puntoraccolta_info_group,  R.layout.puntoraccolta_row,
 				puntiDiRaccolta, datiTipologiaRaccoltaList);
 		ExpandableListView listPuntiRaccolta = (ExpandableListView) getView().findViewById(R.id.puntoraccolta_list);
 		listPuntiRaccolta.setAdapter(adapter);

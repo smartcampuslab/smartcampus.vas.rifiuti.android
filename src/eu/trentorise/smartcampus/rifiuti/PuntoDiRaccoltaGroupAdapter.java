@@ -2,7 +2,6 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +10,7 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +20,7 @@ import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
 
 public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 	private Activity activity;
@@ -36,11 +37,17 @@ public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 		this.points = new SparseArray<List<PuntoRaccolta>>();
 		this.infos = new SparseArray<List<DatiTipologiaRaccolta>>();
 		Map<String,Integer> map = new HashMap<String, Integer>();
-		Collections.sort(objects, new Comparator<PuntoRaccolta>() {
-			public int compare(PuntoRaccolta lhs, PuntoRaccolta rhs) {
-				return lhs.getTipologiaPuntiRaccolta().compareTo(rhs.getTipologiaPuntiRaccolta());
-			}
-		});
+		
+		if (objects != null && objects.size() > 1) {
+			Collections.sort(objects, new LocationUtils.PRDistanceComparator(RifiutiHelper.getCurrentLocation()));
+		}
+		
+
+//		Collections.sort(objects, new Comparator<PuntoRaccolta>() {
+//			public int compare(PuntoRaccolta lhs, PuntoRaccolta rhs) {
+//				return lhs.getTipologiaPuntiRaccolta().compareTo(rhs.getTipologiaPuntiRaccolta());
+//			}
+//		});
 		if (infos != null) {
 			for (DatiTipologiaRaccolta dtr : infos) {
 				Integer key = map.get(dtr.getTipologiaPuntoRaccolta());
@@ -84,14 +91,26 @@ public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-		TextView row;
+		View row;
 		if (convertView == null) {
-			row = (TextView) activity.getLayoutInflater().inflate(layoutItemId, parent, false);
+			row = activity.getLayoutInflater().inflate(layoutItemId, parent, false);
 		} else {
-			row = (TextView) convertView;
+			row = convertView;
 		}
+		TextView title = (TextView) row.findViewById(R.id.puntoraccolta_title);
+		TextView dist = (TextView) row.findViewById(R.id.puntoraccolta_distance);
 		PuntoRaccolta pr = getChild(groupPosition, childPosition);
-		row.setText(pr.dettaglio());
+		if (pr.location() != null && RifiutiHelper.getCurrentLocation() != null) {
+			Location l = new Location("");
+			l.setLatitude(pr.location()[0]);
+			l.setLongitude(pr.location()[1]);
+			double distKm = l.distanceTo(RifiutiHelper.getCurrentLocation())/1000;
+			dist.setText(activity.getString(R.string.distance, distKm));
+			dist.setVisibility(View.VISIBLE);
+		} else {
+			dist.setVisibility(View.GONE);
+		}
+		title.setText(pr.dettaglio());
 		return row;
 	}
 

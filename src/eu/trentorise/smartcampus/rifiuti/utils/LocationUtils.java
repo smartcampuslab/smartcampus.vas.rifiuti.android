@@ -1,5 +1,6 @@
 package eu.trentorise.smartcampus.rifiuti.utils;
 
+import java.util.Comparator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -9,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 
 
 public class LocationUtils {
@@ -180,5 +182,33 @@ public class LocationUtils {
 					status == LocationProvider.AVAILABLE);
 		}
 
+	}
+
+	public static class PRDistanceComparator implements Comparator<PuntoRaccolta> {
+		private Location myLocation = null;
+
+		/**
+		 * @param myLocation
+		 */
+		public PRDistanceComparator(Location myLocation) {
+			super();
+			this.myLocation = myLocation;
+		}
+
+		@Override
+		public int compare(PuntoRaccolta lhs, PuntoRaccolta rhs) {
+			if (myLocation == null) return lhs.getIndirizzo().compareTo(rhs.getIndirizzo());
+			Location p1Location = new Location("");
+			p1Location.setLatitude(lhs.location()[0]);
+			p1Location.setLongitude(lhs.location()[1]);
+			float p1distance = myLocation.distanceTo(p1Location);
+
+			Location p2Location = new Location("");
+			p2Location.setLatitude(rhs.location()[0]);
+			p2Location.setLongitude(rhs.location()[1]);
+			float p2distance = myLocation.distanceTo(p2Location);
+
+			return ((Float) p1distance).compareTo((Float) p2distance);
+		}
 	}
 }

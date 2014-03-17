@@ -3,6 +3,7 @@ package eu.trentorise.smartcampus.rifiuti;
 import java.util.List;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -23,15 +24,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
-public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener {
+public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener, ILocation {
 
 	private int mContentFrameId;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+
+	private LocationUtils mLocUtils;
 
 	// private TutorialHelper mTutorialHelper = null;
 
@@ -300,6 +306,34 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		super.onActivityResult(arg0, arg1, arg2);
 	}
 
+	@Override
+	public void onLocationChaged(Location l) {
+		RifiutiHelper.setCurrentLocation(l);
+		
+	}
+
+	@Override
+	public void onErrorOccured(ErrorType ex, String provider) {
+	}
+
+	@Override
+	public void onStatusChanged(String provider, boolean isActive) {
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (mLocUtils != null) {
+			mLocUtils.close();
+			mLocUtils = null;
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mLocUtils = new LocationUtils(this, this);
+	}
 	// @Override
 	// protected void onActivityResult(int requestCode, int resultCode, Intent
 	// data) {

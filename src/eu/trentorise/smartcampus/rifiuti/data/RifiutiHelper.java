@@ -32,6 +32,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import eu.trentorise.smartcampus.rifiuti.R;
@@ -73,6 +74,8 @@ public class RifiutiHelper {
 	private Map<String, Drawable> tipiRifiutoDrawablesMap = null;
 	private Map<String, Integer> tipiPuntoMarkerMap = null;
 
+	private Location currentLocation = null;
+	
 	/**
 	 * Initialize data access layer support
 	 * 
@@ -1133,5 +1136,16 @@ public class RifiutiHelper {
 	public static int getMarkerIcon(PuntoRaccolta item) {
 		return mHelper.getTipiPuntoMarkerMap(mHelper.mContext).get(
 				item.getTipologiaPuntiRaccolta().toLowerCase(Locale.getDefault()));
+	}
+
+	/**
+	 * @param l
+	 */
+	public static void setCurrentLocation(Location l) {
+		mHelper.currentLocation = l;
+	}
+	
+	public static Location getCurrentLocation() {
+		return mHelper.currentLocation;
 	}
 }
