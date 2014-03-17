@@ -447,19 +447,15 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 	private void initializeViews() {
 
-		// mTVArea = (TextView) getView().findViewById(R.id.profile_area_tv);
 		mTVComune = (TextView) getView().findViewById(R.id.profile_comune_tv);
 		mTVNome = (TextView) getView().findViewById(R.id.profile_name_tv);
 		mTVVia = (TextView) getView().findViewById(R.id.profile_indirizzo_tv);
 		mTVUtenza = (TextView) getView().findViewById(R.id.profile_utenza_tv);
 		mTVNCiv = (TextView) getView().findViewById(R.id.profile_nciv_tv);
 
-		// mETArea = (EditText) getView().findViewById(R.id.profile_area_et);
 
-		// mACTVComune = (AutoCompleteTextView)
-		// getView().findViewById(R.id.profile_comune_et);
-		// mACTVComune.removeTextChangedListener(mTextListener);
-		// mACTVComune.addTextChangedListener(mTextListener);
+		
+		
 		mAreaSpinner = (Spinner) getView().findViewById(
 				R.id.profile_comune_spinner);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -481,8 +477,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 		mETUtenza.setEnabled(false);
 		mETNCiv = (EditText) getView().findViewById(R.id.profile_nciv_et);
 
-		// mVSArea = (ViewSwitcher)
-		// getView().findViewById(R.id.profile_area_vs);
 		mVSComune = (ViewSwitcher) getView().findViewById(
 				R.id.profile_comune_vs);
 		mVSNome = (ViewSwitcher) getView().findViewById(R.id.profile_name_vs);
@@ -494,8 +488,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 		if (saved != null) {
 			area = RifiutiHelper.findArea(saved[0]);
-			// mETArea.setText(saved[0]);
-			// mACTVComune.setText(saved[1]);
 			for (int i = 0; i < comuneAreas.size(); i++) {
 				if (saved[0].equals(comuneAreas.get(i).getNome())) {
 					mAreaSpinner.setSelection(i);
@@ -513,7 +505,6 @@ public class ProfileFragment extends Fragment implements ILocation {
 		area = RifiutiHelper.findArea(mProfile.getArea());
 
 		mTVNome.setText(mProfile.getName());
-		// mTVArea.setText(mProfile.getArea());
 		for (int i = 0; i < comuneAreas.size(); i++) {
 			if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
 				mAreaSpinner.setSelection(i);

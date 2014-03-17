@@ -88,14 +88,19 @@ public class NotesHelper {
 	 */
 	public static List<Note> getNotes(SQLiteDatabase db) {
 		List<Note> notes = new ArrayList<Note>();
-		Cursor c = db.rawQuery(getNotesSQL(), null);
-		while (c.moveToNext()) {
-			PreferenceUtils.getCurrentProfilePosition(mHelper.mCtx);
-			Note n = new Note(c.getInt(c.getColumnIndex(DBHelper.NOTE_ID)),
-					c.getString(c.getColumnIndex(DBHelper.NOTE_TXT)),
-					mHelper.mProfile, new Date(c.getLong(c
-							.getColumnIndex(DBHelper.NOTE_DATE))));
-			notes.add(n);
+		Cursor c = null;
+		try {
+			c = db.rawQuery(getNotesSQL(), null);
+			while (c.moveToNext()) {
+				PreferenceUtils.getCurrentProfilePosition(mHelper.mCtx);
+				Note n = new Note(c.getInt(c.getColumnIndex(DBHelper.NOTE_ID)), c.getString(c
+						.getColumnIndex(DBHelper.NOTE_TXT)), mHelper.mProfile, new Date(c.getLong(c
+						.getColumnIndex(DBHelper.NOTE_DATE))));
+				notes.add(n);
+			}
+		} finally {
+			if (c!=null)
+				c.close();
 		}
 		return notes;
 	}
