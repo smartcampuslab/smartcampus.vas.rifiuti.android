@@ -69,7 +69,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 					try {
 						PreferenceUtils.setCurrentProfilePosition(MainActivity.this, i);
 						setCurrentProfile();
-						mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+//						mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
 
 					} catch (Exception e) {
 						e.printStackTrace();
