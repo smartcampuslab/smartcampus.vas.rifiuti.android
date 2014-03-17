@@ -545,6 +545,7 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
+			String date = Calendario.toDateStr(Calendar.getInstance());
 			String query = "SELECT DISTINCT dataDa, dataA, il, dalle, alle FROM puntiRaccolta WHERE indirizzo = \""
 					+ pr.getIndirizzo()
 					+ "\" AND tipologiaUtenza = \""
@@ -554,7 +555,8 @@ public class RifiutiHelper {
 					+ "\""
 					+ " AND (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
 					+ " AND (puntiRaccolta.dataA IS NOT NULL AND puntiRaccolta.dataA != '')"
-					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')";
+					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')"
+					+ " AND (puntiRaccolta.dataDa < '"+date+"' AND puntiRaccolta.dataA > '"+date+"')";
 			cursor = db.rawQuery(query, null);
 			List<Calendario> result = new ArrayList<Calendario>();
 			if (cursor != null) {

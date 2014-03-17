@@ -90,6 +90,10 @@ public class Calendario implements Serializable {
 		return s.compareTo(dataA) <= 0 && dataDa.compareTo(s) <= 0;
 	}
 
+	public static String toDateStr(Calendar c) {
+		return dateFormatter.format(c.getTime());
+	}
+	
 	/**
 	 * @param cal
 	 * @return
