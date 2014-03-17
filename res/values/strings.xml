@@ -62,6 +62,7 @@
     <string name="puntodiraccolta_label">Punto di raccolta</string>
     <string name="action_list">Lista</string>
     <string name="action_map">Mappa</string>
+    <string name="calendar_today">Vai a oggi</string>
 
     <!-- NOTE -->
     <string name="note_add">Cosa vuoi ricordare?</string>
