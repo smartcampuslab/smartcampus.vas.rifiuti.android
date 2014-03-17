@@ -37,7 +37,7 @@
 
     <!-- Profile Fragment -->
     <string name="niente_profili">Aggiungi un nuovo profilo dal menu in alto!</string>
-    <string name="profilo_nome">Nome</string>
+    <string name="profilo_nome">Nome del profilo</string>
     <string name="profilo_comune">Comune/Località</string>
     <string name="profilo_area">Area</string>
     <string name="profilo_utenza">Tipo di utenza</string>
