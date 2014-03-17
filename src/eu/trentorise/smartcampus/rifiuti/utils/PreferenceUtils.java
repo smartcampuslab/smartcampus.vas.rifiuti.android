@@ -23,8 +23,7 @@ public class PreferenceUtils {
 	private final static String PROFILE_IN_USE_INDEX_KEY = "index_prof_in_use";
 	private final static String ALL_PROFILES_KEY = "profiles";
 
-	private static SharedPreferences getSharedPreferences(Context ctx,
-			String pref_key) {
+	private static SharedPreferences getSharedPreferences(Context ctx, String pref_key) {
 		return ctx.getSharedPreferences(pref_key, Context.MODE_PRIVATE);
 	}
 
@@ -72,8 +71,7 @@ public class PreferenceUtils {
 			Log.e(PreferenceUtils.class.getName(), e.toString());
 		} catch (NullPointerException e) {
 			Log.e(PreferenceUtils.class.getName(), e.toString());
-			Log.e(PreferenceUtils.class.getName(),
-					"Non ci sono profili, dovrebbe essercene sempre almeno uno!");
+			Log.e(PreferenceUtils.class.getName(), "Non ci sono profili, dovrebbe essercene sempre almeno uno!");
 		}
 
 		return out;
@@ -114,8 +112,7 @@ public class PreferenceUtils {
 	 * @throws ProfileNameExists
 	 * @throws Exception
 	 */
-	public static void addProfile(Context ctx, Profile p) throws JSONException,
-			ProfileNameExistsException {
+	public static void addProfile(Context ctx, Profile p) throws JSONException, ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
 		if (!isProfileInside(p, profiles))
 			profiles.add(p);
@@ -137,8 +134,7 @@ public class PreferenceUtils {
 	 * @throws Exception
 	 *             if there's just one profile
 	 */
-	public static void removeProfile(Context ctx, int position)
-			throws Exception {
+	public static void removeProfile(Context ctx, int position) throws Exception {
 		List<Profile> profiles = getProfiles(ctx);
 		if (profiles.size() > 1) {
 			int curr = getCurrentProfilePosition(ctx);
@@ -156,8 +152,8 @@ public class PreferenceUtils {
 			}
 			SharedPreferences sp = getProfilePreference(ctx);
 			sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
-			NotesHelper.init(ctx,position);
-			AsyncTask<Object, Void, Void> delTask= new AsyncTask<Object, Void, Void>() {
+			NotesHelper.init(ctx, position);
+			AsyncTask<Object, Void, Void> delTask = new AsyncTask<Object, Void, Void>() {
 
 				@Override
 				protected Void doInBackground(Object... params) {
@@ -169,7 +165,7 @@ public class PreferenceUtils {
 				}
 			};
 			delTask.execute();
-			
+
 		} else {
 			throw new LastElementException();
 		}
@@ -182,16 +178,18 @@ public class PreferenceUtils {
 	 *            of the profile that should be updated
 	 * @throws ProfileNameExistsException
 	 */
-	public static void editProfile(Context ctx, int position, Profile newProfile,Profile oldProfile)
+	public static void editProfile(Context ctx, int position, Profile newProfile, Profile oldProfile)
 			throws ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		if (isProfileInside(newProfile, profiles))
-			if(isDifferent(oldProfile,newProfile))
+		if (isProfileInside(newProfile, profiles)) {
+			if (isDifferent(oldProfile, newProfile)) {
 				profiles.set(position, newProfile);
-			else
+			} else {
 				throw new ProfileNameExistsException();
-		else
+			}
+		} else {
 			profiles.set(position, newProfile);
+		}
 		JSONArray jsonArr = new JSONArray();
 		try {
 			for (Profile tmp : profiles) {
@@ -205,28 +203,31 @@ public class PreferenceUtils {
 	}
 
 	private static boolean isDifferent(Profile oldProfile, Profile newProfile) {
-		if(!oldProfile.getComune().equals(newProfile.getComune()))
+		if (!oldProfile.getComune().equals(newProfile.getComune())) {
 			return true;
-		if(!oldProfile.getArea().equals(newProfile.getArea()))
+		}
+		if (!oldProfile.getArea().equals(newProfile.getArea())) {
 			return true;
-		if(!oldProfile.getName().equals(newProfile.getName()))
+		}
+		if (!oldProfile.getName().equals(newProfile.getName())) {
 			return true;
-		if(!oldProfile.getNCivico().equals(newProfile.getNCivico()))
+		}
+		// if (!oldProfile.getNCivico().equals(newProfile.getNCivico())) {
+		// return true;
+		// }
+		if (!oldProfile.getUtenza().equals(newProfile.getUtenza())) {
 			return true;
-		if(!oldProfile.getUtenza().equals(newProfile.getUtenza()))
-			return true;
-		if(!oldProfile.getVia().equals(newProfile.getVia()))
-			return true;
+		}
+		// if (!oldProfile.getVia().equals(newProfile.getVia())) {
+		// return true;
+		// }
 		return false;
 	}
 
 	private static boolean isProfileInside(Profile p, List<Profile> profiles) {
 		for (Profile cmp : profiles)
-			if (p.getName()
-					.trim()
-					.toLowerCase(Locale.getDefault())
-					.equals(cmp.getName().trim()
-							.toLowerCase(Locale.getDefault())))
+			if (p.getName().trim().toLowerCase(Locale.getDefault())
+					.equals(cmp.getName().trim().toLowerCase(Locale.getDefault())))
 				return true;
 		return false;
 	}

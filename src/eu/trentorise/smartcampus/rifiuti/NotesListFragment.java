@@ -40,11 +40,11 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 			setListAdapter(new NotesAdapter(getActivity(), android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
 			setEmptyText(getString(R.string.no_notes));
 
-			getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				@Override
-				public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long arg3) {
+				public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
 					if (NotesHelper.notesActionMode != null) {
-						return false;
+						return;
 					}
 
 					// Start the CAB using the ActionMode.Callback
@@ -56,7 +56,6 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 
 					getListView().setItemChecked(position, true);
 					toggleBackground(getListView(), position, view);
-					return true;
 				}
 			});
 			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

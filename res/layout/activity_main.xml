@@ -46,6 +46,7 @@
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:cacheColorHint="@android:color/transparent"
             android:choiceMode="singleChoice"
             android:divider="@color/rifiuti_middle"
             android:dividerHeight="0.1dp" />
