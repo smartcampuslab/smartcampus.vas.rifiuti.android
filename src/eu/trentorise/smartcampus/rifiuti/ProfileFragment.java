@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment implements ILocation {
 
 	// protected boolean selected = false;
 
-	private final static String PROFILE_INDEX_KEY = "profile_index";
+	public final static String PROFILE_INDEX_KEY = "profile_index";
 
 	public static ProfileFragment newInstance(int position) {
 		ProfileFragment pf = new ProfileFragment();
@@ -236,9 +236,9 @@ public class ProfileFragment extends Fragment implements ILocation {
 				newProfile = getNewProfile();
 				addOrModify(newProfile);
 				KeyboardUtils.hideKeyboard(abActivity, getView());
-				if (getActivity() instanceof MainActivity) {
+				if (isFirstProfile() && getActivity() instanceof MainActivity) {
 					((MainActivity) getActivity())
-							.prepareNavDropdown(isFirstProfile());
+							.prepareNavDropdown(true);
 				}
 			} catch (InvalidNameExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNome, null);

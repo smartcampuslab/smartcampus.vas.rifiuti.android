@@ -55,16 +55,6 @@ public class InfoFragment extends Fragment{
 		        startActivity(intent);
 		    }
 		});
-		ImageView giudicarie = (ImageView)getActivity().findViewById(R.id.giudicarie);
-		giudicarie.setOnClickListener(new View.OnClickListener(){
-		    public void onClick(View v){
-		        Intent intent = new Intent();
-		        intent.setAction(Intent.ACTION_VIEW);
-		        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-		        intent.setData(Uri.parse("http://www.comunitadellegiudicarie.it/"));
-		        startActivity(intent);
-		    }
-		});
 		ImageView ladurner = (ImageView)getActivity().findViewById(R.id.ladurner);
 		ladurner.setOnClickListener(new View.OnClickListener(){
 		    public void onClick(View v){
@@ -83,6 +73,15 @@ public class InfoFragment extends Fragment{
 		        intent.addCategory(Intent.CATEGORY_BROWSABLE);
 		        intent.setData(Uri.parse("https://www.fbk.eu/"));
 		        startActivity(intent);
+		    }
+		});
+		
+		ImageView feedback = (ImageView) getActivity().findViewById(R.id.info_feedback_img);
+		feedback.setOnClickListener(new View.OnClickListener(){
+		    public void onClick(View v){
+		    	Fragment fragment = new FeedbackFragment();
+				getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+
 		    }
 		});
 	}

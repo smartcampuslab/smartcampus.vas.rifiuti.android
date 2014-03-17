@@ -161,12 +161,14 @@
     <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità</string>
     
     <!-- INFO FRAGMENT -->
-    <string name="info_intro">100% Riciclo è un\'app realizzata da Smart Campus in collaborazione con:</string>
+    <string name="info_intro">100% Riciclo è un\'app realizzata da:</string>
+    <string name="info_collab">con il patrocinio del</string>
     <string name="info_cdc">CDC</string>
     <string name="info_giudicarie">Comunità delle giudicarie \n http://www.comunitadellegiudicarie.it/</string>
     <string name="info_ladurner">Ladurner Energy\n www.ladurnerambiente.it</string>
     <string name="info_fbk">fbk</string>
-    <string name="info_mail">Per eventuali segnalazioni o richieste di informazioni contattateci scrivendo a rifiuti@smartcampuslab.it</string>
+    <string name="info_mail">Per eventuali segnalazioni o richieste di informazioni contattateci scrivendo a riciclo@smartcampuslab.it</string>
+    <string name="info_feedback">Per segnalare un problema con la raccolta dei rifiuti schiaccia qui:</string>
     
     <string name="geocoding">Ricerca della posizione...</string>
     <string name="distance">%.2f km</string>
