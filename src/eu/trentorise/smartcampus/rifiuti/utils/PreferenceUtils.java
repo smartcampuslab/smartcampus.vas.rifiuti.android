@@ -114,10 +114,12 @@ public class PreferenceUtils {
 	 */
 	public static void addProfile(Context ctx, Profile p) throws JSONException, ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		if (!isProfileInside(p, profiles))
+		if (profilePosition(p, profiles) < 0) {
 			profiles.add(p);
-		else
+		}
+		else {
 			throw new ProfileNameExistsException();
+		}
 		JSONArray jsonArr = new JSONArray();
 		for (Profile tmp : profiles) {
 			jsonArr.put(tmp.toJSON());
@@ -181,14 +183,11 @@ public class PreferenceUtils {
 	public static void editProfile(Context ctx, int position, Profile newProfile, Profile oldProfile)
 			throws ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
-		if (isProfileInside(newProfile, profiles)) {
-			if (isDifferent(oldProfile, newProfile)) {
-				profiles.set(position, newProfile);
-			} else {
-				throw new ProfileNameExistsException();
-			}
-		} else {
+		int oldPos = profilePosition(newProfile, profiles);
+		if (oldPos == position) {
 			profiles.set(position, newProfile);
+		} else {
+			throw new ProfileNameExistsException();
 		}
 		JSONArray jsonArr = new JSONArray();
 		try {
@@ -224,12 +223,15 @@ public class PreferenceUtils {
 		return false;
 	}
 
-	private static boolean isProfileInside(Profile p, List<Profile> profiles) {
-		for (Profile cmp : profiles)
-			if (p.getName().trim().toLowerCase(Locale.getDefault())
-					.equals(cmp.getName().trim().toLowerCase(Locale.getDefault())))
-				return true;
-		return false;
+	private static int profilePosition(Profile p, List<Profile> profiles) {
+		int i = 0;
+		for (Profile cmp : profiles) {
+			if (p.getName().trim().toLowerCase(Locale.getDefault()).equals(cmp.getName().trim().toLowerCase(Locale.getDefault()))) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
 	}
 
 	public static class ProfileNameExistsException extends Exception {
