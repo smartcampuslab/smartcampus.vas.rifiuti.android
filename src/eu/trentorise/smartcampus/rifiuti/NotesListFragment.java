@@ -2,7 +2,10 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -117,8 +120,9 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 				.clone();
 		int index = checkAndGetSelectedItem(pos);
 		if (item.getItemId() == R.id.action_delete) {
-			new DeleteNotesTask().execute(pos);
-			getActivity().setProgressBarIndeterminateVisibility(true);
+			showConfirmAndDelete(pos);
+//			new DeleteNotesTask().execute(pos);
+//			getActivity().setProgressBarIndeterminateVisibility(true);
 		} else if (item.getItemId() == R.id.action_edit) {
 			AddNoteFragment anf = AddNoteFragment.newInstance(this, NotesHelper
 					.getNotes().get(index));
@@ -128,6 +132,21 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 		}
 		mode.finish();
 		return false;
+	}
+
+	private void showConfirmAndDelete(final SparseBooleanArray pos) {
+		new AlertDialog.Builder(getActivity())
+		.setTitle(R.string.dialog_confirm_title)
+		.setMessage(R.string.dialog_confirm_note_msg)
+		.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				getActivity().setProgressBarIndeterminateVisibility(true);
+				new DeleteNotesTask().execute(pos);
+			}
+		})
+		.setNegativeButton(android.R.string.cancel, null)
+		.create()
+		.show();
 	}
 
 	@Override
