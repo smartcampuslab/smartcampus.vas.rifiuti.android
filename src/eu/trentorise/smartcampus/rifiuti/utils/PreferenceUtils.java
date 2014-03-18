@@ -184,7 +184,7 @@ public class PreferenceUtils {
 			throws ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
 		int oldPos = profilePosition(newProfile, profiles);
-		if (oldPos == position) {
+		if (oldPos == position || oldPos<0) {
 			profiles.set(position, newProfile);
 		} else {
 			throw new ProfileNameExistsException();
