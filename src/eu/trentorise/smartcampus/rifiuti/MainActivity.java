@@ -64,11 +64,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				Integer i = (Integer) findViewById(checkedId).getTag();
+				Integer i = (Integer) findViewById(R.id.profile_rg).findViewById(checkedId).getTag();
 				if (i != null) {
 					try {
 						PreferenceUtils.setCurrentProfilePosition(MainActivity.this, i);
 						setCurrentProfile();
+						Fragment fragment = getSupportFragmentManager().findFragmentById(mContentFrameId);
+						if (fragment != null) {
+							Fragment newFragment = getFragment(fragment);
+							getSupportFragmentManager().beginTransaction().replace(mContentFrameId, newFragment).commit();
+						}
 						// mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -205,6 +210,42 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 	}
+
+	/**
+	 * @param fragment
+	 * @return
+	 */
+	private Fragment getFragment(Fragment fragment) {
+		try {
+			return (Fragment)fragment.getClass().newInstance();
+		} catch (Exception e) {
+			return fragment;
+		}
+//		if (fragment instanceof HomeFragment) {
+//			return 0;
+//		}
+//		if (fragment instanceof MapFragment) {
+//			return 1;
+//		}
+//		if (fragment instanceof TipoRaccoltaListFragment) {
+//			return 2;
+//		}
+//		if (fragment instanceof ProfilesListFragment) {
+//			return 3;
+//		}
+//		if (fragment instanceof FeedbackFragment) {
+//			return 4;
+//		}
+//		if (fragment instanceof ContactContainerFragment) {
+//			return 5;
+//		}
+//		if (fragment instanceof InfoFragment) {
+//			return 7;
+//		}
+//
+//		return 0;
+	}
+
 
 	private void loadFragment(int position) {
 		Fragment fragment = null;
