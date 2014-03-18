@@ -44,6 +44,11 @@
             android:label="@string/application_title" >
         </activity>
         <activity
+            android:name="eu.trentorise.smartcampus.rifiuti.RifiutoDetailsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/application_title" >
+        </activity>
+        <activity
             android:name="eu.trentorise.smartcampus.rifiuti.CalendarAgendaActivity"
             android:label="@string/application_title" >
         </activity>
