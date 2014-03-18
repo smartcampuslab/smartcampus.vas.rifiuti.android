@@ -3,6 +3,7 @@ package eu.trentorise.smartcampus.rifiuti;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -203,6 +204,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
 				}
 			}
+
+			public void onDrawerSlide(View drawerView, float slideOffset) {
+				super.onDrawerSlide(drawerView, slideOffset);
+
+				if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					mDrawerLayout.bringChildToFront(drawerView);
+					mDrawerLayout.requestLayout();
+					mDrawerLayout.setScrimColor(Color.TRANSPARENT);
+				}
+			}
 		};
 
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -217,35 +228,34 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	 */
 	private Fragment getFragment(Fragment fragment) {
 		try {
-			return (Fragment)fragment.getClass().newInstance();
+			return (Fragment) fragment.getClass().newInstance();
 		} catch (Exception e) {
 			return fragment;
 		}
-//		if (fragment instanceof HomeFragment) {
-//			return 0;
-//		}
-//		if (fragment instanceof MapFragment) {
-//			return 1;
-//		}
-//		if (fragment instanceof TipoRaccoltaListFragment) {
-//			return 2;
-//		}
-//		if (fragment instanceof ProfilesListFragment) {
-//			return 3;
-//		}
-//		if (fragment instanceof FeedbackFragment) {
-//			return 4;
-//		}
-//		if (fragment instanceof ContactContainerFragment) {
-//			return 5;
-//		}
-//		if (fragment instanceof InfoFragment) {
-//			return 7;
-//		}
-//
-//		return 0;
+		// if (fragment instanceof HomeFragment) {
+		// return 0;
+		// }
+		// if (fragment instanceof MapFragment) {
+		// return 1;
+		// }
+		// if (fragment instanceof TipoRaccoltaListFragment) {
+		// return 2;
+		// }
+		// if (fragment instanceof ProfilesListFragment) {
+		// return 3;
+		// }
+		// if (fragment instanceof FeedbackFragment) {
+		// return 4;
+		// }
+		// if (fragment instanceof ContactContainerFragment) {
+		// return 5;
+		// }
+		// if (fragment instanceof InfoFragment) {
+		// return 7;
+		// }
+		//
+		// return 0;
 	}
-
 
 	private void loadFragment(int position) {
 		Fragment fragment = null;
