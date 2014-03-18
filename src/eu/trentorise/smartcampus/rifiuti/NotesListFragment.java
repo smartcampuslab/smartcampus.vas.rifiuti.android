@@ -46,7 +46,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 			setEmptyText(getString(R.string.no_notes));
 
 			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-			Drawable colord = new ColorDrawable(getResources().getColor(R.color.rifiuti_middle));
+			Drawable colord = new ColorDrawable(getResources().getColor(
+					R.color.rifiuti_middle));
 			getListView().setDivider(colord);
 			getListView().setDividerHeight(1);
 		} catch (IOException e) {
@@ -111,7 +112,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 		if (mode != null) {
-			if (checkAndGetSelectedItem(getListView().getCheckedItemPositions())>=0)
+			if (checkAndGetSelectedItem(getListView().getCheckedItemPositions()) >= 0)
 				menu.getItem(0).setVisible(true);
 			else
 				menu.getItem(0).setVisible(false);
@@ -128,8 +129,10 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 			getActivity().setProgressBarIndeterminateVisibility(true);
 			mode.finish();
 		} else if (item.getItemId() == R.id.action_edit) {
-			int index = checkAndGetSelectedItem(getListView().getCheckedItemPositions());
-			AddNoteFragment anf = AddNoteFragment.newInstance(this,NotesHelper.getNotes().get(index));
+			int index = checkAndGetSelectedItem(getListView()
+					.getCheckedItemPositions());
+			AddNoteFragment anf = AddNoteFragment.newInstance(this, NotesHelper
+					.getNotes().get(index));
 			anf.show(getFragmentManager(), "");
 			mode.finish();
 		}
@@ -165,25 +168,29 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 					android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
 		}
 	}
-	
+
 	@Override
 	public void onEdit(Note n) {
-		NotesHelper.editNote(n);
+		if (n.getText().trim().length() > 0) {
+			NotesHelper.editNote(n);
+
+		} else {
+			NotesHelper.deleteNotes(n);
+		}
 		setListAdapter(new ArrayAdapter<Note>(getActivity(),
 				android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
 	}
-
 
 	private int checkAndGetSelectedItem(SparseBooleanArray pos) {
 		int cnt = 0;
 		int index = 0;
 		for (int i = 0; i < pos.size(); i++) {
-			if (pos.valueAt(i)){
+			if (pos.valueAt(i)) {
 				cnt++;
-				index=pos.keyAt(i);
+				index = pos.keyAt(i);
 			}
 		}
-		return (cnt==1)?index:-1;
+		return (cnt == 1) ? index : -1;
 	}
 
 	private void toggleBackground(ListView l, int pos, View v) {
