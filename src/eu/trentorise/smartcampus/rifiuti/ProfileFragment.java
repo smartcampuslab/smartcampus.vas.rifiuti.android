@@ -340,11 +340,12 @@ public class ProfileFragment extends Fragment implements ILocation {
 		try {
 			if (mProfile == null) {
 
-				PreferenceUtils.addProfile(getActivity(), newProfile);
+				int newPos = PreferenceUtils.addProfile(getActivity(), newProfile);
 				if (isFirstProfile()) {
 					PreferenceUtils.setCurrentProfilePosition(getActivity(), 0);
 				} else {
 					mProfile = newProfile;
+					getArguments().putInt(PROFILE_INDEX_KEY, newPos);
 					setContent();
 				}
 

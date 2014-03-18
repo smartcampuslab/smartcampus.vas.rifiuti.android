@@ -112,7 +112,7 @@ public class PreferenceUtils {
 	 * @throws ProfileNameExists
 	 * @throws Exception
 	 */
-	public static void addProfile(Context ctx, Profile p) throws JSONException, ProfileNameExistsException {
+	public static int addProfile(Context ctx, Profile p) throws JSONException, ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
 		if (profilePosition(p, profiles) < 0) {
 			profiles.add(p);
@@ -126,6 +126,7 @@ public class PreferenceUtils {
 		}
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
+		return profiles.size()-1;
 	}
 
 	/**
