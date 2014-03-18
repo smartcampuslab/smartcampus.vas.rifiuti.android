@@ -2,6 +2,7 @@
 <resources>
 
     <string name="action_settings">Configurazione</string>
+    <string name="action_edit">Modifica</string>
     <string name="empty"></string>
     <string name="dialog_confirm_title">Sei sicuro?</string>
     <string name="dialog_confirm_msg">questa operazione comporta dei rischi, premi OK solo se sai cosa stai facendo.</string>
