@@ -21,15 +21,22 @@
         android:label="@string/application_title"
         android:theme="@style/Theme.Rifiuti" >
         <activity
-            android:name="eu.trentorise.smartcampus.rifiuti.MainActivity"
+            android:name="eu.trentorise.smartcampus.rifiuti.SplashScreenActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/application_title"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="eu.trentorise.smartcampus.rifiuti.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/application_title"
+            android:launchMode="singleTop" >
         </activity>
         <activity
             android:name="eu.trentorise.smartcampus.rifiuti.RifiutiManagerContainerActivity"
@@ -78,7 +85,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAYMob8Ipl_ykdVq9hkQTvFVSQMNSXn3aA" />
-        <activity android:name="com.github.espiandev.showcaseview.TourActivity" android:theme="@style/TutorialTheme"></activity>
     </application>
 
 </manifest>
