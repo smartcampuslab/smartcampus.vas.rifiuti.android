@@ -236,9 +236,9 @@ public class ProfileFragment extends Fragment implements ILocation {
 				newProfile = getNewProfile();
 				addOrModify(newProfile);
 				KeyboardUtils.hideKeyboard(abActivity, getView());
-				if (isFirstProfile() && getActivity() instanceof MainActivity) {
+				if (getActivity() instanceof MainActivity) {
 					((MainActivity) getActivity())
-							.prepareNavDropdown(true);
+							.prepareNavDropdown(isFirstProfile());
 				}
 			} catch (InvalidNameExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNome, null);
