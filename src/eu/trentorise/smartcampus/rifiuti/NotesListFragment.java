@@ -121,7 +121,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		if (item.getItemId() == R.id.action_delete) {
-			SparseBooleanArray pos = getListView().getCheckedItemPositions();
+			SparseBooleanArray pos = getListView().getCheckedItemPositions().clone();
 			new DeleteNotesTask().execute(pos);
 			getActivity().setProgressBarIndeterminateVisibility(true);
 			mode.finish();
@@ -185,7 +185,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		protected Void doInBackground(SparseBooleanArray... params) {
 			SparseBooleanArray pos = params[0];
 			for (int i = 0; i < pos.size(); i++) {
-				NotesHelper.deleteNotes(((Note) getListView().getItemAtPosition(i)));
+				if(pos.valueAt(i))
+					NotesHelper.deleteNotes(((Note) getListView().getItemAtPosition(pos.keyAt(i))));
 			}
 			publishProgress();
 			return null;
