@@ -49,7 +49,7 @@ public class NotesHelper {
 	 */
 	private NotesHelper(Context ctx, Profile p) throws IOException {
 		super();
-		dbHelper = new DBHelper(ctx, RifiutiHelper.DB_VERSION);
+		dbHelper = RifiutiHelper.getDBHelper();//new DBHelper(ctx, RifiutiHelper.DB_VERSION);
 		mCtx = ctx;
 		mProfile = p;
 	};
@@ -60,7 +60,7 @@ public class NotesHelper {
 	 */
 	private NotesHelper(Context ctx, int profileIndex) throws IOException {
 		super();
-		dbHelper = new DBHelper(ctx, RifiutiHelper.DB_VERSION);
+		dbHelper =  RifiutiHelper.getDBHelper();//new DBHelper(ctx, RifiutiHelper.DB_VERSION);
 		mCtx = ctx;
 		mProfile = PreferenceUtils.getProfile(mHelper.mCtx, profileIndex);
 	};
