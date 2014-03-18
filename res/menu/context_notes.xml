@@ -3,7 +3,7 @@
     
     <item
         android:id="@+id/action_edit"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_edit"
         android:showAsAction="always"
         android:title="@string/action_edit"
         android:visible="false"
@@ -14,7 +14,6 @@
         android:icon="@drawable/ic_menu_delete"
         android:showAsAction="always"
         android:title="@string/action_delete"
-        android:visible="false"
         smartcampus.vas.rifiuti.android:showAsAction="always"/>
     
 

@@ -111,6 +111,13 @@ public class NotesHelper {
 				Note.toContentValues(s, mHelper.mProfile));
 		db.close();
 	}
+	
+	public static void editNote(Note n) {
+		SQLiteDatabase db = mHelper.dbHelper.getWritableDatabase();
+		String where=DBHelper.NOTE_ID+"="+n.getID();
+		db.update(DBHelper.TABLE_NOTE, n.toContentValues(), where, null);
+		db.close();
+	}
 
 	public static void deleteNotes(Note... notes) {
 		SQLiteDatabase db = mHelper.dbHelper.getWritableDatabase();

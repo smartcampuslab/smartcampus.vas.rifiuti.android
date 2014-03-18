@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.AddNoteFragment.OnAddListener;
 import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Note;
@@ -43,6 +46,9 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 			setEmptyText(getString(R.string.no_notes));
 
 			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+			Drawable colord = new ColorDrawable(getResources().getColor(R.color.rifiuti_middle));
+			getListView().setDivider(colord);
+			getListView().setDividerHeight(1);
 		} catch (IOException e) {
 			Log.e(NotesHelper.class.getName(), e.toString());
 		}
@@ -68,10 +74,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		
+
 		if (NotesHelper.notesActionMode != null) {
-			boolean check =getListView().getCheckedItemPositions().valueAt(position);
-			getListView().setItemChecked(position, check);
 			getListView().post(new Runnable() {
 				@Override
 				public void run() {
@@ -85,16 +89,16 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 					NotesHelper.notesActionMode.finish();
 				}
 			});
-			if (getActivity() instanceof ActionBarActivity)
-				NotesHelper.notesActionMode.invalidate();
 
 		} else if (getActivity() instanceof ActionBarActivity) {
 			NotesHelper.notesActionMode = ((ActionBarActivity) getActivity())
 					.startSupportActionMode(NotesListFragment.this);
-			getListView().setItemChecked(position, true);
 		}
-		
+
 		toggleBackground(l, position, v);
+
+		if (NotesHelper.notesActionMode != null)
+			NotesHelper.notesActionMode.invalidate();
 	}
 
 	@Override
@@ -107,12 +111,12 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 		if (mode != null) {
-			if (getListView().getCheckedItemIds().length > 1)
+			if (checkAndGetSelectedItem(getListView().getCheckedItemPositions())>=0)
+				menu.getItem(0).setVisible(true);
+			else
 				menu.getItem(0).setVisible(false);
-			menu.getItem(1).setVisible(true);
-			return true;
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -122,6 +126,11 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 					.clone();
 			new DeleteNotesTask().execute(pos);
 			getActivity().setProgressBarIndeterminateVisibility(true);
+			mode.finish();
+		} else if (item.getItemId() == R.id.action_edit) {
+			int index = checkAndGetSelectedItem(getListView().getCheckedItemPositions());
+			AddNoteFragment anf = AddNoteFragment.newInstance(this,NotesHelper.getNotes().get(index));
+			anf.show(getFragmentManager(), "");
 			mode.finish();
 		}
 		return false;
@@ -155,6 +164,26 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 			setListAdapter(new ArrayAdapter<Note>(getActivity(),
 					android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
 		}
+	}
+	
+	@Override
+	public void onEdit(Note n) {
+		NotesHelper.editNote(n);
+		setListAdapter(new ArrayAdapter<Note>(getActivity(),
+				android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+	}
+
+
+	private int checkAndGetSelectedItem(SparseBooleanArray pos) {
+		int cnt = 0;
+		int index = 0;
+		for (int i = 0; i < pos.size(); i++) {
+			if (pos.valueAt(i)){
+				cnt++;
+				index=pos.keyAt(i);
+			}
+		}
+		return (cnt==1)?index:-1;
 	}
 
 	private void toggleBackground(ListView l, int pos, View v) {

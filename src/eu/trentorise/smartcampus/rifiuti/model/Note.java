@@ -1,11 +1,15 @@
 package eu.trentorise.smartcampus.rifiuti.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import android.content.ContentValues;
 import eu.trentorise.smartcampus.rifiuti.data.DBHelper;
 
-public class Note {
+public class Note implements Serializable{
+
+	private static final long serialVersionUID = -4629061141615301039L;
+	
 	private int mID;
 	private String mText;
 	private Profile mProfile;
