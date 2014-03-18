@@ -122,20 +122,20 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		SparseBooleanArray pos = getListView().getCheckedItemPositions()
+				.clone();
+		int index = checkAndGetSelectedItem(pos);
 		if (item.getItemId() == R.id.action_delete) {
-			SparseBooleanArray pos = getListView().getCheckedItemPositions()
-					.clone();
 			new DeleteNotesTask().execute(pos);
 			getActivity().setProgressBarIndeterminateVisibility(true);
-			mode.finish();
 		} else if (item.getItemId() == R.id.action_edit) {
-			int index = checkAndGetSelectedItem(getListView()
-					.getCheckedItemPositions());
 			AddNoteFragment anf = AddNoteFragment.newInstance(this, NotesHelper
 					.getNotes().get(index));
 			anf.show(getFragmentManager(), "");
-			mode.finish();
+			getListView().setItemChecked(index, false);
+			toggleBackground(getListView(), index, getListView().getChildAt(index));
 		}
+		mode.finish();
 		return false;
 	}
 
