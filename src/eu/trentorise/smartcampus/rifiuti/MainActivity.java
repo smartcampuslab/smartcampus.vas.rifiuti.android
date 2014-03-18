@@ -2,6 +2,8 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -12,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +43,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 	private LocationUtils mLocUtils;
 
+	private boolean mProfileGroupManage = true;
+	
 	// private TutorialHelper mTutorialHelper = null;
 
 	@Override
@@ -65,6 +70,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if (!mProfileGroupManage) {
+					mProfileGroupManage = true;
+					return;
+				}
 				Integer i = (Integer) findViewById(R.id.profile_rg).findViewById(checkedId).getTag();
 				if (i != null) {
 					try {
@@ -72,8 +81,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 						setCurrentProfile();
 						Fragment fragment = getSupportFragmentManager().findFragmentById(mContentFrameId);
 						if (fragment != null) {
-							Fragment newFragment = getFragment(fragment);
-							getSupportFragmentManager().beginTransaction().replace(mContentFrameId, newFragment).commit();
+							Fragment newFragment = getFragmentToReload(fragment);
+							if (newFragment != null) {
+								getSupportFragmentManager().beginTransaction().replace(mContentFrameId, newFragment).commit();
+							}
 						}
 						// mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
 					} catch (Exception e) {
@@ -112,7 +123,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		if (f instanceof onBackListener) {
 			((onBackListener) f).onBack();
 		} else {
-			super.onBackPressed();
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			LayoutInflater inflater = getLayoutInflater();
+			builder.setView(inflater.inflate(R.layout.exit_dlg, null))
+	               .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	           			MainActivity.super.onBackPressed();
+	                   }
+	               })
+	               .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                       // User cancelled the dialog
+	                   }
+	               });
+	        // Create the AlertDialog object and return it
+	        builder.create().show();;
 		}
 	}
 
@@ -156,6 +181,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 	public void prepareNavDropdown(boolean loadHome) {
 		List<Profile> profiles = PreferenceUtils.getProfiles(this);
+		mProfileGroupManage = false;
 		if (profiles.size() > 1) {
 			findViewById(R.id.curr_profile_tv).setVisibility(View.GONE);
 			RadioGroup rg = (RadioGroup) findViewById(R.id.profile_rg);
@@ -226,35 +252,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	 * @param fragment
 	 * @return
 	 */
-	private Fragment getFragment(Fragment fragment) {
+	private Fragment getFragmentToReload(Fragment fragment) {
+		if (fragment instanceof ProfilesListFragment || 
+			fragment instanceof FeedbackFragment || 
+			fragment instanceof ContactContainerFragment ||
+			fragment instanceof InfoFragment) {
+			return null;
+		}
+		
 		try {
 			return (Fragment) fragment.getClass().newInstance();
 		} catch (Exception e) {
 			return fragment;
 		}
-		// if (fragment instanceof HomeFragment) {
-		// return 0;
-		// }
-		// if (fragment instanceof MapFragment) {
-		// return 1;
-		// }
-		// if (fragment instanceof TipoRaccoltaListFragment) {
-		// return 2;
-		// }
-		// if (fragment instanceof ProfilesListFragment) {
-		// return 3;
-		// }
-		// if (fragment instanceof FeedbackFragment) {
-		// return 4;
-		// }
-		// if (fragment instanceof ContactContainerFragment) {
-		// return 5;
-		// }
-		// if (fragment instanceof InfoFragment) {
-		// return 7;
-		// }
-		//
-		// return 0;
 	}
 
 	private void loadFragment(int position) {

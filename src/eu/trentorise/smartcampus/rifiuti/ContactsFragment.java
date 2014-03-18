@@ -185,7 +185,9 @@ public class ContactsFragment extends Fragment {
 		ImageView webImg = (ImageView) view.findViewById(R.id.contacts_web_img);
 		webImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(web));
+				if (web==null) return;
+				Uri uri = web.startsWith("http") ? Uri.parse(web) : Uri.parse("http://"+web);
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				getActivity().startActivity(intent);
 			}
 		});

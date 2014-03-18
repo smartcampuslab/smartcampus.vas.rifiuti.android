@@ -173,4 +173,6 @@
     
     <string name="geocoding">Ricerca della posizione...</string>
     <string name="distance">%.2f km</string>
+    
+    <string name="confirm_exit">Sei sicuro di voler uscire dall\'app?</string>
 </resources>
