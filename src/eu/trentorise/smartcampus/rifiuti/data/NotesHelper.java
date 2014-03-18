@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import eu.trentorise.smartcampus.rifiuti.model.Note;
-import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 
 public class NotesHelper {
@@ -20,8 +19,6 @@ public class NotesHelper {
 
 	public static ActionMode notesActionMode;
 
-	private DBHelper dbHelper = null;
-	private Profile mProfile = null;
 	private Context mCtx;
 
 	/**
@@ -31,38 +28,16 @@ public class NotesHelper {
 	 * @throws IOException
 	 */
 	public static void init(Context ctx) throws IOException {
-		mHelper = new NotesHelper(ctx, PreferenceUtils.getProfile(ctx,
-				PreferenceUtils.getCurrentProfilePosition(ctx)));
-	}
-
-	public static void init(Context ctx, Profile p) throws IOException {
-		mHelper = new NotesHelper(ctx, p);
-	}
-
-	public static void init(Context ctx, int profileIndex) throws IOException {
-		mHelper = new NotesHelper(ctx, profileIndex);
+		mHelper = new NotesHelper(ctx);
 	}
 
 	/**
 	 * @param ctx
 	 * @throws IOException
 	 */
-	private NotesHelper(Context ctx, Profile p) throws IOException {
+	private NotesHelper(Context ctx) throws IOException {
 		super();
-		dbHelper = RifiutiHelper.getDBHelper();//new DBHelper(ctx, RifiutiHelper.DB_VERSION);
 		mCtx = ctx;
-		mProfile = p;
-	};
-
-	/**
-	 * @param ctx
-	 * @throws IOException
-	 */
-	private NotesHelper(Context ctx, int profileIndex) throws IOException {
-		super();
-		dbHelper =  RifiutiHelper.getDBHelper();//new DBHelper(ctx, RifiutiHelper.DB_VERSION);
-		mCtx = ctx;
-		mProfile = PreferenceUtils.getProfile(mHelper.mCtx, profileIndex);
 	};
 
 	private static String getNotesSQL() {
@@ -78,7 +53,7 @@ public class NotesHelper {
 	}
 
 	public static List<Note> getNotes() {
-		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		SQLiteDatabase db = RifiutiHelper.getDBHelper().getReadableDatabase();
 		return getNotes(db);
 	}
 
@@ -94,7 +69,7 @@ public class NotesHelper {
 			while (c.moveToNext()) {
 				PreferenceUtils.getCurrentProfilePosition(mHelper.mCtx);
 				Note n = new Note(c.getInt(c.getColumnIndex(DBHelper.NOTE_ID)), c.getString(c
-						.getColumnIndex(DBHelper.NOTE_TXT)), mHelper.mProfile, new Date(c.getLong(c
+						.getColumnIndex(DBHelper.NOTE_TXT)), RifiutiHelper.getProfile(), new Date(c.getLong(c
 						.getColumnIndex(DBHelper.NOTE_DATE))));
 				notes.add(n);
 			}
@@ -106,21 +81,21 @@ public class NotesHelper {
 	}
 
 	public static void addNote(String s) {
-		SQLiteDatabase db = mHelper.dbHelper.getWritableDatabase();
+		SQLiteDatabase db = RifiutiHelper.getDBHelper().getWritableDatabase();
 		db.insert(DBHelper.TABLE_NOTE, null,
-				Note.toContentValues(s, mHelper.mProfile));
+				Note.toContentValues(s, RifiutiHelper.getProfile()));
 		db.close();
 	}
 	
 	public static void editNote(Note n) {
-		SQLiteDatabase db = mHelper.dbHelper.getWritableDatabase();
+		SQLiteDatabase db = RifiutiHelper.getDBHelper().getWritableDatabase();
 		String where=DBHelper.NOTE_ID+"="+n.getID();
 		db.update(DBHelper.TABLE_NOTE, n.toContentValues(), where, null);
 		db.close();
 	}
 
 	public static void deleteNotes(Note... notes) {
-		SQLiteDatabase db = mHelper.dbHelper.getWritableDatabase();
+		SQLiteDatabase db = RifiutiHelper.getDBHelper().getWritableDatabase();
 		String whereClause = "";
 		String[] whereArgs = new String[notes.length];
 		for (int i = 0; i < notes.length; i++) {
@@ -129,6 +104,15 @@ public class NotesHelper {
 			whereClause += DBHelper.NOTE_ID + " = ? ";
 			whereArgs[i] = "" + notes[i].getID();
 		}
+		int rows = db.delete(DBHelper.TABLE_NOTE, whereClause, whereArgs);
+		Log.i("deleted", rows + "");
+		db.close();
+	}
+	
+	public static void deleteNotes(String profileName) {
+		SQLiteDatabase db = RifiutiHelper.getDBHelper().getWritableDatabase();
+		String whereClause = DBHelper.NOTE_PROFILE + " = ? ";
+		String[] whereArgs = new String[]{profileName};
 		int rows = db.delete(DBHelper.TABLE_NOTE, whereClause, whereArgs);
 		Log.i("deleted", rows + "");
 		db.close();

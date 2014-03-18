@@ -84,6 +84,7 @@ public class RifiutiHelper {
 	 */
 	public static void init(Context ctx) throws IOException {
 		mHelper = new RifiutiHelper(ctx);
+		NotesHelper.init(ctx);
 		// TODO replace test data
 		// setProfile(new Profile("test", "utenza domestica",
 		// "Bleggio Superiore", "via Dante", "1", "Bleggio Superiore"));
@@ -94,6 +95,9 @@ public class RifiutiHelper {
 		mHelper.mAreas = mHelper.readUserAreas();
 	}
 
+	public static Profile getProfile() {
+		return mHelper.mProfile;
+	}
 	/**
 	 * @param ctx
 	 * @throws IOException

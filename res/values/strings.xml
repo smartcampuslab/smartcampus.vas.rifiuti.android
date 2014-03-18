@@ -4,8 +4,8 @@
     <string name="action_settings">Configurazione</string>
     <string name="action_edit">Modifica</string>
     <string name="empty"></string>
-    <string name="dialog_confirm_title">Sei sicuro?</string>
-    <string name="dialog_confirm_msg">questa operazione comporta dei rischi, premi OK solo se sai cosa stai facendo.</string>
+    <string name="dialog_confirm_title">Avviso</string>
+    <string name="dialog_confirm_msg">Premendo OK cancellerai definitivamente questo profilo, incluse le eventuali note personali. Confermi?</string>
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
     <string name="toast_no_prof">Crea il tuo profilo!</string>
     <string name="err_everything_go_lazy">Qualcosa è andato storto</string>

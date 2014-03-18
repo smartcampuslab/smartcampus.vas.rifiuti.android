@@ -39,8 +39,9 @@ import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils.ProfileNameExistsException;
 import eu.trentorise.smartcampus.rifiuti.utils.ValidatorHelper;
+import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
-public class ProfileFragment extends Fragment implements ILocation {
+public class ProfileFragment extends Fragment implements ILocation, onBackListener {
 
 	// private MessageHandler messageHandler = null;
 

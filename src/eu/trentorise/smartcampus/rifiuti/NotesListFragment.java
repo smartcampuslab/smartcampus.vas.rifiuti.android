@@ -1,6 +1,5 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import java.io.IOException;
 import java.util.List;
 
 import android.content.Context;
@@ -12,17 +11,14 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.AddNoteFragment.OnAddListener;
 import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Note;
@@ -39,20 +35,15 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		try {
-			NotesHelper.init(getActivity());
-			setListAdapter(new NotesAdapter(getActivity(),
-					android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
-			setEmptyText(getString(R.string.no_notes));
+		setListAdapter(new NotesAdapter(getActivity(),
+				android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+		setEmptyText(getString(R.string.no_notes));
 
-			getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-			Drawable colord = new ColorDrawable(getResources().getColor(
-					R.color.rifiuti_middle));
-			getListView().setDivider(colord);
-			getListView().setDividerHeight(1);
-		} catch (IOException e) {
-			Log.e(NotesHelper.class.getName(), e.toString());
-		}
+		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		Drawable colord = new ColorDrawable(getResources().getColor(
+				R.color.rifiuti_middle));
+		getListView().setDivider(colord);
+		getListView().setDividerHeight(1);
 	}
 
 	@Override
