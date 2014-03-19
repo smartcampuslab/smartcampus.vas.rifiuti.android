@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:baselineAlignedChildIndex="@color/rifiuti_light"
     android:background="@color/rifiuti_light"
+    android:baselineAlignedChildIndex="@color/rifiuti_light"
     android:orientation="vertical" >
 
     <ExpandableListView
@@ -11,12 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/rifiuti_light"
-        android:childDivider="@color/rifiuti_middle"
+        android:cacheColorHint="@android:color/transparent"
+        android:childDivider="@android:color/transparent"
         android:divider="@color/rifiuti_light"
         android:dividerHeight="1dp"
-        android:drawSelectorOnTop="false"  
-	        android:listSelector="@color/rifiuti_green_light_o50" />
-    
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
-    
+        android:drawSelectorOnTop="false"
+        android:listSelector="@color/rifiuti_green_light_o50"
+        android:scrollingCache="false" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rifiuti_middle" />
+
 </LinearLayout>

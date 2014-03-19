@@ -35,6 +35,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import eu.trentorise.smartcampus.rifiuti.R;
 import eu.trentorise.smartcampus.rifiuti.model.Area;
 import eu.trentorise.smartcampus.rifiuti.model.Calendario;
@@ -75,7 +76,7 @@ public class RifiutiHelper {
 	private Map<String, Integer> tipiPuntoMarkerMap = null;
 
 	private Location currentLocation = null;
-	
+
 	/**
 	 * Initialize data access layer support
 	 * 
@@ -98,6 +99,7 @@ public class RifiutiHelper {
 	public static Profile getProfile() {
 		return mHelper.mProfile;
 	}
+
 	/**
 	 * @param ctx
 	 * @throws IOException
@@ -116,7 +118,7 @@ public class RifiutiHelper {
 	public static DBHelper getDBHelper() {
 		return mHelper.dbHelper;
 	}
-	
+
 	/**
 	 * Read 'tipi di rifiuti' for the specified user
 	 * 
@@ -126,12 +128,10 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			cursor = db.rawQuery(
-					"SELECT DISTINCT tipologiaRifiuto FROM raccolta "
-							+ "WHERE area IN "
-							+ getAreeForQuery(mHelper.mAreas)
-							+ " AND tipologiaUtenza = \""
-							+ mHelper.mProfile.getUtenza() + "\"", null);
+			cursor = db
+					.rawQuery("SELECT DISTINCT tipologiaRifiuto FROM raccolta " + "WHERE area IN "
+							+ getAreeForQuery(mHelper.mAreas) + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()
+							+ "\"", null);
 			List<String> result = new ArrayList<String>();
 			if (cursor != null) {
 				cursor.moveToFirst();
@@ -157,28 +157,19 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			cursor = db
-					.rawQuery(
-							"SELECT DISTINCT tipologiaRaccolta, tipologiaPuntoRaccolta, colore FROM raccolta "
-									+ "WHERE area IN "
-									+ getAreeForQuery(mHelper.mAreas)
-									+ " AND tipologiaUtenza = \""
-									+ mHelper.mProfile.getUtenza()
-									+ "\""
-									+ " AND tipologiaRaccolta IS NOT NULL AND tipologiaRaccolta != ''"
-									+ " ORDER BY colore DESC, tipologiaRaccolta",
-							null);
+			cursor = db.rawQuery(
+					"SELECT DISTINCT tipologiaRaccolta, tipologiaPuntoRaccolta, colore FROM raccolta " + "WHERE area IN "
+							+ getAreeForQuery(mHelper.mAreas) + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()
+							+ "\"" + " AND tipologiaRaccolta IS NOT NULL AND tipologiaRaccolta != ''"
+							+ " ORDER BY colore DESC, tipologiaRaccolta", null);
 			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
 			if (cursor != null) {
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {
 					DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
-					dtr.setColore(cursor.getString(cursor
-							.getColumnIndex("colore")));
-					dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor
-							.getColumnIndex("tipologiaPuntoRaccolta")));
-					dtr.setTipologiaRaccolta(cursor.getString(cursor
-							.getColumnIndex("tipologiaRaccolta")));
+					dtr.setColore(cursor.getString(cursor.getColumnIndex("colore")));
+					dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntoRaccolta")));
+					dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
 					result.add(dtr);
 					cursor.moveToNext();
 				}
@@ -190,28 +181,20 @@ public class RifiutiHelper {
 		}
 	}
 
-	public static List<DatiTipologiaRaccolta> readTipologiaRaccoltaPerTipologiaPuntoRaccolta(
-			String tipologiaPuntoRaccolta) {
+	public static List<DatiTipologiaRaccolta> readTipologiaRaccoltaPerTipologiaPuntoRaccolta(String tipologiaPuntoRaccolta) {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			cursor = db.rawQuery(
-					"SELECT DISTINCT tipologiaRaccolta, colore FROM raccolta "
-							+ "WHERE area IN "
-							+ getAreeForQuery(mHelper.mAreas)
-							+ " AND tipologiaUtenza = \""
-							+ mHelper.mProfile.getUtenza()
-							+ "\" AND tipologiaPuntoRaccolta = \""
-							+ tipologiaPuntoRaccolta + "\"", null);
+			cursor = db.rawQuery("SELECT DISTINCT tipologiaRaccolta, colore FROM raccolta " + "WHERE area IN "
+					+ getAreeForQuery(mHelper.mAreas) + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza()
+					+ "\" AND tipologiaPuntoRaccolta = \"" + tipologiaPuntoRaccolta + "\"", null);
 			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
 			if (cursor != null) {
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {
 					DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
-					dtr.setColore(cursor.getString(cursor
-							.getColumnIndex("colore")));
-					dtr.setTipologiaRaccolta(cursor.getString(cursor
-							.getColumnIndex("tipologiaRaccolta")));
+					dtr.setColore(cursor.getString(cursor.getColumnIndex("colore")));
+					dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
 					result.add(dtr);
 					cursor.moveToNext();
 				}
@@ -230,18 +213,13 @@ public class RifiutiHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<String> getRifiutoPerTipoRifiuti(String tipoRifiuto)
-			throws Exception {
+	public static List<String> getRifiutoPerTipoRifiuti(String tipoRifiuto) throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT nome FROM riciclabolario WHERE tipologiaRifiuto = \""
-					+ tipoRifiuto
-					+ "\" AND area in "
-					+ aree
-					+ " AND tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+			String query = "SELECT DISTINCT nome FROM riciclabolario WHERE tipologiaRifiuto = \"" + tipoRifiuto
+					+ "\" AND area in " + aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 			cursor = db.rawQuery(query, null);
 			List<String> result = new ArrayList<String>();
 			if (cursor != null) {
@@ -265,8 +243,7 @@ public class RifiutiHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<String> getRifiutoPerTipoRaccolta(String tipoRaccolta)
-			throws Exception {
+	public static List<String> getRifiutoPerTipoRaccolta(String tipoRaccolta) throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
@@ -303,8 +280,7 @@ public class RifiutiHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRaccolta(
-			String tipoRaccolta) throws Exception {
+	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRaccolta(String tipoRaccolta) throws Exception {
 		return getPuntiRaccoltaPerTipo(tipoRaccolta, null);
 	}
 
@@ -315,13 +291,11 @@ public class RifiutiHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRifiuto(
-			String tipoRifiuto) throws Exception {
+	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRifiuto(String tipoRifiuto) throws Exception {
 		return getPuntiRaccoltaPerTipo(null, tipoRifiuto);
 	}
 
-	private static List<PuntoRaccolta> getPuntiRaccoltaPerTipo(
-			String tipoRaccolta, String tipoRifiuto) throws Exception {
+	private static List<PuntoRaccolta> getPuntiRaccoltaPerTipo(String tipoRaccolta, String tipoRifiuto) throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
@@ -334,13 +308,10 @@ public class RifiutiHelper {
 					+ "puntiRaccolta.indirizzo,"
 					+ "puntiRaccolta.dettaglioIndirizzo FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
-					+ " WHERE puntiRaccolta.area IN " + aree
-					+ " AND raccolta.area IN " + aree
-					+ " AND puntiRaccolta.tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+					+ " WHERE puntiRaccolta.area IN " + aree + " AND raccolta.area IN " + aree
+					+ " AND puntiRaccolta.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 			String selector = "AND "
-					+ (tipoRaccolta != null ? ("raccolta.tipologiaRaccolta = \""
-							+ tipoRaccolta + "\"")
+					+ (tipoRaccolta != null ? ("raccolta.tipologiaRaccolta = \"" + tipoRaccolta + "\"")
 							: ("raccolta.tipologiaRifiuto = \"" + tipoRifiuto + "\""));
 			query += selector;
 
@@ -364,13 +335,9 @@ public class RifiutiHelper {
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT " + "area, "
-					+ "tipologiaPuntiRaccolta," + "tipologiaUtenza,"
-					+ "localizzazione,"
-					+ "indirizzo, dettaglioIndirizzo FROM puntiRaccolta "
-					+ " WHERE puntiRaccolta.area IN " + aree + " AND area IN "
-					+ aree + " AND tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+			String query = "SELECT DISTINCT " + "area, " + "tipologiaPuntiRaccolta," + "tipologiaUtenza," + "localizzazione,"
+					+ "indirizzo, dettaglioIndirizzo FROM puntiRaccolta " + " WHERE puntiRaccolta.area IN " + aree
+					+ " AND area IN " + aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 
 			cursor = db.rawQuery(query, null);
 			List<PuntoRaccolta> result = extractListFromCursor(cursor);
@@ -392,16 +359,11 @@ public class RifiutiHelper {
 			for (int i = 0; i < cursor.getCount(); i++) {
 				PuntoRaccolta pr = new PuntoRaccolta();
 				pr.setArea(cursor.getString(cursor.getColumnIndex("area")));
-				pr.setTipologiaPuntiRaccolta(cursor.getString(cursor
-						.getColumnIndex("tipologiaPuntiRaccolta")));
-				pr.setTipologiaUtenza(cursor.getString(cursor
-						.getColumnIndex("tipologiaUtenza")));
-				pr.setLocalizzazione(cursor.getString(cursor
-						.getColumnIndex("localizzazione")));
-				pr.setIndirizzo(cursor.getString(cursor
-						.getColumnIndex("indirizzo")));
-				pr.setDettaglioIndirizzo(cursor.getString(cursor
-						.getColumnIndex("dettaglioIndirizzo")));
+				pr.setTipologiaPuntiRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntiRaccolta")));
+				pr.setTipologiaUtenza(cursor.getString(cursor.getColumnIndex("tipologiaUtenza")));
+				pr.setLocalizzazione(cursor.getString(cursor.getColumnIndex("localizzazione")));
+				pr.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
+				pr.setDettaglioIndirizzo(cursor.getString(cursor.getColumnIndex("dettaglioIndirizzo")));
 				result.add(pr);
 				cursor.moveToNext();
 			}
@@ -421,12 +383,8 @@ public class RifiutiHelper {
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT tipologiaRifiuto FROM riciclabolario WHERE nome = \""
-					+ rifiuto
-					+ "\" AND area in "
-					+ aree
-					+ " AND tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+			String query = "SELECT DISTINCT tipologiaRifiuto FROM riciclabolario WHERE nome = \"" + rifiuto + "\" AND area in "
+					+ aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 			cursor = db.rawQuery(query, null);
 			if (cursor != null) {
 				cursor.moveToFirst();
@@ -439,26 +397,15 @@ public class RifiutiHelper {
 		}
 	}
 
-	public static List<DatiTipologiaRaccolta> getDatiTipologiaRaccolta(
-			String rifiuto) {
+	public static List<DatiTipologiaRaccolta> getDatiTipologiaRaccolta(String rifiuto) {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
 			String query = "SELECT DISTINCT ra.tipologiaRaccolta, ra.tipologiaPuntoRaccolta, ra.colore, ra.infoRaccolta "
-					+ "FROM riciclabolario r, raccolta ra WHERE "
-					+ "r.nome = \""
-					+ rifiuto
-					+ "\" AND r.area in "
-					+ aree
-					+ " AND r.tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza()
-					+ "\" AND "
-					+ "ra.area in "
-					+ aree
-					+ " AND ra.tipologiaUtenza = '"
-					+ mHelper.mProfile.getUtenza()
-					+ "' AND "
+					+ "FROM riciclabolario r, raccolta ra WHERE " + "r.nome = \"" + rifiuto + "\" AND r.area in " + aree
+					+ " AND r.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\" AND " + "ra.area in " + aree
+					+ " AND ra.tipologiaUtenza = '" + mHelper.mProfile.getUtenza() + "' AND "
 					+ "ra.tipologiaRifiuto = r.tipologiaRifiuto";
 			cursor = db.rawQuery(query, null);
 			List<DatiTipologiaRaccolta> result = processDatiTipologiaRaccoltaCursor(cursor);
@@ -469,21 +416,15 @@ public class RifiutiHelper {
 		}
 
 	}
-	public static List<DatiTipologiaRaccolta> getDatiTipologiaRaccoltaPerTipologiaRaccolta(
-			String tipoRaccolta) {
+
+	public static List<DatiTipologiaRaccolta> getDatiTipologiaRaccoltaPerTipologiaRaccolta(String tipoRaccolta) {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
 			String query = "SELECT DISTINCT ra.tipologiaRaccolta, ra.tipologiaPuntoRaccolta, ra.colore, ra.infoRaccolta "
-					+ "FROM raccolta ra WHERE "
-					+ "ra.tipologiaRaccolta = \""
-					+ tipoRaccolta
-					+ "\" AND "
-					+ "ra.area in "
-					+ aree
-					+ " AND ra.tipologiaUtenza = '"
-					+ mHelper.mProfile.getUtenza() + "'";
+					+ "FROM raccolta ra WHERE " + "ra.tipologiaRaccolta = \"" + tipoRaccolta + "\" AND " + "ra.area in " + aree
+					+ " AND ra.tipologiaUtenza = '" + mHelper.mProfile.getUtenza() + "'";
 			cursor = db.rawQuery(query, null);
 			List<DatiTipologiaRaccolta> result = processDatiTipologiaRaccoltaCursor(cursor);
 			return result;
@@ -493,21 +434,15 @@ public class RifiutiHelper {
 		}
 
 	}
-	public static List<DatiTipologiaRaccolta> getDatiTipologiaRaccoltaPerTipologiaRifiuto(
-			String tipoRifiuto) {
+
+	public static List<DatiTipologiaRaccolta> getDatiTipologiaRaccoltaPerTipologiaRifiuto(String tipoRifiuto) {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
 			String query = "SELECT DISTINCT ra.tipologiaRaccolta, ra.tipologiaPuntoRaccolta, ra.colore, ra.infoRaccolta "
-					+ "FROM raccolta ra WHERE "
-					+ "ra.tipologiaRifiuto = \""
-					+ tipoRifiuto 
-					+ "\" AND "
-					+ "ra.area in "
-					+ aree
-					+ " AND ra.tipologiaUtenza = '"
-					+ mHelper.mProfile.getUtenza() + "'";
+					+ "FROM raccolta ra WHERE " + "ra.tipologiaRifiuto = \"" + tipoRifiuto + "\" AND " + "ra.area in " + aree
+					+ " AND ra.tipologiaUtenza = '" + mHelper.mProfile.getUtenza() + "'";
 			cursor = db.rawQuery(query, null);
 			List<DatiTipologiaRaccolta> result = processDatiTipologiaRaccoltaCursor(cursor);
 			return result;
@@ -522,21 +457,16 @@ public class RifiutiHelper {
 	 * @param cursor
 	 * @return
 	 */
-	public static List<DatiTipologiaRaccolta> processDatiTipologiaRaccoltaCursor(
-			Cursor cursor) {
+	public static List<DatiTipologiaRaccolta> processDatiTipologiaRaccoltaCursor(Cursor cursor) {
 		List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
 		if (cursor != null) {
 			cursor.moveToFirst();
 			for (int i = 0; i < cursor.getCount(); i++) {
 				DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
-				dtr.setColore(cursor.getString(cursor
-						.getColumnIndex("colore")));
-				dtr.setInfo(cursor.getString(cursor
-						.getColumnIndex("infoRaccolta")));
-				dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor
-						.getColumnIndex("tipologiaPuntoRaccolta")));
-				dtr.setTipologiaRaccolta(cursor.getString(cursor
-						.getColumnIndex("tipologiaRaccolta")));
+				dtr.setColore(cursor.getString(cursor.getColumnIndex("colore")));
+				dtr.setInfo(cursor.getString(cursor.getColumnIndex("infoRaccolta")));
+				dtr.setTipologiaPuntoRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntoRaccolta")));
+				dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
 				result.add(dtr);
 				cursor.moveToNext();
 			}
@@ -556,24 +486,18 @@ public class RifiutiHelper {
 		try {
 			String date = Calendario.toDateStr(Calendar.getInstance());
 			String query = "SELECT DISTINCT dataDa, dataA, il, dalle, alle FROM puntiRaccolta WHERE indirizzo = \""
-					+ pr.getIndirizzo()
-					+ "\" AND tipologiaUtenza = \""
-					+ pr.getTipologiaUtenza()
-					+ "\" AND area = \""
-					+ pr.getArea()
-					+ "\""
-					+ " AND (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
+					+ pr.getIndirizzo() + "\" AND tipologiaUtenza = \"" + pr.getTipologiaUtenza() + "\" AND area = \""
+					+ pr.getArea() + "\"" + " AND (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
 					+ " AND (puntiRaccolta.dataA IS NOT NULL AND puntiRaccolta.dataA != '')"
-					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')"
-					+ " AND (puntiRaccolta.dataDa < '"+date+"' AND puntiRaccolta.dataA > '"+date+"')";
+					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')" + " AND (puntiRaccolta.dataDa < '"
+					+ date + "' AND puntiRaccolta.dataA > '" + date + "')";
 			cursor = db.rawQuery(query, null);
 			List<Calendario> result = new ArrayList<Calendario>();
 			if (cursor != null) {
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {
 					Calendario c = new Calendario();
-					c.setDataDa(cursor.getString(cursor
-							.getColumnIndex("dataDa")));
+					c.setDataDa(cursor.getString(cursor.getColumnIndex("dataDa")));
 					c.setDataA(cursor.getString(cursor.getColumnIndex("dataA")));
 					c.setIl(cursor.getString(cursor.getColumnIndex("il")));
 					c.setDalle(cursor.getString(cursor.getColumnIndex("dalle")));
@@ -600,8 +524,7 @@ public class RifiutiHelper {
 			List<String> result = new ArrayList<String>();
 			while (parent != null && parent.trim().length() > 0) {
 				result.add(parent);
-				String query = "SELECT parent FROM aree WHERE nome = \""
-						+ parent + "\"";
+				String query = "SELECT parent FROM aree WHERE nome = \"" + parent + "\"";
 				cursor = db.rawQuery(query, null);
 				if (cursor != null) {
 					cursor.moveToFirst();
@@ -624,8 +547,7 @@ public class RifiutiHelper {
 	 */
 	public static List<List<CalendarioItem>> getCalendarsForMonth(Calendar ref) {
 		int max = ref.getActualMaximum(Calendar.DAY_OF_MONTH);
-		List<List<CalendarioItem>> res = new ArrayList<List<CalendarioItem>>(
-				max);
+		List<List<CalendarioItem>> res = new ArrayList<List<CalendarioItem>>(max);
 		SparseArray<List<Integer>> dayMap = new SparseArray<List<Integer>>();
 		Calendar c = (Calendar) ref.clone();
 		for (int i = 1; i <= max; i++) {
@@ -649,47 +571,34 @@ public class RifiutiHelper {
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
 					+ " WHERE (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
 					+ " AND (puntiRaccolta.dataA IS NOT NULL AND puntiRaccolta.dataA != '')"
-					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')"
-					+ " AND puntiRaccolta.area IN " + aree
-					+ " AND raccolta.area IN " + aree
-					+ " AND puntiRaccolta.tipologiaUtenza = \""
+					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')" + " AND puntiRaccolta.area IN " + aree
+					+ " AND raccolta.area IN " + aree + " AND puntiRaccolta.tipologiaUtenza = \""
 					+ mHelper.mProfile.getUtenza() + "\"";
 			cursor = db.rawQuery(query, null);
 			if (cursor != null) {
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {
 					Calendario calendario = new Calendario();
-					calendario.setDataDa(cursor.getString(cursor
-							.getColumnIndex("dataDa")));
-					calendario.setDataA(cursor.getString(cursor
-							.getColumnIndex("dataA")));
-					calendario.setAlle(cursor.getString(cursor
-							.getColumnIndex("alle")));
-					calendario.setDalle(cursor.getString(cursor
-							.getColumnIndex("dalle")));
-					calendario.setIl(cursor.getString(cursor
-							.getColumnIndex("il")));
+					calendario.setDataDa(cursor.getString(cursor.getColumnIndex("dataDa")));
+					calendario.setDataA(cursor.getString(cursor.getColumnIndex("dataA")));
+					calendario.setAlle(cursor.getString(cursor.getColumnIndex("alle")));
+					calendario.setDalle(cursor.getString(cursor.getColumnIndex("dalle")));
+					calendario.setIl(cursor.getString(cursor.getColumnIndex("il")));
 					Integer itemDow = calendario.asCalendarDayOfWeek();
 					if (itemDow == null)
 						continue;
 
 					PuntoRaccolta pr = new PuntoRaccolta();
 					pr.setArea(cursor.getString(cursor.getColumnIndex("area")));
-					pr.setIndirizzo(cursor.getString(cursor
-							.getColumnIndex("indirizzo")));
-					pr.setDettaglioIndirizzo(cursor.getString(cursor
-							.getColumnIndex("dettaglioIndirizzo")));
-					pr.setLocalizzazione(cursor.getString(cursor
-							.getColumnIndex("localizzazione")));
-					pr.setTipologiaPuntiRaccolta(cursor.getString(cursor
-							.getColumnIndex("tipologiaPuntiRaccolta")));
-					pr.setTipologiaUtenza(cursor.getString(cursor
-							.getColumnIndex("tipologiaUtenza")));
+					pr.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
+					pr.setDettaglioIndirizzo(cursor.getString(cursor.getColumnIndex("dettaglioIndirizzo")));
+					pr.setLocalizzazione(cursor.getString(cursor.getColumnIndex("localizzazione")));
+					pr.setTipologiaPuntiRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaPuntiRaccolta")));
+					pr.setTipologiaUtenza(cursor.getString(cursor.getColumnIndex("tipologiaUtenza")));
 
 					CalendarioItem item = new CalendarioItem();
 					item.setCalendar(calendario);
-					item.setColor(cursor.getString(cursor
-							.getColumnIndex("colore")));
+					item.setColor(cursor.getString(cursor.getColumnIndex("colore")));
 					item.setPoint(pr);
 					List<Integer> days = dayMap.get(itemDow);
 					for (Integer day : days) {
@@ -716,8 +625,7 @@ public class RifiutiHelper {
 		Cursor cursor = null;
 		try {
 			List<Area> result = new ArrayList<Area>();
-			String query = "SELECT nome,parent,comune FROM aree WHERE nome LIKE \"%"
-					+ comune + "%\"";
+			String query = "SELECT nome,parent,comune FROM aree WHERE nome LIKE \"%" + comune + "%\"";
 			cursor = db.rawQuery(query, null);
 			while (cursor.moveToNext()) {
 				Area tmp = new Area();
@@ -768,28 +676,22 @@ public class RifiutiHelper {
 	 * 
 	 * @return
 	 */
-	public static List<DatiTipologiaRaccolta> getTipologiaRaccolta(
-			String tipologiaPuntoRaccolta) {
+	public static List<DatiTipologiaRaccolta> getTipologiaRaccolta(String tipologiaPuntoRaccolta) {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			cursor = db.rawQuery(
-					"SELECT DISTINCT tipologiaRaccolta, colore FROM raccolta "
-							+ "WHERE tipologiaPuntoRaccolta = \""
-							+ tipologiaPuntoRaccolta + "\"" + " AND area IN "
-							+ getAreeForQuery(mHelper.mAreas)
-							+ " AND tipologiaUtenza = \""
-							+ mHelper.mProfile.getUtenza() + "\"", null);
+			cursor = db
+					.rawQuery("SELECT DISTINCT tipologiaRaccolta, colore FROM raccolta " + "WHERE tipologiaPuntoRaccolta = \""
+							+ tipologiaPuntoRaccolta + "\"" + " AND area IN " + getAreeForQuery(mHelper.mAreas)
+							+ " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"", null);
 			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
 			if (cursor != null) {
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {
 					DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
-					dtr.setColore(cursor.getString(cursor
-							.getColumnIndex("colore")));
+					dtr.setColore(cursor.getString(cursor.getColumnIndex("colore")));
 					dtr.setTipologiaPuntoRaccolta(tipologiaPuntoRaccolta);
-					dtr.setTipologiaRaccolta(cursor.getString(cursor
-							.getColumnIndex("tipologiaRaccolta")));
+					dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
 					result.add(dtr);
 					cursor.moveToNext();
 				}
@@ -813,10 +715,8 @@ public class RifiutiHelper {
 	private Map<String, Integer> getColorMap(Context ctx) {
 		if (colorMap == null) {
 			colorMap = new HashMap<String, Integer>();
-			String[] array = ctx.getResources().getStringArray(
-					R.array.color_names);
-			TypedArray valueArray = ctx.getResources().obtainTypedArray(
-					R.array.color_values);
+			String[] array = ctx.getResources().getStringArray(R.array.color_names);
+			TypedArray valueArray = ctx.getResources().obtainTypedArray(R.array.color_values);
 			for (int i = 0; i < array.length; i++) {
 				colorMap.put(array[i], valueArray.getColor(i, 0));
 			}
@@ -828,10 +728,8 @@ public class RifiutiHelper {
 	private Map<String, Drawable> getTypeColorMap(Context ctx) {
 		if (typeColorMap == null) {
 			typeColorMap = new HashMap<String, Drawable>();
-			String[] array = ctx.getResources().getStringArray(
-					R.array.type_icon_color_strings);
-			TypedArray valueArray = ctx.getResources().obtainTypedArray(
-					R.array.type_icon_color_drawables);
+			String[] array = ctx.getResources().getStringArray(R.array.type_icon_color_strings);
+			TypedArray valueArray = ctx.getResources().obtainTypedArray(R.array.type_icon_color_drawables);
 			for (int i = 0; i < array.length; i++) {
 				typeColorMap.put(array[i], valueArray.getDrawable(i));
 			}
@@ -844,8 +742,7 @@ public class RifiutiHelper {
 		return mHelper.getColorMap(ctx).get(color);
 	}
 
-	public static Drawable getTypeColorResource(Context ctx, String type,
-			String color) {
+	public static Drawable getTypeColorResource(Context ctx, String type, String color) {
 		Drawable d = mHelper.getTypeColorMap(ctx).get(type + " " + color);
 		if (d == null)
 			d = mHelper.getTypeColorMap(ctx).get(type);
@@ -855,14 +752,10 @@ public class RifiutiHelper {
 	private Map<String, Drawable> getTipiRifiutoDrawablesMap(Context ctx) {
 		if (tipiRifiutoDrawablesMap == null) {
 			tipiRifiutoDrawablesMap = new HashMap<String, Drawable>();
-			String[] array = ctx.getResources().getStringArray(
-					R.array.tipirifiuto_names);
-			TypedArray valueArray = ctx.getResources().obtainTypedArray(
-					R.array.tipirifiuto_drawables);
+			String[] array = ctx.getResources().getStringArray(R.array.tipirifiuto_names);
+			TypedArray valueArray = ctx.getResources().obtainTypedArray(R.array.tipirifiuto_drawables);
 			for (int i = 0; i < array.length; i++) {
-				tipiRifiutoDrawablesMap.put(
-						array[i].toLowerCase(Locale.getDefault()),
-						valueArray.getDrawable(i));
+				tipiRifiutoDrawablesMap.put(array[i].toLowerCase(Locale.getDefault()), valueArray.getDrawable(i));
 			}
 			valueArray.recycle();
 		}
@@ -872,24 +765,18 @@ public class RifiutiHelper {
 	private Map<String, Integer> getTipiPuntoMarkerMap(Context ctx) {
 		if (tipiPuntoMarkerMap == null) {
 			tipiPuntoMarkerMap = new HashMap<String, Integer>();
-			String[] array = ctx.getResources().getStringArray(
-					R.array.type_marker_strings);
-			TypedArray valueArray = ctx.getResources().obtainTypedArray(
-					R.array.type_marker_drawables);
+			String[] array = ctx.getResources().getStringArray(R.array.type_marker_strings);
+			TypedArray valueArray = ctx.getResources().obtainTypedArray(R.array.type_marker_drawables);
 			for (int i = 0; i < array.length; i++) {
-				tipiPuntoMarkerMap.put(
-						array[i].toLowerCase(Locale.getDefault()),
-						valueArray.getResourceId(i, 0));
+				tipiPuntoMarkerMap.put(array[i].toLowerCase(Locale.getDefault()), valueArray.getResourceId(i, 0));
 			}
 			valueArray.recycle();
 		}
 		return tipiPuntoMarkerMap;
 	}
 
-	public static Drawable getTipiRifiutoDrawable(Context ctx,
-			String tipoRifiuto) {
-		return mHelper.getTipiRifiutoDrawablesMap(ctx).get(
-				tipoRifiuto.toLowerCase(Locale.getDefault()));
+	public static Drawable getTipiRifiutoDrawable(Context ctx, String tipoRifiuto) {
+		return mHelper.getTipiRifiutoDrawablesMap(ctx).get(tipoRifiuto.toLowerCase(Locale.getDefault()));
 	}
 
 	/**
@@ -901,12 +788,8 @@ public class RifiutiHelper {
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT nome FROM riciclabolario WHERE nome LIKE '%"
-					+ pre
-					+ "%' AND area in "
-					+ aree
-					+ " AND tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+			String query = "SELECT DISTINCT nome FROM riciclabolario WHERE nome LIKE '%" + pre + "%' AND area in " + aree
+					+ " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 			cursor = db.rawQuery(query, null);
 			List<String> result = new ArrayList<String>();
 			if (cursor != null) {
@@ -933,8 +816,7 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			String query = "SELECT nome,parent,comune FROM aree WHERE nome = '"
-					+ string + "'";
+			String query = "SELECT nome,parent,comune FROM aree WHERE nome = '" + string + "'";
 			cursor = db.rawQuery(query, null);
 			cursor.moveToFirst();
 			Area tmp = new Area();
@@ -958,8 +840,7 @@ public class RifiutiHelper {
 		Cursor cursor = null;
 		try {
 
-			String query = "SELECT nome,parent,comune FROM aree "
-					+ "WHERE " + "comune IS NOT NULL AND comune != '' "
+			String query = "SELECT nome,parent,comune FROM aree " + "WHERE " + "comune IS NOT NULL AND comune != '' "
 					+ "ORDER BY comune";
 			cursor = db.rawQuery(query, null);
 			List<Area> result = new ArrayList<Area>();
@@ -990,18 +871,13 @@ public class RifiutiHelper {
 			List<Gestore> result = new ArrayList<Gestore>();
 			while (cursor.moveToNext()) {
 				Gestore g = new Gestore();
-				g.setRagioneSociale(cursor.getString(cursor
-						.getColumnIndex("ragioneSociale")));
-				g.setIndirizzo(cursor.getString(cursor
-						.getColumnIndex("indirizzo")));
+				g.setRagioneSociale(cursor.getString(cursor.getColumnIndex("ragioneSociale")));
+				g.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
 				g.setUfficio(cursor.getString(cursor.getColumnIndex("ufficio")));
-				g.setOrarioUfficio(cursor.getString(cursor
-						.getColumnIndex("orarioUfficio")));
-				g.setDescrizione(cursor.getString(cursor
-						.getColumnIndex("descrizione")));
+				g.setOrarioUfficio(cursor.getString(cursor.getColumnIndex("orarioUfficio")));
+				g.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
 				g.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-				g.setTelefono(cursor.getString(cursor
-						.getColumnIndex("telefono")));
+				g.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
 				g.setFax(cursor.getString(cursor.getColumnIndex("fax")));
 				g.setSitoWeb(cursor.getString(cursor.getColumnIndex("sitoWeb")));
 				result.add(g);
@@ -1026,22 +902,16 @@ public class RifiutiHelper {
 			List<Istituzione> result = new ArrayList<Istituzione>();
 			while (cursor.moveToNext()) {
 				Istituzione i = new Istituzione();
-				i.setTipologia(cursor.getString(cursor
-						.getColumnIndex("tipologia")));
+				i.setTipologia(cursor.getString(cursor.getColumnIndex("tipologia")));
 				i.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-				i.setDescrizione(cursor.getString(cursor
-						.getColumnIndex("descrizione")));
-				i.setIndirizzo(cursor.getString(cursor
-						.getColumnIndex("indirizzo")));
+				i.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
+				i.setIndirizzo(cursor.getString(cursor.getColumnIndex("indirizzo")));
 				i.setUfficio(cursor.getString(cursor.getColumnIndex("ufficio")));
-				i.setOrarioUfficio(cursor.getString(cursor
-						.getColumnIndex("orarioUfficio")));
+				i.setOrarioUfficio(cursor.getString(cursor.getColumnIndex("orarioUfficio")));
 				i.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-				i.setTelefono(cursor.getString(cursor
-						.getColumnIndex("telefono")));
+				i.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
 				i.setPec(cursor.getString(cursor.getColumnIndex("pec")));
-				i.setSitoIstituzionale(cursor.getString(cursor
-						.getColumnIndex("sitoIstituzionale")));
+				i.setSitoIstituzionale(cursor.getString(cursor.getColumnIndex("sitoIstituzionale")));
 				i.setFax(cursor.getString(cursor.getColumnIndex("fax")));
 				result.add(i);
 			}
@@ -1065,11 +935,12 @@ public class RifiutiHelper {
 	 * @return A float value to represent px equivalent to dp depending on
 	 *         device density
 	 */
-	public static float convertDpToPixel(float dp, Context context) {
-		Resources resources = context.getResources();
-		DisplayMetrics metrics = resources.getDisplayMetrics();
-		float px = dp * (metrics.densityDpi / 160f);
-		return px;
+	public static int convertDpToPixel(float dp, Context context) {
+		// Resources resources = context.getResources();
+		// DisplayMetrics metrics = resources.getDisplayMetrics();
+		// float px = dp * (metrics.densityDpi / 160f);
+		// return px;
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
 	}
 
 	/**
@@ -1090,14 +961,12 @@ public class RifiutiHelper {
 	}
 
 	public static SharedPreferences getTutorialPreferences(Context ctx) {
-		SharedPreferences out = ctx.getSharedPreferences(TUT_PREFS,
-				Context.MODE_PRIVATE);
+		SharedPreferences out = ctx.getSharedPreferences(TUT_PREFS, Context.MODE_PRIVATE);
 		return out;
 	}
 
 	public static boolean isFirstLaunchMenu(Context ctx) {
-		return getTutorialPreferences(ctx).getBoolean(FIRST_LAUNCH_MENU_PREFS,
-				true);
+		return getTutorialPreferences(ctx).getBoolean(FIRST_LAUNCH_MENU_PREFS, true);
 	}
 
 	public static void disableFirstLaunchMenu(Context ctx) {
@@ -1107,8 +976,7 @@ public class RifiutiHelper {
 	}
 
 	public static boolean isFirstLaunchHome(Context ctx) {
-		return getTutorialPreferences(ctx).getBoolean(FIRST_LAUNCH_HOME_PREFS,
-				true);
+		return getTutorialPreferences(ctx).getBoolean(FIRST_LAUNCH_HOME_PREFS, true);
 	}
 
 	public static void disableFirstLaunchHome(Context ctx) {
@@ -1122,10 +990,9 @@ public class RifiutiHelper {
 		edit.putBoolean(FIRST_LAUNCH_DOVEBUTTO_PREFS, true);
 		edit.commit();
 	}
-	
+
 	public static boolean isFirstLaunchDoveLoButto(Context ctx) {
-		return getTutorialPreferences(ctx).getBoolean(
-				FIRST_LAUNCH_DOVEBUTTO_PREFS, true);
+		return getTutorialPreferences(ctx).getBoolean(FIRST_LAUNCH_DOVEBUTTO_PREFS, true);
 	}
 
 	public static void disableFirstLaunchDoveLoButto(Context ctx) {
@@ -1155,7 +1022,7 @@ public class RifiutiHelper {
 	public static void setCurrentLocation(Location l) {
 		mHelper.currentLocation = l;
 	}
-	
+
 	public static Location getCurrentLocation() {
 		return mHelper.currentLocation;
 	}

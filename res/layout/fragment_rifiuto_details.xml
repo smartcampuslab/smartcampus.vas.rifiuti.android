@@ -15,35 +15,38 @@
             android:background="@color/rifiuti_green_dark"
             android:padding="@dimen/fragment_horizontal_margin"
             android:text="@string/tipodiraccolta_label"
-            android:textAppearance="?android:attr/textAppearanceMedium" 
-            android:textColor="@android:color/white"/>
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
 
-<!--         <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView -->
-<!--             android:id="@+id/tiporaccolta_list" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="wrap_content" /> -->
+        <!-- <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView -->
+        <!-- android:id="@+id/tiporaccolta_list" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" /> -->
 
-<!--         <TextView -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:background="@color/rifiuti_middle" -->
-<!--             android:padding="@dimen/fragment_horizontal_margin" -->
-<!--             android:text="@string/puntodiraccolta_label" -->
-<!--             android:textAppearance="?android:attr/textAppearanceMedium" /> -->
 
-	    <eu.trentorise.smartcampus.rifiuti.custom.ExpandedExpandableListView
-		    android:background="@color/rifiuti_light"
-	        android:id="@+id/puntoraccolta_list"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" 
-	        android:divider="@color/rifiuti_light"
-	        android:childDivider="@color/rifiuti_middle"
-	        android:dividerHeight="1dp"
-	        android:drawSelectorOnTop="false" 
-	        android:listSelector="@color/rifiuti_green_light_o50" />
-	    
-    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
-	    	    
+        <!-- <TextView -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:background="@color/rifiuti_middle" -->
+        <!-- android:padding="@dimen/fragment_horizontal_margin" -->
+        <!-- android:text="@string/puntodiraccolta_label" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+
+        <eu.trentorise.smartcampus.rifiuti.custom.ExpandedExpandableListView
+            android:id="@+id/puntoraccolta_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rifiuti_light"
+            android:childDivider="@color/rifiuti_middle"
+            android:divider="@color/rifiuti_light"
+            android:dividerHeight="1dp"
+            android:drawSelectorOnTop="false"
+            android:listSelector="@color/rifiuti_green_light_o50" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rifiuti_middle" />
     </LinearLayout>
 
 </ScrollView>

@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
@@ -32,6 +31,11 @@ public class ProfilesListFragment extends ListFragment {
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_profiles_list, container, false);
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
@@ -41,7 +45,7 @@ public class ProfilesListFragment extends ListFragment {
 
 		List<Profile> profiles = PreferenceUtils.getProfiles(getActivity());
 		setListAdapter(new ProfileAdapter(getActivity(), profiles));
-		setEmptyText(getString(R.string.niente_profili));
+		// setEmptyText(getString(R.string.niente_profili));
 
 		// we can't let the user switch fragment without having a profile
 		if (getActivity() instanceof MainActivity) {
@@ -57,10 +61,6 @@ public class ProfilesListFragment extends ListFragment {
 	public void onStart() {
 		super.onStart();
 		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.profili_title));
-
-		getListView().setDividerHeight(0);
-		getListView().setClipToPadding(false);
-		getListView().setScrollBarStyle(ScrollView.SCROLLBARS_OUTSIDE_OVERLAY);
 
 		if (abActivity instanceof MainActivity) {
 			((MainActivity) abActivity).unlockDrawer();
