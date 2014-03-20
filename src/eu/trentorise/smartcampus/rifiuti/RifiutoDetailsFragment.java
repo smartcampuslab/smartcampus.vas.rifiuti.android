@@ -2,6 +2,7 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -119,17 +120,9 @@ public class RifiutoDetailsFragment extends Fragment {
 			
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-				FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-				PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
-
-				Bundle args = new Bundle();
-				args.putSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, adapter.getChild(groupPosition, childPosition));
-				fragment.setArguments(args);
-				fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-				// fragmentTransaction.detach(this);
-				fragmentTransaction.replace(R.id.content_frame, fragment, "puntodiraccolta");
-				fragmentTransaction.addToBackStack(fragment.getTag());
-				fragmentTransaction.commit();
+				Intent i = new Intent(getActivity(), PuntoRaccoltaActivity.class);
+				i.putExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA, adapter.getChild(groupPosition, childPosition));
+				startActivity(i);
 				return true;
 			}
 		});
