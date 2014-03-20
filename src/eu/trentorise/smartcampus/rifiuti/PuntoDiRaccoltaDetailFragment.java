@@ -1,6 +1,7 @@
 package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.plus.model.people.Person.Collection;
 
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Calendario;
@@ -110,6 +112,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 						PreferenceUtils.getCurrentProfilePosition(getActivity())));
 			}
 			orariList = RifiutiHelper.getCalendars(puntoDiRaccolta);
+			Collections.sort(orariList, RifiutiHelper.calendarioComparator);
 			// get lista tipologie per punto di raccolta
 			tipologieList = RifiutiHelper.readTipologiaRaccoltaPerTipologiaPuntoRaccolta(puntoDiRaccolta
 					.getTipologiaPuntiRaccolta());

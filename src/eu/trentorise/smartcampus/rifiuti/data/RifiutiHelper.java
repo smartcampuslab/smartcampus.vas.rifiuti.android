@@ -19,11 +19,13 @@ package eu.trentorise.smartcampus.rifiuti.data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -1027,17 +1029,81 @@ public class RifiutiHelper {
 	public static Location getCurrentLocation() {
 		return mHelper.currentLocation;
 	}
-	
+
 	/**
 	 * Method to avoid a bug on pre ICS
+	 * 
 	 * @see https://code.google.com/p/android/issues/detail?id=27112
 	 */
-	public static SparseBooleanArray copySparseBooleanArray(SparseBooleanArray sba){
+	public static SparseBooleanArray copySparseBooleanArray(SparseBooleanArray sba) {
 		SparseBooleanArray out = new SparseBooleanArray(sba.size());
-		for(int i=0;i<sba.size();i++){
+		for (int i = 0; i < sba.size(); i++) {
 			out.append(sba.keyAt(i), sba.valueAt(i));
 		}
 		return out;
 	}
-	
+
+	@SuppressLint("DefaultLocale")
+	public static List<Calendario> orderByWeekDay(List<Calendario> list) {
+		SparseArray<Calendario> sac = new SparseArray<Calendario>();
+
+		for (Calendario c : list) {
+			String day = c.getIl().toUpperCase(Locale.getDefault());
+			if (day.startsWith("LUN")) {
+				sac.append(0, c);
+			} else if (day.startsWith("MAR")) {
+				sac.append(1, c);
+			} else if (day.startsWith("MER")) {
+				sac.append(2, c);
+			} else if (day.startsWith("GIO")) {
+				sac.append(3, c);
+			} else if (day.startsWith("VEN")) {
+				sac.append(4, c);
+			} else if (day.startsWith("SAB")) {
+				sac.append(5, c);
+			} else if (day.startsWith("DOM")) {
+				sac.append(6, c);
+			}
+		}
+
+		list = new ArrayList<Calendario>();
+		for (int i = 0; i < sac.size(); i++) {
+			list.add(sac.get(i));
+		}
+
+		return list;
+	}
+
+	private enum WeekDay {
+		LUN, MAR, MER, GIO, VEN, SAB, DOM
+	};
+
+	@SuppressLint("DefaultLocale")
+	public static Comparator<Calendario> calendarioComparator = new Comparator<Calendario>() {
+		@Override
+		public int compare(Calendario c1, Calendario c2) {
+			int result = 0;
+
+			WeekDay c1day = WeekDay.valueOf(c1.getIl().toUpperCase(Locale.ITALY).subSequence(0, 3).toString());
+			WeekDay c2day = WeekDay.valueOf(c2.getIl().toUpperCase(Locale.ITALY).subSequence(0, 3).toString());
+
+			result = c1day.compareTo(c2day);
+
+			if (result == 0) {
+				Calendar c1cal = Calendar.getInstance();
+				Calendar c2cal = (Calendar) c1cal.clone();
+
+				String[] c1time = c1.getDalle().split(":");
+				c1cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(c1time[0]));
+				c1cal.set(Calendar.MINUTE, Integer.parseInt(c1time[1]));
+				String[] c2time = c2.getDalle().split(":");
+				c2cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(c2time[0]));
+				c2cal.set(Calendar.MINUTE, Integer.parseInt(c2time[1]));
+				result = c1cal.compareTo(c2cal);
+			}
+
+			return result;
+		}
+	};
+
 }
