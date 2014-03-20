@@ -4,5 +4,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/note_background"
     android:minHeight="48dp"
+    android:padding="@dimen/activity_horizontal_margin"
     android:checkMark="@null"
     android:gravity="center_vertical" />

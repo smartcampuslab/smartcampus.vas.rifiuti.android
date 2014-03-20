@@ -130,10 +130,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 			// getActivity().setProgressBarIndeterminateVisibility(true);
 		} else if (item.getItemId() == R.id.action_edit) {
 			AddNoteFragment anf = AddNoteFragment.newInstance(this, NotesHelper.getNotes().get(index));
-			anf.show(getFragmentManager(), "");
+			anf.show(getFragmentManager(), ""); 
 			getListView().setItemChecked(index, false);
-			toggleBackground(getListView(), index,
-					getListView().getChildAt(index));
 		}
 		mode.finish();
 		return false;
@@ -171,7 +169,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	public void onAdd(String s) {
 		if (s.trim().length() > 0) {
 			NotesHelper.addNote(s);
-			setListAdapter(new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+			setListAdapter(new ArrayAdapter<Note>(getActivity(), R.layout.note_row, NotesHelper.getNotes()));
 		}
 	}
 
@@ -183,7 +181,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		} else {
 			NotesHelper.deleteNotes(n);
 		}
-		setListAdapter(new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+		setListAdapter(new ArrayAdapter<Note>(getActivity(), R.layout.note_row, NotesHelper.getNotes()));
 	}
 
 	private int checkAndGetSelectedItem(SparseBooleanArray pos) {
@@ -198,13 +196,6 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		return (cnt == 1) ? index : -1;
 	}
 
-	private void toggleBackground(ListView l, int pos, View v) {
-		if (l.isItemChecked(pos)) {
-			v.setBackgroundColor(getResources().getColor(R.color.rifiuti_green_light_o50));
-		} else {
-			v.setBackgroundColor(Color.TRANSPARENT);
-		}
-	}
 
 	private class NotesAdapter extends ArrayAdapter<Note> {
 
@@ -236,7 +227,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		protected void onProgressUpdate(Void... values) {
 			super.onProgressUpdate(values);
 			if (getListView() != null) {
-				setListAdapter(new ArrayAdapter<Note>(getActivity(), android.R.layout.simple_list_item_1,
+				setListAdapter(new ArrayAdapter<Note>(getActivity(), R.layout.note_row,
 						NotesHelper.getNotes()));
 			}
 		}
