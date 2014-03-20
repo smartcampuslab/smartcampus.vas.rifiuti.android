@@ -28,6 +28,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,8 @@ public class FeedbackFragment extends Fragment implements ILocation {
 	private boolean useLocation = false;
 	private String imageUri = null;
 
+	private int IMG_HEIGHT = 150;//dp
+	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -207,7 +210,14 @@ public class FeedbackFragment extends Fragment implements ILocation {
 						Uri imgUri = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getActivity()
 								.getContentResolver(), fi.getAbsolutePath(), null, null));
 						imageUri = imgUri.toString();
-						Bitmap myBitmap = BitmapFactory.decodeFile(fi.getAbsolutePath());
+						final BitmapFactory.Options options = new BitmapFactory.Options();
+					    options.inJustDecodeBounds = true;
+					    BitmapFactory.decodeFile(fi.getAbsolutePath(), options);
+					    
+					    options.inSampleSize = calculateInSampleSize(options, dpToPx(IMG_HEIGHT), dpToPx(IMG_HEIGHT));
+					    options.inJustDecodeBounds = false;
+						Bitmap myBitmap = BitmapFactory.decodeFile(fi.getAbsolutePath(),options);
+
 						ImageView myImage = (ImageView) getView().findViewById(R.id.feedback_img_result);
 						myImage.setVisibility(View.VISIBLE);
 						myImage.setImageBitmap(myBitmap);
@@ -220,5 +230,33 @@ public class FeedbackFragment extends Fragment implements ILocation {
 
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	public static int calculateInSampleSize( BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+	
+	    int ref = Math.max(reqHeight, reqWidth);
+	    
+	    if (height > ref || width > ref) {
+	    	
+	        final int halfHeight = height / 2;
+	        final int halfWidth = width / 2;
+	
+	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+	        // height and width larger than the requested height and width.
+	        while ((halfHeight / inSampleSize) > ref
+	                || (halfWidth / inSampleSize) > ref) {
+	            inSampleSize *= 2;
+	        }
+	    }
+	
+	    return inSampleSize;
+	}
+	public int dpToPx(int dp) {
+		float density = getResources().getDisplayMetrics().density;
+	    return Math.round((float)dp * density);
 	}
 }
