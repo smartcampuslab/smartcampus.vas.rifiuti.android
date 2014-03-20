@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,7 +45,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	private LocationUtils mLocUtils;
 
 	private boolean mProfileGroupManage = true;
-	
+
 	// private TutorialHelper mTutorialHelper = null;
 
 	@Override
@@ -118,26 +119,24 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 	@Override
 	public void onBackPressed() {
-
 		Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
 		if (f instanceof onBackListener) {
 			((onBackListener) f).onBack();
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			LayoutInflater inflater = getLayoutInflater();
-			builder.setView(inflater.inflate(R.layout.exit_dlg, null))
-	               .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	           			MainActivity.super.onBackPressed();
-	                   }
-	               })
-	               .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	                       // User cancelled the dialog
-	                   }
-	               });
-	        // Create the AlertDialog object and return it
-	        builder.create().show();;
+			builder.setView(View.inflate(this, R.layout.dialog_closing, null));
+			builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					MainActivity.super.onBackPressed();
+				}
+			});
+			builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					// User cancelled the dialog
+				}
+			});
+			// Create the AlertDialog object and return it
+			builder.create().show();
 		}
 	}
 
@@ -253,13 +252,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	 * @return
 	 */
 	private Fragment getFragmentToReload(Fragment fragment) {
-		if (fragment instanceof ProfilesListFragment || 
-			fragment instanceof FeedbackFragment || 
-			fragment instanceof ContactContainerFragment ||
-			fragment instanceof InfoFragment) {
+		if (fragment instanceof ProfilesListFragment || fragment instanceof FeedbackFragment
+				|| fragment instanceof ContactContainerFragment || fragment instanceof InfoFragment) {
 			return null;
 		}
-		
+
 		try {
 			return (Fragment) fragment.getClass().newInstance();
 		} catch (Exception e) {

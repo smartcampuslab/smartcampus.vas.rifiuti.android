@@ -1,7 +1,5 @@
 package eu.trentorise.smartcampus.rifiuti;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,19 +9,11 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
-import com.github.espiandev.showcaseview.ListViewTutorialHelper;
-import com.github.espiandev.showcaseview.TutorialHelper;
-import com.github.espiandev.showcaseview.TutorialHelper.TutorialProvider;
-import com.github.espiandev.showcaseview.TutorialItem;
-
 import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
-import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 
 public class HomeFragment extends Fragment {
 
