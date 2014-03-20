@@ -53,7 +53,6 @@ public class AddNoteFragment extends DialogFragment implements
 			b.putSerializable(PASSED_NOTE, n);
 			out.setArguments(b);
 		}
-
 		return out;
 	}
 
@@ -67,7 +66,6 @@ public class AddNoteFragment extends DialogFragment implements
 			((OnAddListener) getTargetFragment()).onEdit(n);
 		} else {
 			((OnAddListener) getTargetFragment()).onAdd(text);
-
 		}
 		getDialog().dismiss();
 	}

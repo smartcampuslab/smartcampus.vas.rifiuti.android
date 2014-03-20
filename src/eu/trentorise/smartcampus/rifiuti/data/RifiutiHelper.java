@@ -35,6 +35,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import eu.trentorise.smartcampus.rifiuti.R;
 import eu.trentorise.smartcampus.rifiuti.model.Area;
@@ -1026,4 +1027,17 @@ public class RifiutiHelper {
 	public static Location getCurrentLocation() {
 		return mHelper.currentLocation;
 	}
+	
+	/**
+	 * Method to avoid a bug on pre ICS
+	 * @see https://code.google.com/p/android/issues/detail?id=27112
+	 */
+	public static SparseBooleanArray copySparseBooleanArray(SparseBooleanArray sba){
+		SparseBooleanArray out = new SparseBooleanArray(sba.size());
+		for(int i=0;i<sba.size();i++){
+			out.append(sba.keyAt(i), sba.valueAt(i));
+		}
+		return out;
+	}
+	
 }

@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import eu.trentorise.smartcampus.rifiuti.AddNoteFragment.OnAddListener;
 import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Note;
 
 public class NotesListFragment extends ListFragment implements OnAddListener,
@@ -47,6 +48,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 				R.color.rifiuti_middle));
 		getListView().setDivider(colord);
 		getListView().setDividerHeight(1);
+		
+		
 	}
 
 	@Override
@@ -89,11 +92,12 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 			NotesHelper.notesActionMode = ((ActionBarActivity) getActivity())
 					.startSupportActionMode(NotesListFragment.this);
 		}
-
+		v.setSelected(!v.isSelected());
 		toggleBackground(l, position, v);
 
 		if (NotesHelper.notesActionMode != null)
 			NotesHelper.notesActionMode.invalidate();
+
 	}
 
 	@Override
@@ -116,19 +120,25 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		SparseBooleanArray pos = getListView().getCheckedItemPositions()
-				.clone();
+		SparseBooleanArray pos;
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			pos = RifiutiHelper.copySparseBooleanArray(getListView()
+					.getCheckedItemPositions());
+		} else {
+			pos = getListView().getCheckedItemPositions().clone();
+		}
 		int index = checkAndGetSelectedItem(pos);
 		if (item.getItemId() == R.id.action_delete) {
 			showConfirmAndDelete(pos);
-//			new DeleteNotesTask().execute(pos);
-//			getActivity().setProgressBarIndeterminateVisibility(true);
+			// new DeleteNotesTask().execute(pos);
+			// getActivity().setProgressBarIndeterminateVisibility(true);
 		} else if (item.getItemId() == R.id.action_edit) {
 			AddNoteFragment anf = AddNoteFragment.newInstance(this, NotesHelper
 					.getNotes().get(index));
 			anf.show(getFragmentManager(), "");
 			getListView().setItemChecked(index, false);
-			toggleBackground(getListView(), index, getListView().getChildAt(index));
+			toggleBackground(getListView(), index,
+					getListView().getChildAt(index));
 		}
 		mode.finish();
 		return false;
@@ -136,17 +146,16 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 
 	private void showConfirmAndDelete(final SparseBooleanArray pos) {
 		new AlertDialog.Builder(getActivity())
-		.setTitle(R.string.dialog_confirm_title)
-		.setMessage(R.string.dialog_confirm_note_msg)
-		.setPositiveButton(android.R.string.ok, new OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				getActivity().setProgressBarIndeterminateVisibility(true);
-				new DeleteNotesTask().execute(pos);
-			}
-		})
-		.setNegativeButton(android.R.string.cancel, null)
-		.create()
-		.show();
+				.setTitle(R.string.dialog_confirm_title)
+				.setMessage(R.string.dialog_confirm_note_msg)
+				.setPositiveButton(android.R.string.ok, new OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						getActivity().setProgressBarIndeterminateVisibility(
+								true);
+						new DeleteNotesTask().execute(pos);
+					}
+				}).setNegativeButton(android.R.string.cancel, null).create()
+				.show();
 	}
 
 	@Override
@@ -205,10 +214,10 @@ public class NotesListFragment extends ListFragment implements OnAddListener,
 
 	private void toggleBackground(ListView l, int pos, View v) {
 		if (l.isItemChecked(pos)) {
-			v.setBackgroundColor(getResources().getColor(
+			getListView().getChildAt(pos).setBackgroundColor(getResources().getColor(
 					R.color.rifiuti_green_light_o50));
 		} else {
-			v.setBackgroundColor(Color.TRANSPARENT);
+			getListView().getChildAt(pos).setBackgroundColor(Color.TRANSPARENT);
 		}
 	}
 
