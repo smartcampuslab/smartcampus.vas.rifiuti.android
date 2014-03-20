@@ -1043,37 +1043,6 @@ public class RifiutiHelper {
 		return out;
 	}
 
-	@SuppressLint("DefaultLocale")
-	public static List<Calendario> orderByWeekDay(List<Calendario> list) {
-		SparseArray<Calendario> sac = new SparseArray<Calendario>();
-
-		for (Calendario c : list) {
-			String day = c.getIl().toUpperCase(Locale.getDefault());
-			if (day.startsWith("LUN")) {
-				sac.append(0, c);
-			} else if (day.startsWith("MAR")) {
-				sac.append(1, c);
-			} else if (day.startsWith("MER")) {
-				sac.append(2, c);
-			} else if (day.startsWith("GIO")) {
-				sac.append(3, c);
-			} else if (day.startsWith("VEN")) {
-				sac.append(4, c);
-			} else if (day.startsWith("SAB")) {
-				sac.append(5, c);
-			} else if (day.startsWith("DOM")) {
-				sac.append(6, c);
-			}
-		}
-
-		list = new ArrayList<Calendario>();
-		for (int i = 0; i < sac.size(); i++) {
-			list.add(sac.get(i));
-		}
-
-		return list;
-	}
-
 	private enum WeekDay {
 		LUN, MAR, MER, GIO, VEN, SAB, DOM
 	};
