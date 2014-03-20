@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -74,7 +73,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 				@Override
 				public void run() {
 					SparseBooleanArray pos = getListView().getCheckedItemPositions();
-					for (int i = 0; i < pos.size(); i++) {
+					for (int i = 0; i < getListAdapter().getCount(); i++) {
 						if (pos.get(i))
 							return;
 					}
@@ -123,12 +122,12 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 			pos = getListView().getCheckedItemPositions().clone();
 		}
 
-		int index = checkAndGetSelectedItem(pos);
 		if (item.getItemId() == R.id.action_delete) {
 			showConfirmAndDelete(pos);
 			// new DeleteNotesTask().execute(pos);
 			// getActivity().setProgressBarIndeterminateVisibility(true);
 		} else if (item.getItemId() == R.id.action_edit) {
+			int index = checkAndGetSelectedItem(pos);
 			AddNoteFragment anf = AddNoteFragment.newInstance(this, NotesHelper.getNotes().get(index));
 			anf.show(getFragmentManager(), ""); 
 			getListView().setItemChecked(index, false);
@@ -156,7 +155,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 			@Override
 			public void run() {
 				SparseBooleanArray pos = getListView().getCheckedItemPositions();
-				for (int i = 0; i < pos.size(); i++) {
+				for (int i = 0; i < getListAdapter().getCount(); i++) {
 					if (pos.get(i)) {
 						getListView().setItemChecked(i, false);
 					}
@@ -187,7 +186,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	private int checkAndGetSelectedItem(SparseBooleanArray pos) {
 		int cnt = 0;
 		int index = 0;
-		for (int i = 0; i < pos.size(); i++) {
+		for (int i = 0; i < getListAdapter().getCount(); i++) {
 			if (pos.valueAt(i)) {
 				cnt++;
 				index = pos.keyAt(i);
