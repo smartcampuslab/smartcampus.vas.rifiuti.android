@@ -38,7 +38,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		setListAdapter(new NotesAdapter(getActivity(), android.R.layout.simple_list_item_1, NotesHelper.getNotes()));
+		setListAdapter(new NotesAdapter(getActivity(), R.layout.note_row, NotesHelper.getNotes()));
 		setEmptyText(getString(R.string.no_notes));
 
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -86,8 +86,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		} else if (getActivity() instanceof ActionBarActivity) {
 			NotesHelper.notesActionMode = ((ActionBarActivity) getActivity()).startSupportActionMode(NotesListFragment.this);
 		}
-		v.setSelected(!v.isSelected());
-		toggleBackground(l, position, v);
+		//v.setSelected(!v.isSelected());
+		//toggleBackground(l, position, v);
 
 		if (NotesHelper.notesActionMode != null)
 			NotesHelper.notesActionMode.invalidate();
@@ -161,7 +161,6 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 				for (int i = 0; i < pos.size(); i++) {
 					if (pos.get(i)) {
 						getListView().setItemChecked(i, false);
-						toggleBackground(getListView(), i, getListView().getChildAt(i));
 					}
 				}
 			}
