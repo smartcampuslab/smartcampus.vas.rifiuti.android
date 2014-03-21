@@ -44,8 +44,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		Drawable colord = new ColorDrawable(getResources().getColor(R.color.rifiuti_middle));
 		getListView().setDivider(colord);
 		getListView().setDividerHeight(1);
-		
-		
+
 	}
 
 	@Override
@@ -85,8 +84,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		} else if (getActivity() instanceof ActionBarActivity) {
 			NotesHelper.notesActionMode = ((ActionBarActivity) getActivity()).startSupportActionMode(NotesListFragment.this);
 		}
-		//v.setSelected(!v.isSelected());
-		//toggleBackground(l, position, v);
+		// v.setSelected(!v.isSelected());
+		// toggleBackground(l, position, v);
 
 		if (NotesHelper.notesActionMode != null)
 			NotesHelper.notesActionMode.invalidate();
@@ -116,8 +115,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 
 		SparseBooleanArray pos;
 		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			pos = RifiutiHelper.copySparseBooleanArray(getListView()
-					.getCheckedItemPositions());
+			pos = RifiutiHelper.copySparseBooleanArray(getListView().getCheckedItemPositions());
 		} else {
 			pos = getListView().getCheckedItemPositions().clone();
 		}
@@ -129,7 +127,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		} else if (item.getItemId() == R.id.action_edit) {
 			int index = checkAndGetSelectedItem(pos);
 			AddNoteFragment anf = AddNoteFragment.newInstance(this, NotesHelper.getNotes().get(index));
-			anf.show(getFragmentManager(), ""); 
+			anf.show(getFragmentManager(), "");
 			getListView().setItemChecked(index, false);
 		}
 		mode.finish();
@@ -186,7 +184,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	private int checkAndGetSelectedItem(SparseBooleanArray pos) {
 		int cnt = 0;
 		int index = 0;
-		for (int i = 0; i < getListAdapter().getCount(); i++) {
+		for (int i = 0; i < pos.size(); i++) {
 			if (pos.valueAt(i)) {
 				cnt++;
 				index = pos.keyAt(i);
@@ -194,7 +192,6 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		}
 		return (cnt == 1) ? index : -1;
 	}
-
 
 	private class NotesAdapter extends ArrayAdapter<Note> {
 
@@ -226,8 +223,7 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		protected void onProgressUpdate(Void... values) {
 			super.onProgressUpdate(values);
 			if (getListView() != null) {
-				setListAdapter(new ArrayAdapter<Note>(getActivity(), R.layout.note_row,
-						NotesHelper.getNotes()));
+				setListAdapter(new ArrayAdapter<Note>(getActivity(), R.layout.note_row, NotesHelper.getNotes()));
 			}
 		}
 
