@@ -23,11 +23,11 @@
         <item>Isola Ecologica AZZURRO</item>
         <item>Isola Ecologica ARANCIONE</item>
         <item>Isola Ecologica ROSSO</item>
-        <item>farmacia ROSSO</item>
+        <item>Farmacia ROSSO</item>
         <item>Rivenditore ROSSO</item>
         <item>Isola Ecologica</item>
         <item>CRM</item>
-        <item>farmacia</item>
+        <item>Farmacia</item>
         <item>Rivenditore</item>
         </string-array>
     <integer-array name="type_icon_color_drawables">

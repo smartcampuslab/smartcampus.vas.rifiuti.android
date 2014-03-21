@@ -53,6 +53,7 @@ import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
  * @author raman
  * 
  */
+@SuppressLint("DefaultLocale")
 public class RifiutiHelper {
 
 	public static final int DB_VERSION = 2;
@@ -734,7 +735,7 @@ public class RifiutiHelper {
 			String[] array = ctx.getResources().getStringArray(R.array.type_icon_color_strings);
 			TypedArray valueArray = ctx.getResources().obtainTypedArray(R.array.type_icon_color_drawables);
 			for (int i = 0; i < array.length; i++) {
-				typeColorMap.put(array[i], valueArray.getDrawable(i));
+				typeColorMap.put(array[i].toLowerCase(), valueArray.getDrawable(i));
 			}
 			valueArray.recycle();
 		}
@@ -746,9 +747,9 @@ public class RifiutiHelper {
 	}
 
 	public static Drawable getTypeColorResource(Context ctx, String type, String color) {
-		Drawable d = mHelper.getTypeColorMap(ctx).get(type + " " + color);
+		Drawable d = mHelper.getTypeColorMap(ctx).get((type + " " + color).toLowerCase());
 		if (d == null)
-			d = mHelper.getTypeColorMap(ctx).get(type);
+			d = mHelper.getTypeColorMap(ctx).get(type.toLowerCase());
 		return d;
 	}
 
