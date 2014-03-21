@@ -53,8 +53,6 @@
                     android:hint="@string/feedback_text_hint"
                     android:inputType="textMultiLine"
                     android:minLines="2" >
-
-                    <requestFocus />
                 </EditText>
             </LinearLayout>
 

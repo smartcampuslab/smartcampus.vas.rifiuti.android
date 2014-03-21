@@ -19,6 +19,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_title"
+        android:largeHeap="true"
         android:theme="@style/Theme.Rifiuti" >
         <activity
             android:name="eu.trentorise.smartcampus.rifiuti.SplashScreenActivity"
