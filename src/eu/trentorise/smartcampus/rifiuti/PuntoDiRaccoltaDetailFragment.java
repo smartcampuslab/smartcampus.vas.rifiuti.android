@@ -33,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.plus.model.people.Person.Collection;
 
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Calendario;
@@ -46,6 +45,8 @@ import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 
 public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation {
+
+	private final boolean useGoogleMaps = true;
 
 	private PuntoRaccolta puntoDiRaccolta = null;
 	private List<Calendario> orariList = null;
@@ -100,8 +101,8 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		abActivity.getSupportActionBar().setTitle(
 				abActivity.getString(R.string.puntiraccoltadetails_abtitle,
 						abActivity.getString(R.string.punto_di_raccolta_title)));
-		abActivity.getSupportActionBar().setSubtitle(abActivity.getString(R.string.puntiraccoltadetails_absubtitle,
-				puntoDiRaccolta.getTipologiaPuntiRaccolta(),
+		abActivity.getSupportActionBar().setSubtitle(
+				abActivity.getString(R.string.puntiraccoltadetails_absubtitle, puntoDiRaccolta.getTipologiaPuntiRaccolta(),
 						puntoDiRaccolta.getArea()));
 
 		try {
@@ -205,14 +206,20 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 	}
 
 	private void bringMeThere(PuntoRaccolta pdr) {
-		try {
-			getActivity().getPackageManager().getApplicationInfo("eu.trentorise.smartcampus.viaggiatrento", 0);
-		} catch (NameNotFoundException e) {
-			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=eu.trentorise.smartcampus.viaggiatrento"));
-			getActivity().startActivity(intent);
-			return;
+		if (useGoogleMaps) {
+			callAppForDirectionsGmaps();
+		} else {
+			try {
+				getActivity().getPackageManager().getApplicationInfo("eu.trentorise.smartcampus.viaggiatrento", 0);
+			} catch (NameNotFoundException e) {
+				Intent intent = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("market://details?id=eu.trentorise.smartcampus.viaggiatrento"));
+				getActivity().startActivity(intent);
+				return;
+			}
+			new LocalizeAsyncTask().execute();
 		}
-		new LocalizeAsyncTask().execute();
+
 	}
 
 	@Override
@@ -239,18 +246,50 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		LatLng latLng = null;
 		Address to = new Address(Locale.getDefault());
 		double[] coords = puntoDiRaccolta.location();
-		latLng = new LatLng(coords[0],coords[1]);
+		latLng = new LatLng(coords[0], coords[1]);
 		to.setLatitude(latLng.latitude);
 		to.setLongitude(latLng.longitude);
 
 		Intent intent = new Intent(getString(R.string.direction_intent));
-		intent.putExtra(getString(R.string.from_for_direction), from);
+		if (from.hasLatitude() && from.hasLongitude()) {
+			intent.putExtra(getString(R.string.from_for_direction), from);
+		}
 		intent.putExtra(getString(R.string.to_for_direction), to);
 		try {
 			getActivity().startActivity(intent);
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(getActivity(), getString(R.string.toast_app_not_installed), Toast.LENGTH_LONG).show();
 		}
+	}
+
+	private void callAppForDirectionsGmaps() {
+		if (mLocUtils != null) {
+			mLocUtils.close();
+			mLocUtils = null;
+		}
+
+		Address from = new Address(Locale.getDefault());
+		if (mLocation != null) {
+			from.setLatitude(mLocation.getLatitude());
+			from.setLongitude(mLocation.getLongitude());
+		}
+		LatLng latLng = null;
+		Address to = new Address(Locale.getDefault());
+		double[] coords = puntoDiRaccolta.location();
+		latLng = new LatLng(coords[0], coords[1]);
+		to.setLatitude(latLng.latitude);
+		to.setLongitude(latLng.longitude);
+
+		String url;
+		if (from.hasLatitude() && from.hasLongitude()) {
+			url = "http://maps.google.com/maps?saddr=" + from.getLatitude() + "," + from.getLongitude() + "&daddr="
+					+ to.getLatitude() + "," + to.getLongitude();
+		} else {
+			url = "http://maps.google.com/maps?daddr=" + to.getLatitude() + "," + to.getLongitude();
+		}
+
+		Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		startActivity(navigation);
 	}
 
 	@Override
@@ -277,15 +316,17 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 
 		@Override
 		protected void onPreExecute() {
-			if (getActivity() == null) return;
-			
-			progress  = ProgressDialog.show(getActivity(), "", getString(R.string.geocoding), true);
+			if (getActivity() == null)
+				return;
+
+			progress = ProgressDialog.show(getActivity(), "", getString(R.string.geocoding), true);
 			mLocUtils = new LocationUtils(getActivity(), PuntoDiRaccoltaDetailFragment.this);
 		}
+
 		@Override
 		protected Void doInBackground(Void... params) {
 			long start = System.currentTimeMillis();
-			while (mLocation == null && System.currentTimeMillis()-start < 10000) {
+			while (mLocation == null && System.currentTimeMillis() - start < 10000) {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -293,7 +334,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 			}
 			return null;
 		}
-		
+
 		@Override
 		protected void onPostExecute(Void result) {
 			callAppForDirections();
