@@ -33,15 +33,12 @@ import eu.trentorise.smartcampus.rifiuti.geo.OSMGeocoder;
 import eu.trentorise.smartcampus.rifiuti.model.Area;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.KeyboardUtils;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils.ProfileNameExistsException;
 import eu.trentorise.smartcampus.rifiuti.utils.ValidatorHelper;
 import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
-public class ProfileFragment extends Fragment implements ILocation, onBackListener {
+public class ProfileFragment extends Fragment implements onBackListener {
 
 	// private MessageHandler messageHandler = null;
 
@@ -70,7 +67,6 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 
 	private Profile mProfile;
 	private MODE mActiveMode;
-	private LocationUtils mLocUtils;
 	// private String mLastString = "";
 	// private AsyncTask mCurrentTask;
 
@@ -94,8 +90,7 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 	}
 
 	private boolean isFirstProfile() {
-		return getArguments() == null
-				|| !getArguments().containsKey(PROFILE_INDEX_KEY);
+		return getArguments() == null || !getArguments().containsKey(PROFILE_INDEX_KEY);
 	}
 
 	@Override
@@ -104,18 +99,13 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 		setHasOptionsMenu(true);
 
 		if (savedInstanceState != null) {
-			mActiveMode = (savedInstanceState.getInt(SAVE_MODE) == 0) ? MODE.VIEW
-					: MODE.EDIT;
+			mActiveMode = (savedInstanceState.getInt(SAVE_MODE) == 0) ? MODE.VIEW : MODE.EDIT;
 			if (mActiveMode == MODE.VIEW) {
-				getArguments().putInt(PROFILE_INDEX_KEY,
-						savedInstanceState.getInt(PROFILE_INDEX_KEY));
+				getArguments().putInt(PROFILE_INDEX_KEY, savedInstanceState.getInt(PROFILE_INDEX_KEY));
 			} else {
-				saved = new String[] { savedInstanceState.getString(SAVE_AREA),
-						savedInstanceState.getString(SAVE_COMUNE),
-						savedInstanceState.getString(SAVE_NAME),
-						savedInstanceState.getString(SAVE_NCIV),
-						savedInstanceState.getString(SAVE_UTENZA),
-						savedInstanceState.getString(SAVE_VIA) };
+				saved = new String[] { savedInstanceState.getString(SAVE_AREA), savedInstanceState.getString(SAVE_COMUNE),
+						savedInstanceState.getString(SAVE_NAME), savedInstanceState.getString(SAVE_NCIV),
+						savedInstanceState.getString(SAVE_UTENZA), savedInstanceState.getString(SAVE_VIA) };
 			}
 		} else {
 			mActiveMode = MODE.VIEW;
@@ -138,8 +128,7 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_profile, container, false);
 	}
 
@@ -149,8 +138,7 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 		initializeViews();
 		if (mActiveMode == MODE.VIEW) {
 			if (!isFirstProfile()) {
-				mProfile = PreferenceUtils.getProfile(getActivity(),
-						getArguments().getInt(PROFILE_INDEX_KEY));
+				mProfile = PreferenceUtils.getProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
 				if (mProfile != null) {
 					setContent();
 				} else {
@@ -169,21 +157,11 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		getActivity().setProgressBarIndeterminateVisibility(false);
-		if (mLocUtils != null) {
-			mLocUtils.close();
-			mLocUtils = null;
-		}
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
-		if (mProfile == null && mLocUtils == null) {
+		if (mProfile == null) {
 			getActivity().setProgressBarIndeterminateVisibility(true);
-			mLocUtils = new LocationUtils(getActivity(), this);
+			RifiutiHelper.locationHelper.start();
 		}
 	}
 
@@ -191,10 +169,7 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 	public void onStop() {
 		super.onPause();
 		getActivity().setProgressBarIndeterminateVisibility(false);
-		if (mLocUtils != null) {
-			mLocUtils.close();
-			mLocUtils = null;
-		}
+		RifiutiHelper.locationHelper.stop();
 	}
 
 	@Override
@@ -208,8 +183,7 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 		if (mActiveMode == MODE.VIEW) {
 			menu.getItem(0).setVisible(true);
 			if (mProfile != null
-					&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments()
-							.getInt(PROFILE_INDEX_KEY))
+					&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments().getInt(PROFILE_INDEX_KEY))
 				menu.getItem(1).setVisible(true);
 			else
 				menu.getItem(1).setVisible(false);
@@ -238,16 +212,14 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 				addOrModify(newProfile);
 				KeyboardUtils.hideKeyboard(abActivity, getView());
 				if (getActivity() instanceof MainActivity) {
-					((MainActivity) getActivity())
-							.prepareNavDropdown(isFirstProfile());
+					((MainActivity) getActivity()).prepareNavDropdown(isFirstProfile());
 				}
 			} catch (InvalidNameExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNome, null);
 			} catch (InvalidUtenzaExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETUtenza, null);
 			} catch (InvalidAreaExeption e) {
-				ValidatorHelper.highlight(getActivity(), mAreaSpinner,
-						getResources().getString(R.string.err_unknown_area));
+				ValidatorHelper.highlight(getActivity(), mAreaSpinner, getResources().getString(R.string.err_unknown_area));
 			} catch (InvalidViaExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETVia, null);
 			} catch (InvalidNCivicoExeption e) {
@@ -269,37 +241,10 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 	}
 
 	@Override
-	public void onLocationChaged(Location l) {
-		Log.i(ProfileFragment.class.getName(), l.toString());
-		mLocUtils.close();
-		mLocUtils = null;
-		if (isInDB(l))
-			new GeocoderTask().execute(l);
-	}
-
-	@Override
-	public void onErrorOccured(ErrorType ex, String provider) {
-		// Do nothing, the user should just type what it wants
-		getActivity().setProgressBarIndeterminateVisibility(false);
-		Log.e(ProfileFragment.class.getName(), "Provider:" + provider
-				+ "\nErrorType:" + ex);
-	}
-
-	@Override
-	public void onStatusChanged(String provider, boolean isActive) {
-		if (!isActive) {
-			getActivity().setProgressBarIndeterminateVisibility(false);
-			Toast.makeText(getActivity(), getString(R.string.err_gps_off),
-					Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		if (mActiveMode == MODE.VIEW) {
 			outState.putInt(SAVE_MODE, 0);
-			outState.putInt(PROFILE_INDEX_KEY,
-					getArguments().getInt(PROFILE_INDEX_KEY));
+			outState.putInt(PROFILE_INDEX_KEY, getArguments().getInt(PROFILE_INDEX_KEY));
 		} else {
 			outState.putInt(SAVE_MODE, 1);
 			// outState.putString(SAVE_AREA, mETArea.getText().toString());
@@ -330,7 +275,6 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 		getFragmentManager().popBackStack();
 	}
 
-
 	private boolean isInDB(Location l) {
 		// TODO check with db
 		return true;
@@ -351,29 +295,23 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 				}
 
 			} else {
-				PreferenceUtils.editProfile(getActivity(), getArguments()
-						.getInt(PROFILE_INDEX_KEY), newProfile, mProfile);
+				PreferenceUtils.editProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY), newProfile, mProfile);
 				mProfile = newProfile;
 				setContent();
 
 			}
 			switchMode();
 		} catch (ProfileNameExistsException e) {
-			Log.e(ProfileFragment.class.getName(), "profile's name exists:"
-					+ newProfile.getName());
-			Toast.makeText(getActivity(), getString(R.string.err_prof_name),
-					Toast.LENGTH_SHORT).show();
+			Log.e(ProfileFragment.class.getName(), "profile's name exists:" + newProfile.getName());
+			Toast.makeText(getActivity(), getString(R.string.err_prof_name), Toast.LENGTH_SHORT).show();
 
 		} catch (JSONException e) {
 			Log.e(ProfileFragment.class.getName(), e.toString());
-			Toast.makeText(getActivity(),
-					getString(R.string.err_everything_go_lazy),
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.err_everything_go_lazy), Toast.LENGTH_SHORT).show();
 		}
 	}
 
-	private Profile getNewProfile() throws InvalidNameExeption,
-			InvalidUtenzaExeption, InvalidAreaExeption, InvalidViaExeption,
+	private Profile getNewProfile() throws InvalidNameExeption, InvalidUtenzaExeption, InvalidAreaExeption, InvalidViaExeption,
 			InvalidNCivicoExeption, InvalidComuneExeption {
 		// because it might be that some fields were left as they had been.
 		// create the profile from the saved one
@@ -455,17 +393,11 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 		mTVUtenza = (TextView) getView().findViewById(R.id.profile_utenza_tv);
 		mTVNCiv = (TextView) getView().findViewById(R.id.profile_nciv_tv);
 
-
-		
-		
-		mAreaSpinner = (Spinner) getView().findViewById(
-				R.id.profile_comune_spinner);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-				R.layout.spinner_row, comuneAreasNames);
+		mAreaSpinner = (Spinner) getView().findViewById(R.id.profile_comune_spinner);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_row, comuneAreasNames);
 		mAreaSpinner.setAdapter(adapter);
 		mAreaSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int pos, long id) {
+			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				area = comuneAreas.get(pos);
 			}
 
@@ -479,13 +411,10 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 		mETUtenza.setEnabled(false);
 		mETNCiv = (EditText) getView().findViewById(R.id.profile_nciv_et);
 
-		mVSComune = (ViewSwitcher) getView().findViewById(
-				R.id.profile_comune_vs);
+		mVSComune = (ViewSwitcher) getView().findViewById(R.id.profile_comune_vs);
 		mVSNome = (ViewSwitcher) getView().findViewById(R.id.profile_name_vs);
-		mVSVia = (ViewSwitcher) getView().findViewById(
-				R.id.profile_indirizzo_vs);
-		mVSUtenza = (ViewSwitcher) getView().findViewById(
-				R.id.profile_utenza_vs);
+		mVSVia = (ViewSwitcher) getView().findViewById(R.id.profile_indirizzo_vs);
+		mVSUtenza = (ViewSwitcher) getView().findViewById(R.id.profile_utenza_vs);
 		mVSNCiv = (ViewSwitcher) getView().findViewById(R.id.profile_nciv_vs);
 
 		if (saved != null) {
@@ -520,26 +449,21 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 
 	private void showConfirmAndDelete() {
 		AlertDialog.Builder build = createConfirmDialog();
-		build.setPositiveButton(getString(android.R.string.ok),
-				new DialogInterface.OnClickListener() {
+		build.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						try {
-							PreferenceUtils.removeProfile(getActivity(),
-									getArguments().getInt(PROFILE_INDEX_KEY));
-							if (getActivity() instanceof MainActivity)
-								((MainActivity) getActivity())
-										.prepareNavDropdown(false);
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				try {
+					PreferenceUtils.removeProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
+					if (getActivity() instanceof MainActivity)
+						((MainActivity) getActivity()).prepareNavDropdown(false);
 
-						} catch (Exception e) {
-							Toast.makeText(getActivity(),
-									getString(R.string.err_delete_profilo),
-									Toast.LENGTH_SHORT).show();
-						}
-						onBack();
-					}
-				});
+				} catch (Exception e) {
+					Toast.makeText(getActivity(), getString(R.string.err_delete_profilo), Toast.LENGTH_SHORT).show();
+				}
+				onBack();
+			}
+		});
 		build.show();
 	}
 
@@ -547,14 +471,13 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle(getString(R.string.dialog_confirm_title));
 		builder.setMessage(getString(R.string.dialog_confirm_msg));
-		builder.setNeutralButton(getString(android.R.string.cancel),
-				new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
 		return builder;
 	}
 
@@ -565,8 +488,7 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 			try {
 				Location l = params[0];
 				OSMGeocoder geo = new OSMGeocoder(getActivity());
-				final List<OSMAddress> addresses = geo.getFromLocation(
-						l.getLatitude(), l.getLongitude(), null);
+				final List<OSMAddress> addresses = geo.getFromLocation(l.getLatitude(), l.getLongitude(), null);
 				publishProgress(addresses.get(0));
 
 			} catch (Exception e) {
@@ -580,48 +502,33 @@ public class ProfileFragment extends Fragment implements ILocation, onBackListen
 			super.onProgressUpdate(values);
 			final OSMAddress address = values[0];
 			// the user might have clicked back
-			if (getFragmentManager() != null
-					&& getFragmentManager()
-							.findFragmentById(R.id.content_frame) != null
-					&& getFragmentManager()
-							.findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
+			if (getFragmentManager() != null && getFragmentManager().findFragmentById(R.id.content_frame) != null
+					&& getFragmentManager().findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
 				for (int i = 0; i < comuneAreasNames.size(); i++) {
-					if (address.city()
-							.equalsIgnoreCase(comuneAreasNames.get(i))) {
+					if (address.city().equalsIgnoreCase(comuneAreasNames.get(i))) {
 						final int pos = i;
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								getActivity());
+						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 						builder.setTitle(getString(R.string.dialog_gps_title));
-						String msg = String.format(
-								getString(R.string.dialog_gps_msg),
-								address.getStreet(),
-								(address.getHousenumber() != null) ? address
-										.getHousenumber() : "", address.city());
+						String msg = String.format(getString(R.string.dialog_gps_msg), address.getStreet(),
+								(address.getHousenumber() != null) ? address.getHousenumber() : "", address.city());
 						builder.setMessage(msg);
-						builder.setPositiveButton(
-								getString(android.R.string.ok),
-								new DialogInterface.OnClickListener() {
+						builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										mAreaSpinner.setSelection(pos);
-										// mACTVComune.setText(address.city());
-										mETVia.setText(address.getStreet());
-										mETNCiv.setText(address
-												.getHousenumber());
-									}
-								});
-						builder.setNeutralButton(
-								getString(android.R.string.cancel),
-								new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								mAreaSpinner.setSelection(pos);
+								// mACTVComune.setText(address.city());
+								mETVia.setText(address.getStreet());
+								mETNCiv.setText(address.getHousenumber());
+							}
+						});
+						builder.setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
 
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										dialog.dismiss();
-									}
-								});
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+							}
+						});
 						builder.create().show();
 					}
 				}

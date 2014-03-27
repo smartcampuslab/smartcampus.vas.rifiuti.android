@@ -20,7 +20,7 @@ import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationHelper;
 
 public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 	private Activity activity;
@@ -28,26 +28,26 @@ public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 	private int layoutGroupId;
 	private SparseArray<List<PuntoRaccolta>> points;
 	private SparseArray<List<DatiTipologiaRaccolta>> infos;
-	
 
-	public PuntoDiRaccoltaGroupAdapter(Activity activity, int layoutGroupId, int layoutItemId, List<PuntoRaccolta> objects, List<DatiTipologiaRaccolta> infos) {
+	public PuntoDiRaccoltaGroupAdapter(Activity activity, int layoutGroupId, int layoutItemId, List<PuntoRaccolta> objects,
+			List<DatiTipologiaRaccolta> infos) {
 		this.activity = activity;
 		this.layoutGroupId = layoutGroupId;
 		this.layoutItemId = layoutItemId;
 		this.points = new SparseArray<List<PuntoRaccolta>>();
 		this.infos = new SparseArray<List<DatiTipologiaRaccolta>>();
-		Map<String,Integer> map = new HashMap<String, Integer>();
-		
-		if (objects != null && objects.size() > 1) {
-			Collections.sort(objects, new LocationUtils.PRDistanceComparator(RifiutiHelper.getCurrentLocation()));
-		}
-		
+		Map<String, Integer> map = new HashMap<String, Integer>();
 
-//		Collections.sort(objects, new Comparator<PuntoRaccolta>() {
-//			public int compare(PuntoRaccolta lhs, PuntoRaccolta rhs) {
-//				return lhs.getTipologiaPuntiRaccolta().compareTo(rhs.getTipologiaPuntiRaccolta());
-//			}
-//		});
+		if (objects != null && objects.size() > 1) {
+			Collections.sort(objects, new LocationHelper.PRDistanceComparator(RifiutiHelper.locationHelper.getLocation()));
+		}
+
+		// Collections.sort(objects, new Comparator<PuntoRaccolta>() {
+		// public int compare(PuntoRaccolta lhs, PuntoRaccolta rhs) {
+		// return
+		// lhs.getTipologiaPuntiRaccolta().compareTo(rhs.getTipologiaPuntiRaccolta());
+		// }
+		// });
 		if (infos != null) {
 			for (DatiTipologiaRaccolta dtr : infos) {
 				Integer key = map.get(dtr.getTipologiaPuntoRaccolta());
@@ -100,11 +100,11 @@ public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 		TextView title = (TextView) row.findViewById(R.id.puntoraccolta_title);
 		TextView dist = (TextView) row.findViewById(R.id.puntoraccolta_distance);
 		PuntoRaccolta pr = getChild(groupPosition, childPosition);
-		if (pr.location() != null && RifiutiHelper.getCurrentLocation() != null) {
+		if (pr.location() != null && RifiutiHelper.locationHelper.getLocation() != null) {
 			Location l = new Location("");
 			l.setLatitude(pr.location()[0]);
 			l.setLongitude(pr.location()[1]);
-			double distKm = l.distanceTo(RifiutiHelper.getCurrentLocation())/1000;
+			double distKm = l.distanceTo(RifiutiHelper.locationHelper.getLocation()) / 1000;
 			dist.setText(activity.getString(R.string.distance, distKm));
 			dist.setVisibility(View.VISIBLE);
 		} else {
@@ -141,12 +141,12 @@ public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 		}
 		List<DatiTipologiaRaccolta> groupInfos = infos.get(groupPosition);
 		List<PuntoRaccolta> groupPoints = points.get(groupPosition);
-		
+
 		TextView tipoPuntoTv = (TextView) convertView.findViewById(R.id.title_tv);
 		TextView tipoRaccoltaTv = (TextView) convertView.findViewById(R.id.tiporaccolta_tv);
 		TextView infoTv = (TextView) convertView.findViewById(R.id.info_tv);
 		ImageView icon = (ImageView) convertView.findViewById(R.id.tiporaccolta_img);
-		
+
 		String tipoPuntoRaccolta = null;
 		String color = null;
 		String info = null;
@@ -162,9 +162,12 @@ public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 				colorSet.add(dtr.getColore());
 				infoSet.add(dtr.getInfo());
 			}
-			if (infoSet.size() == 1) info = infoSet.iterator().next();
-			if (colorSet.size() == 1) color = colorSet.iterator().next();
-			if (tipoRaccoltaSet.size() == 1) tipoRaccolta = tipoRaccoltaSet.iterator().next();
+			if (infoSet.size() == 1)
+				info = infoSet.iterator().next();
+			if (colorSet.size() == 1)
+				color = colorSet.iterator().next();
+			if (tipoRaccoltaSet.size() == 1)
+				tipoRaccolta = tipoRaccoltaSet.iterator().next();
 			tipoRaccoltaTv.setVisibility(View.VISIBLE);
 		} else {
 			tipoPuntoRaccolta = groupPoints.get(0).getTipologiaPuntiRaccolta();

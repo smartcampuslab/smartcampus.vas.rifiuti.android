@@ -28,7 +28,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,25 +39,20 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
+import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 
 /**
  * @author raman
  * 
  */
-public class FeedbackFragment extends Fragment implements ILocation {
-
-	private LocationUtils mLocUtils;
+public class FeedbackFragment extends Fragment {
 
 	private Location mLocation;
 	private boolean useLocation = false;
 	private String imageUri = null;
 
-	private int IMG_HEIGHT = 150;//dp
-	
+	private int IMG_HEIGHT = 150;// dp
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -100,8 +94,10 @@ public class FeedbackFragment extends Fragment implements ILocation {
 				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getString(R.string.feedback_to), null));
 				intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_subject));
 				String text = ((EditText) getView().findViewById(R.id.feedback_text_et)).getText().toString();
-				if (mLocation != null) {
+				if (RifiutiHelper.locationHelper.getLocation() != null) {
+					mLocation = RifiutiHelper.locationHelper.getLocation();
 					text += " \n\n[" + mLocation.getLatitude() + "," + mLocation.getLongitude() + "]";
+					Log.e(getClass().getSimpleName(), "Feedback text: " + text);
 				}
 				intent.putExtra(Intent.EXTRA_TEXT, text);
 				if (imageUri != null) {
@@ -122,79 +118,36 @@ public class FeedbackFragment extends Fragment implements ILocation {
 		getView().findViewById(R.id.feedback_img_text).setOnClickListener(clickListener);
 
 		CheckBox check = (CheckBox) getView().findViewById(R.id.feedback_gps);
+		if (check.isChecked()) {
+			useLocation = true;
+		}
 		check.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				useLocation = isChecked;
 				if (isChecked) {
-					getActivity().setProgressBarIndeterminateVisibility(true);
-					mLocUtils = new LocationUtils(getActivity(), FeedbackFragment.this);
+					// getActivity().setProgressBarIndeterminateVisibility(true);
+					RifiutiHelper.locationHelper.start();
 				} else {
-					mLocUtils = null;
-					getActivity().setProgressBarIndeterminateVisibility(false);
+					RifiutiHelper.locationHelper.stop();
+					// getActivity().setProgressBarIndeterminateVisibility(false);
 				}
 			}
 		});
 	}
 
 	@Override
-	public void onLocationChaged(Location l) {
-		Log.i(ProfileFragment.class.getName(), l.toString());
-		mLocation = l;
-		getActivity().setProgressBarIndeterminateVisibility(false);
-		if (mLocUtils != null) {
-			mLocUtils.close();
-			mLocUtils = null;
-		}
-	}
-
-	@Override
-	public void onErrorOccured(ErrorType ex, String provider) {
-		// Do nothing, the user should just type what it wants
-		Log.e(ProfileFragment.class.getName(), "Provider:" + provider + "\nErrorType:" + ex);
-	}
-
-	@Override
-	public void onStatusChanged(String provider, boolean isActive) {
-		if (!isActive) {
-			Toast.makeText(getActivity(), getString(R.string.err_gps_off), Toast.LENGTH_SHORT).show();
-			setGPS(false);
-		}
-	}
-
-	/**
-	 * 
-	 */
-	private void setGPS(boolean state) {
-		useLocation = state;
-		((CheckBox) getView().findViewById(R.id.feedback_gps)).setChecked(state);
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		getActivity().setProgressBarIndeterminateVisibility(false);
-		if (mLocUtils != null) {
-			mLocUtils.close();
-			mLocUtils = null;
-		}
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
-		// if checked and location == null restart
-		if (useLocation && mLocation == null) {
-			getActivity().setProgressBarIndeterminateVisibility(true);
-			mLocUtils = new LocationUtils(getActivity(), this);
+		if (useLocation) {
+			RifiutiHelper.locationHelper.start();
 		}
 	}
 
-	private void startCamera() {
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		File mediaStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(mediaStorageDir + File.separator + "tmpImg.jpg")));
-		startActivityForResult(Intent.createChooser(intent, getString(R.string.feedback_capture)), 100);
+	@Override
+	public void onStop() {
+		super.onStop();
+		RifiutiHelper.locationHelper.stop();
 	}
 
 	@Override
@@ -211,12 +164,12 @@ public class FeedbackFragment extends Fragment implements ILocation {
 								.getContentResolver(), fi.getAbsolutePath(), null, null));
 						imageUri = imgUri.toString();
 						final BitmapFactory.Options options = new BitmapFactory.Options();
-					    options.inJustDecodeBounds = true;
-					    BitmapFactory.decodeFile(fi.getAbsolutePath(), options);
-					    
-					    options.inSampleSize = calculateInSampleSize(options, dpToPx(IMG_HEIGHT), dpToPx(IMG_HEIGHT));
-					    options.inJustDecodeBounds = false;
-						Bitmap myBitmap = BitmapFactory.decodeFile(fi.getAbsolutePath(),options);
+						options.inJustDecodeBounds = true;
+						BitmapFactory.decodeFile(fi.getAbsolutePath(), options);
+
+						options.inSampleSize = calculateInSampleSize(options, dpToPx(IMG_HEIGHT), dpToPx(IMG_HEIGHT));
+						options.inJustDecodeBounds = false;
+						Bitmap myBitmap = BitmapFactory.decodeFile(fi.getAbsolutePath(), options);
 
 						ImageView myImage = (ImageView) getView().findViewById(R.id.feedback_img_result);
 						myImage.setVisibility(View.VISIBLE);
@@ -231,32 +184,40 @@ public class FeedbackFragment extends Fragment implements ILocation {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	public static int calculateInSampleSize( BitmapFactory.Options options, int reqWidth, int reqHeight) {
-	    // Raw height and width of image
-	    final int height = options.outHeight;
-	    final int width = options.outWidth;
-	    int inSampleSize = 1;
-	
-	    int ref = Math.max(reqHeight, reqWidth);
-	    
-	    if (height > ref || width > ref) {
-	    	
-	        final int halfHeight = height / 2;
-	        final int halfWidth = width / 2;
-	
-	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-	        // height and width larger than the requested height and width.
-	        while ((halfHeight / inSampleSize) > ref
-	                || (halfWidth / inSampleSize) > ref) {
-	            inSampleSize *= 2;
-	        }
-	    }
-	
-	    return inSampleSize;
+
+	private void startCamera() {
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		File mediaStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(mediaStorageDir + File.separator + "tmpImg.jpg")));
+		startActivityForResult(Intent.createChooser(intent, getString(R.string.feedback_capture)), 100);
 	}
+
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		int ref = Math.max(reqHeight, reqWidth);
+
+		if (height > ref || width > ref) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and
+			// keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > ref || (halfWidth / inSampleSize) > ref) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
+	}
+
 	public int dpToPx(int dp) {
 		float density = getResources().getDisplayMetrics().density;
-	    return Math.round((float)dp * density);
+		return Math.round((float) dp * density);
 	}
 }

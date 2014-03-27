@@ -34,7 +34,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
@@ -48,6 +47,7 @@ import eu.trentorise.smartcampus.rifiuti.model.Gestore;
 import eu.trentorise.smartcampus.rifiuti.model.Istituzione;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
+import eu.trentorise.smartcampus.rifiuti.utils.LocationHelper;
 
 /**
  * @author raman
@@ -74,12 +74,12 @@ public class RifiutiHelper {
 	private Profile mProfile = null;
 	private List<String> mAreas = null;
 
+	public static LocationHelper locationHelper = null;
+
 	private Map<String, Integer> colorMap = null;
 	private Map<String, Drawable> typeColorMap;
 	private Map<String, Drawable> tipiRifiutoDrawablesMap = null;
 	private Map<String, Integer> tipiPuntoMarkerMap = null;
-
-	private Location currentLocation = null;
 
 	/**
 	 * Initialize data access layer support
@@ -90,6 +90,9 @@ public class RifiutiHelper {
 	public static void init(Context ctx) throws IOException {
 		mHelper = new RifiutiHelper(ctx);
 		NotesHelper.init(ctx);
+		if (locationHelper == null) {
+			locationHelper = new LocationHelper(ctx);
+		}
 		// TODO replace test data
 		// setProfile(new Profile("test", "utenza domestica",
 		// "Bleggio Superiore", "via Dante", "1", "Bleggio Superiore"));
@@ -1018,17 +1021,6 @@ public class RifiutiHelper {
 	public static int getMarkerIcon(PuntoRaccolta item) {
 		return mHelper.getTipiPuntoMarkerMap(mHelper.mContext).get(
 				item.getTipologiaPuntiRaccolta().toLowerCase(Locale.getDefault()));
-	}
-
-	/**
-	 * @param l
-	 */
-	public static void setCurrentLocation(Location l) {
-		mHelper.currentLocation = l;
-	}
-
-	public static Location getCurrentLocation() {
-		return mHelper.currentLocation;
 	}
 
 	/**

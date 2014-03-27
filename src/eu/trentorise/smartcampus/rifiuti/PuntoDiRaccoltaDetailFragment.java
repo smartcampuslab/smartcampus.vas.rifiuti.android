@@ -39,26 +39,21 @@ import eu.trentorise.smartcampus.rifiuti.model.Calendario;
 import eu.trentorise.smartcampus.rifiuti.model.DatiTipologiaRaccolta;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ErrorType;
-import eu.trentorise.smartcampus.rifiuti.utils.LocationUtils.ILocation;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 
-public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation {
+public class PuntoDiRaccoltaDetailFragment extends Fragment {
 
-	private final boolean useGoogleMaps = true;
+	private final boolean USE_GOOGLE_MAPS = true;
+	private final int GET_LOCATION_WAIT_TIME = 10000;
 
 	private PuntoRaccolta puntoDiRaccolta = null;
 	private List<Calendario> orariList = null;
 	private List<DatiTipologiaRaccolta> tipologieList = null;
 	private ActionBarActivity abActivity;
-	private Location mLocation;
-	private LocationUtils mLocUtils;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setHasOptionsMenu(true);
 	}
 
@@ -66,15 +61,6 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_puntodiraccolta_details, container, false);
 		return viewGroup;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			abActivity.onBackPressed();
-			return true;
-		}
-		return false;
 	}
 
 	@Override
@@ -205,8 +191,35 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		// sv.focusSearch(ScrollView.FOCUS_UP);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		RifiutiHelper.locationHelper.start();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		RifiutiHelper.locationHelper.stop();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			abActivity.onBackPressed();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putAll(getArguments());
+		super.onSaveInstanceState(outState);
+	}
+
 	private void bringMeThere(PuntoRaccolta pdr) {
-		if (useGoogleMaps) {
+		if (USE_GOOGLE_MAPS) {
 			callAppForDirectionsGmaps();
 		} else {
 			try {
@@ -222,26 +235,12 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 
 	}
 
-	@Override
-	public void onLocationChaged(Location l) {
-		Log.i(ProfileFragment.class.getName(), l.toString());
-		mLocation = l;
-		if (mLocUtils != null) {
-			mLocUtils.close();
-			mLocUtils = null;
-		}
-	}
-
 	private void callAppForDirections() {
-		if (mLocUtils != null) {
-			mLocUtils.close();
-			mLocUtils = null;
-		}
-
 		Address from = new Address(Locale.getDefault());
-		if (mLocation != null) {
-			from.setLatitude(mLocation.getLatitude());
-			from.setLongitude(mLocation.getLongitude());
+		if (RifiutiHelper.locationHelper.getLocation() != null) {
+			Location location = RifiutiHelper.locationHelper.getLocation();
+			from.setLatitude(location.getLatitude());
+			from.setLongitude(location.getLongitude());
 		}
 		LatLng latLng = null;
 		Address to = new Address(Locale.getDefault());
@@ -263,16 +262,12 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 	}
 
 	private void callAppForDirectionsGmaps() {
-		if (mLocUtils != null) {
-			mLocUtils.close();
-			mLocUtils = null;
-		}
-
 		Address from = new Address(Locale.getDefault());
-		if (mLocation != null) {
-			from.setLatitude(mLocation.getLatitude());
-			from.setLongitude(mLocation.getLongitude());
-		}
+		// if (RifiutiHelper.locationHelper.getLocation() != null) {
+		// Location location = RifiutiHelper.locationHelper.getLocation();
+		// from.setLatitude(location.getLatitude());
+		// from.setLongitude(location.getLongitude());
+		// }
 		LatLng latLng = null;
 		Address to = new Address(Locale.getDefault());
 		double[] coords = puntoDiRaccolta.location();
@@ -292,41 +287,23 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment implements ILocation
 		startActivity(navigation);
 	}
 
-	@Override
-	public void onErrorOccured(ErrorType ex, String provider) {
-		// Do nothing, the user should just type what it wants
-		Log.e(ProfileFragment.class.getName(), "Provider:" + provider + "\nErrorType:" + ex);
-	}
-
-	@Override
-	public void onStatusChanged(String provider, boolean isActive) {
-		if (!isActive) {
-			Toast.makeText(getActivity(), getString(R.string.err_gps_off), Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		outState.putAll(getArguments());
-		super.onSaveInstanceState(outState);
-	}
-
 	private class LocalizeAsyncTask extends AsyncTask<Void, Void, Void> {
 		private ProgressDialog progress = null;
 
 		@Override
 		protected void onPreExecute() {
-			if (getActivity() == null)
+			if (getActivity() == null) {
 				return;
+			}
 
 			progress = ProgressDialog.show(getActivity(), "", getString(R.string.geocoding), true);
-			mLocUtils = new LocationUtils(getActivity(), PuntoDiRaccoltaDetailFragment.this);
 		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			long start = System.currentTimeMillis();
-			while (mLocation == null && System.currentTimeMillis() - start < 10000) {
+			while (RifiutiHelper.locationHelper.getLocation() == null
+					&& System.currentTimeMillis() - start < GET_LOCATION_WAIT_TIME) {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
