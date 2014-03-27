@@ -118,7 +118,7 @@
     <string name="feedback_subject">Segnalazione dalla app \"100% Riciclo\"</string>
     <string name="feedback_capture">Image</string>
     <string name="feedback_mail">Seleziona l\'app per segnalazione</string>
-    <string name="feedback_to">rifiuti@comunitadellegiudicarie.it</string>
+    <string name="feedback_to">segnalazioni.rifiuti@comunitadellegiudicarie.it</string>
     <string name="contacts_container_institute">COMUNE</string>
     <string name="contacts_container_org">GESTORE</string>
     <string name="contacts_title">Contatti</string>
@@ -171,7 +171,7 @@
     <string name="info_giudicarie">Comunità delle giudicarie \n http://www.comunitadellegiudicarie.it/</string>
     <string name="info_ladurner">Ladurner Energy\n www.ladurnerambiente.it</string>
     <string name="info_fbk">fbk</string>
-    <string name="info_mail">Per eventuali segnalazioni o richieste di informazioni contattateci scrivendo a centoxcentoriciclo@smartcampuslab.it</string>
+    <string name="info_mail">Per eventuali segnalazioni o richieste di informazioni contattateci scrivendo a riciclo@smartcampuslab.it</string>
     <string name="info_feedback">Per segnalare un problema con la raccolta dei rifiuti schiaccia qui:</string>
     
     <string name="geocoding">Ricerca della posizione...</string>
