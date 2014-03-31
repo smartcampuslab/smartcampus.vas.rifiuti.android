@@ -211,10 +211,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			findViewById(R.id.profile_rg).setVisibility(View.GONE);
 		}
 		mDrawerToggle.syncState();
+		setCurrentProfile();
 		if (loadHome) {
 			unlockDrawer();
 			showDrawer();
-			setCurrentProfile();
 			loadFragment(0);
 		}
 	}
