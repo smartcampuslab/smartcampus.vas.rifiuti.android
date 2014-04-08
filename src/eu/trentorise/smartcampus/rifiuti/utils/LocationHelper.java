@@ -62,9 +62,13 @@ public class LocationHelper {
 			mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 		}
 
-		mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (mLocation == null) {
-			mLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		Location mLastKnownLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (mLastKnownLocation == null) {
+			mLastKnownLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		}
+
+		if (isBetterLocation(null, mLastKnownLocation)) {
+			mLocation = mLastKnownLocation;
 		}
 
 		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
@@ -76,10 +80,7 @@ public class LocationHelper {
 	}
 
 	public Location getLocation() {
-		if (mLocation != null) {
-			return mLocation;
-		}
-		return null;
+		return mLocation;
 	}
 
 	public boolean addLocationListener(LocationListener ll) {
@@ -154,6 +155,7 @@ public class LocationHelper {
 	 */
 	// private static final int FRESHNESS = 1000 * 60 * 2;
 	private static final int FRESHNESS = 1000 * 60 * 1;
+	private static final int OLDNESS = 1000 * 60 * 120;
 
 	/**
 	 * Determines whether one Location reading is better than the current
@@ -171,18 +173,26 @@ public class LocationHelper {
 			return true;
 		}
 
+		if (location == null) {
+			if (currentBestLocation.getTime() > System.currentTimeMillis() - OLDNESS) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 		// Check whether the new location fix is newer or older
 		long timeDelta = location.getTime() - currentBestLocation.getTime();
 		boolean isSignificantlyNewer = timeDelta > FRESHNESS;
 		boolean isSignificantlyOlder = timeDelta < -FRESHNESS;
 		boolean isNewer = timeDelta > 0;
 
-		// If it's been more than two minutes since the current location, use
+		// If it's been more than FRESHNESS since the current location, use
 		// the new location
 		// because the user has likely moved
 		if (isSignificantlyNewer) {
 			return true;
-			// If the new location is more than two minutes older, it must be
+			// If the new location is more than FRESHNESS older, it must be
 			// worse
 		} else if (isSignificantlyOlder) {
 			return false;
