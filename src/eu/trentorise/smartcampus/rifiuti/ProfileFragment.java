@@ -160,16 +160,16 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	public void onResume() {
 		super.onResume();
 		if (mProfile == null) {
-			getActivity().setProgressBarIndeterminateVisibility(true);
-			RifiutiHelper.locationHelper.start();
+//			getActivity().setProgressBarIndeterminateVisibility(true);
+//			RifiutiHelper.locationHelper.start();
 		}
 	}
 
 	@Override
 	public void onStop() {
 		super.onPause();
-		getActivity().setProgressBarIndeterminateVisibility(false);
-		RifiutiHelper.locationHelper.stop();
+//		getActivity().setProgressBarIndeterminateVisibility(false);
+//		RifiutiHelper.locationHelper.stop();
 	}
 
 	@Override
