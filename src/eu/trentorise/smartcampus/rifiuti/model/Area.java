@@ -9,9 +9,11 @@ public class Area {
 	private String parent;
 	private String gestore;
 	private String descrizione;
-	private String comune;
+	private String localita;
 	private String via;
 	private String numero;
+	
+	private String comune;
 	
 	public String getIstituzione() {
 		return istituzione;
@@ -53,12 +55,12 @@ public class Area {
 		this.descrizione = descrizione;
 	}
 
-	public String getComune() {
-		return comune;
+	public String getLocalita() {
+		return localita;
 	}
 
-	public void setComune(String comune) {
-		this.comune = comune;
+	public void setLocalita(String comune) {
+		this.localita = comune;
 	}
 
 	public String getVia() {
@@ -77,4 +79,11 @@ public class Area {
 		this.numero = numero;
 	}
 
+	public String getComune() {
+		return comune;
+	}
+
+	public void setComune(String comune) {
+		this.comune = comune;
+	}
 }

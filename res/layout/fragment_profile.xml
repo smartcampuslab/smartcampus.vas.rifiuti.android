@@ -32,8 +32,7 @@
             android:hint="@string/profilo_nome"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:minHeight="48dp"
-            android:nextFocusDown="@+id/profile_utenza_et" />
+            android:minHeight="48dp"/>
     </ViewSwitcher>
 
     <TextView
@@ -56,17 +55,22 @@
             android:text="@string/profilo_utenza"
             android:textColor="@android:color/secondary_text_light" />
 
-        <EditText
-            android:id="@+id/profile_utenza_et"
+<!--         <EditText -->
+<!--             android:id="@+id/profile_utenza_et" -->
+<!--             android:layout_width="match_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:editable="false" -->
+<!--             android:hint="@string/profilo_utenza" -->
+<!--             android:imeOptions="actionNext" -->
+<!--             android:inputType="text" -->
+<!--             android:minHeight="48dp" -->
+<!--             android:nextFocusDown="@+id/profile_comune_et" -->
+<!--             android:text="@string/profilo_utenza_PRIVATO" /> -->
+        <Spinner
+            android:id="@+id/profile_utenza_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:editable="false"
-            android:hint="@string/profilo_utenza"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:minHeight="48dp"
-            android:nextFocusDown="@+id/profile_comune_et"
-            android:text="@string/profilo_utenza_PRIVATO" />
+            android:spinnerMode="dialog" android:entries="@array/utenze"/>
     </ViewSwitcher>
 
     <TextView

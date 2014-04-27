@@ -45,7 +45,6 @@
     <string name="profilo_comune">Comune/Località</string>
     <string name="profilo_area">Area</string>
     <string name="profilo_utenza">Tipo di utenza</string>
-    <string name="profilo_utenza_PRIVATO">utenza domestica</string>
     <string name="profilo_via">Via/Piazza/Viale</string>
     <string name="profilo_nciv">Numero Civico</string>
     <string name="err_delete_profilo">Impossibile eliminare l\' ultimo profilo</string>
@@ -54,7 +53,19 @@
     <string name="dialog_gps_msg">%1$s %2$s, %3$s</string>
     <string name="err_unknown_area">Area specificata non è riconosciuta.</string>
     <string name="err_prof_name">Il nome del profilo è già in uso</string>
-
+    <string name="comune_empty">Selezionare</string>
+    
+    
+    <string name="profilo_utenza_PRIVATO">utenza domestica</string>
+    <string name="profilo_utenza_OCCASIONALE">utenza occasionale</string>
+    <string name="profilo_utenza_NONPRIVATO">utenza non domestica</string>
+    
+    <string-array name="utenze">
+        <item>@string/profilo_utenza_PRIVATO</item>
+        <item>@string/profilo_utenza_NONPRIVATO</item>
+        <item>@string/profilo_utenza_OCCASIONALE</item>
+    </string-array>
+    
     <!-- Actions -->
     <string name="action_edit">Modifica</string>
     <string name="action_save">Salva</string>

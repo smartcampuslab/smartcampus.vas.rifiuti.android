@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -27,7 +26,8 @@ public class RifiutoDetailsFragment extends Fragment {
 	List<PuntoRaccolta> puntiDiRaccolta = null;
 	private ActionBarActivity abActivity;
 	private List<DatiTipologiaRaccolta> datiTipologiaRaccoltaList;
-
+	private boolean mPreferredOnly = true;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,7 +80,7 @@ public class RifiutoDetailsFragment extends Fragment {
 			}
 			tipologiaRifiuto = RifiutiHelper.getTipoRifiuto(rifiuto);
 			if (tipologiaRifiuto != null) {
-				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
+				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto, mPreferredOnly);
 			}
 			datiTipologiaRaccoltaList = RifiutiHelper.getDatiTipologiaRaccolta(rifiuto);
 			// } else if (tipologiaRifiuto != null) {

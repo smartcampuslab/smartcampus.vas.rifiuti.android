@@ -58,10 +58,9 @@ public class ProfileFragment extends Fragment implements onBackListener {
 
 	private TextView mTVNome, mTVComune, mTVVia, mTVNCiv, /** mTVArea, */
 	mTVUtenza;
-	private EditText mETNome, mETVia, mETNCiv, /** mETArea, */
-	mETUtenza;
+	private EditText mETNome, mETVia, mETNCiv; /** mETArea, */
 	// private AutoCompleteTextView mACTVComune;
-	private Spinner mAreaSpinner;
+	private Spinner mAreaSpinner, mUtenzaSpinner;
 	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv/** , mVSArea */
 	, mVSUtenza;
 
@@ -112,13 +111,18 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		}
 
 		// messageHandler = new MessageHandler();
-		comuneAreas = RifiutiHelper.readAreas();
-		comuneAreasNames = new ArrayList<String>(comuneAreas.size());
-		for (Area a : comuneAreas) {
-			comuneAreasNames.add(a.getComune());
-		}
 	}
 
+	private void updateAreas(String tipoUtenza) {
+		comuneAreas = RifiutiHelper.readAreasForTipoUtenza(tipoUtenza);
+		comuneAreasNames = new ArrayList<String>(comuneAreas.size());
+		for (Area a : comuneAreas) {
+			comuneAreasNames.add(a.getLocalita());
+		}
+		comuneAreas.add(0, null);
+		comuneAreasNames.add(0,getString(R.string.comune_empty));
+	} 
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -160,7 +164,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	public void onResume() {
 		super.onResume();
 		if (mProfile == null) {
-			getActivity().setProgressBarIndeterminateVisibility(true);
+//			getActivity().setProgressBarIndeterminateVisibility(true);
 			RifiutiHelper.locationHelper.start();
 		}
 	}
@@ -168,7 +172,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	@Override
 	public void onStop() {
 		super.onPause();
-		getActivity().setProgressBarIndeterminateVisibility(false);
+//		getActivity().setProgressBarIndeterminateVisibility(false);
 		RifiutiHelper.locationHelper.stop();
 	}
 
@@ -217,7 +221,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			} catch (InvalidNameExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNome, null);
 			} catch (InvalidUtenzaExeption e) {
-				ValidatorHelper.highlight(getActivity(), mETUtenza, null);
+				ValidatorHelper.highlight(getActivity(), mUtenzaSpinner, null);
 			} catch (InvalidAreaExeption e) {
 				ValidatorHelper.highlight(getActivity(), mAreaSpinner, getResources().getString(R.string.err_unknown_area));
 			} catch (InvalidViaExeption e) {
@@ -254,11 +258,11 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			// outState.putString(SAVE_COMUNE,
 			// mARCTVComune.getText().toString());
 			if (area != null) {
-				outState.putString(SAVE_COMUNE, area.getComune());
+				outState.putString(SAVE_COMUNE, area.getLocalita());
 			}
 			outState.putString(SAVE_NAME, mETNome.getText().toString());
 			outState.putString(SAVE_NCIV, mETNCiv.getText().toString());
-			outState.putString(SAVE_UTENZA, mETUtenza.getText().toString());
+			outState.putString(SAVE_UTENZA, mUtenzaSpinner.getSelectedItem().toString());
 			outState.putString(SAVE_VIA, mETVia.getText().toString());
 		}
 
@@ -325,13 +329,13 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			p.setName(mETNome.getText().toString());
 		else if (mProfile == null)
 			throw new InvalidNameExeption();
-		if (mETUtenza.getText().toString().trim().length() > 0)
-			p.setUtenza(mETUtenza.getText().toString());
+		if (mUtenzaSpinner.getSelectedItem().toString().trim().length() > 0)
+			p.setUtenza(mUtenzaSpinner.getSelectedItem().toString());
 		else if (mProfile == null)
 			throw new InvalidUtenzaExeption();
 		if (area != null) {
 			p.setArea(area.getNome());
-			p.setComune(area.getComune());
+			p.setComune(area.getLocalita());
 		} else {
 			throw new InvalidAreaExeption();
 		}
@@ -393,12 +397,35 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		mTVUtenza = (TextView) getView().findViewById(R.id.profile_utenza_tv);
 		mTVNCiv = (TextView) getView().findViewById(R.id.profile_nciv_tv);
 
+		mUtenzaSpinner = (Spinner) getView().findViewById(R.id.profile_utenza_spinner);
 		mAreaSpinner = (Spinner) getView().findViewById(R.id.profile_comune_spinner);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_row, comuneAreasNames);
-		mAreaSpinner.setAdapter(adapter);
+
+		mUtenzaSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+				updateAreas(mUtenzaSpinner.getItemAtPosition(pos).toString());
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_row, comuneAreasNames);
+				mAreaSpinner.setAdapter(adapter);
+				
+				if (mProfile != null) {
+					for (int i = 1; i < comuneAreas.size(); i++) {
+						if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
+							mAreaSpinner.setSelection(i);
+							break;
+						}
+					}
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+		});
+		
 		mAreaSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				area = comuneAreas.get(pos);
+				if (pos > 0) {
+					area = comuneAreas.get(pos);
+				}
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -407,8 +434,6 @@ public class ProfileFragment extends Fragment implements onBackListener {
 
 		mETNome = (EditText) getView().findViewById(R.id.profile_name_et);
 		mETVia = (EditText) getView().findViewById(R.id.profile_indirizzo_et);
-		mETUtenza = (EditText) getView().findViewById(R.id.profile_utenza_et);
-		mETUtenza.setEnabled(false);
 		mETNCiv = (EditText) getView().findViewById(R.id.profile_nciv_et);
 
 		mVSComune = (ViewSwitcher) getView().findViewById(R.id.profile_comune_vs);
@@ -422,11 +447,17 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			for (int i = 0; i < comuneAreas.size(); i++) {
 				if (saved[0].equals(comuneAreas.get(i).getNome())) {
 					mAreaSpinner.setSelection(i);
+					break;
 				}
 			}
 			mETNome.setText(saved[2]);
 			mETNCiv.setText(saved[3]);
-			mETUtenza.setText(saved[4]);
+			for (int i = 0; i < mUtenzaSpinner.getCount(); i++) {
+				if (saved[4].equals(mUtenzaSpinner.getItemAtPosition(i))) {
+					mUtenzaSpinner.setSelection(i);
+					break;
+				}
+			}
 			mETVia.setText(saved[5]);
 			saved = null;
 		}
@@ -436,11 +467,13 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		area = RifiutiHelper.findArea(mProfile.getArea());
 
 		mTVNome.setText(mProfile.getName());
-		for (int i = 0; i < comuneAreas.size(); i++) {
-			if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
-				mAreaSpinner.setSelection(i);
+		String[] utenze = getResources().getStringArray(R.array.utenze);
+		for (int i = 0; i < utenze.length; i++) {
+			if (mProfile.getUtenza().equals(utenze[i])) {
+				mUtenzaSpinner.setSelection(i);
 			}
 		}
+
 		mTVComune.setText(mProfile.getComune());
 		mTVVia.setText(mProfile.getVia());
 		mTVUtenza.setText(mProfile.getUtenza().toString());

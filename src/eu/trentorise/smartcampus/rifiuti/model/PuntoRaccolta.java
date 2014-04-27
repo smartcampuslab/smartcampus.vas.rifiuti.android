@@ -14,6 +14,15 @@ public class PuntoRaccolta implements Serializable {
 	private String indirizzo;
 	private String dettaglioIndirizzo;
 
+	private Boolean gettoniera;
+	private Boolean residuo;
+	private Boolean imbCarta;
+	private Boolean imbPlMet;
+	private Boolean organico;
+	private Boolean imbVetro;
+	private Boolean indumenti;
+	private String note;
+
 	private transient double[] location;
 	
 	@Override
@@ -82,6 +91,70 @@ public class PuntoRaccolta implements Serializable {
 	}
 	public String getDettaglioIndirizzo() {
 		return dettaglioIndirizzo;
+	}
+
+	public Boolean isGettoniera() {
+		return gettoniera;
+	}
+
+	public void setGettoniera(Boolean gettoniera) {
+		this.gettoniera = gettoniera;
+	}
+
+	public Boolean isResiduo() {
+		return residuo;
+	}
+
+	public void setResiduo(Boolean residuo) {
+		this.residuo = residuo;
+	}
+
+	public Boolean isImbCarta() {
+		return imbCarta;
+	}
+
+	public void setImbCarta(Boolean imbCarta) {
+		this.imbCarta = imbCarta;
+	}
+
+	public Boolean isImbPlMet() {
+		return imbPlMet;
+	}
+
+	public void setImbPlMet(Boolean imbPlMet) {
+		this.imbPlMet = imbPlMet;
+	}
+
+	public Boolean isOrganico() {
+		return organico;
+	}
+
+	public void setOrganico(Boolean organico) {
+		this.organico = organico;
+	}
+
+	public Boolean isImbVetro() {
+		return imbVetro;
+	}
+
+	public void setImbVetro(Boolean imbVetro) {
+		this.imbVetro = imbVetro;
+	}
+
+	public Boolean isIndumenti() {
+		return indumenti;
+	}
+
+	public void setIndumenti(Boolean indumenti) {
+		this.indumenti = indumenti;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public void setDettaglioIndirizzo(String dettaglioIndirizzo) {

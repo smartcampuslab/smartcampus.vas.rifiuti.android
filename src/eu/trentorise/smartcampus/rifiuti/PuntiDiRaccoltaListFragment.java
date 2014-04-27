@@ -28,6 +28,8 @@ public class PuntiDiRaccoltaListFragment extends Fragment {
 	boolean hasMenu = false;
 	private ActionBarActivity abActivity;
 
+	private boolean mPreferredOnly = true;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,13 +76,13 @@ public class PuntiDiRaccoltaListFragment extends Fragment {
 		List<DatiTipologiaRaccolta> data = null;
 		try {
 			if (tipologiaRaccolta != null) {
-				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRaccolta(tipologiaRaccolta);
+				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRaccolta(tipologiaRaccolta, mPreferredOnly);
 				data = RifiutiHelper.getDatiTipologiaRaccoltaPerTipologiaRaccolta(tipologiaRaccolta);
 			} else if (tipologiaRifiuto != null) {
-				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto);
+				puntiDiRaccolta = RifiutiHelper.getPuntiRaccoltaPerTipoRifiuto(tipologiaRifiuto, mPreferredOnly);
 				data = RifiutiHelper.getDatiTipologiaRaccoltaPerTipologiaRifiuto(tipologiaRifiuto);
 			} else {
-				puntiDiRaccolta = RifiutiHelper.getPuntiRaccolta();
+				puntiDiRaccolta = RifiutiHelper.getPuntiRaccolta(mPreferredOnly);
 				hasMenu = true;
 				setHasOptionsMenu(true);
 			}

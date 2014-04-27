@@ -101,14 +101,22 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 			orariList = RifiutiHelper.getCalendars(puntoDiRaccolta);
 			Collections.sort(orariList, RifiutiHelper.calendarioComparator);
 			// get lista tipologie per punto di raccolta
-			tipologieList = RifiutiHelper.readTipologiaRaccoltaPerTipologiaPuntoRaccolta(puntoDiRaccolta
-					.getTipologiaPuntiRaccolta());
+			tipologieList = RifiutiHelper.readTipologiaRaccoltaPerPuntoRaccolta(puntoDiRaccolta);
 		} catch (Exception e) {
 			Log.e(getClass().getSimpleName(), e.getMessage());
 		}
 
 		TextView mDettagli = (TextView) getActivity().findViewById(R.id.puntodiraccolta_dettagli);
 		mDettagli.setText(puntoDiRaccolta.dettaglio());
+		
+		TextView mNote = (TextView) getActivity().findViewById(R.id.puntodiraccolta_note);
+		if (puntoDiRaccolta.getNote() != null && puntoDiRaccolta.getNote().length() > 0) {
+			mNote.setText(puntoDiRaccolta.getNote());
+			mNote.setVisibility(View.VISIBLE);
+		} else {
+			mNote.setVisibility(View.GONE);
+		}
+		
 
 		ImageView mappa = (ImageView) getActivity().findViewById(R.id.map_dettagli);
 		mappa.setOnClickListener(new OnClickListener() {

@@ -68,7 +68,7 @@ public class MapFragment extends Fragment implements OnCameraChangeListener, Map
 			if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA)) {
 				mPuntiRaccolta = (List<PuntoRaccolta>) getArguments().getSerializable(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 			} else {
-				mPuntiRaccolta = RifiutiHelper.getPuntiRaccolta();
+				mPuntiRaccolta = RifiutiHelper.getPuntiRaccolta(true);
 			}
 
 			for (Iterator<PuntoRaccolta> iterator = mPuntiRaccolta.iterator(); iterator.hasNext();) {
