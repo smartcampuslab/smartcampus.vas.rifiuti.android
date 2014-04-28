@@ -60,11 +60,8 @@ public class RifiutiHelper {
 	/**
 	 * 
 	 */
+	private static final String UTENZA_OCCASIONALE = "utenza occasionale";
 	private static final String UTENZA_NON_DOMESTICA = "utenza non domestica";
-
-	/**
-	 * 
-	 */
 	private static final String UTENZA_DOMESTICA = "utenza domestica";
 
 	public static final int DB_VERSION = 4;
@@ -357,11 +354,11 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		// hook for special places
-		boolean preferredOnlyIfPossible = preferredOnly;
-		if (mHelper.mProfile.getUtenza().equals("utenza occasionale") && 
-				("residuo".equalsIgnoreCase(tipoRaccolta) || "residuo".equalsIgnoreCase(tipoRifiuto))) {
-			preferredOnlyIfPossible = false;
-		}
+		boolean includeSpecial = false;
+//		if (mHelper.mProfile.getUtenza().equals(UTENZA_OCCASIONALE) && 
+//				("residuo".equalsIgnoreCase(tipoRaccolta) || "residuo".equalsIgnoreCase(tipoRifiuto))) {
+//			includeSpecial = true;
+//		}
 		
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
@@ -376,7 +373,9 @@ public class RifiutiHelper {
 					+ " FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
 					+ " WHERE puntiRaccolta.area IN " + aree + " AND raccolta.area IN " + aree
-					+ (preferredOnlyIfPossible ? (" AND puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni)) : "")
+					+ (preferredOnly ? 
+							(" AND (puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni))+
+							 (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" :"") +")" : "")
 					+ " AND puntiRaccolta.tipologiaUtenza = '" + mHelper.mProfile.getUtenza() + "'";
 			String selector = " AND "
 					+ (tipoRaccolta != null ? ("raccolta.tipologiaRaccolta = '" + tipoRaccolta + "'")
@@ -438,6 +437,7 @@ public class RifiutiHelper {
 	 */
 	public static List<PuntoRaccolta> getPuntiRaccolta(boolean preferredOnly) throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		boolean includeSpecial = false;//UTENZA_OCCASIONALE.equalsIgnoreCase(mHelper.mProfile.getUtenza());
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
@@ -445,7 +445,9 @@ public class RifiutiHelper {
 					+ "indirizzo, dettaglioIndirizzo,"
 					+ " gettoniera, residuo, imbCarta, imbPlMet, organico, imbVetro, indumenti, note"
 					+ " FROM puntiRaccolta " + " WHERE puntiRaccolta.area IN " + aree
-					+ (preferredOnly ? (" AND puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni)) : "")
+					+ (preferredOnly ? 
+							(" AND (puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni)) + 
+							 (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" :"") +")" : "")
 					+ " AND area IN " + aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 
 			cursor = db.rawQuery(query, null);

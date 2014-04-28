@@ -25,6 +25,11 @@
         <item>Isola Ecologica ROSSO</item>
         <item>Farmacia ROSSO</item>
         <item>Rivenditore ROSSO</item>
+        <item>Porta a porta carta GIALLO</item>
+        <item>Porta a porta organico MARRONE</item>
+        <item>Porta a porta residuo VERDE SCURO</item>
+        <item>Porta a porta cartone BLU</item>
+        <item>Porta a porta plastica e metallo AZZURRO</item> 
         <item>Isola Ecologica</item>
         <item>CRM</item>
         <item>Farmacia</item>
@@ -54,6 +59,11 @@
         <item>@drawable/ic_isola_eco_red</item>
         <item>@drawable/ic_farmacia_red</item>
         <item>@drawable/ic_rivenditore_red</item>
+        <item>@drawable/ic_porta_a_porta_yellow</item>
+        <item>@drawable/ic_porta_a_porta_brown</item>
+        <item>@drawable/ic_porta_a_porta_olivegreen</item>
+        <item>@drawable/ic_porta_a_porta_blue</item>
+        <item>@drawable/ic_porta_a_porta_grey</item>
         <item>@drawable/ic_isola_eco_grey</item>
         <item>@drawable/ic_crm_grey</item>
         <item>@drawable/ic_farmacia_red</item>
