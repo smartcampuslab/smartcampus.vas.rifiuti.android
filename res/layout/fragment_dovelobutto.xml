@@ -39,7 +39,7 @@
                 android:src="@drawable/ic_search" />
         </LinearLayout>
 
-        <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
+        <it.smartcampuslab.riciclo.custom.ExpandedListView
             android:id="@+id/dovelobutto_results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:paddingRight="@dimen/fragment_horizontal_margin"
             android:visibility="gone" />
 
-        <eu.trentorise.smartcampus.rifiuti.custom.ExpandedGridView
+        <it.smartcampuslab.riciclo.custom.ExpandedGridView
             android:id="@+id/tipirifiuti_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
