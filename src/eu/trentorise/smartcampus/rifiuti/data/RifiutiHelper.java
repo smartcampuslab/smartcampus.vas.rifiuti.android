@@ -64,7 +64,7 @@ public class RifiutiHelper {
 	private static final String UTENZA_NON_DOMESTICA = "utenza non domestica";
 	private static final String UTENZA_DOMESTICA = "utenza domestica";
 
-	public static final int DB_VERSION = 4;
+	public static final int DB_VERSION = 6;
 
 	private static final String TUT_PREFS = "tutorial preference";
 
@@ -97,8 +97,8 @@ public class RifiutiHelper {
 	 * @throws IOException
 	 */
 	public static void init(Context ctx) throws IOException {
-		mHelper = new RifiutiHelper(ctx);
 		NotesHelper.init(ctx);
+		mHelper = new RifiutiHelper(ctx);
 		if (locationHelper == null) {
 			locationHelper = new LocationHelper(ctx);
 		}
