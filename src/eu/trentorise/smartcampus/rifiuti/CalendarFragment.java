@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.tyczj.extendedcalendarview.Day;
 
@@ -33,10 +32,10 @@ public class CalendarFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_calendar, container, false);
 		calendarView = (RifiutiCalendarView) viewGroup.findViewById(R.id.calendar_view);
-		calendarView.setDuplicatesAvoided(true);
+		calendarView.setDuplicatesAvoided(true); // default is false
 		calendarView.setMonthTextBackgroundColor(getResources().getColor(R.color.rifiuti_light));
 		calendarView.setTodayColor(getResources().getColor(R.color.rifiuti_green_middle));
-		calendarView.setCalendarEventsSource(new RifiutiEventsSource());
+		calendarView.setCalendarEventsSource(new RifiutiEventsSource(this.getActivity()));
 		return viewGroup;
 	}
 

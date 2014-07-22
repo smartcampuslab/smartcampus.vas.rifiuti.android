@@ -4,16 +4,36 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.SparseArray;
 
 import com.tyczj.extendedcalendarview.EventsSource;
 
+import eu.trentorise.smartcampus.rifiuti.R;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioItem;
 
 public class RifiutiEventsSource implements EventsSource<CalendarioEvent> {
+
+	private Map<String, Integer> calendarEventsColors;
+
+	public RifiutiEventsSource(Context ctx) {
+		calendarEventsColors = new HashMap<String, Integer>();
+		String[] array = ctx.getResources().getStringArray(R.array.calendar_events_strings);
+		TypedArray valueArray = ctx.getResources().obtainTypedArray(R.array.calendar_events_colors);
+		for (int i = 0; i < array.length; i++) {
+			calendarEventsColors.put(array[i].toLowerCase(Locale.getDefault()),
+					Integer.valueOf((valueArray.getColor(i, Color.GRAY))));
+		}
+		valueArray.recycle();
+	}
 
 	public SparseArray<Collection<CalendarioEvent>> getEventsByMonth(Calendar calendar) {
 		Calendar cal = (Calendar) calendar.clone();
@@ -52,7 +72,12 @@ public class RifiutiEventsSource implements EventsSource<CalendarioEvent> {
 				event.setDescription(item.getPoint().dettaglio());
 				event.setLocation(item.getPoint().getLocalizzazione());
 				event.setCalendarioItem(item);
-				// TODO: color?
+				if (!item.getColor().equals("")) {
+					Integer colorInteger = calendarEventsColors.get(item.getColor().toLowerCase(Locale.getDefault()));
+					if (colorInteger != null) {
+						event.setColor(colorInteger);
+					}
+				}
 				events.add(event);
 			}
 			eventsByMonth.append(i + 1, events);

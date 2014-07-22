@@ -13,4 +13,13 @@
     <color name="rifiuti_green_light">#8de058</color>
     <color name="rifiuti_green_light_o50">#778de058</color>
 
+    <!-- Calendar events colors -->
+    <color name="cal_event_verde">#57A639</color>
+    <color name="cal_event_verde_scuro">#53753C</color>
+    <color name="cal_event_marrone">#8E402A</color>
+    <color name="cal_event_giallo">#F8F335</color>
+    <color name="cal_event_azzurro">#2271B3</color>
+    <color name="cal_event_arancione">#FF6633</color>
+    <color name="cal_event_rosso">#F44611</color>
+
 </resources>

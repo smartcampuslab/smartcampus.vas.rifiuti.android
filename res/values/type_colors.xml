@@ -29,14 +29,14 @@
         <item>Porta a porta organico MARRONE</item>
         <item>Porta a porta residuo VERDE SCURO</item>
         <item>Porta a porta cartone BLU</item>
-        <item>Porta a porta plastica e metallo AZZURRO</item> 
+        <item>Porta a porta plastica e metallo AZZURRO</item>
         <item>Isola Ecologica</item>
         <item>CRM</item>
         <item>Farmacia</item>
         <item>Rivenditore</item>
-        </string-array>
+    </string-array>
+
     <integer-array name="type_icon_color_drawables">
- 
         <item>@drawable/ic_crm_green</item>
         <item>@drawable/ic_crm_olivegreen</item>
         <item>@drawable/ic_crm_brown</item>
@@ -68,6 +68,27 @@
         <item>@drawable/ic_crm_grey</item>
         <item>@drawable/ic_farmacia_red</item>
         <item>@drawable/ic_rivenditore_red</item>
-        </integer-array>
+    </integer-array>
+
+    <!-- Calendar colors -->
+    <string-array name="calendar_events_strings">
+        <item>verde</item>
+        <item>verde scuro</item>
+        <item>marrone</item>
+        <item>giallo</item>
+        <item>azzurro</item>
+        <item>arancione</item>
+        <item>rosso</item>
+    </string-array>
+
+    <integer-array name="calendar_events_colors">
+        <item>@color/cal_event_verde</item>
+        <item>@color/cal_event_verde_scuro</item>
+        <item>@color/cal_event_marrone</item>
+        <item>@color/cal_event_giallo</item>
+        <item>@color/cal_event_azzurro</item>
+        <item>@color/cal_event_arancione</item>
+        <item>@color/cal_event_rosso</item>
+    </integer-array>
 
 </resources>
