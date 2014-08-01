@@ -375,7 +375,7 @@ public class RifiutiHelper {
 					+ " WHERE puntiRaccolta.area IN " + aree + " AND raccolta.area IN " + aree
 					+ (preferredOnly ? 
 							(" AND (puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni))+
-							 (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" :"") +")" : "")
+							 (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" :"") +" OR puntiRaccolta.tipologiaPuntiRaccolta = 'CRM')" : "")
 					+ " AND puntiRaccolta.tipologiaUtenza = '" + mHelper.mProfile.getUtenza() + "'";
 			String selector = " AND "
 					+ (tipoRaccolta != null ? ("raccolta.tipologiaRaccolta = '" + tipoRaccolta + "'")
@@ -447,8 +447,8 @@ public class RifiutiHelper {
 					+ " FROM puntiRaccolta " + " WHERE puntiRaccolta.area IN " + aree
 					+ (preferredOnly ? 
 							(" AND (puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni)) + 
-							 (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" :"") +")" : "")
-					+ " AND area IN " + aree + " AND tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
+							 (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" :"") +" OR puntiRaccolta.tipologiaPuntiRaccolta = 'CRM')" : "")
+					+ " AND puntiRaccolta.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 
 			cursor = db.rawQuery(query, null);
 			List<PuntoRaccolta> result = extractListFromCursor(cursor);
