@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="action_settings">Configurazione</string>
-    <string name="action_edit">Modifica</string>
     <string name="empty"></string>
    
     <string name="dialog_confirm_title">Avviso</string>
@@ -67,6 +64,7 @@
     </string-array>
     
     <!-- Actions -->
+    <string name="action_settings">Configurazione</string>
     <string name="action_edit">Modifica</string>
     <string name="action_save">Salva</string>
     <string name="action_delete">Elimina</string>
@@ -96,7 +94,7 @@
     <!-- Punto di raccolta - Dettagli -->
     <string name="dettagli_label">DETTAGLI</string>
     <string name="orario_label">ORARIO</string>
-    <string name="tipologiediraccolta_label">TIPOLOGIE DI RACCOLTA</string>
+    <string name="tipologiediraccolta_label">Tipologie di raccolta</string>
     <string name="direction_intent">eu.trentorise.smartcampus.jp.NAVIGATE</string>
     <string name="from_for_direction">from</string>
     <string name="to_for_direction">to</string>
@@ -113,8 +111,8 @@
     <string name="punti_di_raccolta_title">Punti di raccolta</string>
     <string name="tipi_di_raccolta_title">Tipo di raccolta</string>
     <string name="profili_title">Profili</string>
-    <string name="Tutorial_title">Tutorial</string>
-    <string name="Informazioni_title">Informazioni</string>
+    <string name="tutorial_title">Tutorial</string>
+    <string name="informazioni_title">Informazioni</string>
     <string name="application_title">100% Riciclo</string>
     <string name="feedback_title">Segnalazione</string>
 
@@ -157,7 +155,6 @@
     <string name="segnala_tut">testo 5</string>
     <string name="contatti_title">Contatti</string>
     <string name="contatti_tut">testo 6</string>
-    <string name="tutorial_title">Tutorial</string>
     <string name="tutorial_tut">testo 7</string>
     <string name="info_title">Info</string>
     <string name="info_tut">testo 8</string>
