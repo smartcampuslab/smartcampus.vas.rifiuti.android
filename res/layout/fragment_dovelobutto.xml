@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/empty"
+                android:paddingLeft="@dimen/fragment_horizontal_margin"
                 android:paddingRight="@dimen/fragment_horizontal_margin"
                 android:src="@drawable/ic_search" />
         </LinearLayout>

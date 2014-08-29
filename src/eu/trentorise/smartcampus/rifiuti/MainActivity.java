@@ -24,6 +24,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
@@ -33,7 +34,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 	private int mContentFrameId;
 	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerList;
+	private ExpandedListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 
 	private boolean mProfileGroupManage = true;
@@ -48,7 +49,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 		mContentFrameId = R.id.content_frame;
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		mDrawerList = (ExpandedListView) findViewById(R.id.left_drawer);
 
 		mDrawerList.setAdapter(new DrawerArrayAdapter(this, R.layout.drawer_entry, getResources().getStringArray(
 				R.array.drawer_entries_strings)));
@@ -93,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 				loadFragment(8);
 				Toast.makeText(this, getString(R.string.toast_no_prof), Toast.LENGTH_SHORT).show();
 			} else {
-				prepareNavDropdown(true);
+				populateProfilesList(true);
 			}
 		} catch (Exception e) {
 			Toast.makeText(this, R.string.app_failure_setup, Toast.LENGTH_LONG).show();
@@ -182,7 +183,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		}
 	}
 
-	public void prepareNavDropdown(boolean loadHome) {
+	public void populateProfilesList(boolean loadHome) {
 		List<Profile> profiles = PreferenceUtils.getProfiles(this);
 		mProfileGroupManage = false;
 		if (profiles.size() > 1) {

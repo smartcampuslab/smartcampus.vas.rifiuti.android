@@ -216,7 +216,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 				addOrModify(newProfile);
 				KeyboardUtils.hideKeyboard(abActivity, getView());
 				if (getActivity() instanceof MainActivity) {
-					((MainActivity) getActivity()).prepareNavDropdown(isFirstProfile());
+					((MainActivity) getActivity()).populateProfilesList(isFirstProfile());
 				}
 			} catch (InvalidNameExeption e) {
 				ValidatorHelper.highlight(getActivity(), mETNome, null);
@@ -489,7 +489,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 				try {
 					PreferenceUtils.removeProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
 					if (getActivity() instanceof MainActivity)
-						((MainActivity) getActivity()).prepareNavDropdown(false);
+						((MainActivity) getActivity()).populateProfilesList(false);
 
 				} catch (Exception e) {
 					Toast.makeText(getActivity(), getString(R.string.err_delete_profilo), Toast.LENGTH_SHORT).show();

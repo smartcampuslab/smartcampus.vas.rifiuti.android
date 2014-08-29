@@ -10,46 +10,53 @@
         android:background="@color/rifiuti_light" >
     </FrameLayout>
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/drawer_wrapper"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/rifiuti_dark"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical" >
+        android:background="@color/rifiuti_dark" >
 
-        <TextView
-            android:id="@+id/curr_profile_tv"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/white" />
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical" >
 
-        <RadioGroup
-            android:id="@+id/profile_rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/fragment_horizontal_margin"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/curr_profile_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/rifiuti_middle" />
+            <RadioGroup
+                android:id="@+id/profile_rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/fragment_horizontal_margin"
+                android:paddingRight="@dimen/fragment_horizontal_margin"
+                android:visibility="gone" />
 
-        <ListView
-            android:id="@+id/left_drawer"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:cacheColorHint="@android:color/transparent"
-            android:choiceMode="singleChoice"
-            android:divider="@color/rifiuti_middle"
-            android:dividerHeight="0.1dp" />
-    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/rifiuti_middle" />
+
+            <!-- <ListView -->
+
+            <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
+                android:id="@+id/left_drawer"
+                android:layout_width="240dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:cacheColorHint="@android:color/transparent"
+                android:choiceMode="singleChoice"
+                android:divider="@color/rifiuti_middle"
+                android:dividerHeight="0.1dp"
+                android:isScrollContainer="false" />
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.v4.widget.DrawerLayout>
