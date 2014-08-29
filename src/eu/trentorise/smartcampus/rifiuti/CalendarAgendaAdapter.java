@@ -48,18 +48,35 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 			holder.separator.setVisibility(View.GONE);
 		}
 
-		holder.title.setText(cae.getPuntoRaccolta().dettaglio());
+		String title = cae.getPuntoRaccolta().dettaglio();
 
 		String description = "";
 		for (int i = 0; i < cae.getEvents().size(); i++) {
 			CalendarioEvent event = cae.getEvents().get(i);
-			description += getContext().getResources().getString(R.string.from_time_to_time, event.getStartDate(TIME_FORMAT),
-					event.getEndDate(TIME_FORMAT));
-			if (i + 1 != cae.getEvents().size()) {
-				description += "\n";
+			String startDate = event.getStartDate(TIME_FORMAT);
+			String endDate = event.getEndDate(TIME_FORMAT);
+			if (!startDate.equals(endDate)) {
+				description += getContext().getResources().getString(R.string.from_time_to_time, startDate, endDate);
+				if (i + 1 != cae.getEvents().size()) {
+					description += "\n";
+				}
 			}
 		}
 		holder.description.setText(description);
+
+		if (title.length() == 0) {
+			holder.title.setVisibility(View.GONE);
+		} else {
+			holder.title.setText(title);
+			holder.title.setVisibility(View.VISIBLE);
+		}
+
+		if (description.length() == 0) {
+			holder.description.setVisibility(View.GONE);
+		} else {
+			holder.description.setText(description);
+			holder.description.setVisibility(View.VISIBLE);
+		}
 
 		return row;
 	}

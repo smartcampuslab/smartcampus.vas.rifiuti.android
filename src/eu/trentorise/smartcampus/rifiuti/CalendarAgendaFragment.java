@@ -39,7 +39,7 @@ public class CalendarAgendaFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setHasOptionsMenu(true);
 
 		if (getArguments().containsKey(ArgUtils.ARGUMENT_CALENDAR_DAY)) {
@@ -48,7 +48,7 @@ public class CalendarAgendaFragment extends ListFragment {
 			cal.set(day.getYear(), day.getMonth(), day.getDay());
 		}
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
