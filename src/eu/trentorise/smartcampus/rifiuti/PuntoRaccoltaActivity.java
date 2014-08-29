@@ -25,11 +25,8 @@ public class PuntoRaccoltaActivity extends ActionBarActivity {
 		return false;
 	}
 
-	/**
-	 * 
-	 */
 	private void loadDetailsFragment() {
-		PuntoRaccolta pr = (PuntoRaccolta)getIntent().getSerializableExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
+		PuntoRaccolta pr = (PuntoRaccolta) getIntent().getSerializableExtra(ArgUtils.ARGUMENT_PUNTO_DI_RACCOLTA);
 		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 		PuntoDiRaccoltaDetailFragment fragment = new PuntoDiRaccoltaDetailFragment();
 		Bundle args = new Bundle();

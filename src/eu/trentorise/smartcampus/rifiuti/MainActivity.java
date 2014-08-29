@@ -275,6 +275,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 	private void loadFragment(int position) {
 		Fragment fragment = null;
+		Intent intent = null;
 
 		switch (position) {
 		case 0:
@@ -293,7 +294,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			fragment = new FeedbackFragment();
 			break;
 		case 5:
-			fragment = new ContactContainerFragment();
+			// fragment = new ContactContainerFragment();
+			
+			// TEMPORARY WORKAROUND (see issue #10)
+			intent = new Intent(getApplicationContext(), ContactContainerActivity.class);
+			// /TEMPORARY WORKAROUND
 			break;
 		case 6:
 			prepareTutorial();
@@ -313,10 +318,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		if (fragment != null) {
 			// Insert the fragment by replacing any existing fragment
 			getSupportFragmentManager().beginTransaction().replace(mContentFrameId, fragment).commit();
-			// Highlight the selected item, update the title, close the drawer
+			// Highlight the selected item, close the drawer
 			mDrawerList.setItemChecked(position, true);
 			// setTitle(mPlanetTitles[position]);
 			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+		} else if (intent != null) {
+			startActivity(intent);
 		}
 	}
 
