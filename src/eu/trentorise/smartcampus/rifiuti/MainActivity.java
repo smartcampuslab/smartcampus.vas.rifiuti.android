@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -125,7 +126,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	@Override
 	public void onBackPressed() {
 		Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-		if (f instanceof onBackListener) {
+		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+			// mDrawerLayout.closeDrawer(GravityCompat.START);
+			hideDrawer();
+		} else if (f instanceof onBackListener) {
 			((onBackListener) f).onBack();
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
