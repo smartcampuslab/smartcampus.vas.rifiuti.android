@@ -61,7 +61,7 @@ public class PuntiDiRaccoltaListFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		abActivity = (ActionBarActivity) getActivity();
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		// abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 		Bundle bundle = getArguments();
 		if (bundle != null) {

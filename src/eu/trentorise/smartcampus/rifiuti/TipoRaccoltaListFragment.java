@@ -44,7 +44,7 @@ public class TipoRaccoltaListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		abActivity = (ActionBarActivity) getActivity();
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		// abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.tipologiediraccolta_label));
 	}
