@@ -5,8 +5,12 @@
     <item
         android:id="@+id/action_today"
         android:icon="@drawable/ic_go_to_today"
-        android:showAsAction="always"
         android:title="@string/calendar_today"
-        smartcampus.vas.rifiuti.android:showAsAction="always"/>
+        smartcampus.vas.rifiuti.android:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_agenda"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="@string/calendar_agenda"
+        smartcampus.vas.rifiuti.android:showAsAction="ifRoom"/>
 
 </menu>
