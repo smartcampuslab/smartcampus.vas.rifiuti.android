@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +45,14 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		Drawable colord = new ColorDrawable(getResources().getColor(R.color.rifiuti_middle));
 		getListView().setDivider(colord);
 		getListView().setDividerHeight(1);
+	}
 
+	@Override
+	public void onStop() {
+		super.onStop();
+		if (NotesHelper.notesActionMode != null) {
+			NotesHelper.notesActionMode.finish();
+		}
 	}
 
 	@Override
@@ -68,28 +76,24 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		super.onListItemClick(l, v, position, id);
 
 		if (NotesHelper.notesActionMode != null) {
-			getListView().post(new Runnable() {
-				@Override
-				public void run() {
-					SparseBooleanArray pos = getListView().getCheckedItemPositions();
-					for (int i = 0; i < getListAdapter().getCount(); i++) {
-						if (pos.get(i))
-							return;
-					}
-					// no element's checked
-					NotesHelper.notesActionMode.finish();
+			SparseBooleanArray pos = getListView().getCheckedItemPositions();
+			for (int i = 0; i < getListAdapter().getCount(); i++) {
+				if (pos.get(i)) {
+					return;
 				}
-			});
-
+			}
+			// no element's checked
+			NotesHelper.notesActionMode.finish();
 		} else if (getActivity() instanceof ActionBarActivity) {
 			NotesHelper.notesActionMode = ((ActionBarActivity) getActivity()).startSupportActionMode(NotesListFragment.this);
 		}
+
 		// v.setSelected(!v.isSelected());
 		// toggleBackground(l, position, v);
 
-		if (NotesHelper.notesActionMode != null)
+		if (NotesHelper.notesActionMode != null) {
 			NotesHelper.notesActionMode.invalidate();
-
+		}
 	}
 
 	@Override
@@ -102,17 +106,17 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	@Override
 	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 		if (mode != null) {
-			if (checkAndGetSelectedItem(getListView().getCheckedItemPositions()) >= 0)
+			if (checkAndGetSelectedItem(getListView().getCheckedItemPositions()) >= 0) {
 				menu.getItem(0).setVisible(true);
-			else
+			} else {
 				menu.getItem(0).setVisible(false);
+			}
 		}
 		return true;
 	}
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-
 		SparseBooleanArray pos;
 		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			pos = RifiutiHelper.copySparseBooleanArray(getListView().getCheckedItemPositions());
@@ -148,18 +152,17 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	public void onDestroyActionMode(ActionMode mode) {
 		NotesHelper.notesActionMode = null;
 
-		// clean background
-		getListView().post(new Runnable() {
-			@Override
-			public void run() {
-				SparseBooleanArray pos = getListView().getCheckedItemPositions();
-				for (int i = 0; i < getListAdapter().getCount(); i++) {
-					if (pos.get(i)) {
-						getListView().setItemChecked(i, false);
-					}
+		/*
+		 * clean selected
+		 */
+		if (getListView() != null) {
+			SparseBooleanArray pos = getListView().getCheckedItemPositions();
+			for (int i = 0; i < getListAdapter().getCount(); i++) {
+				if (pos.get(i)) {
+					getListView().setItemChecked(i, false);
 				}
 			}
-		});
+		}
 	}
 
 	@Override

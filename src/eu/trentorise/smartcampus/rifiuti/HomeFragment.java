@@ -9,6 +9,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,42 +45,36 @@ public class HomeFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(
-				R.layout.fragment_home, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 
 		mPager = (ViewPager) viewGroup.findViewById(R.id.pager);
 
 		mPagerStrip = (PagerTabStrip) viewGroup.findViewById(R.id.pagerStrip);
 		mPagerStrip.setDrawFullUnderline(false);
-		mPagerStrip.setTabIndicatorColor(getResources().getColor(
-				R.color.rifiuti_green_dark));
+		mPagerStrip.setTabIndicatorColor(getResources().getColor(R.color.rifiuti_green_dark));
 		// mPagerStrip.setTextColor(getResources().getColor(R.color.gray_dark));
 		// mPagerStrip.setTextSpacing(48);
 		// mPagerStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 
 		mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
 			@Override
-			public void onPageSelected(int arg0) {
-				if (NotesHelper.notesActionMode != null)
+			public void onPageSelected(int position) {
+				if (NotesHelper.notesActionMode != null) {
 					NotesHelper.notesActionMode.finish();
+				}
 			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				if (NotesHelper.notesActionMode != null)
-					NotesHelper.notesActionMode.finish();
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			}
 
 			@Override
-			public void onPageScrollStateChanged(int arg0) {
+			public void onPageScrollStateChanged(int position) {
 			}
 		});
 
-		if (savedInstanceState != null
-				&& savedInstanceState.containsKey(PAGER_CURRENT_ITEM)) {
+		if (savedInstanceState != null && savedInstanceState.containsKey(PAGER_CURRENT_ITEM)) {
 			pagerPreviousItem = savedInstanceState.getInt(PAGER_CURRENT_ITEM);
 		}
 
@@ -97,8 +92,7 @@ public class HomeFragment extends Fragment {
 
 		// Page "Calendar" is default
 		// mPager.setCurrentItem(2);
-		abActivity.getSupportActionBar().setTitle(
-				abActivity.getString(R.string.application_title));
+		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.application_title));
 	}
 
 	@Override

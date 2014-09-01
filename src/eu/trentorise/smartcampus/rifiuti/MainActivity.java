@@ -295,10 +295,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			break;
 		case 5:
 			// fragment = new ContactContainerFragment();
-			
-			// TEMPORARY WORKAROUND (see issue #10)
+
+			// TODO: temporary workaround (see issue #10)
 			intent = new Intent(getApplicationContext(), ContactContainerActivity.class);
-			// /TEMPORARY WORKAROUND
+
 			break;
 		case 6:
 			prepareTutorial();
