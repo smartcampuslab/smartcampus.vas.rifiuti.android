@@ -11,13 +11,13 @@ import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioAgendaEntry;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 
-public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
+public class CalendarDayAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 
 	private static final String TIME_FORMAT = "H:mm";
 
 	private int resource;
 
-	public CalendarAgendaAdapter(Context context, int resource, List<CalendarioAgendaEntry> objects) {
+	public CalendarDayAdapter(Context context, int resource, List<CalendarioAgendaEntry> objects) {
 		super(context, resource, objects);
 		this.resource = resource;
 	}

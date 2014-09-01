@@ -26,14 +26,14 @@ import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
-public class CalendarAgendaFragment extends ListFragment {
+public class CalendarDayFragment extends ListFragment {
 
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE d MMMM yyyy", Locale.getDefault());
 
 	private ActionBarActivity abActivity;
 	private Day<CalendarioEvent> day;
 	private Calendar cal;
-	private CalendarAgendaAdapter adapter;
+	private CalendarDayAdapter adapter;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -59,7 +59,7 @@ public class CalendarAgendaFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_calendaragenda, container, false);
+		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_calendarday, container, false);
 		return viewGroup;
 	}
 
@@ -100,7 +100,7 @@ public class CalendarAgendaFragment extends ListFragment {
 			}
 		}
 
-		adapter = new CalendarAgendaAdapter(getActivity(), R.layout.calendaragenda_row, caeList);
+		adapter = new CalendarDayAdapter(getActivity(), R.layout.calendaragenda_row, caeList);
 		setListAdapter(adapter);
 	}
 

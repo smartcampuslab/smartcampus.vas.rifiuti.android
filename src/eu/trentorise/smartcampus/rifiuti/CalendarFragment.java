@@ -47,7 +47,7 @@ public class CalendarFragment extends Fragment {
 			@Override
 			public void onDayClicked(AdapterView<?> adapter, View view, int position, long id, Day<CalendarioEvent> day) {
 				if (day.getEventsCount() > 0) {
-					Intent intent = new Intent(getActivity(), CalendarAgendaActivity.class);
+					Intent intent = new Intent(getActivity(), CalendarDayActivity.class);
 					intent.putExtra(ArgUtils.ARGUMENT_CALENDAR_DAY, day);
 					startActivity(intent);
 				}

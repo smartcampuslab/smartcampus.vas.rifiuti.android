@@ -50,7 +50,7 @@
             android:label="@string/application_title" >
         </activity>
         <activity
-            android:name="eu.trentorise.smartcampus.rifiuti.CalendarAgendaActivity"
+            android:name="eu.trentorise.smartcampus.rifiuti.CalendarDayActivity"
             android:label="@string/application_title" >
         </activity>
         <activity

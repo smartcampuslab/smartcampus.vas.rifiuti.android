@@ -11,7 +11,7 @@ import com.tyczj.extendedcalendarview.Day;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
-public class CalendarAgendaActivity extends ActionBarActivity {
+public class CalendarDayActivity extends ActionBarActivity {
 
 	private int mContentFrameId;
 
@@ -25,7 +25,7 @@ public class CalendarAgendaActivity extends ActionBarActivity {
 		Intent intent = getIntent();
 		if (intent.hasExtra(ArgUtils.ARGUMENT_CALENDAR_DAY)) {
 			Day<CalendarioEvent> day = (Day<CalendarioEvent>) intent.getSerializableExtra(ArgUtils.ARGUMENT_CALENDAR_DAY);
-			Fragment fragment = new CalendarAgendaFragment();
+			Fragment fragment = new CalendarDayFragment();
 			Bundle bundle = new Bundle();
 			bundle.putSerializable(ArgUtils.ARGUMENT_CALENDAR_DAY, day);
 			fragment.setArguments(bundle);
