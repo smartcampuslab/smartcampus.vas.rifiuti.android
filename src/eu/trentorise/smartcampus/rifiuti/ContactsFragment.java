@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -21,13 +22,16 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.KeyboardUtils;
+import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
-public class ContactsFragment extends Fragment {
+public class ContactsFragment extends Fragment implements onBackListener {
 
 	private ActionBarActivity abActivity;
 	private ArrayList<HashMap<String, String>> data;
 
-	public static ContactsFragment newInstance(ArrayList<HashMap<String, String>> data) {
+	public static ContactsFragment newInstance(
+			ArrayList<HashMap<String, String>> data) {
 		ContactsFragment rf = new ContactsFragment();
 		Bundle b = new Bundle();
 		b.putSerializable(ArgUtils.ARGUMENT_CONTACTS, data);
@@ -43,42 +47,57 @@ public class ContactsFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		Bundle bundle = getArguments();
-		data = (ArrayList<HashMap<String, String>>) bundle.get(ArgUtils.ARGUMENT_CONTACTS);
+		data = (ArrayList<HashMap<String, String>>) bundle
+				.get(ArgUtils.ARGUMENT_CONTACTS);
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			onBack();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		if (data.size() > 1) {
-			return inflater.inflate(R.layout.fragment_contacts_el, container, false);
+			return inflater.inflate(R.layout.fragment_contacts_el, container,
+					false);
 		} else {
-			return inflater.inflate(R.layout.fragment_contacts, container, false);
+			return inflater.inflate(R.layout.fragment_contacts, container,
+					false);
 		}
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
 		abActivity = (ActionBarActivity) getActivity();
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
 		TextView nameTv = (TextView) getView().findViewById(R.id.contacts_name);
 		nameTv.setText(data.get(0).get("name"));
 
 		if (data.size() > 1) {
-			ExpandableListView lv = (ExpandableListView) getView().findViewById(R.id.listView);
+			ExpandableListView lv = (ExpandableListView) getView()
+					.findViewById(R.id.listView);
 			lv.setVisibility(View.VISIBLE);
 			SparseArray<Map<String, String>> array = new SparseArray<Map<String, String>>();
 			for (int i = 0; i < data.size(); i++) {
 				array.put(i, data.get(i));
 			}
-			OfficeListAdapter adapter = new OfficeListAdapter(getActivity(), array);
+			OfficeListAdapter adapter = new OfficeListAdapter(getActivity(),
+					array);
 			lv.setAdapter(adapter);
 		} else if (data.size() == 1) {
 			// View child =
 			// getActivity().getLayoutInflater().inflate(R.layout.contacts_details,
 			// (ViewGroup)getView());
-			createOfficeView(getView().findViewById(R.id.contacts_details), data.get(0));
+			createOfficeView(getView().findViewById(R.id.contacts_details),
+					data.get(0));
 			// ((ViewGroup)getView()).addView(child);
 		}
 
@@ -87,72 +106,24 @@ public class ContactsFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		// TextView nameTv = (TextView)
-		// getView().findViewById(R.id.contacts_name);
-		// nameTv.setText(data.get("name"));
-		//
-		// prepareField("description", R.id.contacts_descr_layout,
-		// R.id.contacts_descr, null);
-		// prepareField("address", R.id.contacts_address_layout,
-		// R.id.contacts_address, null);
-		// prepareField("opening", R.id.contacts_opening_layout,
-		// R.id.contacts_opening, null);
-		// prepareField("web", R.id.contacts_web, R.id.contacts_web,
-		// R.string.contacts_web_ph);
-		// prepareField("email", R.id.contacts_email, R.id.contacts_email,
-		// R.string.contacts_email_ph);
-		// prepareField("phone", R.id.contacts_tel, R.id.contacts_tel,
-		// R.string.contacts_tel_ph);
-		// prepareField("pec", R.id.contacts_pec, R.id.contacts_pec,
-		// R.string.contacts_pec_ph);
-		// prepareField("fax", R.id.contacts_fax, R.id.contacts_fax,
-		// R.string.contacts_fax_ph);
-		//
-		// final String mail = data.get("email");
-		// ImageView emailImg = (ImageView) getView().findViewById(
-		// R.id.contacts_email_img);
-		// emailImg.setOnClickListener(new OnClickListener() {
-		// public void onClick(View v) {
-		// Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-		// "mailto", mail, null));
-		// getActivity().startActivity(
-		// Intent.createChooser(intent,
-		// getString(R.string.feedback_mail)));
-		// }
-		// });
-		//
-		// final String pec = data.get("pec");
-		// ImageView pecImg = (ImageView) getView().findViewById(
-		// R.id.contacts_pec_img);
-		// pecImg.setOnClickListener(new OnClickListener() {
-		// public void onClick(View v) {
-		// Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-		// "mailto", pec, null));
-		// startActivity(Intent.createChooser(intent,
-		// getString(R.string.feedback_mail)));
-		// }
-		// });
-		//
-		// final String phone = data.get("phone");
-		// ImageView telImg = (ImageView) getView().findViewById(
-		// R.id.contacts_tel_img);
-		// telImg.setOnClickListener(new OnClickListener() {
-		// public void onClick(View v) {
-		// String p = phone.replace(" ", "");
-		// p = p.replace("/", "");
-		// p = p.replace(".", "");
-		// Intent callIntent = new Intent(Intent.ACTION_DIAL);
-		// callIntent.setData(Uri.parse("tel:" + p));
-		// startActivity(callIntent);
-		// }
-		// });
-		//
+		if (abActivity != null && abActivity instanceof MainActivity) {
+			((MainActivity) abActivity).hideDrawer();
+			((MainActivity) abActivity).lockDrawer();
+			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
+			abActivity.supportInvalidateOptionsMenu();
+		}
+	}
+
+	@Override
+	public void onBack() {
+		getFragmentManager().popBackStack();
 	}
 
 	/**
 	 * 
 	 */
-	public void prepareField(View view, String value, int idLayout, int idTv, Integer idPh) {
+	public void prepareField(View view, String value, int idLayout, int idTv,
+			Integer idPh) {
 		String descr = value;
 		if (descr != null && descr.trim().length() > 0) {
 			view.findViewById(idLayout).setVisibility(View.VISIBLE);
@@ -172,32 +143,46 @@ public class ContactsFragment extends Fragment {
 	 * @param data
 	 */
 	public void createOfficeView(View view, Map<String, String> data) {
-		prepareField(view, data.get("description"), R.id.contacts_descr, R.id.contacts_descr, null);
-		prepareField(view, data.get("address"), R.id.contacts_address_layout, R.id.contacts_address, null);
-		prepareField(view, data.get("opening"), R.id.contacts_opening_layout, R.id.contacts_opening, null);
-		prepareField(view, data.get("web"), R.id.contacts_web, R.id.contacts_web, R.string.contacts_web_ph);
-		prepareField(view, data.get("email"), R.id.contacts_email_container, R.id.contacts_email, R.string.contacts_email_ph);
-		prepareField(view, data.get("phone"), R.id.contacts_tel_container, R.id.contacts_tel, R.string.contacts_tel_ph);
-		prepareField(view, data.get("pec"), R.id.contacts_pec_container, R.id.contacts_pec, R.string.contacts_pec_ph);
-		prepareField(view, data.get("fax"), R.id.contacts_fax, R.id.contacts_fax, R.string.contacts_fax_ph);
+		prepareField(view, data.get("description"), R.id.contacts_descr,
+				R.id.contacts_descr, null);
+		prepareField(view, data.get("address"), R.id.contacts_address_layout,
+				R.id.contacts_address, null);
+		prepareField(view, data.get("opening"), R.id.contacts_opening_layout,
+				R.id.contacts_opening, null);
+		prepareField(view, data.get("web"), R.id.contacts_web,
+				R.id.contacts_web, R.string.contacts_web_ph);
+		prepareField(view, data.get("email"), R.id.contacts_email_container,
+				R.id.contacts_email, R.string.contacts_email_ph);
+		prepareField(view, data.get("phone"), R.id.contacts_tel_container,
+				R.id.contacts_tel, R.string.contacts_tel_ph);
+		prepareField(view, data.get("pec"), R.id.contacts_pec_container,
+				R.id.contacts_pec, R.string.contacts_pec_ph);
+		prepareField(view, data.get("fax"), R.id.contacts_fax,
+				R.id.contacts_fax, R.string.contacts_fax_ph);
 
 		final String web = data.get("web");
 		ImageView webImg = (ImageView) view.findViewById(R.id.contacts_web_img);
 		webImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if (web==null) return;
-				Uri uri = web.startsWith("http") ? Uri.parse(web) : Uri.parse("http://"+web);
+				if (web == null)
+					return;
+				Uri uri = web.startsWith("http") ? Uri.parse(web) : Uri
+						.parse("http://" + web);
 				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 				getActivity().startActivity(intent);
 			}
 		});
-		
+
 		final String mail = data.get("email");
-		ImageView emailImg = (ImageView) view.findViewById(R.id.contacts_email_img);
+		ImageView emailImg = (ImageView) view
+				.findViewById(R.id.contacts_email_img);
 		emailImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", mail, null));
-				getActivity().startActivity(Intent.createChooser(intent, getString(R.string.feedback_mail)));
+				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+						"mailto", mail, null));
+				getActivity().startActivity(
+						Intent.createChooser(intent,
+								getString(R.string.feedback_mail)));
 			}
 		});
 
@@ -205,8 +190,10 @@ public class ContactsFragment extends Fragment {
 		ImageView pecImg = (ImageView) view.findViewById(R.id.contacts_pec_img);
 		pecImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", pec, null));
-				startActivity(Intent.createChooser(intent, getString(R.string.feedback_mail)));
+				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+						"mailto", pec, null));
+				startActivity(Intent.createChooser(intent,
+						getString(R.string.feedback_mail)));
 			}
 		});
 
@@ -229,7 +216,8 @@ public class ContactsFragment extends Fragment {
 		private SparseArray<Map<String, String>> offices;
 		public LayoutInflater inflater;
 
-		public OfficeListAdapter(Activity act, SparseArray<Map<String, String>> offices) {
+		public OfficeListAdapter(Activity act,
+				SparseArray<Map<String, String>> offices) {
 			this.offices = offices;
 			inflater = act.getLayoutInflater();
 		}
@@ -245,7 +233,8 @@ public class ContactsFragment extends Fragment {
 		}
 
 		@Override
-		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(int groupPosition, int childPosition,
+				boolean isLastChild, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.contacts_details, null);
 			}
@@ -276,11 +265,13 @@ public class ContactsFragment extends Fragment {
 		}
 
 		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+		public View getGroupView(int groupPosition, boolean isExpanded,
+				View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.contacts_group, null);
 			}
-			CheckedTextView tv = (CheckedTextView) convertView.findViewById(R.id.title_tv);
+			CheckedTextView tv = (CheckedTextView) convertView
+					.findViewById(R.id.title_tv);
 			Map<String, String> data = getGroup(groupPosition);
 			tv.setText(data.get("office"));
 			tv.setChecked(isExpanded);
@@ -298,4 +289,5 @@ public class ContactsFragment extends Fragment {
 		}
 
 	}
+
 }
