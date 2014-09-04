@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/calendaragenda_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/rifiuti_middle"
+        android:drawSelectorOnTop="false"
+        android:listSelector="@color/rifiuti_green_light_o50"
+        android:scrollbarStyle="outsideOverlay" >
+    </ListView>
+
+    <!-- <View -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="1dp" -->
+    <!-- android:background="@color/rifiuti_middle" /> -->
+
+</LinearLayout>

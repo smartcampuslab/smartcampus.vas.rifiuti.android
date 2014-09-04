@@ -5,34 +5,23 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/separator_textView"
+        android:id="@+id/date_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/rifiuti_green_dark"
-        android:padding="@dimen/fragment_horizontal_margin"
+        android:background="@color/rifiuti_middle"
+        android:gravity="center"
+        android:paddingBottom="@dimen/fragment_vertical_margin"
+        android:paddingTop="@dimen/fragment_vertical_margin"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black" />
 
     <LinearLayout
-        android:padding="@dimen/fragment_horizontal_margin"
+        android:id="@+id/prs_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/title_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/fragment_horizontal_margin"
-            android:paddingRight="@dimen/fragment_horizontal_margin"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/description_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/fragment_horizontal_margin"
-            android:paddingRight="@dimen/fragment_horizontal_margin" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/fragment_horizontal_margin"
+        android:paddingRight="@dimen/fragment_horizontal_margin" >
     </LinearLayout>
 
 </LinearLayout>

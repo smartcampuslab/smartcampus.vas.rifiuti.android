@@ -48,6 +48,17 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 	private TutorialHelper mTutorialHelper;
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_dovelobutto, container, false);
+		doveLoButtoSearchField = (EditText) viewGroup.findViewById(R.id.dovelobutto_search_tv);
+		doveLoButtoSearchButton = (ImageButton) viewGroup.findViewById(R.id.dovelobutto_search_btn);
+		doveLoButtoResultsList = (ExpandedListView) viewGroup.findViewById(R.id.dovelobutto_results);
+		tipiRifiutiGrid = (ExpandedGridView) viewGroup.findViewById(R.id.tipirifiuti_grid);
+		tipiRifiutiGrid.setNumColumns(NUM_COLUMNS);
+		return viewGroup;
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		try {
@@ -57,22 +68,10 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 						PreferenceUtils.getCurrentProfilePosition(getActivity())));
 			}
 			tipiRifiutiEntries = RifiutiHelper.readTipologiaRifiuti();// getResources().getStringArray(R.array.tipirifiuti_entries);
-
 		} catch (IOException e) {
 			Log.e(DoveLoButtoFragment.class.getName(), e.toString());
 			getFragmentManager().popBackStack();
 		}
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_dovelobutto, container, false);
-		doveLoButtoSearchField = (EditText) viewGroup.findViewById(R.id.dovelobutto_search_tv);
-		doveLoButtoSearchButton = (ImageButton) viewGroup.findViewById(R.id.dovelobutto_search_btn);
-		doveLoButtoResultsList = (ExpandedListView) viewGroup.findViewById(R.id.dovelobutto_results);
-		tipiRifiutiGrid = (ExpandedGridView) viewGroup.findViewById(R.id.tipirifiuti_grid);
-		tipiRifiutiGrid.setNumColumns(NUM_COLUMNS);
-		return viewGroup;
 	}
 
 	@Override
@@ -143,7 +142,6 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 		});
 
 		getView().postDelayed(new Runnable() {
-
 			@Override
 			public void run() {
 				if (RifiutiHelper.isFirstLaunchDoveLoButto(getActivity())) {
@@ -157,7 +155,6 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 				}
 			}
 		}, 100);
-
 	}
 
 	@Override

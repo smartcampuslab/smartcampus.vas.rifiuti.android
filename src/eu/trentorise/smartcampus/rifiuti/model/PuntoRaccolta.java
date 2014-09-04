@@ -24,7 +24,7 @@ public class PuntoRaccolta implements Serializable {
 	private String note;
 
 	private transient double[] location;
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -35,18 +35,35 @@ public class PuntoRaccolta implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
+
 		PuntoRaccolta other = (PuntoRaccolta) obj;
-		if (indirizzo == null) {
-			if (other.indirizzo != null)
+		if (note == null) {
+			if (other.note != null) {
 				return false;
-		} else if (!indirizzo.equals(other.indirizzo))
+			}
+		} else if (!note.equals(other.note)) {
 			return false;
+		}
+
+		if (indirizzo == null) {
+			if (other.indirizzo != null) {
+				return false;
+			}
+		} else if (!indirizzo.equals(other.indirizzo)) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -89,6 +106,7 @@ public class PuntoRaccolta implements Serializable {
 	public void setIndirizzo(String indirizzo) {
 		this.indirizzo = indirizzo;
 	}
+
 	public String getDettaglioIndirizzo() {
 		return dettaglioIndirizzo;
 	}
@@ -162,22 +180,24 @@ public class PuntoRaccolta implements Serializable {
 	}
 
 	public String dettaglio() {
-		if (dettaglioIndirizzo != null && dettaglioIndirizzo.length() > 0) return dettaglioIndirizzo;
+		if (dettaglioIndirizzo != null && dettaglioIndirizzo.length() > 0) {
+			return dettaglioIndirizzo;
+		}
 		return indirizzo;
 	}
-	
+
 	public double[] location() {
 		if (location == null) {
 			try {
 				String[] splittedLatLong = localizzazione.split(",");
-				location = new double[]{Double.parseDouble(splittedLatLong[0]), Double.parseDouble(splittedLatLong[1])};
+				location = new double[] { Double.parseDouble(splittedLatLong[0]), Double.parseDouble(splittedLatLong[1]) };
 			} catch (Exception e) {
-				Log.e("PuntoRaccolta", "error parsing location: "+e.getMessage());
+				Log.e("PuntoRaccolta", "error parsing location: " + e.getMessage());
 			}
 		}
 		return location;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "PuntoRaccolta [area=" + area + ", tipologiaPuntiRaccolta=" + tipologiaPuntiRaccolta + ", tipologiaUtenza="

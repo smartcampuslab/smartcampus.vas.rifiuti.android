@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/calendar_layout"
+<ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/calendar_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:inAnimation="@anim/card_flip_from_1"
+    android:outAnimation="@anim/card_flip_to_1" >
 
-    <eu.trentorise.smartcampus.rifiuti.custom.RifiutiCalendarView
-        android:id="@+id/calendar_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!-- android:inAnimation="@android:anim/slide_in_left" -->
+    <!-- android:outAnimation="@android:anim/slide_out_right" -->
 
-</LinearLayout>
+</ViewSwitcher>

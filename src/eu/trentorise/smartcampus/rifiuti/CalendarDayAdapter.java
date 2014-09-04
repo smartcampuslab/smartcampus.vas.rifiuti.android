@@ -8,16 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import eu.trentorise.smartcampus.rifiuti.model.CalendarioAgendaEntry;
+import eu.trentorise.smartcampus.rifiuti.model.CalendarioDayEntry;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 
-public class CalendarDayAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
+public class CalendarDayAdapter extends ArrayAdapter<CalendarioDayEntry> {
 
 	private static final String TIME_FORMAT = "H:mm";
 
 	private int resource;
 
-	public CalendarDayAdapter(Context context, int resource, List<CalendarioAgendaEntry> objects) {
+	public CalendarDayAdapter(Context context, int resource, List<CalendarioDayEntry> objects) {
 		super(context, resource, objects);
 		this.resource = resource;
 	}
@@ -27,7 +27,7 @@ public class CalendarDayAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 		View row = convertView;
 		Holder holder;
 
-		CalendarioAgendaEntry cae = getItem(position);
+		CalendarioDayEntry cae = getItem(position);
 
 		if (row == null) {
 			row = ((Activity) getContext()).getLayoutInflater().inflate(resource, null);

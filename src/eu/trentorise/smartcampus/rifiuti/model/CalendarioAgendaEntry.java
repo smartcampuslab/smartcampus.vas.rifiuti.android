@@ -1,40 +1,42 @@
 package eu.trentorise.smartcampus.rifiuti.model;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CalendarioAgendaEntry {
 
-	private PuntoRaccolta puntoRaccolta;
-	private List<CalendarioEvent> events;
+	private Calendar calendar;
+	private Map<String, Map<PuntoRaccolta, List<CalendarioEvent>>> eventsMap;
 
 	public CalendarioAgendaEntry() {
 	}
 
-	public CalendarioAgendaEntry(PuntoRaccolta puntoRaccolta) {
-		setPuntoRaccolta(puntoRaccolta);
-		setEvents(new ArrayList<CalendarioEvent>());
+	public CalendarioAgendaEntry(Calendar calendar) {
+		setCalendar(calendar);
+		setEventsMap(new LinkedHashMap<String, Map<PuntoRaccolta, List<CalendarioEvent>>>());
 	}
 
-	public CalendarioAgendaEntry(PuntoRaccolta puntoRaccolta, List<CalendarioEvent> events) {
-		setPuntoRaccolta(puntoRaccolta);
-		setEvents(events);
+	public CalendarioAgendaEntry(Calendar calendar, Map<String, Map<PuntoRaccolta, List<CalendarioEvent>>> eventsMap) {
+		setCalendar(calendar);
+		setEventsMap(eventsMap);
 	}
 
-	public PuntoRaccolta getPuntoRaccolta() {
-		return puntoRaccolta;
+	public Calendar getCalendar() {
+		return calendar;
 	}
 
-	public void setPuntoRaccolta(PuntoRaccolta puntoRaccolta) {
-		this.puntoRaccolta = puntoRaccolta;
+	public void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
 	}
 
-	public List<CalendarioEvent> getEvents() {
-		return events;
+	public Map<String, Map<PuntoRaccolta, List<CalendarioEvent>>> getEventsMap() {
+		return eventsMap;
 	}
 
-	public void setEvents(List<CalendarioEvent> events) {
-		this.events = events;
+	public void setEventsMap(Map<String, Map<PuntoRaccolta, List<CalendarioEvent>>> eventsMap) {
+		this.eventsMap = eventsMap;
 	}
 
 }

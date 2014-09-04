@@ -12,11 +12,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.tyczj.extendedcalendarview.Day;
 import com.tyczj.extendedcalendarview.Event;
@@ -26,7 +30,7 @@ import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
-public class CalendarDayFragment extends ListFragment {
+public class CalendarAgendaFragment extends ListFragment {
 
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE d MMMM yyyy", Locale.getDefault());
 
@@ -39,10 +43,9 @@ public class CalendarDayFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setHasOptionsMenu(true);
 
-		if (getArguments().containsKey(ArgUtils.ARGUMENT_CALENDAR_DAY)) {
+		if (getArguments() != null && getArguments().containsKey(ArgUtils.ARGUMENT_CALENDAR_DAY)) {
 			day = (Day<CalendarioEvent>) getArguments().getSerializable(ArgUtils.ARGUMENT_CALENDAR_DAY);
 			cal = Calendar.getInstance(Locale.getDefault());
 			cal.set(day.getYear(), day.getMonth(), day.getDay());
@@ -53,14 +56,16 @@ public class CalendarDayFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		abActivity = (ActionBarActivity) getActivity();
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		// abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_calendarday, container, false);
-		return viewGroup;
+		View view = (View) inflater.inflate(R.layout.fragment_calendaragenda, container, false);
+		// ViewGroup viewGroup = (ViewGroup)
+		// inflater.inflate(R.layout.fragment_dummy, container, false);
+		return view;
 	}
 
 	@Override
@@ -105,12 +110,25 @@ public class CalendarDayFragment extends ListFragment {
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		Log.e("OUCH", "onCreateOptionsMenu CalendarAgendaFragment");
+		inflater.inflate(R.menu.calendaragenda_menu, menu);
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			abActivity.finish();
-			return true;
+		switch (item.getItemId()) {
+		case R.id.cal_today:
+			// TODO: go to today
+			Toast.makeText(getActivity(), "COMING SOON", Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.cal_switch:
+			getFragmentManager().beginTransaction().replace(R.id.calendar_container, new CalendarMonthFragment()).commit();
+			break;
+		default:
 		}
-		return false;
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

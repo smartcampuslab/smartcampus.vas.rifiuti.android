@@ -9,7 +9,6 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,15 +31,16 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mPagerTitles = getResources().getStringArray(R.array.home_pager_titles);
 		setHasOptionsMenu(true);
+
+		mPagerTitles = getResources().getStringArray(R.array.home_pager_titles);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		abActivity = (ActionBarActivity) getActivity();
-		abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		// abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
@@ -90,8 +90,6 @@ public class HomeFragment extends Fragment {
 		// Page "Dove lo butto?" is default
 		mPager.setCurrentItem(pagerPreviousItem != null ? pagerPreviousItem : 1);
 
-		// Page "Calendar" is default
-		// mPager.setCurrentItem(2);
 		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.application_title));
 	}
 
@@ -130,6 +128,7 @@ public class HomeFragment extends Fragment {
 			case 1:
 				return new DoveLoButtoFragment();
 			case 2:
+				// return new CalendarFragment();
 				return new CalendarFragment();
 			default:
 				return new DummyFragment();
@@ -145,6 +144,5 @@ public class HomeFragment extends Fragment {
 		public CharSequence getPageTitle(int position) {
 			return mPagerTitles[position];
 		}
-
 	}
 }

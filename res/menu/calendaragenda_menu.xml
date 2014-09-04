@@ -9,7 +9,7 @@
         smartcampus.vas.rifiuti.android:showAsAction="ifRoom"/>
     <item
         android:id="@+id/cal_switch"
-        android:icon="@drawable/view_as_list"
+        android:icon="@android:drawable/ic_menu_agenda"
         android:title="@string/calendar_agenda"
         smartcampus.vas.rifiuti.android:showAsAction="ifRoom"/>
 

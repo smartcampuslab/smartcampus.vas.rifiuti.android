@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,7 +57,6 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.notes_list, menu);
-		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
