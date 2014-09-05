@@ -11,6 +11,9 @@ import java.util.Map;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +21,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ViewSwitcher;
@@ -42,10 +47,12 @@ public class CalendarFragment extends Fragment {
 	private RifiutiCalendarView calendarView;
 	private RifiutiEventsSource rifiutiEventsSource;
 
+	private SwipeRefreshLayout calendarAgendaSRL;
 	private ListView calendarAgendaList;
-	private Day<CalendarioEvent> calendarAgendaDay;
+	// private Day<CalendarioEvent> calendarAgendaDay;
 	private Calendar calendarAgendaCal;
 	private CalendarAgendaAdapter calendarAgendaAdapter;
+	private List<Long> loadedMonths = new ArrayList<Long>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +82,8 @@ public class CalendarFragment extends Fragment {
 
 		// agenda
 		View aView = (View) inflater.inflate(R.layout.fragment_calendaragenda, container, false);
-		calendarAgendaList = (ListView) aView.findViewById(R.id.calendaragenda_list);
+		calendarAgendaSRL = (SwipeRefreshLayout) aView.findViewById(R.id.calendaragenda_srl);
+		calendarAgendaList = (ListView) calendarAgendaSRL.findViewById(R.id.calendaragenda_list);
 		viewSwitcher.addView(aView);
 
 		return view;
@@ -85,7 +93,7 @@ public class CalendarFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 
-		populateAgenda();
+		loadMonth(null);
 
 		calendarView.setOnDayClickListener(new RifiutiCalendarView.OnDayClickListener<CalendarioEvent>() {
 			@Override
@@ -110,19 +118,97 @@ public class CalendarFragment extends Fragment {
 				}
 			}
 		});
+
+		calendarAgendaList.setOnScrollListener(new OnScrollListener() {
+
+			private boolean scrolled = false;
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL && !scrolled) {
+					scrolled = true;
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				if (scrolled && totalItemCount > 0) {
+					if ((firstVisibleItem + visibleItemCount) == totalItemCount) {
+						if (!calendarAgendaSRL.isRefreshing()) {
+							calendarAgendaSRL.setRefreshing(true);
+							loadNextMonth();
+						}
+					}
+				}
+			}
+		});
+
+		calendarAgendaSRL.setColorSchemeResources(R.color.rifiuti_green_light_o50, R.color.rifiuti_green_light,
+				R.color.rifiuti_green_middle, R.color.rifiuti_green_dark);
+
+		calendarAgendaSRL.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				Log.e("SwipeRefreshLayout", "SwipeRefreshLayout onRefresh");
+				loadPreviousMonth();
+			}
+		});
 	}
 
-	private void populateAgenda() {
+	private void loadPreviousMonth() {
+		// TODO: load previous month
+		// new Handler().postDelayed(new Runnable() {
+		// @Override
+		// public void run() {
+		// Toast.makeText(getActivity(), "LOADED", Toast.LENGTH_SHORT).show();
+		// calendarAgendaSRL.setRefreshing(false);
+		// }
+		// }, 3000);
+
+		Calendar cal = Calendar.getInstance(Locale.getDefault());
+		cal.setTimeInMillis(loadedMonths.get(0));
+		cal.add(Calendar.MONTH, -1);
+		loadMonth(cal);
+	}
+
+	private void loadNextMonth() {
+		// TODO: load next month
+		// new Handler().postDelayed(new Runnable() {
+		// @Override
+		// public void run() {
+		// Toast.makeText(getActivity(), "LOADED", Toast.LENGTH_SHORT).show();
+		// calendarAgendaSRL.setRefreshing(false);
+		// }
+		// }, 3000);
+
+		Calendar cal = Calendar.getInstance(Locale.getDefault());
+		cal.setTimeInMillis(loadedMonths.get(loadedMonths.size() - 1));
+		cal.add(Calendar.MONTH, 1);
+		loadMonth(cal);
+	}
+
+	private void loadMonth(Calendar cal) {
+		if (cal == null) {
+			cal = calendarAgendaCal;
+		}
+
+		if (loadedMonths.contains(cal.getTimeInMillis())) {
+			if (calendarAgendaSRL.isRefreshing()) {
+				calendarAgendaSRL.setRefreshing(false);
+			}
+			return;
+		}
+
 		List<CalendarioAgendaEntry> caeList = new ArrayList<CalendarioAgendaEntry>();
 
-		SparseArray<Collection<CalendarioEvent>> eventsSparseArray = rifiutiEventsSource.getEventsByMonth(calendarAgendaCal);
+		SparseArray<Collection<CalendarioEvent>> eventsSparseArray = rifiutiEventsSource.getEventsByMonth(cal);
 
-		for (int d = 1; d <= calendarAgendaCal.getActualMaximum(Calendar.DAY_OF_MONTH); d++) {
+		for (int d = 1; d <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); d++) {
 			Collection<CalendarioEvent> coll = eventsSparseArray.get(d);
 
 			// calendar for this day
 			Calendar calday = Calendar.getInstance(Locale.getDefault());
-			calday.set(calendarAgendaCal.get(Calendar.YEAR), calendarAgendaCal.get(Calendar.MONTH), d);
+			calday.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), d);
 			CalendarioAgendaEntry cae = new CalendarioAgendaEntry(calday);
 
 			if (coll != null && !coll.isEmpty()) {
@@ -173,12 +259,38 @@ public class CalendarFragment extends Fragment {
 		}
 
 		if (calendarAgendaAdapter == null) {
-			calendarAgendaAdapter = new CalendarAgendaAdapter(getActivity(), R.layout.calendaragenda_row, caeList);
+			calendarAgendaAdapter = new CalendarAgendaAdapter(getActivity(), R.layout.calendaragenda_row);
+			calendarAgendaAdapter.addAll(caeList);
+			loadedMonths.add(cal.getTimeInMillis());
 			calendarAgendaList.setAdapter(calendarAgendaAdapter);
 		} else {
-			calendarAgendaAdapter.clear();
-			calendarAgendaAdapter.addAll(caeList);
+			boolean before = false;
+			if (loadedMonths.get(0) > cal.getTimeInMillis()) {
+				// add before
+				before = true;
+				calendarAgendaAdapter.addAllAtBeginning(caeList);
+				loadedMonths.add(0, cal.getTimeInMillis());
+			} else if (loadedMonths.get(loadedMonths.size() - 1) < cal.getTimeInMillis()) {
+				// add after
+				calendarAgendaAdapter.addAll(caeList);
+				loadedMonths.add(cal.getTimeInMillis());
+			}
+
+			// save index and top position
+			int index = calendarAgendaList.getFirstVisiblePosition();
+			if (before) {
+				index += caeList.size();
+			}
+			View v = calendarAgendaList.getChildAt(0);
+			int top = (v == null) ? 0 : v.getTop();
+			// notify dataset changed
 			calendarAgendaAdapter.notifyDataSetChanged();
+			// restore
+			calendarAgendaList.setSelectionFromTop(index, top);
+		}
+
+		if (calendarAgendaSRL.isRefreshing()) {
+			calendarAgendaSRL.setRefreshing(false);
 		}
 	}
 
@@ -195,7 +307,11 @@ public class CalendarFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.cal_today:
-			calendarView.goToToday();
+			if (viewSwitcher.getDisplayedChild() == VIEW_CALENDAR) {
+				calendarView.goToToday();
+			} else if (viewSwitcher.getDisplayedChild() == VIEW_AGENDA) {
+				goToAgendaToday();
+			}
 			break;
 		case R.id.cal_switch:
 			if (viewSwitcher.getDisplayedChild() == VIEW_CALENDAR) {
@@ -211,6 +327,17 @@ public class CalendarFragment extends Fragment {
 		getActivity().supportInvalidateOptionsMenu();
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void goToAgendaToday() {
+		Integer todayPosition = calendarAgendaAdapter.getTodayPosition();
+		if (todayPosition != null) {
+			// View v = calendarAgendaList.getChildAt(0);
+			// int top = (v == null) ? 0 : v.getTop();
+			// calendarAgendaList.setSelectionFromTop(calendarAgendaAdapter.getTodayPosition(),
+			// top);
+			calendarAgendaList.smoothScrollToPosition(calendarAgendaAdapter.getTodayPosition());
+		}
 	}
 
 }

@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/fragment_vertical_margin" >
 
     <TextView
         android:id="@+id/date_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/rifiuti_middle"
+        android:background="@color/rifiuti_light"
         android:gravity="center"
         android:paddingBottom="@dimen/fragment_vertical_margin"
         android:paddingTop="@dimen/fragment_vertical_margin"

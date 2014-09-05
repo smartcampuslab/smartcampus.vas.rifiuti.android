@@ -5,15 +5,22 @@
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/calendaragenda_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/calendaragenda_srl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/rifiuti_middle"
-        android:drawSelectorOnTop="false"
-        android:listSelector="@color/rifiuti_green_light_o50"
-        android:scrollbarStyle="outsideOverlay" >
-    </ListView>
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/calendaragenda_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/rifiuti_middle"
+            android:drawSelectorOnTop="false"
+            android:fadeScrollbars="false"
+            android:listSelector="@color/rifiuti_green_light_o50"
+            android:scrollbarStyle="outsideOverlay" >
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <!-- <View -->
     <!-- android:layout_width="match_parent" -->

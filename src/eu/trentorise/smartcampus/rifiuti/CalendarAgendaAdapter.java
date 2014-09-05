@@ -2,6 +2,7 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,7 +28,6 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE d MMMM yyyy", Locale.getDefault());
 	private static final String TIME_FORMAT = "H:mm";
-	private static final String TIPOLOGIA_PORTA_A_PORTA = "Porta a porta";
 	private List<DatiTipologiaRaccolta> tipologiaRaccoltaList = RifiutiHelper.readTipologiaRaccolta();
 
 	private Calendar todayCalendar = Calendar.getInstance(Locale.getDefault());
@@ -47,6 +47,23 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 		this.resource = resource;
 	}
 
+	public void addAllAtBeginning(List<CalendarioAgendaEntry> itemsList) {
+		Collections.reverse(itemsList);
+		for (CalendarioAgendaEntry c : itemsList) {
+			this.insert(c, 0);
+		}
+	}
+
+	public Integer getTodayPosition() {
+		for (int i = 0; i < getCount(); i++) {
+			CalendarioAgendaEntry cae = getItem(i);
+			if (dateFormatter.format(cae.getCalendar().getTime()).equals(dateFormatter.format(todayCalendar.getTime()))) {
+				return i;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
@@ -55,7 +72,7 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 		CalendarioAgendaEntry cae = getItem(position);
 
 		if (row == null) {
-			row = ((Activity) getContext()).getLayoutInflater().inflate(resource, null);
+			row = ((Activity) getContext()).getLayoutInflater().inflate(resource, parent, false);
 			holder = new Holder();
 			holder.date = (TextView) row.findViewById(R.id.date_textview);
 			holder.prsLayout = (LinearLayout) row.findViewById(R.id.prs_layout);
@@ -82,13 +99,19 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 		if (dateString.equals(dateFormatter.format(todayCalendar.getTime()))) {
 			holder.date.setTextColor(mContext.getResources().getColor(R.color.rifiuti_green_middle));
 			holder.date.setTypeface(null, Typeface.BOLD);
+		} else if (cae.getCalendar().before(todayCalendar)) {
+			// previous days
+			holder.date.setTextColor(mContext.getResources().getColor(R.color.rifiuti_middle));
+			holder.date.setTypeface(null, Typeface.NORMAL);
 		} else {
+			// next days
 			holder.date.setTextColor(mContext.getResources().getColor(android.R.color.black));
 			holder.date.setTypeface(null, Typeface.NORMAL);
 		}
 
 		for (String tpr : cae.getEventsMap().keySet()) {
-			View tprRow = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.calendaragenda_tpr_row, null);
+			View tprRow = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.calendaragenda_tpr_row,
+					holder.prsLayout, false);
 			TextView tprTextView = (TextView) tprRow.findViewById(R.id.tpr_textview);
 			// TextView descTextView = (TextView)
 			// tprRow.findViewById(R.id.desc_textview);
@@ -100,22 +123,19 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 			for (PuntoRaccolta pr : map.keySet()) {
 				// TextView prTextView = (TextView) ((Activity)
 				// getContext()).getLayoutInflater().inflate(
-				// R.layout.calendaragenda_pr_row, null);
+				// R.layout.calendaragenda_pr_row, tprLinearLayout, false);
 
 				TextView prTextView = new TextView(mContext);
-				prTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-				// if (desc.length() > 0) {
-				// desc += "\n";
-				// }
+				prTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+				prTextView.setGravity(Gravity.CENTER_VERTICAL);
 
 				String desc = "";
 				Drawable drawable = null;
 
 				if (pr.dettaglio() != null && pr.dettaglio().length() > 0) {
-					desc += pr.dettaglio() + "\n";
+					desc += pr.dettaglio();
 				} else {
-					desc += pr.getNote() + "\n";
+					desc += pr.getNote();
 				}
 
 				for (DatiTipologiaRaccolta dtr : tipologiaRaccoltaList) {
@@ -132,6 +152,9 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 					String startDate = event.getStartDate(TIME_FORMAT);
 					String endDate = event.getEndDate(TIME_FORMAT);
 					if (!startDate.equals(endDate)) {
+						if (desc.length() > 0) {
+							desc += "\n";
+						}
 						desc += getContext().getResources().getString(R.string.from_time_to_time, startDate, endDate);
 						if (j + 1 != eventsList.size()) {
 							desc += "\n";
@@ -142,7 +165,8 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 				prTextView.setText(desc);
 				if (drawable != null) {
 					prTextView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-					prTextView.setGravity(Gravity.CENTER_VERTICAL);
+					prTextView.setCompoundDrawablePadding(mContext.getResources().getDimensionPixelSize(
+							R.dimen.fragment_horizontal_margin));
 				}
 
 				tprLinearLayout.addView(prTextView);
