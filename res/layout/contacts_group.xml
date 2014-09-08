@@ -9,12 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/rifiuti_middle"
-		android:paddingLeft="@dimen/fragment_horizontal_margin"
-        android:paddingTop="@dimen/fragment_vertical_margin"
-        android:paddingBottom="@dimen/fragment_vertical_margin"
+        android:paddingBottom="16dp"
+        android:paddingLeft="@dimen/fragment_horizontal_margin"
         android:paddingRight="@dimen/fragment_horizontal_margin"
+        android:paddingTop="16dp"
+        android:text="@string/begin_tut"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:textColor="@color/rifiuti_dark" />
+        android:textColor="@color/rifiuti_dark"
+        android:textStyle="bold" />
 
 </LinearLayout>

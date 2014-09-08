@@ -44,10 +44,6 @@
         <!-- android:textAppearance="?android:attr/textAppearanceMedium" -->
         <!-- android:textColor="@color/rifiuti_dark" /> -->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/rifiuti_middle" />
 
         <TextView
             android:id="@+id/contacts_address"
@@ -56,6 +52,8 @@
             android:layout_weight="1"
             android:padding="@dimen/fragment_horizontal_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:drawableLeft="@android:drawable/ic_menu_compass"
+            android:drawablePadding="6dp"
             android:textColor="@color/rifiuti_dark" />
     </LinearLayout>
 
@@ -86,6 +84,8 @@
             android:layout_weight="1"
             android:padding="@dimen/fragment_horizontal_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:drawableLeft="@drawable/cal"
+            android:drawablePadding="6dp"
             android:textColor="@color/rifiuti_dark" />
     </LinearLayout>
 
@@ -110,6 +110,12 @@
         android:gravity="center_vertical"
         android:padding="@dimen/fragment_horizontal_margin" >
 
+        <ImageView
+            android:id="@+id/contacts_web_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_web" />
+
         <TextView
             android:id="@+id/contacts_web"
             android:layout_width="0dp"
@@ -118,20 +124,25 @@
             android:autoLink="web"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/rifiuti_dark" />
-
-        <ImageView
-            android:id="@+id/contacts_web_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_web" />
     </LinearLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rifiuti_middle" />
 
     <LinearLayout
         android:id="@+id/contacts_tel_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="@dimen/fragment_horizontal_margin" >
+
+        <ImageView
+            android:id="@+id/contacts_tel_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_call" />
 
         <TextView
             android:id="@+id/contacts_tel"
@@ -140,13 +151,13 @@
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/rifiuti_dark" />
-
-        <ImageView
-            android:id="@+id/contacts_tel_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_call" />
-    </LinearLayout>
+        
+    </LinearLayout>   
+    
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rifiuti_middle" />
 
     <LinearLayout
         android:id="@+id/contacts_email_container"
@@ -154,6 +165,12 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="@dimen/fragment_horizontal_margin" >
+
+        <ImageView
+            android:id="@+id/contacts_email_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mail" />
 
         <TextView
             android:id="@+id/contacts_email"
@@ -163,12 +180,6 @@
             android:autoLink="email"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/rifiuti_dark" />
-
-        <ImageView
-            android:id="@+id/contacts_email_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_mail" />
     </LinearLayout>
 
     <LinearLayout
@@ -178,6 +189,12 @@
         android:gravity="center_vertical"
         android:padding="@dimen/fragment_horizontal_margin" >
 
+        <ImageView
+            android:id="@+id/contacts_pec_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mail" />
+
         <TextView
             android:id="@+id/contacts_pec"
             android:layout_width="0dp"
@@ -186,21 +203,10 @@
             android:autoLink="email"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/rifiuti_dark" />
-
-        <ImageView
-            android:id="@+id/contacts_pec_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_mail" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/contacts_fax"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="@dimen/fragment_horizontal_margin"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/rifiuti_dark" />
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rifiuti_middle" />
 
 </LinearLayout>

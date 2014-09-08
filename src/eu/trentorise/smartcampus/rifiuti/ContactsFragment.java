@@ -29,12 +29,14 @@ public class ContactsFragment extends Fragment implements onBackListener {
 
 	private ActionBarActivity abActivity;
 	private ArrayList<HashMap<String, String>> data;
+	private int mPosition;
 
 	public static ContactsFragment newInstance(
-			ArrayList<HashMap<String, String>> data) {
+			ArrayList<HashMap<String, String>> data, int position) {
 		ContactsFragment rf = new ContactsFragment();
 		Bundle b = new Bundle();
 		b.putSerializable(ArgUtils.ARGUMENT_CONTACTS, data);
+		b.putSerializable(ArgUtils.ARGUMENT_CONTACT_POSITION, position);
 		rf.setArguments(b);
 		return rf;
 	}
@@ -45,10 +47,15 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
+		
+		
 
 		Bundle bundle = getArguments();
 		data = (ArrayList<HashMap<String, String>>) bundle
 				.get(ArgUtils.ARGUMENT_CONTACTS);
+		mPosition = bundle.getInt(ArgUtils.ARGUMENT_CONTACT_POSITION);
+		
+		((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(data.get(mPosition).get("name"));
 	}
 
 	@Override
@@ -63,13 +70,8 @@ public class ContactsFragment extends Fragment implements onBackListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		if (data.size() > 1) {
-			return inflater.inflate(R.layout.fragment_contacts_el, container,
-					false);
-		} else {
-			return inflater.inflate(R.layout.fragment_contacts, container,
-					false);
-		}
+
+		return inflater.inflate(R.layout.fragment_contacts, container, false);
 	}
 
 	@Override
@@ -77,29 +79,10 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		super.onActivityCreated(savedInstanceState);
 
 		abActivity = (ActionBarActivity) getActivity();
+		
 
-		TextView nameTv = (TextView) getView().findViewById(R.id.contacts_name);
-		nameTv.setText(data.get(0).get("name"));
-
-		if (data.size() > 1) {
-			ExpandableListView lv = (ExpandableListView) getView()
-					.findViewById(R.id.listView);
-			lv.setVisibility(View.VISIBLE);
-			SparseArray<Map<String, String>> array = new SparseArray<Map<String, String>>();
-			for (int i = 0; i < data.size(); i++) {
-				array.put(i, data.get(i));
-			}
-			OfficeListAdapter adapter = new OfficeListAdapter(getActivity(),
-					array);
-			lv.setAdapter(adapter);
-		} else if (data.size() == 1) {
-			// View child =
-			// getActivity().getLayoutInflater().inflate(R.layout.contacts_details,
-			// (ViewGroup)getView());
-			createOfficeView(getView().findViewById(R.id.contacts_details),
-					data.get(0));
-			// ((ViewGroup)getView()).addView(child);
-		}
+		createOfficeView(getView().findViewById(R.id.contacts_details),
+				data.get(mPosition));
 
 	}
 
@@ -153,12 +136,10 @@ public class ContactsFragment extends Fragment implements onBackListener {
 				R.id.contacts_web, R.string.contacts_web_ph);
 		prepareField(view, data.get("email"), R.id.contacts_email_container,
 				R.id.contacts_email, R.string.contacts_email_ph);
-		prepareField(view, data.get("phone"), R.id.contacts_tel_container,
+		prepareField(view, data.get("phone")+"\n"+getString(R.string.contacts_fax_ph,data.get("fax")), R.id.contacts_tel_container,
 				R.id.contacts_tel, R.string.contacts_tel_ph);
 		prepareField(view, data.get("pec"), R.id.contacts_pec_container,
 				R.id.contacts_pec, R.string.contacts_pec_ph);
-		prepareField(view, data.get("fax"), R.id.contacts_fax,
-				R.id.contacts_fax, R.string.contacts_fax_ph);
 
 		final String web = data.get("web");
 		ImageView webImg = (ImageView) view.findViewById(R.id.contacts_web_img);
@@ -209,85 +190,6 @@ public class ContactsFragment extends Fragment implements onBackListener {
 				startActivity(callIntent);
 			}
 		});
-	}
-
-	private class OfficeListAdapter extends BaseExpandableListAdapter {
-
-		private SparseArray<Map<String, String>> offices;
-		public LayoutInflater inflater;
-
-		public OfficeListAdapter(Activity act,
-				SparseArray<Map<String, String>> offices) {
-			this.offices = offices;
-			inflater = act.getLayoutInflater();
-		}
-
-		@Override
-		public Map<String, String> getChild(int groupPosition, int childPosition) {
-			return offices.get(groupPosition);
-		}
-
-		@Override
-		public long getChildId(int groupPosition, int childPosition) {
-			return 0;
-		}
-
-		@Override
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.contacts_details, null);
-			}
-			Map<String, String> data = getChild(groupPosition, childPosition);
-			createOfficeView(convertView, data);
-			// convertView.findViewById(R.id.contacts_descr_label).setVisibility(View.GONE);
-			return convertView;
-		}
-
-		@Override
-		public int getChildrenCount(int groupPosition) {
-			return 1;
-		}
-
-		@Override
-		public Map<String, String> getGroup(int groupPosition) {
-			return offices.get(groupPosition);
-		}
-
-		@Override
-		public int getGroupCount() {
-			return offices.size();
-		}
-
-		@Override
-		public long getGroupId(int groupPosition) {
-			return 0;
-		}
-
-		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded,
-				View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.contacts_group, null);
-			}
-			CheckedTextView tv = (CheckedTextView) convertView
-					.findViewById(R.id.title_tv);
-			Map<String, String> data = getGroup(groupPosition);
-			tv.setText(data.get("office"));
-			tv.setChecked(isExpanded);
-			return convertView;
-		}
-
-		@Override
-		public boolean hasStableIds() {
-			return false;
-		}
-
-		@Override
-		public boolean isChildSelectable(int groupPosition, int childPosition) {
-			return false;
-		}
-
 	}
 
 }

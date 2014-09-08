@@ -40,7 +40,8 @@ public class ContactsListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
-
+		
+		
 		loadData();
 
 	}
@@ -82,6 +83,7 @@ public class ContactsListFragment extends ListFragment {
 		getListView().setDivider(
 				getResources().getDrawable(R.color.rifiuti_light));
 		getListView().setDividerHeight(1);
+		((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(R.string.contacts_title);
 	}
 
 	@Override
@@ -100,7 +102,8 @@ public class ContactsListFragment extends ListFragment {
 		ft.addToBackStack(null);
 		ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.popenter,
 				R.anim.popexit);
-		ft.replace(R.id.content_frame, ContactsFragment.newInstance(data));
+		ft.replace(R.id.content_frame, ContactsFragment
+				.newInstance(data,position));
 		ft.commit();
 	}
 
