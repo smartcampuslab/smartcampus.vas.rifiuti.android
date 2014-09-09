@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,24 +33,25 @@ import eu.trentorise.smartcampus.rifiuti.data.RifiutiEventsSource;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioAgendaEntry;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
-import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class CalendarFragment extends Fragment {
 
-	private static final int VIEW_CALENDAR = 0;
-	private static final int VIEW_AGENDA = 1;
+	private static final int VIEW_CALENDARMONTH = 0;
+	private static final int VIEW_CALENDARAGENDA = 1;
 
 	private static final String TIPOLOGIA_PORTA_A_PORTA = "Porta a porta";
 
 	private ViewSwitcher viewSwitcher;
+
 	private RifiutiCalendarView calendarView;
 	private RifiutiEventsSource rifiutiEventsSource;
 
 	private SwipeRefreshLayout calendarAgendaSRL;
 	private ListView calendarAgendaList;
-	// private Day<CalendarioEvent> calendarAgendaDay;
-	private Calendar calendarAgendaCal;
+	private Calendar monthCalDefault;
 	private CalendarAgendaAdapter calendarAgendaAdapter;
+	private Calendar lastAgendaDayViewed;
+
 	private List<Long> loadedMonths = new ArrayList<Long>();
 
 	@Override
@@ -60,7 +60,12 @@ public class CalendarFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		rifiutiEventsSource = new RifiutiEventsSource(this.getActivity());
-		calendarAgendaCal = Calendar.getInstance(Locale.getDefault());
+		monthCalDefault = Calendar.getInstance(Locale.getDefault());
+		monthCalDefault.set(Calendar.DAY_OF_MONTH, 1);
+		monthCalDefault.set(Calendar.HOUR_OF_DAY, 0);
+		monthCalDefault.set(Calendar.MINUTE, 0);
+		monthCalDefault.set(Calendar.SECOND, 0);
+		monthCalDefault.set(Calendar.MILLISECOND, 0);
 	}
 
 	@Override
@@ -102,19 +107,19 @@ public class CalendarFragment extends Fragment {
 					/*
 					 * CalendarDay
 					 */
-					Intent intent = new Intent(getActivity(), CalendarDayActivity.class);
-					intent.putExtra(ArgUtils.ARGUMENT_CALENDAR_DAY, day);
-					startActivity(intent);
+					// Intent intent = new Intent(getActivity(),
+					// CalendarDayActivity.class);
+					// intent.putExtra(ArgUtils.ARGUMENT_CALENDAR_DAY, day);
+					// startActivity(intent);
 
 					/*
 					 * CalendarAgenda
 					 */
-					// calendarAgendaDay = day;
-					// calendarAgendaCal.set(day.getYear(), day.getMonth(),
-					// day.getDay());
-					// populateAgenda();
-					// viewSwitcher.showNext();
-					// getActivity().supportInvalidateOptionsMenu();
+					Calendar dayCal = Calendar.getInstance(Locale.getDefault());
+					dayCal.setTimeInMillis(monthCalDefault.getTimeInMillis());
+					dayCal.set(day.getYear(), day.getMonth(), day.getDay());
+					showCalendarAgenda(dayCal, true);
+					getActivity().supportInvalidateOptionsMenu();
 				}
 			}
 		});
@@ -155,48 +160,61 @@ public class CalendarFragment extends Fragment {
 		});
 	}
 
-	private void loadPreviousMonth() {
-		// TODO: load previous month
-		// new Handler().postDelayed(new Runnable() {
-		// @Override
-		// public void run() {
-		// Toast.makeText(getActivity(), "LOADED", Toast.LENGTH_SHORT).show();
-		// calendarAgendaSRL.setRefreshing(false);
-		// }
-		// }, 3000);
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (viewSwitcher.getDisplayedChild() == VIEW_CALENDARMONTH) {
+			inflater.inflate(R.menu.calendarmonth_menu, menu);
+		} else if (viewSwitcher.getDisplayedChild() == VIEW_CALENDARAGENDA) {
+			inflater.inflate(R.menu.calendaragenda_menu, menu);
+		}
+	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.cal_today:
+			calendarView.goToToday();
+			goToAgendaToday();
+			break;
+		case R.id.cal_switch:
+			if (viewSwitcher.getDisplayedChild() == VIEW_CALENDARMONTH) {
+				showCalendarAgenda(calendarView.getCurrentCalendar(), false);
+			} else if (viewSwitcher.getDisplayedChild() == VIEW_CALENDARAGENDA) {
+				showCalendarMonth();
+			}
+			break;
+		}
+
+		getActivity().supportInvalidateOptionsMenu();
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	private Long loadPreviousMonth() {
 		Calendar cal = Calendar.getInstance(Locale.getDefault());
 		cal.setTimeInMillis(loadedMonths.get(0));
 		cal.add(Calendar.MONTH, -1);
-		loadMonth(cal);
+		return loadMonth(cal);
 	}
 
-	private void loadNextMonth() {
-		// TODO: load next month
-		// new Handler().postDelayed(new Runnable() {
-		// @Override
-		// public void run() {
-		// Toast.makeText(getActivity(), "LOADED", Toast.LENGTH_SHORT).show();
-		// calendarAgendaSRL.setRefreshing(false);
-		// }
-		// }, 3000);
-
+	private Long loadNextMonth() {
 		Calendar cal = Calendar.getInstance(Locale.getDefault());
 		cal.setTimeInMillis(loadedMonths.get(loadedMonths.size() - 1));
 		cal.add(Calendar.MONTH, 1);
-		loadMonth(cal);
+		return loadMonth(cal);
 	}
 
-	private void loadMonth(Calendar cal) {
+	private Long loadMonth(Calendar cal) {
 		if (cal == null) {
-			cal = calendarAgendaCal;
+			cal = Calendar.getInstance();
+			cal.setTimeInMillis(monthCalDefault.getTimeInMillis());
 		}
 
 		if (loadedMonths.contains(cal.getTimeInMillis())) {
 			if (calendarAgendaSRL.isRefreshing()) {
 				calendarAgendaSRL.setRefreshing(false);
 			}
-			return;
+			return null;
 		}
 
 		List<CalendarioAgendaEntry> caeList = new ArrayList<CalendarioAgendaEntry>();
@@ -292,52 +310,76 @@ public class CalendarFragment extends Fragment {
 		if (calendarAgendaSRL.isRefreshing()) {
 			calendarAgendaSRL.setRefreshing(false);
 		}
+
+		return cal.getTimeInMillis();
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		if (viewSwitcher.getDisplayedChild() == VIEW_CALENDAR) {
-			inflater.inflate(R.menu.calendar_menu, menu);
-		} else if (viewSwitcher.getDisplayedChild() == VIEW_AGENDA) {
-			inflater.inflate(R.menu.calendaragenda_menu, menu);
+	private void showCalendarMonth() {
+		int firstVisiblePosition = calendarAgendaList.getFirstVisiblePosition();
+		if (calendarAgendaList.getChildAt(0).getTop() < 0 && firstVisiblePosition + 1 < calendarAgendaAdapter.getCount()) {
+			firstVisiblePosition++;
 		}
+		lastAgendaDayViewed = calendarAgendaAdapter.getItem(firstVisiblePosition).getCalendar();
+
+		Calendar goToMonthCalendar = Calendar.getInstance(Locale.getDefault());
+		goToMonthCalendar.setTimeInMillis(monthCalDefault.getTimeInMillis());
+		goToMonthCalendar.set(Calendar.YEAR, lastAgendaDayViewed.get(Calendar.YEAR));
+		goToMonthCalendar.set(Calendar.MONTH, lastAgendaDayViewed.get(Calendar.MONTH));
+
+		calendarView.goToMonth(goToMonthCalendar);
+
+		viewSwitcher.showPrevious();
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.cal_today:
-			if (viewSwitcher.getDisplayedChild() == VIEW_CALENDAR) {
-				calendarView.goToToday();
-			} else if (viewSwitcher.getDisplayedChild() == VIEW_AGENDA) {
-				goToAgendaToday();
+	private void showCalendarAgenda(final Calendar cal, boolean forceDay) {
+		Calendar monthCal = Calendar.getInstance(Locale.getDefault());
+		monthCal.setTimeInMillis(monthCalDefault.getTimeInMillis());
+		monthCal.set(Calendar.YEAR, cal.get(Calendar.YEAR));
+		monthCal.set(Calendar.MONTH, cal.get(Calendar.MONTH));
+
+		while (!loadedMonths.contains(monthCal.getTimeInMillis())) {
+			if (monthCal.getTimeInMillis() < loadedMonths.get(0)) {
+				// before
+				loadPreviousMonth();
+			} else if (monthCal.getTimeInMillis() > loadedMonths.get(loadedMonths.size() - 1)) {
+				// after
+				loadNextMonth();
 			}
-			break;
-		case R.id.cal_switch:
-			if (viewSwitcher.getDisplayedChild() == VIEW_CALENDAR) {
-				viewSwitcher.showNext();
-			} else if (viewSwitcher.getDisplayedChild() == VIEW_AGENDA) {
-				viewSwitcher.showPrevious();
-			}
-			break;
-		default:
-			// do nothing
 		}
 
-		getActivity().supportInvalidateOptionsMenu();
+		if (!forceDay && lastAgendaDayViewed == null && cal.get(Calendar.YEAR) == monthCalDefault.get(Calendar.YEAR)
+				&& cal.get(Calendar.MONTH) == monthCalDefault.get(Calendar.MONTH)) {
+			// show today
+			goToAgendaToday();
+		} else if (!forceDay && cal.get(Calendar.YEAR) == lastAgendaDayViewed.get(Calendar.YEAR)
+				&& cal.get(Calendar.MONTH) == lastAgendaDayViewed.get(Calendar.MONTH)) {
+			// leave the agenda at the same day (aka: do nothing)
+		} else {
+			goToAgendaDay(cal);
+		}
 
-		return super.onOptionsItemSelected(item);
+		viewSwitcher.showNext();
+	}
+
+	private void goToAgendaDay(Calendar cal) {
+		Integer dayPosition;
+		if (cal != null) {
+			dayPosition = calendarAgendaAdapter.getDayPosition(cal);
+		} else {
+			dayPosition = calendarAgendaAdapter.getTodayPosition();
+		}
+
+		if (dayPosition != null) {
+			// View v = calendarAgendaList.getChildAt(0);
+			// int top = (v == null) ? 0 : v.getTop();
+			// calendarAgendaList.setSelectionFromTop(dayPosition, top);
+			calendarAgendaList.setSelection(dayPosition);
+			// calendarAgendaList.smoothScrollToPosition(dayPosition);
+		}
 	}
 
 	private void goToAgendaToday() {
-		Integer todayPosition = calendarAgendaAdapter.getTodayPosition();
-		if (todayPosition != null) {
-			// View v = calendarAgendaList.getChildAt(0);
-			// int top = (v == null) ? 0 : v.getTop();
-			// calendarAgendaList.setSelectionFromTop(calendarAgendaAdapter.getTodayPosition(),
-			// top);
-			calendarAgendaList.smoothScrollToPosition(calendarAgendaAdapter.getTodayPosition());
-		}
+		goToAgendaDay(null);
 	}
 
 }

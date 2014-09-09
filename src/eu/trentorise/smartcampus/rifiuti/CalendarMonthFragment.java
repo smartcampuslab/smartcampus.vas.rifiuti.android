@@ -59,7 +59,7 @@ public class CalendarMonthFragment extends Fragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		Log.e("OUCH", "onCreateOptionsMenu CalendarFragment");
-		inflater.inflate(R.menu.calendar_menu, menu);
+		inflater.inflate(R.menu.calendarmonth_menu, menu);
 	}
 
 	@Override
