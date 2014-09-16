@@ -153,7 +153,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			}
 		}
 		if (abActivity instanceof MainActivity) {
-			((MainActivity) abActivity).hideDrawer();
+			((MainActivity) abActivity).hideDrawerIndicator();
 			((MainActivity) abActivity).lockDrawer();
 			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 			abActivity.supportInvalidateOptionsMenu();

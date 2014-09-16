@@ -36,6 +36,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -119,7 +120,7 @@ public class RifiutiHelper {
 	public static Collection<String> getComuni() {
 		return mHelper.mComuni;
 	}
-	
+
 	/**
 	 * @param ctx
 	 * @throws IOException
@@ -210,39 +211,44 @@ public class RifiutiHelper {
 					+ "' AND tipologiaPuntoRaccolta = '" + puntoRaccolta.getTipologiaPuntiRaccolta() + "'";
 			// filter per puntoRaccolta attributes
 			String filter = "";
-			if ((puntoRaccolta.isGettoniera() == null ||  puntoRaccolta.isGettoniera()) || 
-				(puntoRaccolta.isResiduo() == null ||  puntoRaccolta.isResiduo())) {
+			if ((puntoRaccolta.isGettoniera() == null || puntoRaccolta.isGettoniera())
+					|| (puntoRaccolta.isResiduo() == null || puntoRaccolta.isResiduo())) {
 				filter += "tipologiaRaccolta = 'Residuo'";
 			}
-			if (puntoRaccolta.isImbCarta() == null ||  puntoRaccolta.isImbCarta()) {
-				if (filter.length() > 0) filter += " OR ";
+			if (puntoRaccolta.isImbCarta() == null || puntoRaccolta.isImbCarta()) {
+				if (filter.length() > 0)
+					filter += " OR ";
 				filter += "tipologiaRaccolta = 'Carta, cartone e cartoni per bevande'";
 			}
-			if (puntoRaccolta.isImbPlMet() == null ||  puntoRaccolta.isImbPlMet()) {
-				if (filter.length() > 0) filter += " OR ";
+			if (puntoRaccolta.isImbPlMet() == null || puntoRaccolta.isImbPlMet()) {
+				if (filter.length() > 0)
+					filter += " OR ";
 				filter += "tipologiaRaccolta = 'Imballaggi in plastica e metallo'";
 			}
-			if (puntoRaccolta.isImbVetro() == null ||  puntoRaccolta.isImbVetro()) {
-				if (filter.length() > 0) filter += " OR ";
+			if (puntoRaccolta.isImbVetro() == null || puntoRaccolta.isImbVetro()) {
+				if (filter.length() > 0)
+					filter += " OR ";
 				filter += "tipologiaRaccolta = 'Imballaggi in vetro'";
 			}
-			if (puntoRaccolta.isOrganico() == null ||  puntoRaccolta.isOrganico()) {
-				if (filter.length() > 0) filter += " OR ";
+			if (puntoRaccolta.isOrganico() == null || puntoRaccolta.isOrganico()) {
+				if (filter.length() > 0)
+					filter += " OR ";
 				filter += "tipologiaRaccolta = 'Organico'";
 			}
-			if (puntoRaccolta.isIndumenti() == null ||  puntoRaccolta.isIndumenti()) {
-				if (filter.length() > 0) filter += " OR ";
+			if (puntoRaccolta.isIndumenti() == null || puntoRaccolta.isIndumenti()) {
+				if (filter.length() > 0)
+					filter += " OR ";
 				filter += "tipologiaRaccolta = 'Indumenti usati'";
 			}
 			if (filter.length() > 0) {
-				query += " AND ("+filter+")";
+				query += " AND (" + filter + ")";
 			}
 			cursor = db.rawQuery(query, null);
 			List<DatiTipologiaRaccolta> result = new ArrayList<DatiTipologiaRaccolta>();
 			if (cursor != null) {
 				cursor.moveToFirst();
 				for (int i = 0; i < cursor.getCount(); i++) {
-					
+
 					DatiTipologiaRaccolta dtr = new DatiTipologiaRaccolta();
 					dtr.setColore(cursor.getString(cursor.getColumnIndex("colore")));
 					dtr.setTipologiaRaccolta(cursor.getString(cursor.getColumnIndex("tipologiaRaccolta")));
@@ -328,12 +334,14 @@ public class RifiutiHelper {
 	 * raccolta'
 	 * 
 	 * @param tipoRifiuto
-	 * @param preferredOnly specify whether to show all or only the preferred for the
-	 * user comunity
+	 * @param preferredOnly
+	 *            specify whether to show all or only the preferred for the user
+	 *            comunity
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRaccolta(String tipoRaccolta, boolean preferredOnly) throws Exception {
+	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRaccolta(String tipoRaccolta, boolean preferredOnly)
+			throws Exception {
 		return getPuntiRaccoltaPerTipo(tipoRaccolta, null, preferredOnly);
 	}
 
@@ -341,25 +349,29 @@ public class RifiutiHelper {
 	 * Read all 'punti raccolta' that correspond to the specified 'tipo rifiuto'
 	 * 
 	 * @param tipoRifiuto
-	 * @param preferredOnly specify whether to show all or only the preferred for the
-	 * user comunity
+	 * @param preferredOnly
+	 *            specify whether to show all or only the preferred for the user
+	 *            comunity
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRifiuto(String tipoRifiuto, boolean preferredOnly) throws Exception {
+	public static List<PuntoRaccolta> getPuntiRaccoltaPerTipoRifiuto(String tipoRifiuto, boolean preferredOnly)
+			throws Exception {
 		return getPuntiRaccoltaPerTipo(null, tipoRifiuto, preferredOnly);
 	}
 
-	private static List<PuntoRaccolta> getPuntiRaccoltaPerTipo(String tipoRaccolta, String tipoRifiuto, boolean preferredOnly) throws Exception {
+	private static List<PuntoRaccolta> getPuntiRaccoltaPerTipo(String tipoRaccolta, String tipoRifiuto, boolean preferredOnly)
+			throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		// hook for special places
 		boolean includeSpecial = false;
-//		if (mHelper.mProfile.getUtenza().equals(UTENZA_OCCASIONALE) && 
-//				("residuo".equalsIgnoreCase(tipoRaccolta) || "residuo".equalsIgnoreCase(tipoRifiuto))) {
-//			includeSpecial = true;
-//		}
-		
+		// if (mHelper.mProfile.getUtenza().equals(UTENZA_OCCASIONALE) &&
+		// ("residuo".equalsIgnoreCase(tipoRaccolta) ||
+		// "residuo".equalsIgnoreCase(tipoRifiuto))) {
+		// includeSpecial = true;
+		// }
+
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
 			String query = "SELECT DISTINCT "
@@ -372,10 +384,13 @@ public class RifiutiHelper {
 					+ " puntiRaccolta.gettoniera, puntiRaccolta.residuo, puntiRaccolta.imbCarta, puntiRaccolta.imbPlMet, puntiRaccolta.organico, puntiRaccolta.imbVetro, puntiRaccolta.indumenti, note"
 					+ " FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
-					+ " WHERE puntiRaccolta.area IN " + aree + " AND raccolta.area IN " + aree
-					+ (preferredOnly ? 
-							(" AND (puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni))+
-							 (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" :"") +" OR puntiRaccolta.tipologiaPuntiRaccolta = 'CRM')" : "")
+					+ " WHERE puntiRaccolta.area IN "
+					+ aree
+					+ " AND raccolta.area IN "
+					+ aree
+					+ (preferredOnly ? (" AND (puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni))
+							+ (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" : "")
+							+ " OR puntiRaccolta.tipologiaPuntiRaccolta = 'CRM')" : "")
 					+ " AND puntiRaccolta.tipologiaUtenza = '" + mHelper.mProfile.getUtenza() + "'";
 			String selector = " AND "
 					+ (tipoRaccolta != null ? ("raccolta.tipologiaRaccolta = '" + tipoRaccolta + "'")
@@ -383,7 +398,7 @@ public class RifiutiHelper {
 			query += selector;
 			// filter per puntoRaccolta attributes
 			query += createPuntoRaccoltaAttributeFilter();
-			
+
 			cursor = db.rawQuery(query, null);
 			List<PuntoRaccolta> result = extractListFromCursor(cursor);
 			return result;
@@ -397,57 +412,52 @@ public class RifiutiHelper {
 	 * @return
 	 */
 	public static String createPuntoRaccoltaAttributeFilter() {
-		return " AND ("
-				+ "(raccolta.tipologiaRaccolta != 'Residuo') OR "
+		return " AND (" + "(raccolta.tipologiaRaccolta != 'Residuo') OR "
 				+ "(puntiRaccolta.residuo = 'True' AND puntiRaccolta.tipologiaUtenza='utenza domestica') OR "
 				+ "(puntiRaccolta.gettoniera = 'True' AND puntiRaccolta.tipologiaUtenza='utenza occasionale') OR "
-				+ "(puntiRaccolta.residuo = '')"
-				+ ")"
-			 + " AND (" 
+				+ "(puntiRaccolta.residuo = '')" + ")" + " AND ("
 				+ "(raccolta.tipologiaRaccolta != 'Carta, cartone e cartoni per bevande') OR "
-				+ "(puntiRaccolta.imbCarta = 'True') OR (puntiRaccolta.imbCarta = '')"
-			 	+ ")"
-			 + " AND (" 
+				+ "(puntiRaccolta.imbCarta = 'True') OR (puntiRaccolta.imbCarta = '')" + ")" + " AND ("
 				+ "(raccolta.tipologiaRaccolta != 'Imballaggi in plastica e metallo') OR "
-				+ "(puntiRaccolta.imbPlMet = 'True') OR (puntiRaccolta.imbPlMet = '')"
-			 	+ ")"
-			 + " AND (" 
+				+ "(puntiRaccolta.imbPlMet = 'True') OR (puntiRaccolta.imbPlMet = '')" + ")" + " AND ("
 				+ "(raccolta.tipologiaRaccolta != 'Imballaggi in vetro') OR "
-				+ "(puntiRaccolta.imbVetro = 'True') OR (puntiRaccolta.imbVetro = '')"
-			 	+ ")"
-			 + " AND (" 
+				+ "(puntiRaccolta.imbVetro = 'True') OR (puntiRaccolta.imbVetro = '')" + ")" + " AND ("
 				+ "(raccolta.tipologiaRaccolta != 'Indumenti usati') OR "
-				+ "(puntiRaccolta.indumenti = 'True') OR (puntiRaccolta.indumenti = '')"
-			 	+ ")"
-			 + " AND (" 
+				+ "(puntiRaccolta.indumenti = 'True') OR (puntiRaccolta.indumenti = '')" + ")" + " AND ("
 				+ "(raccolta.tipologiaRaccolta != 'Organico') OR "
-				+ "(puntiRaccolta.organico = 'True') OR (puntiRaccolta.organico = '')"
-			 	+ ")"
-			 	;
+				+ "(puntiRaccolta.organico = 'True') OR (puntiRaccolta.organico = '')" + ")";
 
 	}
 
 	/**
 	 * Read all 'punti raccolta' for the user profile.
-	 * @param preferredOnly specify whether to show all or only the preferred for the
-	 * user comunity
+	 * 
+	 * @param preferredOnly
+	 *            specify whether to show all or only the preferred for the user
+	 *            comunity
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public static List<PuntoRaccolta> getPuntiRaccolta(boolean preferredOnly) throws Exception {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
-		boolean includeSpecial = false;//UTENZA_OCCASIONALE.equalsIgnoreCase(mHelper.mProfile.getUtenza());
+		boolean includeSpecial = false;// UTENZA_OCCASIONALE.equalsIgnoreCase(mHelper.mProfile.getUtenza());
 		Cursor cursor = null;
 		try {
 			String aree = getAreeForQuery(mHelper.mAreas);
-			String query = "SELECT DISTINCT " + "area, " + "tipologiaPuntiRaccolta," + "tipologiaUtenza," + "localizzazione,"
+			String query = "SELECT DISTINCT "
+					+ "area, "
+					+ "tipologiaPuntiRaccolta,"
+					+ "tipologiaUtenza,"
+					+ "localizzazione,"
 					+ "indirizzo, dettaglioIndirizzo,"
 					+ " gettoniera, residuo, imbCarta, imbPlMet, organico, imbVetro, indumenti, note"
-					+ " FROM puntiRaccolta " + " WHERE puntiRaccolta.area IN " + aree
-					+ (preferredOnly ? 
-							(" AND (puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni)) + 
-							 (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" :"") +" OR puntiRaccolta.tipologiaPuntiRaccolta = 'CRM')" : "")
+					+ " FROM puntiRaccolta "
+					+ " WHERE puntiRaccolta.area IN "
+					+ aree
+					+ (preferredOnly ? (" AND (puntiRaccolta.indirizzo IN " + getAreeForQuery(mHelper.mComuni))
+							+ (includeSpecial ? " OR puntiRaccolta.gettoniera = 'True'" : "")
+							+ " OR puntiRaccolta.tipologiaPuntiRaccolta = 'CRM')" : "")
 					+ " AND puntiRaccolta.tipologiaUtenza = \"" + mHelper.mProfile.getUtenza() + "\"";
 
 			cursor = db.rawQuery(query, null);
@@ -491,11 +501,13 @@ public class RifiutiHelper {
 	}
 
 	private static Boolean getBValue(String val) {
-		if ("True".equals(val)) return true;
-		if ("False".equals(val)) return false;
+		if ("True".equals(val))
+			return true;
+		if ("False".equals(val))
+			return false;
 		return null;
 	}
-	
+
 	/**
 	 * return 'tipo rifiuti' for the specified 'rifiuto'
 	 * 
@@ -656,7 +668,7 @@ public class RifiutiHelper {
 					cursor.moveToFirst();
 					area = cursor.getString(0);
 					String comune = cursor.getString(1);
-					if (comune != null && comune.length()>0) {
+					if (comune != null && comune.length() > 0) {
 						comuneResult.add(comune);
 					}
 				}
@@ -664,10 +676,37 @@ public class RifiutiHelper {
 			mAreas = areaResult;
 			mComuni = comuneResult;
 		} finally {
-			if (cursor != null)
+			if (cursor != null) {
 				cursor.close();
+			}
 		}
+	}
 
+	public static String getUserAreas(Profile profile) {
+		String area = profile.getArea();
+		List<String> areaResult = new ArrayList<String>();
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			while (area != null && area.trim().length() > 0) {
+				areaResult.add(area);
+				String query = "SELECT parent,comune FROM aree WHERE nome = \"" + area + "\"";
+				cursor = db.rawQuery(query, null);
+				if (cursor != null) {
+					cursor.moveToFirst();
+					area = cursor.getString(0);
+				}
+			}
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+		return getAreeForQuery(areaResult);
+	}
+
+	public static List<List<CalendarioItem>> getCalendarsForMonth(Calendar ref) {
+		return getCalendarsForMonth(ref, null, null);
 	}
 
 	/**
@@ -676,7 +715,7 @@ public class RifiutiHelper {
 	 * @param ref
 	 * @return
 	 */
-	public static List<List<CalendarioItem>> getCalendarsForMonth(Calendar ref) {
+	public static List<List<CalendarioItem>> getCalendarsForMonth(Calendar ref, Profile profile, String aree) {
 		int max = ref.getActualMaximum(Calendar.DAY_OF_MONTH);
 		List<List<CalendarioItem>> res = new ArrayList<List<CalendarioItem>>(max);
 		SparseArray<List<Integer>> dayMap = new SparseArray<List<Integer>>();
@@ -696,15 +735,20 @@ public class RifiutiHelper {
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			String aree = getAreeForQuery(mHelper.mAreas);
+			if (profile == null) {
+				profile = mHelper.mProfile;
+			}
+			if (aree == null) {
+				aree = getAreeForQuery(mHelper.mAreas);
+			}
+			Log.e("XXXXXXXXXX", "profile: " + profile + "\n" + "aree: " + aree);
 			String query = "SELECT DISTINCT "
 					+ "puntiRaccolta.*, raccolta.colore FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
 					+ " WHERE (puntiRaccolta.dataDa IS NOT NULL AND puntiRaccolta.dataDa != '')"
 					+ " AND (puntiRaccolta.dataA IS NOT NULL AND puntiRaccolta.dataA != '')"
 					+ " AND (puntiRaccolta.il IS NOT NULL AND puntiRaccolta.il != '')" + " AND puntiRaccolta.area IN " + aree
-					+ " AND raccolta.area IN " + aree + " AND puntiRaccolta.tipologiaUtenza = \""
-					+ mHelper.mProfile.getUtenza() + "\"";
+					+ " AND raccolta.area IN " + aree + " AND puntiRaccolta.tipologiaUtenza = \"" + profile.getUtenza() + "\"";
 			cursor = db.rawQuery(query, null);
 			if (cursor != null) {
 				cursor.moveToFirst();
@@ -742,8 +786,9 @@ public class RifiutiHelper {
 				}
 			}
 		} finally {
-			if (cursor != null)
+			if (cursor != null) {
 				cursor.close();
+			}
 		}
 		return res;
 	}
@@ -835,6 +880,10 @@ public class RifiutiHelper {
 	}
 
 	private static String getAreeForQuery(List<String> areas) {
+		if (areas == null) {
+			return null;
+		}
+
 		String aree = "(";
 		for (String area : areas) {
 			aree += "'" + area + "',";
@@ -1197,22 +1246,16 @@ public class RifiutiHelper {
 	 * @return
 	 */
 	public static List<Area> readAreasForTipoUtenza(String tipoUtenza) {
-		// TODO correct this to take into account really used areas from puntiraccolta
+		// TODO correct this to take into account really used areas from
+		// puntiraccolta
 		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
 		Cursor cursor = null;
 		try {
-			String cond = 
-					UTENZA_DOMESTICA.equalsIgnoreCase(tipoUtenza) ? 
-							"AND utenzaDomestica = 'True'" : 
-							UTENZA_NON_DOMESTICA.equalsIgnoreCase(tipoUtenza) ?	
-							"AND utenzaNonDomestica = 'True'" : 
-							"AND utenzaOccasionale = 'True'"; 
-			
-			String query = 
-					"SELECT nome,parent,localita FROM aree " + 
-					"WHERE localita IS NOT NULL AND localita != '' " +
-					cond +		
-					"ORDER BY localita";
+			String cond = UTENZA_DOMESTICA.equalsIgnoreCase(tipoUtenza) ? "AND utenzaDomestica = 'True'" : UTENZA_NON_DOMESTICA
+					.equalsIgnoreCase(tipoUtenza) ? "AND utenzaNonDomestica = 'True'" : "AND utenzaOccasionale = 'True'";
+
+			String query = "SELECT nome,parent,localita FROM aree " + "WHERE localita IS NOT NULL AND localita != '' " + cond
+					+ "ORDER BY localita";
 			cursor = db.rawQuery(query, null);
 			List<Area> result = new ArrayList<Area>();
 			while (cursor.moveToNext()) {

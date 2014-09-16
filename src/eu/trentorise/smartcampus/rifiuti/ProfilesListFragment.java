@@ -64,7 +64,7 @@ public class ProfilesListFragment extends ListFragment {
 
 		if (abActivity instanceof MainActivity) {
 			((MainActivity) abActivity).unlockDrawer();
-			((MainActivity) abActivity).showDrawer();
+			((MainActivity) abActivity).showDrawerIndicator();
 			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 			abActivity.supportInvalidateOptionsMenu();
 		}

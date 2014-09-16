@@ -33,6 +33,7 @@ import eu.trentorise.smartcampus.rifiuti.data.RifiutiEventsSource;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioAgendaEntry;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioEvent;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class CalendarFragment extends Fragment {
 
@@ -54,10 +55,14 @@ public class CalendarFragment extends Fragment {
 
 	private List<Long> loadedMonths = new ArrayList<Long>();
 
+	private Bundle intentBundle;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+
+		intentBundle = this.getArguments();
 
 		rifiutiEventsSource = new RifiutiEventsSource(this.getActivity());
 		monthCalDefault = Calendar.getInstance(Locale.getDefault());
@@ -100,6 +105,9 @@ public class CalendarFragment extends Fragment {
 
 		loadMonth(null);
 
+		/*
+		 * onDayCliclListener for calendarView
+		 */
 		calendarView.setOnDayClickListener(new RifiutiCalendarView.OnDayClickListener<CalendarioEvent>() {
 			@Override
 			public void onDayClicked(AdapterView<?> adapter, View view, int position, long id, Day<CalendarioEvent> day) {
@@ -124,6 +132,9 @@ public class CalendarFragment extends Fragment {
 			}
 		});
 
+		/*
+		 * onScollListener for calendarAgendaList
+		 */
 		calendarAgendaList.setOnScrollListener(new OnScrollListener() {
 
 			private boolean scrolled = false;
@@ -148,9 +159,15 @@ public class CalendarFragment extends Fragment {
 			}
 		});
 
+		/*
+		 * colors for swipeRefreshLayout
+		 */
 		calendarAgendaSRL.setColorSchemeResources(R.color.rifiuti_green_light_o50, R.color.rifiuti_green_light,
 				R.color.rifiuti_green_middle, R.color.rifiuti_green_dark);
 
+		/*
+		 * onRefreshListener for swipeRefreshLayout
+		 */
 		calendarAgendaSRL.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
@@ -158,6 +175,14 @@ public class CalendarFragment extends Fragment {
 				loadPreviousMonth();
 			}
 		});
+
+		/*
+		 * If value is passed go to this day on agenda
+		 */
+		if (intentBundle != null && intentBundle.containsKey(ArgUtils.ARGUMENT_CALENDAR_TOMORROW)) {
+			Calendar goToDayFromIntent = (Calendar) intentBundle.get(ArgUtils.ARGUMENT_CALENDAR_TOMORROW);
+			showCalendarAgenda(goToDayFromIntent, true);
+		}
 	}
 
 	@Override

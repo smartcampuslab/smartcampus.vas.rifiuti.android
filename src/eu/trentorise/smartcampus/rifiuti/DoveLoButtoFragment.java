@@ -64,6 +64,8 @@ public class DoveLoButtoFragment extends Fragment implements TutorialProvider {
 		try {
 			if (RifiutiHelper.getInstance() == null) {
 				RifiutiHelper.init(getActivity());
+			}
+			if (RifiutiHelper.getProfile() == null) {
 				RifiutiHelper.setProfile(PreferenceUtils.getProfile(getActivity(),
 						PreferenceUtils.getCurrentProfilePosition(getActivity())));
 			}

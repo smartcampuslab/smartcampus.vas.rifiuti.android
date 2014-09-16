@@ -28,6 +28,8 @@ import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
+import eu.trentorise.smartcampus.rifiuti.notifications.NotificationsService;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
 
@@ -37,6 +39,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	private DrawerLayout mDrawerLayout;
 	private ExpandedListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private RadioGroup rg;
+
+	private Bundle intentBundle;
 
 	private boolean mProfileGroupManage = true;
 
@@ -47,8 +52,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_main);
-
 		mContentFrameId = R.id.content_frame;
+
+		if (getIntent().getExtras() != null) {
+			intentBundle = getIntent().getExtras();
+		}
+
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ExpandedListView) findViewById(R.id.left_drawer);
 
@@ -61,7 +70,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 		addNavDrawerButton();
 
-		RadioGroup rg = (RadioGroup) findViewById(R.id.profile_rg);
+		rg = (RadioGroup) findViewById(R.id.profile_rg);
 		rg.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -73,7 +82,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 				if (i != null) {
 					try {
 						PreferenceUtils.setCurrentProfilePosition(MainActivity.this, i);
-						setCurrentProfile();
+						setCurrentProfile(null);
+						// updateActionBarSubtitle();
 						Fragment fragment = getSupportFragmentManager().findFragmentById(mContentFrameId);
 						if (fragment != null) {
 							Fragment newFragment = getFragmentToReload(fragment);
@@ -94,7 +104,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 				lockDrawer();
 				loadFragment(8);
 				Toast.makeText(this, getString(R.string.toast_no_prof), Toast.LENGTH_SHORT).show();
-			} else {
+			} else if (PreferenceUtils.getProfiles(this).size() > 1) {
 				populateProfilesList(true);
 			}
 		} catch (Exception e) {
@@ -102,6 +112,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			e.printStackTrace();
 			finish();
 		}
+
+		// use this to start and trigger a service
+		Intent i = new Intent(getApplicationContext(), NotificationsService.class);
+		// potentially add data to the intent
+		// i.putExtra("KEY1", "Value to be used by the service");
+		getApplicationContext().startService(i);
 	}
 
 	@Override
@@ -124,11 +140,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	}
 
 	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		// stop notifications service
+		// getApplicationContext().stopService(new
+		// Intent(getApplicationContext(), NotificationsService.class));
+	}
+
+	@Override
 	public void onBackPressed() {
 		Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
 		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
 			// mDrawerLayout.closeDrawer(GravityCompat.START);
-			hideDrawer();
+			hideDrawerIndicator();
 		} else if (f instanceof onBackListener) {
 			((onBackListener) f).onBack();
 		} else {
@@ -172,19 +197,27 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	public boolean onNavigationItemSelected(int arg0, long arg1) {
 		try {
 			PreferenceUtils.setCurrentProfilePosition(this, arg0);
-			setCurrentProfile();
+			setCurrentProfile(null);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
 	}
 
-	private void setCurrentProfile() {
-		if (PreferenceUtils.getCurrentProfilePosition(this) < 0) {
+	private void setCurrentProfile(Integer position) {
+		if (position != null) {
+			Profile profile = PreferenceUtils.getProfile(this, position);
+			PreferenceUtils.setCurrentProfilePosition(MainActivity.this, position);
+			RifiutiHelper.setProfile(profile);
+			rg.check(rg.getChildAt(position).getId());
+			Toast.makeText(getApplicationContext(),
+					getResources().getString(R.string.profile_changed_by_intent, profile.getName()), Toast.LENGTH_LONG).show();
+		} else if (PreferenceUtils.getCurrentProfilePosition(this) < 0) {
 			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this, 0));
 		} else {
 			RifiutiHelper.setProfile(PreferenceUtils.getProfile(this, PreferenceUtils.getCurrentProfilePosition(this)));
 		}
+		updateActionBarSubtitle();
 	}
 
 	public void populateProfilesList(boolean loadHome) {
@@ -216,12 +249,31 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			findViewById(R.id.profile_rg).setVisibility(View.GONE);
 		}
 		mDrawerToggle.syncState();
-		setCurrentProfile();
+
+		Integer profilePosition = null;
+		if (intentBundle != null && intentBundle.containsKey(ArgUtils.ARGUMENT_PROFILE)) {
+			Profile intentBundleProfile = (Profile) intentBundle.getSerializable(ArgUtils.ARGUMENT_PROFILE);
+			for (int pc = 0; pc < profiles.size(); pc++) {
+				Profile p = profiles.get(pc);
+				if (p.toString().equals(intentBundleProfile.toString())) {
+					profilePosition = pc;
+					break;
+				}
+			}
+		}
+		setCurrentProfile(profilePosition);
+
 		if (loadHome) {
 			unlockDrawer();
-			showDrawer();
+			showDrawerIndicator();
 			loadFragment(0);
+			// updateActionBarSubtitle();
 		}
+	}
+
+	private void updateActionBarSubtitle() {
+		getSupportActionBar().setSubtitle(
+				PreferenceUtils.getProfiles(this).get(PreferenceUtils.getCurrentProfilePosition(this)).getName());
 	}
 
 	private void addNavDrawerButton() {
@@ -241,7 +293,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 			public void onDrawerSlide(View drawerView, float slideOffset) {
 				super.onDrawerSlide(drawerView, slideOffset);
-
 				if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 					mDrawerLayout.bringChildToFront(drawerView);
 					mDrawerLayout.requestLayout();
@@ -280,6 +331,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		switch (position) {
 		case 0:
 			fragment = new HomeFragment();
+			if (intentBundle != null && intentBundle.containsKey(ArgUtils.ARGUMENT_CALENDAR_TOMORROW)) {
+				fragment.setArguments(intentBundle);
+			}
 			break;
 		case 1:
 			fragment = new MapFragment();
@@ -348,14 +402,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	}
 
 	// USE WITH CARE!!
-	public void hideDrawer() {
+	public void hideDrawerIndicator() {
 		if (mDrawerToggle != null) {
 			mDrawerToggle.setDrawerIndicatorEnabled(false);
 		}
 	}
 
 	// USE WITH CARE!!
-	public void showDrawer() {
+	public void showDrawerIndicator() {
 		if (mDrawerToggle != null) {
 			mDrawerToggle.setDrawerIndicatorEnabled(true);
 		}

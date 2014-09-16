@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
+import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class HomeFragment extends Fragment {
 
@@ -28,12 +29,16 @@ public class HomeFragment extends Fragment {
 	public static DrawerLayout mDrawerLayout;
 	public static ListView mDrawerList;
 
+	private Bundle intentBundle;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
 		mPagerTitles = getResources().getStringArray(R.array.home_pager_titles);
+
+		intentBundle = this.getArguments();
 	}
 
 	@Override
@@ -87,8 +92,13 @@ public class HomeFragment extends Fragment {
 		mPagerAdapter = new HomePagerAdapter(getChildFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 
-		// Page "Dove lo butto?" is default
-		mPager.setCurrentItem(pagerPreviousItem != null ? pagerPreviousItem : 1);
+		if (intentBundle != null && intentBundle.containsKey(ArgUtils.ARGUMENT_CALENDAR_TOMORROW)) {
+			// Page "Calendar"
+			mPager.setCurrentItem(2);
+		} else {
+			// Page "Dove lo butto?" is default
+			mPager.setCurrentItem(pagerPreviousItem != null ? pagerPreviousItem : 1);
+		}
 
 		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.application_title));
 	}
@@ -128,8 +138,9 @@ public class HomeFragment extends Fragment {
 			case 1:
 				return new DoveLoButtoFragment();
 			case 2:
-				// return new CalendarFragment();
-				return new CalendarFragment();
+				Fragment fragment = new CalendarFragment();
+				fragment.setArguments(intentBundle);
+				return fragment;
 			default:
 				return new DummyFragment();
 			}

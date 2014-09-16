@@ -9,6 +9,9 @@
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
     <string name="toast_no_prof">Crea il tuo profilo!</string>
     <string name="err_everything_go_lazy">Qualcosa è andato storto</string>
+    
+    <!-- Toast strings -->
+    <string name="profile_changed_by_intent">Profilo ora attivo: %s</string>
 
     <!-- Drawer titles -->
     <string name="drawer_open">Rifiuti</string>
