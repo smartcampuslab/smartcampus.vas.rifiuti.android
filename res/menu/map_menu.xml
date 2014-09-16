@@ -2,8 +2,14 @@
     xmlns:smartcampus.vas.rifiuti.android="http://schemas.android.com/apk/res-auto" >
 
     <item
-        android:id="@+id/action_list"
-        android:icon="@drawable/ic_list"
+        android:id="@+id/action_go"
+        android:icon="@drawable/ic_menu_directions_p"
+        android:showAsAction="always"
+        android:title="@string/action_list"
+        smartcampus.vas.rifiuti.android:showAsAction="always"/>
+    <item
+        android:id="@+id/action_tel"
+        android:icon="@drawable/ic_contatti"
         android:showAsAction="always"
         android:title="@string/action_list"
         smartcampus.vas.rifiuti.android:showAsAction="always"/>

@@ -4,21 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <!-- <LinearLayout -->
-    <!-- android:id="@+id/contacts_descr_layout" -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:orientation="vertical"> -->
-    <!-- <TextView -->
-    <!-- android:id="@+id/contacts_descr_label" -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:background="@color/rifiuti_middle" -->
-    <!-- android:padding="@dimen/fragment_horizontal_margin" -->
-    <!-- android:text="@string/contacts_descr_label" -->
-    <!-- android:textAppearance="?android:attr/textAppearanceMedium" -->
-    <!-- android:textColor="@color/rifiuti_dark" /> -->
-
     <TextView
         android:id="@+id/contacts_descr"
         android:layout_width="match_parent"
@@ -27,76 +12,58 @@
         android:padding="@dimen/fragment_horizontal_margin"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/rifiuti_dark" />
-    <!-- </LinearLayout> -->
 
     <LinearLayout
         android:id="@+id/contacts_address_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-        <!-- <TextView -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="wrap_content" -->
-        <!-- android:background="@color/rifiuti_middle" -->
-        <!-- android:padding="@dimen/fragment_horizontal_margin" -->
-        <!-- android:text="@string/contacts_address_label" -->
-        <!-- android:textAppearance="?android:attr/textAppearanceMedium" -->
-        <!-- android:textColor="@color/rifiuti_dark" /> -->
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/location" />
 
         <TextView
             android:id="@+id/contacts_address"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawablePadding="3dp"
             android:padding="@dimen/fragment_horizontal_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:drawableLeft="@android:drawable/ic_menu_compass"
-            android:drawablePadding="6dp"
             android:textColor="@color/rifiuti_dark" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rifiuti_middle" />
 
     <LinearLayout
         android:id="@+id/contacts_opening_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-        <!-- <TextView -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="wrap_content" -->
-        <!-- android:background="@color/rifiuti_middle" -->
-        <!-- android:padding="@dimen/fragment_horizontal_margin" -->
-        <!-- android:text="@string/contacts_opening_label" -->
-        <!-- android:textAppearance="?android:attr/textAppearanceMedium" -->
-        <!-- android:textColor="@color/rifiuti_dark" /> -->
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/rifiuti_middle" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/calendar" />
 
         <TextView
             android:id="@+id/contacts_opening"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/fragment_horizontal_margin"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:drawableLeft="@drawable/cal"
-            android:drawablePadding="6dp"
             android:textColor="@color/rifiuti_dark" />
     </LinearLayout>
-
-    <!-- <TextView -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:background="@color/rifiuti_middle" -->
-    <!-- android:padding="@dimen/fragment_horizontal_margin" -->
-    <!-- android:text="@string/contacts_contacts_label" -->
-    <!-- android:textAppearance="?android:attr/textAppearanceMedium" -->
-    <!-- android:textColor="@color/rifiuti_dark" /> -->
 
     <View
         android:layout_width="match_parent"
@@ -114,6 +81,7 @@
             android:id="@+id/contacts_web_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
             android:src="@drawable/ic_web" />
 
         <TextView
@@ -125,10 +93,11 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/rifiuti_dark" />
     </LinearLayout>
+
     <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/rifiuti_middle" />
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rifiuti_middle" />
 
     <LinearLayout
         android:id="@+id/contacts_tel_container"
@@ -142,6 +111,7 @@
             android:id="@+id/contacts_tel_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
             android:src="@drawable/ic_call" />
 
         <TextView
@@ -151,13 +121,12 @@
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/rifiuti_dark" />
-        
-    </LinearLayout>   
-    
+    </LinearLayout>
+
     <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/rifiuti_middle" />
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rifiuti_middle" />
 
     <LinearLayout
         android:id="@+id/contacts_email_container"
@@ -170,6 +139,7 @@
             android:id="@+id/contacts_email_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
             android:src="@drawable/ic_mail" />
 
         <TextView
@@ -193,6 +163,7 @@
             android:id="@+id/contacts_pec_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
             android:src="@drawable/ic_mail" />
 
         <TextView
@@ -204,9 +175,5 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/rifiuti_dark" />
     </LinearLayout>
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/rifiuti_middle" />
 
 </LinearLayout>
