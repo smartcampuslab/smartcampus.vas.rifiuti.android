@@ -1,17 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:smartcampus.vas.rifiuti.android="http://schemas.android.com/apk/res-auto" >
 
-    <item
-        android:id="@+id/action_call"
-        android:icon="@drawable/ic_action_call"
+     <item
+        android:id="@+id/action_list"
+        android:icon="@drawable/ic_list"
         android:showAsAction="always"
-        android:title="@string/action_call"
-        smartcampus.vas.rifiuti.android:showAsAction="always"/>
-    <item
-        android:id="@+id/action_goto"
-        android:icon="@drawable/ic_action_location"
-        android:showAsAction="always"
-        android:title="@string/action_goto"
+        android:title="@string/action_list"
         smartcampus.vas.rifiuti.android:showAsAction="always"/>
 
 </menu>

@@ -82,7 +82,7 @@ public class ContactsFragment extends Fragment implements onBackListener {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.map_menu, menu);
+		inflater.inflate(R.menu.contact_detail_menu, menu);
 	}
 
 	@Override
