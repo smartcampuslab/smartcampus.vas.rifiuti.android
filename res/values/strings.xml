@@ -76,6 +76,8 @@
     <string name="action_list">Lista</string>
     <string name="action_map">Mappa</string>
     <string name="calendar_today">Vai a oggi</string>
+    <string name="action_call">Chiama</string>
+    <string name="action_goto">Vai</string>
 
     <!-- NOTE -->
     <string name="note_add">Cosa vuoi ricordare?</string>
@@ -186,4 +188,6 @@
     <string name="distance">%.2f km</string>
     
     <string name="confirm_exit">Sei sicuro di voler uscire dall\'app?</string>
+    
+    
 </resources>

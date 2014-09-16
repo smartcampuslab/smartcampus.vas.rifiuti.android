@@ -2,10 +2,14 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -65,6 +69,12 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		if (item.getItemId() == android.R.id.home) {
 			onBack();
 			return true;
+		}
+		else if(item.getItemId() == R.id.action_goto){
+			callAppForDirectionsGmaps(data.get(mPosition).get("address"));
+		}
+		else if(item.getItemId() == R.id.action_call){
+			callPhoneIntent(data.get(mPosition).get("phone"));
 		}
 		return false;
 	}
@@ -190,14 +200,26 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		ImageView telImg = (ImageView) view.findViewById(R.id.contacts_tel_img);
 		telImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				String p = phone.replace(" ", "");
-				p = p.replace("/", "");
-				p = p.replace(".", "");
-				Intent callIntent = new Intent(Intent.ACTION_DIAL);
-				callIntent.setData(Uri.parse("tel:" + p));
-				startActivity(callIntent);
+				callPhoneIntent(phone);
 			}
+
+			
 		});
+	}
+	private void callPhoneIntent(final String phone) {
+		String p = phone.replace(" ", "");
+		p = p.replace("/", "");
+		p = p.replace(".", "");
+		Intent callIntent = new Intent(Intent.ACTION_DIAL);
+		callIntent.setData(Uri.parse("tel:" + p));
+		startActivity(callIntent);
+	}
+	private void callAppForDirectionsGmaps(String addr) {
+
+		String url = "http://maps.google.com/maps?daddr=" + addr ;
+
+		Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		getActivity().startActivity(navigation);
 	}
 
 }
