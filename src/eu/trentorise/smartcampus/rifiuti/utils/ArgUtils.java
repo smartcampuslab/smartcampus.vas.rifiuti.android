@@ -9,7 +9,9 @@ public class ArgUtils {
 	public static final String ARGUMENT_RIFIUTO = "rifiuto";
 	public static final String ARGUMENT_CALENDAR_DAY = "calendarday";
 	public static final String ARGUMENT_CONTACTS = "contacts";
-	
+
+	public static final String ARGUMENT_CONTACT_POSITION = "contact_pos";
+
 	public static final String ARGUMENT_CALENDAR_TOMORROW = "tomorrow calendar";
 	public static final String ARGUMENT_PROFILE = "profile";
 

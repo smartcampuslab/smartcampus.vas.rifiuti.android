@@ -2,8 +2,6 @@ package eu.trentorise.smartcampus.rifiuti;
 
 import java.util.List;
 
-import com.google.android.gms.internal.bu;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;

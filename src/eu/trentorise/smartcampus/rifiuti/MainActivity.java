@@ -313,7 +313,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	 */
 	private Fragment getFragmentToReload(Fragment fragment) {
 		if (fragment instanceof ProfilesListFragment || fragment instanceof FeedbackFragment
-				|| fragment instanceof ContactContainerFragment || fragment instanceof InfoFragment) {
+				|| fragment instanceof ContactsListFragment || fragment instanceof InfoFragment) {
 			return null;
 		}
 
@@ -326,8 +326,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 	private void loadFragment(int position) {
 		Fragment fragment = null;
-		Intent intent = null;
-
 		switch (position) {
 		case 0:
 			fragment = new HomeFragment();
@@ -348,11 +346,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			fragment = new FeedbackFragment();
 			break;
 		case 5:
-			// fragment = new ContactContainerFragment();
-
-			// TODO: temporary workaround (see issue #10)
-			intent = new Intent(getApplicationContext(), ContactContainerActivity.class);
-
+			fragment = new ContactsListFragment();
 			break;
 		case 6:
 			prepareTutorial();
@@ -376,8 +370,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			mDrawerList.setItemChecked(position, true);
 			// setTitle(mPlanetTitles[position]);
 			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
-		} else if (intent != null) {
-			startActivity(intent);
 		}
 	}
 
