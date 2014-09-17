@@ -91,7 +91,7 @@ public class ContactsListFragment extends ListFragment {
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 		for (Istituzione i : list) {
 			HashMap<String, String> res = new HashMap<String, String>();
-			res.put("name", i.getNome());
+			res.put("name", i.getUfficio());
 			res.put("description", i.getDescrizione());
 			res.put("email", i.getEmail());
 			res.put("phone", i.getTelefono());
