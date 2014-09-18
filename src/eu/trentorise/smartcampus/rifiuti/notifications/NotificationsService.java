@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -14,8 +15,8 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
+import eu.trentorise.smartcampus.rifiuti.MainActivity;
 import eu.trentorise.smartcampus.rifiuti.R;
-import eu.trentorise.smartcampus.rifiuti.SplashScreenActivity;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.CalendarioItem;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
@@ -66,6 +67,8 @@ public class NotificationsService extends Service {
 	 */
 	private void showNotification() {
 		Calendar tomorrowCal = Calendar.getInstance(Locale.getDefault());
+
+		// TODO: [developing] comment next line if tomorrow has no events
 		tomorrowCal.add(Calendar.DAY_OF_MONTH, 1);
 
 		List<Profile> profiles = PreferenceUtils.getProfiles(getApplicationContext());
@@ -97,9 +100,7 @@ public class NotificationsService extends Service {
 				String contentText = "Domani a " + profile.getArea() + "...";
 				List<String> lines = new ArrayList<String>();
 
-				// get tomorrow
-				List<CalendarioItem> tomorrowItems = calendarsForMonth.get(tomorrowCal.get(Calendar.DAY_OF_MONTH)); // TODO:
-																													// -1!!!
+				List<CalendarioItem> tomorrowItems = calendarsForMonth.get(tomorrowCal.get(Calendar.DAY_OF_MONTH) - 1);
 				for (CalendarioItem item : tomorrowItems) {
 					if (item.getPoint().getTipologiaPuntiRaccolta().startsWith(PORTA_A_PORTA)) {
 						lines.add(item.getPoint().getTipologiaPuntiRaccolta());
@@ -117,7 +118,7 @@ public class NotificationsService extends Service {
 					}
 					Log.e(TAG, sb.toString());
 
-					NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+					NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setAutoCancel(true)
 							.setSmallIcon(R.drawable.ic_stat_notify_riciclo).setContentTitle(contentTitle)
 							.setContentText(contentText);
 
@@ -128,14 +129,20 @@ public class NotificationsService extends Service {
 					}
 					mBuilder.setStyle(inboxStyle);
 
-					Intent intent = new Intent(getApplicationContext(), SplashScreenActivity.class);
+					// Intent intent = new Intent(getApplicationContext(),
+					// SplashScreenActivity.class);
+					Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 					intent.putExtra(ArgUtils.ARGUMENT_CALENDAR_TOMORROW, tomorrowCal);
 					intent.putExtra(ArgUtils.ARGUMENT_PROFILE, profile);
 					PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
 							PendingIntent.FLAG_UPDATE_CURRENT);
 					mBuilder.setContentIntent(pendingIntent);
 
-					mNM.notify(null, p, mBuilder.build());
+					Notification notification = mBuilder.build();
+					notification.defaults |= Notification.DEFAULT_SOUND;
+					// notification.defaults |= Notification.DEFAULT_VIBRATE;
+
+					mNM.notify(null, p, notification);
 				}
 			}
 		}

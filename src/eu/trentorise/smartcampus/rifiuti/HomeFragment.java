@@ -9,6 +9,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,8 +97,10 @@ public class HomeFragment extends Fragment {
 			// Page "Calendar"
 			mPager.setCurrentItem(2);
 		} else {
+			// mPager.setCurrentItem(pagerPreviousItem != null ?
+			// pagerPreviousItem : 1);
 			// Page "Dove lo butto?" is default
-			mPager.setCurrentItem(pagerPreviousItem != null ? pagerPreviousItem : 1);
+			mPager.setCurrentItem(1);
 		}
 
 		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.application_title));
@@ -105,8 +108,10 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public void onPause() {
+		Log.e("HOME", "onPause");
 		super.onPause();
 		pagerPreviousItem = mPager.getCurrentItem();
+		intentBundle = null;
 	}
 
 	@Override
@@ -139,7 +144,9 @@ public class HomeFragment extends Fragment {
 				return new DoveLoButtoFragment();
 			case 2:
 				Fragment fragment = new CalendarFragment();
-				fragment.setArguments(intentBundle);
+				if (intentBundle != null && intentBundle.containsKey(ArgUtils.ARGUMENT_CALENDAR_TOMORROW)) {
+					fragment.setArguments(intentBundle);
+				}
 				return fragment;
 			default:
 				return new DummyFragment();

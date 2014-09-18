@@ -149,6 +149,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	}
 
 	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+
+		if (intent.getExtras() != null) {
+			intentBundle = intent.getExtras();
+		}
+
+		populateProfilesList(true);
+	}
+
+	@Override
 	public void onBackPressed() {
 		Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
 		if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -370,6 +381,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			mDrawerList.setItemChecked(position, true);
 			// setTitle(mPlanetTitles[position]);
 			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
+			// erase intent
+			intentBundle = null;
 		}
 	}
 

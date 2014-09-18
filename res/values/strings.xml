@@ -11,7 +11,7 @@
     <string name="err_everything_go_lazy">Qualcosa è andato storto</string>
     
     <!-- Toast strings -->
-    <string name="profile_changed_by_intent">Profilo ora attivo: %s</string>
+    <string name="profile_changed_by_intent">Profilo: %s</string>
 
     <!-- Drawer titles -->
     <string name="drawer_open">Rifiuti</string>
@@ -24,7 +24,7 @@
     <string name="drawer_tipi_raccolta">Tipi di raccolta</string>
     <string name="drawer_tipi_rifiuti">Tipi di rifiuti</string>
     <string name="drawer_calendario">Calendario</string>
-    <string name="drawer_scadenze_note">Scadenze e note</string>
+    <string name="drawer_note">Note</string>
     <string name="drawer_feedback">Segnala</string>
     <string name="drawer_contacts">Contatti</string>
     <string name="drawer_profilo">Gestione profili</string>
@@ -32,7 +32,7 @@
     <string name="drawer_info">Info</string>
 
     <!-- Home pager titles -->
-    <string name="home_pager_scadenzenote">SCADENZE E NOTE</string>
+    <string name="home_pager_note">NOTE</string>
     <string name="home_pager_dovelobutto">DOVE LO BUTTO?</string>
     <string name="home_pager_calendario">CALENDARIO</string>
 

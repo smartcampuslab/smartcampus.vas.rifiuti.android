@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -171,7 +170,6 @@ public class CalendarFragment extends Fragment {
 		calendarAgendaSRL.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				Log.e("SwipeRefreshLayout", "SwipeRefreshLayout onRefresh");
 				loadPreviousMonth();
 			}
 		});
@@ -390,6 +388,7 @@ public class CalendarFragment extends Fragment {
 		Integer dayPosition;
 		if (cal != null) {
 			dayPosition = calendarAgendaAdapter.getDayPosition(cal);
+			calendarAgendaAdapter.setSelected(dayPosition);
 		} else {
 			dayPosition = calendarAgendaAdapter.getTodayPosition();
 		}

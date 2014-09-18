@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 
 	private Context mContext;
 	private int resource;
+
+	private Integer selected;
 
 	public CalendarAgendaAdapter(Context context, int resource) {
 		super(context, resource);
@@ -72,6 +75,10 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 		return getDayPosition(todayCalendar);
 	}
 
+	public void setSelected(Integer selected) {
+		this.selected = selected;
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
@@ -95,9 +102,11 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 		// hide empty days
 		if (cae.getEventsMap().isEmpty()) {
 			holder.date.setVisibility(View.GONE);
+			holder.prsLayout.setVisibility(View.GONE);
 			return row;
 		} else {
 			holder.date.setVisibility(View.VISIBLE);
+			holder.prsLayout.setVisibility(View.VISIBLE);
 		}
 
 		String dateString = dateFormatter.format(cae.getCalendar().getTime());
@@ -184,6 +193,24 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 
 			holder.prsLayout.addView(tprRow);
 		}
+
+		final TransitionDrawable prsLayoutBackground = (TransitionDrawable) holder.prsLayout.getBackground();
+		if (selected != null && selected == position) {
+			int fadein = 500;
+			int wait = 500 + fadein;
+			final int fadeout = 1000;
+			prsLayoutBackground.startTransition(fadein);
+			holder.prsLayout.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					prsLayoutBackground.reverseTransition(fadeout);
+				}
+			}, wait);
+		} else {
+			prsLayoutBackground.resetTransition();
+		}
+
+		selected = null;
 
 		return row;
 	}
