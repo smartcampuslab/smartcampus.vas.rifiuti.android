@@ -9,7 +9,7 @@
         smartcampus.vas.rifiuti.android:showAsAction="always"/>
     <item
         android:id="@+id/action_goto"
-        android:icon="@drawable/ic_action_location"
+        android:icon="@drawable/ic_action_navigate"
         android:showAsAction="always"
         android:title="@string/action_goto"
         smartcampus.vas.rifiuti.android:showAsAction="always"/>
