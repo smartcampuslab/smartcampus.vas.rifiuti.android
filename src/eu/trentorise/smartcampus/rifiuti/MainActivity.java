@@ -167,6 +167,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			hideDrawerIndicator();
 		} else if (f instanceof onBackListener) {
 			((onBackListener) f).onBack();
+		} else if (!(f instanceof HomeFragment)) {
+			loadFragment(0);
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setView(View.inflate(this, R.layout.dialog_closing, null));
