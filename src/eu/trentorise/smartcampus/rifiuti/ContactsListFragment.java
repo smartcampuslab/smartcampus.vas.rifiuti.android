@@ -82,8 +82,9 @@ public class ContactsListFragment extends ListFragment {
 		FragmentManager fm = getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		ft.addToBackStack(null);
-		ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.popenter, R.anim.popexit);
-		ft.replace(R.id.content_frame, ContactsFragment.newInstance(data, position));
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		ft.replace(R.id.content_frame, ContactsFragment
+				.newInstance(data,position));
 		ft.commit();
 	}
 

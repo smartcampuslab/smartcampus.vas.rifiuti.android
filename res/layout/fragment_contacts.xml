@@ -20,10 +20,6 @@
             android:id="@+id/contacts_details"
             layout="@layout/contacts_details" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/rifiuti_middle" />
     </LinearLayout>
 
 </ScrollView>

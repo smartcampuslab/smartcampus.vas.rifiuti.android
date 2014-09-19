@@ -101,7 +101,7 @@ public class ProfilesListFragment extends ListFragment {
 		ProfileFragment pf;
 		pf = ProfileFragment.newInstance(position);
 		ft.addToBackStack(null);
-		ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.popenter, R.anim.popexit);
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		ft.replace(R.id.content_frame, pf);
 		ft.commit();
 	}
