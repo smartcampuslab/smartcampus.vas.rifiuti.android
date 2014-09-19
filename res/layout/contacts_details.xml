@@ -106,7 +106,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:autoLink="web"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/rifiuti_dark" />
         </LinearLayout>
@@ -176,7 +175,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:autoLink="email"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/rifiuti_dark" />
         </LinearLayout>
@@ -207,7 +205,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:autoLink="email"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/rifiuti_dark" />
     </LinearLayout>

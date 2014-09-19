@@ -73,9 +73,6 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		else if(item.getItemId() == R.id.action_goto){
 			callAppForDirectionsGmaps(data.get(mPosition).get("address"));
 		}
-		else if(item.getItemId() == R.id.action_call){
-			callPhoneIntent(data.get(mPosition).get("phone"));
-		}
 		return false;
 	}
 	
@@ -160,7 +157,7 @@ public class ContactsFragment extends Fragment implements onBackListener {
 				R.id.contacts_pec, R.string.contacts_pec_ph);
 
 		final String web = data.get("web");
-		ImageView webImg = (ImageView) view.findViewById(R.id.contacts_web_img);
+		View webImg = view.findViewById(R.id.contacts_web_container);
 		webImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (web == null)
@@ -173,8 +170,8 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		});
 
 		final String mail = data.get("email");
-		ImageView emailImg = (ImageView) view
-				.findViewById(R.id.contacts_email_img);
+		View emailImg =  view
+				.findViewById(R.id.contacts_email_container);
 		emailImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
@@ -186,7 +183,7 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		});
 
 		final String pec = data.get("pec");
-		ImageView pecImg = (ImageView) view.findViewById(R.id.contacts_pec_img);
+		View pecImg =  view.findViewById(R.id.contacts_pec_container);
 		pecImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
@@ -197,7 +194,7 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		});
 
 		final String phone = data.get("phone");
-		ImageView telImg = (ImageView) view.findViewById(R.id.contacts_tel_img);
+		View telImg = view.findViewById(R.id.contacts_tel_container);
 		telImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				callPhoneIntent(phone);
