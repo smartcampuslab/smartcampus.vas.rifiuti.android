@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
@@ -144,7 +143,7 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		});
 
 		final String mail = data.get("email");
-		View emailImg =  view.findViewById(R.id.contacts_email_container);
+		View emailImg = view.findViewById(R.id.contacts_email_container);
 		emailImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", mail, null));
@@ -153,7 +152,7 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		});
 
 		final String pec = data.get("pec");
-		View pecImg =  view.findViewById(R.id.contacts_pec_container);
+		View pecImg = view.findViewById(R.id.contacts_pec_container);
 		pecImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", pec, null));

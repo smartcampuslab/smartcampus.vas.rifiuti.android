@@ -8,11 +8,11 @@
     <ListView
         android:id="@id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:divider="@color/rifiuti_middle"
         android:dividerHeight="1dp"
         android:drawSelectorOnTop="true"
-        android:listSelector="@color/rifiuti_green_light_o50" />
+        android:listSelector="@drawable/rifiuti_list_selector_holo_light" />
 
 </LinearLayout>

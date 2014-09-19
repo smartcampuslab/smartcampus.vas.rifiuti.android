@@ -17,9 +17,8 @@
             android:divider="@color/rifiuti_middle"
             android:drawSelectorOnTop="false"
             android:fadeScrollbars="false"
+            android:listSelector="@drawable/rifiuti_list_selector_holo_light"
             android:scrollbarStyle="outsideOverlay" >
-
-            <!-- android:listSelector="@color/rifiuti_green_light_o50" -->
         </ListView>
     </android.support.v4.widget.SwipeRefreshLayout>
 

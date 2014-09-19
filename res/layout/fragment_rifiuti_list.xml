@@ -13,7 +13,7 @@
         android:drawSelectorOnTop="false"
         android:divider="@color/rifiuti_middle"
         android:dividerHeight="1dp"
-        android:listSelector="@color/rifiuti_green_light_o50" />
+        android:listSelector="@drawable/rifiuti_list_selector_holo_light" />
 
     <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/rifiuti_middle" />
     

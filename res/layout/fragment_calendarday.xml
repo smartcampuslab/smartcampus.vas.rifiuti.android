@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:divider="@color/rifiuti_middle"
         android:drawSelectorOnTop="false"
-        android:listSelector="@color/rifiuti_green_light_o50"
+        android:listSelector="@drawable/rifiuti_list_selector_holo_light"
         android:scrollbarStyle="outsideOverlay" >
     </ListView>
 

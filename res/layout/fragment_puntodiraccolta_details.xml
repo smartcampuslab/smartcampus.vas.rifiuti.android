@@ -26,16 +26,18 @@
             android:orientation="horizontal"
             android:padding="@dimen/fragment_horizontal_margin" >
 
-            <LinearLayout 
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical" >
+
                 <TextView
                     android:id="@+id/puntodiraccolta_dettagli"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
+
                 <TextView
                     android:id="@+id/puntodiraccolta_note"
                     android:layout_width="wrap_content"
@@ -104,8 +106,7 @@
                 android:background="@color/rifiuti_light"
                 android:divider="@color/rifiuti_middle"
                 android:dividerHeight="1dp"
-                android:drawSelectorOnTop="false"
-                android:listSelector="@color/rifiuti_green_light_o50" >
+                android:drawSelectorOnTop="false" >
             </eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView>
         </LinearLayout>
 

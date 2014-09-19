@@ -89,7 +89,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 						abActivity.getString(R.string.punto_di_raccolta_title)));
 		abActivity.getSupportActionBar().setSubtitle(
 				abActivity.getString(R.string.puntiraccoltadetails_absubtitle, puntoDiRaccolta.getTipologiaPuntiRaccolta(),
-						puntoDiRaccolta.getArea()));
+						RifiutiHelper.getProfile().getComune()));
 
 		try {
 			// get lista orari per punto di raccolta
@@ -108,7 +108,7 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 
 		TextView mDettagli = (TextView) getActivity().findViewById(R.id.puntodiraccolta_dettagli);
 		mDettagli.setText(puntoDiRaccolta.dettaglio());
-		
+
 		TextView mNote = (TextView) getActivity().findViewById(R.id.puntodiraccolta_note);
 		if (puntoDiRaccolta.getNote() != null && puntoDiRaccolta.getNote().length() > 0) {
 			mNote.setText(puntoDiRaccolta.getNote());
@@ -116,7 +116,6 @@ public class PuntoDiRaccoltaDetailFragment extends Fragment {
 		} else {
 			mNote.setVisibility(View.GONE);
 		}
-		
 
 		ImageView mappa = (ImageView) getActivity().findViewById(R.id.map_dettagli);
 		mappa.setOnClickListener(new OnClickListener() {

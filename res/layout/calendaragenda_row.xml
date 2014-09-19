@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/fragment_vertical_margin" >
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/date_textview"
@@ -22,6 +21,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/highlight_transition"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/fragment_vertical_margin"
         android:paddingLeft="@dimen/fragment_horizontal_margin"
         android:paddingRight="@dimen/fragment_horizontal_margin" >
     </LinearLayout>

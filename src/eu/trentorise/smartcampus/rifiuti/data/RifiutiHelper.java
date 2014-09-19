@@ -36,7 +36,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.TypedValue;
@@ -741,7 +740,6 @@ public class RifiutiHelper {
 			if (aree == null) {
 				aree = getAreeForQuery(mHelper.mAreas);
 			}
-			Log.e("XXXXXXXXXX", "profile: " + profile + "\n" + "aree: " + aree);
 			String query = "SELECT DISTINCT "
 					+ "puntiRaccolta.*, raccolta.colore FROM puntiRaccolta "
 					+ "	INNER JOIN raccolta ON puntiRaccolta.tipologiaPuntiRaccolta = raccolta.tipologiaPuntoRaccolta AND raccolta.tipologiaUtenza = puntiRaccolta.tipologiaUtenza "
