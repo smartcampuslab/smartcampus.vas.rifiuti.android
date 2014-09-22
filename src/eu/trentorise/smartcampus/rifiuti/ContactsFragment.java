@@ -151,10 +151,20 @@ public class ContactsFragment extends Fragment implements onBackListener {
 				R.id.contacts_web, R.string.contacts_web_ph);
 		prepareField(view, data.get("email"), R.id.contacts_email_container,
 				R.id.contacts_email, R.string.contacts_email_ph);
-		prepareField(view, data.get("phone")+"\n"+getString(R.string.contacts_fax_ph,data.get("fax")), R.id.contacts_tel_container,
+		prepareField(view, data.get("phone"), R.id.contacts_tel_container,
 				R.id.contacts_tel, R.string.contacts_tel_ph);
+		prepareField(view, data.get("fax"), R.id.contacts_fax_container,
+				R.id.contacts_fax, R.string.contacts_fax_ph);
 		prepareField(view, data.get("pec"), R.id.contacts_pec_container,
 				R.id.contacts_pec, R.string.contacts_pec_ph);
+		
+		final String addr = data.get("address");
+		View addrView = view.findViewById(R.id.contacts_address_layout);
+		addrView.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				callAppForPlaceGmaps(addr);
+			}			
+		});
 
 		final String web = data.get("web");
 		View webImg = view.findViewById(R.id.contacts_web_container);
@@ -198,9 +208,7 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		telImg.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				callPhoneIntent(phone);
-			}
-
-			
+			}			
 		});
 	}
 	private void callPhoneIntent(final String phone) {
@@ -211,6 +219,15 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		callIntent.setData(Uri.parse("tel:" + p));
 		startActivity(callIntent);
 	}
+	
+	private void callAppForPlaceGmaps(String addr) {
+
+		String url = "http://maps.google.com/maps?q=" + addr ;
+
+		Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		getActivity().startActivity(navigation);
+	}
+	
 	private void callAppForDirectionsGmaps(String addr) {
 
 		String url = "http://maps.google.com/maps?daddr=" + addr ;
