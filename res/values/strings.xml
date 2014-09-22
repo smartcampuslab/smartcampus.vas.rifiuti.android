@@ -139,7 +139,7 @@
     <string name="contacts_tel_ph">%s</string>
     <string name="contacts_email_ph">%s</string>
     <string name="contacts_web_ph">%s</string>
-    <string name="contacts_pec_ph">%s</string>
+    <string name="contacts_pec_ph">%s (PEC)</string>
     <string name="contacts_fax_ph">%s</string>
     <string name="contacts_name_label">NOME</string>
     <string name="contacts_opening_label">ORARIO</string>

@@ -172,7 +172,7 @@
             android:padding="@dimen/fragment_horizontal_margin" >
 
             <ImageView
-                android:id="@+id/contacts_tel_img"
+                android:id="@+id/contacts_fax_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="6dp"
@@ -242,7 +242,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="6dp"
-            android:src="@drawable/ic_mail" />
+            android:src="@drawable/ic_pec" />
 
         <TextView
             android:id="@+id/contacts_pec"
