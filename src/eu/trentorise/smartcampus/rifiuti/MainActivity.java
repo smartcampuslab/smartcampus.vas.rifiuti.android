@@ -234,7 +234,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				if (RifiutiHelper.isFirstLaunchMenu(MainActivity.this)) {
-					// mTutorialHelper.showTutorials();
 					RifiutiHelper.disableFirstLaunchMenu(MainActivity.this);
 				}
 			}
