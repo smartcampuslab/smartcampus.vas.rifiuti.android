@@ -28,7 +28,7 @@ import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
-import eu.trentorise.smartcampus.rifiuti.notifications.NotificationsService;
+import eu.trentorise.smartcampus.rifiuti.notifications.AlarmSetter;
 import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.onBackListener;
@@ -113,11 +113,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			finish();
 		}
 
-		// use this to start and trigger a service
-		Intent i = new Intent(getApplicationContext(), NotificationsService.class);
-		// potentially add data to the intent
-		// i.putExtra("KEY1", "Value to be used by the service");
-		getApplicationContext().startService(i);
+		/*
+		 * use this to start and trigger a service
+		 */
+		// Intent i = new Intent(getApplicationContext(),
+		// NotificationsService.class);
+		// getApplicationContext().startService(i);
 	}
 
 	@Override
@@ -131,6 +132,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	protected void onResume() {
 		super.onResume();
 		RifiutiHelper.locationHelper.start();
+
+		AlarmSetter.setAlarmForNotificationsService(getApplicationContext());
+
+		// if the activity is open by the notification: stop the notifications
+		// service
+		// if (intentBundle != null &&
+		// intentBundle.containsKey(ArgUtils.ARGUMENT_CALENDAR_TOMORROW)
+		// && intentBundle.containsKey(ArgUtils.ARGUMENT_PROFILE)) {
+		// // stop notifications service
+		// boolean isStopped = getApplicationContext().stopService(
+		// new Intent(getApplicationContext(), NotificationsService.class));
+		// Log.e("MainActivity", "Service stopped? " + isStopped);
+		// }
 	}
 
 	@Override
@@ -142,10 +156,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
-		// stop notifications service
-		// getApplicationContext().stopService(new
-		// Intent(getApplicationContext(), NotificationsService.class));
+		// AlarmSetter.cancelAlarmForNotificationsService();
 	}
 
 	@Override

@@ -95,13 +95,18 @@
             android:authorities="com.tyczj.extendedcalendarview.calendarprovider"
             android:permission="signature" />
 
-        <receiver android:name="eu.trentorise.smartcampus.rifiuti.notifications.BootReceiver" >
+        <receiver android:name="eu.trentorise.smartcampus.rifiuti.notifications.AlarmSetter" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
+            </intent-filter>
         </receiver>
 
-        <service android:name="eu.trentorise.smartcampus.rifiuti.notifications.NotificationsService" />
+        <service
+            android:name="eu.trentorise.smartcampus.rifiuti.notifications.NotificationsService"
+            android:enabled="true" />
 
         <!-- <meta-data -->
         <!-- android:name="com.google.android.maps.v2.API_KEY" -->

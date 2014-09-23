@@ -9,7 +9,6 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +107,6 @@ public class HomeFragment extends Fragment {
 
 	@Override
 	public void onPause() {
-		Log.e("HOME", "onPause");
 		super.onPause();
 		pagerPreviousItem = mPager.getCurrentItem();
 		intentBundle = null;

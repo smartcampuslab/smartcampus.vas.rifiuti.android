@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 import eu.trentorise.smartcampus.rifiuti.MainActivity;
 import eu.trentorise.smartcampus.rifiuti.R;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
@@ -27,25 +26,22 @@ public class NotificationsService extends Service {
 
 	private static final String TAG = "NotificationsService";
 	private static final String PORTA_A_PORTA = "Porta a porta";
-
 	private NotificationManager mNM;
 
 	@Override
 	public void onCreate() {
+		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
 		try {
 			RifiutiHelper.init(getApplicationContext());
 		} catch (IOException e) {
-			Log.e("NotificationsService", e.getMessage());
+			Log.e(TAG, e.getMessage());
 		}
-		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// Display a notification about us starting. We put an icon in the
-		// status bar.
-		showNotification();
-
+		checkCalendar();
 		return Service.START_STICKY;
 	}
 
@@ -57,24 +53,18 @@ public class NotificationsService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
-		// TODO
-		Toast.makeText(getApplicationContext(), "TODO: destroy service", Toast.LENGTH_SHORT).show();
 	}
 
 	/**
 	 * Show a notification while this service is running.
 	 */
-	private void showNotification() {
+	private void checkCalendar() {
 		Calendar tomorrowCal = Calendar.getInstance(Locale.getDefault());
 
 		// TODO: [developing] comment next line if tomorrow has no events
 		tomorrowCal.add(Calendar.DAY_OF_MONTH, 1);
 
 		List<Profile> profiles = PreferenceUtils.getProfiles(getApplicationContext());
-		if (profiles.isEmpty()) {
-			return;
-		}
 
 		for (int p = 0; p < profiles.size(); p++) {
 			Profile profile = profiles.get(p);
@@ -96,8 +86,8 @@ public class NotificationsService extends Service {
 			}
 
 			if (profileHasPortaAporta) {
-				String contentTitle = "100% Riciclo";
-				String contentText = "Domani a " + profile.getArea() + "...";
+				String contentTitle = getResources().getString(R.string.notifications_title, profile.getComune());
+				String contentText = "";
 				List<String> lines = new ArrayList<String>();
 
 				List<CalendarioItem> tomorrowItems = calendarsForMonth.get(tomorrowCal.get(Calendar.DAY_OF_MONTH) - 1);
@@ -108,29 +98,37 @@ public class NotificationsService extends Service {
 				}
 
 				if (lines.size() > 0) {
-					// TODO
-					String sb = "";
-					for (String s : lines) {
-						if (sb.length() > 0) {
-							sb += ", ";
-						}
-						sb += s;
-					}
-					Log.e(TAG, sb.toString());
+					NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+					mBuilder.setAutoCancel(true);
+					mBuilder.setSmallIcon(R.drawable.ic_stat_notify_riciclo);
+					mBuilder.setContentTitle(contentTitle);
 
-					NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setAutoCancel(true)
-							.setSmallIcon(R.drawable.ic_stat_notify_riciclo).setContentTitle(contentTitle)
-							.setContentText(contentText);
+					if (lines.size() == 1) {
+						contentText = lines.get(0);
+					} else {
+						StringBuilder sb = new StringBuilder();
+						for (int sc = 0; sc < lines.size(); sc++) {
+							String s = lines.get(sc);
+							if (sc == 0) {
+								// first, complete
+								sb.append(s);
+							} else {
+								// others, remove "Porta a porta"
+								sb.append(",");
+								sb.append(s.replace(PORTA_A_PORTA, ""));
+							}
+						}
+						contentText = sb.toString();
+					}
+					mBuilder.setContentText(contentText);
 
 					NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 					inboxStyle.setBigContentTitle(contentTitle);
-					for (int i = 0; i < lines.size(); i++) {
-						inboxStyle.addLine(lines.get(i));
+					for (String s : lines) {
+						inboxStyle.addLine(s);
 					}
 					mBuilder.setStyle(inboxStyle);
 
-					// Intent intent = new Intent(getApplicationContext(),
-					// SplashScreenActivity.class);
 					Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 					intent.putExtra(ArgUtils.ARGUMENT_CALENDAR_TOMORROW, tomorrowCal);
 					intent.putExtra(ArgUtils.ARGUMENT_PROFILE, profile);
@@ -140,11 +138,13 @@ public class NotificationsService extends Service {
 
 					Notification notification = mBuilder.build();
 					notification.defaults |= Notification.DEFAULT_SOUND;
-					// notification.defaults |= Notification.DEFAULT_VIBRATE;
+					notification.defaults |= Notification.DEFAULT_VIBRATE;
 
 					mNM.notify(null, p, notification);
 				}
 			}
 		}
+
+		stopSelf();
 	}
 }

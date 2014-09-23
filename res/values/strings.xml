@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="empty"></string>
-   
     <string name="dialog_confirm_title">Avviso</string>
     <string name="dialog_confirm_msg">Premendo OK cancellerai definitivamente questo profilo, incluse le eventuali note personali. Confermi?</string>
     <string name="dialog_confirm_note_msg">Premendo OK cancellerai definitivamente questa nota personale. Confermi?</string>
-    
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
     <string name="toast_no_prof">Crea il tuo profilo!</string>
     <string name="err_everything_go_lazy">Qualcosa è andato storto</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Domani a %s</string>
     
     <!-- Toast strings -->
     <string name="profile_changed_by_intent">Profilo: %s</string>
@@ -54,18 +56,17 @@
     <string name="err_unknown_area">Area specificata non è riconosciuta.</string>
     <string name="err_prof_name">Il nome del profilo è già in uso</string>
     <string name="comune_empty">Selezionare</string>
-    
-    
     <string name="profilo_utenza_PRIVATO">utenza domestica</string>
     <string name="profilo_utenza_OCCASIONALE">utenza occasionale</string>
     <string name="profilo_utenza_NONPRIVATO">utenza non domestica</string>
-    
+
+    <!-- Utenze -->
     <string-array name="utenze">
         <item>@string/profilo_utenza_PRIVATO</item>
         <item>@string/profilo_utenza_NONPRIVATO</item>
         <item>@string/profilo_utenza_OCCASIONALE</item>
     </string-array>
-    
+
     <!-- Actions -->
     <string name="action_settings">Configurazione</string>
     <string name="action_edit">Modifica</string>
@@ -177,7 +178,7 @@
     <string name="tut_dove_desc_cal">Verifica quali rifiuti vengono raccolti oggi e quali punti di raccolta sono aperti.</string>
     <string name="tut_dove_title_menu">Menù laterale</string>
     <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità</string>
-    
+
     <!-- INFO FRAGMENT -->
     <string name="info_intro">100% Riciclo è un\'app realizzata da:</string>
     <string name="info_collab">con il patrocinio del</string>
@@ -187,11 +188,8 @@
     <string name="info_fbk">fbk</string>
     <string name="info_mail">Per eventuali segnalazioni o richieste di informazioni contattateci scrivendo a riciclo@smartcampuslab.it</string>
     <string name="info_feedback">Per segnalare un problema con la raccolta dei rifiuti schiaccia qui:</string>
-    
     <string name="geocoding">Ricerca della posizione...</string>
     <string name="distance">%.2f km</string>
-    
     <string name="confirm_exit">Sei sicuro di voler uscire dall\'app?</string>
-    
-    
+
 </resources>
