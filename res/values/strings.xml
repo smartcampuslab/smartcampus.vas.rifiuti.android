@@ -141,11 +141,11 @@
     <string name="contacts_descr_label">DESCRIZIONE</string>
     <string name="contacts_address_label">INDIRIZZO</string>
     <string name="contacts_contacts_label">CONTATTI</string>
-    <string name="contacts_tel_ph">TEL: %s</string>
-    <string name="contacts_email_ph">EMAIL: %s</string>
-    <string name="contacts_web_ph">WEB: %s</string>
-    <string name="contacts_pec_ph">PEC: %s</string>
-    <string name="contacts_fax_ph">FAX: %s</string>
+    <string name="contacts_tel_ph">%s</string>
+    <string name="contacts_email_ph">%s</string>
+    <string name="contacts_web_ph">%s</string>
+    <string name="contacts_pec_ph">%s (PEC)</string>
+    <string name="contacts_fax_ph">%s</string>
     <string name="contacts_name_label">NOME</string>
     <string name="contacts_opening_label">ORARIO</string>
 
