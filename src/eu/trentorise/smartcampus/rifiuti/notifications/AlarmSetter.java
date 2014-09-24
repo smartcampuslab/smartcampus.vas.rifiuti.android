@@ -47,13 +47,13 @@ public class AlarmSetter extends BroadcastReceiver {
 			notificationsTimeCal.set(Calendar.HOUR_OF_DAY, defaultHour);
 			notificationsTimeCal.set(Calendar.MINUTE, defaultMinutes);
 
-			// TODO: only for testing!
-			// set alarm 10 seconds after boot
+			// Only for testing, comment calendar adjustment above and use this
+			// to set alarm 10 seconds after boot
 			// notificationsTimeCal.add(Calendar.SECOND, 10);
-			// Log.e(TAG, notificationsTimeCal.toString());
+			Log.d(TAG, notificationsTimeCal.toString());
 
 			alarmManager.cancel(alarmPendingIntent);
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, notificationsTimeCal.getTimeInMillis(),
+			alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, notificationsTimeCal.getTimeInMillis(),
 					AlarmManager.INTERVAL_DAY, alarmPendingIntent);
 		}
 	}
@@ -61,7 +61,7 @@ public class AlarmSetter extends BroadcastReceiver {
 	public static void cancelAlarmForNotificationsService() {
 		if (alarmManager != null && alarmPendingIntent != null) {
 			alarmManager.cancel(alarmPendingIntent);
-			// Log.e(TAG, "Alarm canceled!");
+			Log.d(TAG, "Alarm canceled!");
 		}
 	}
 

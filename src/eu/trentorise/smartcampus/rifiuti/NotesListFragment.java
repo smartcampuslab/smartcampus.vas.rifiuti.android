@@ -14,6 +14,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,10 +36,14 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_noteslist, container, false);
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setListAdapter(new NotesAdapter(getActivity(), R.layout.note_row, NotesHelper.getNotes()));
-		setEmptyText(getString(R.string.no_notes));
 
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		Drawable colord = new ColorDrawable(getResources().getColor(R.color.rifiuti_middle));

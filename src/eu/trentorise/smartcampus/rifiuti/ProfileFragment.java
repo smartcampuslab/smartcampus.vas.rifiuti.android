@@ -7,6 +7,8 @@ import org.json.JSONException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,11 +20,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +41,7 @@ import eu.trentorise.smartcampus.rifiuti.geo.OSMAddress;
 import eu.trentorise.smartcampus.rifiuti.geo.OSMGeocoder;
 import eu.trentorise.smartcampus.rifiuti.model.Area;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
+import eu.trentorise.smartcampus.rifiuti.model.SysProfile;
 import eu.trentorise.smartcampus.rifiuti.utils.KeyboardUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils.ProfileNameExistsException;
@@ -58,11 +68,15 @@ public class ProfileFragment extends Fragment implements onBackListener {
 
 	private TextView mTVNome, mTVComune, mTVVia, mTVNCiv, /** mTVArea, */
 	mTVUtenza;
-	private EditText mETNome, mETVia, mETNCiv; /** mETArea, */
+	private EditText mETNome, mETVia, mETNCiv;
+	/** mETArea, */
 	// private AutoCompleteTextView mACTVComune;
+	private ImageButton mUtenzaHelpButton;
 	private Spinner mAreaSpinner, mUtenzaSpinner;
-	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv/** , mVSArea */
-	, mVSUtenza;
+	private RadioGroup mUtenzaRadioGroup;
+
+	private ViewSwitcher mVSNome, mVSComune, mVSVia, mVSNCiv, /** mVSArea, */
+	mVSUtenza;
 
 	private Profile mProfile;
 	private MODE mActiveMode;
@@ -120,9 +134,9 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			comuneAreasNames.add(a.getLocalita());
 		}
 		comuneAreas.add(0, null);
-		comuneAreasNames.add(0,getString(R.string.comune_empty));
-	} 
-	
+		comuneAreasNames.add(0, getString(R.string.profilo_comune_placeholder));
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -140,6 +154,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	public void onStart() {
 		super.onStart();
 		initializeViews();
+
 		if (mActiveMode == MODE.VIEW) {
 			if (!isFirstProfile()) {
 				mProfile = PreferenceUtils.getProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
@@ -152,6 +167,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 				switchMode();
 			}
 		}
+
 		if (abActivity instanceof MainActivity) {
 			((MainActivity) abActivity).hideDrawerIndicator();
 			((MainActivity) abActivity).lockDrawer();
@@ -164,7 +180,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	public void onResume() {
 		super.onResume();
 		if (mProfile == null) {
-//			getActivity().setProgressBarIndeterminateVisibility(true);
+			// getActivity().setProgressBarIndeterminateVisibility(true);
 			RifiutiHelper.locationHelper.start();
 		}
 	}
@@ -172,7 +188,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	@Override
 	public void onStop() {
 		super.onPause();
-//		getActivity().setProgressBarIndeterminateVisibility(false);
+		// getActivity().setProgressBarIndeterminateVisibility(false);
 		RifiutiHelper.locationHelper.stop();
 	}
 
@@ -237,8 +253,9 @@ public class ProfileFragment extends Fragment implements onBackListener {
 				showConfirmAndDelete();
 			}
 
-		} else
+		} else {
 			return super.onOptionsItemSelected(item);
+		}
 
 		((ActionBarActivity) getActivity()).supportInvalidateOptionsMenu();
 		return true;
@@ -288,7 +305,6 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		// if it's a new one
 		try {
 			if (mProfile == null) {
-
 				int newPos = PreferenceUtils.addProfile(getActivity(), newProfile);
 				if (isFirstProfile()) {
 					PreferenceUtils.setCurrentProfilePosition(getActivity(), 0);
@@ -297,12 +313,10 @@ public class ProfileFragment extends Fragment implements onBackListener {
 					getArguments().putInt(PROFILE_INDEX_KEY, newPos);
 					setContent();
 				}
-
 			} else {
 				PreferenceUtils.editProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY), newProfile, mProfile);
 				mProfile = newProfile;
 				setContent();
-
 			}
 			switchMode();
 		} catch (ProfileNameExistsException e) {
@@ -320,25 +334,42 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		// because it might be that some fields were left as they had been.
 		// create the profile from the saved one
 		Profile p = null;
-		if (mProfile != null)
+		if (mProfile != null) {
 			p = new Profile(mProfile);
-		else
+		} else {
 			// if it's a new one, every field is required
 			p = new Profile();
-		if (mETNome.getText().toString().trim().length() > 0)
+		}
+
+		if (mETNome.getText().toString().trim().length() > 0) {
 			p.setName(mETNome.getText().toString());
-		else if (mProfile == null)
+		} else if (mProfile == null) {
 			throw new InvalidNameExeption();
-		if (mUtenzaSpinner.getSelectedItem().toString().trim().length() > 0)
-			p.setUtenza(mUtenzaSpinner.getSelectedItem().toString());
-		else if (mProfile == null)
+		}
+
+		// if (mUtenzaSpinner.getSelectedItem().toString().trim().length() > 0)
+		// {
+		// p.setUtenza(mUtenzaSpinner.getSelectedItem().toString());
+		// } else if (mProfile == null) {
+		// throw new InvalidUtenzaExeption();
+		// }
+
+		int checkedRadioButtonId = mUtenzaRadioGroup.getCheckedRadioButtonId();
+		if (checkedRadioButtonId > -1) {
+			SysProfile sysProfile = (SysProfile) mUtenzaRadioGroup.findViewById(checkedRadioButtonId).getTag();
+			p.setUtenza(sysProfile.getTipologiaUtenza());
+			p.setProfilo(sysProfile.getProfilo());
+		} else if (mProfile == null) {
 			throw new InvalidUtenzaExeption();
+		}
+
 		if (area != null) {
 			p.setArea(area.getNome());
 			p.setComune(area.getLocalita());
 		} else {
 			throw new InvalidAreaExeption();
 		}
+
 		// if (mETArea.getText().toString().trim().length() > 0) {
 		// p.setArea(mETArea.getText().toString());
 		// }
@@ -390,22 +421,88 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	}
 
 	private void initializeViews() {
-
-		mTVComune = (TextView) getView().findViewById(R.id.profile_comune_tv);
 		mTVNome = (TextView) getView().findViewById(R.id.profile_name_tv);
-		mTVVia = (TextView) getView().findViewById(R.id.profile_indirizzo_tv);
 		mTVUtenza = (TextView) getView().findViewById(R.id.profile_utenza_tv);
+		mTVComune = (TextView) getView().findViewById(R.id.profile_comune_tv);
+		mTVVia = (TextView) getView().findViewById(R.id.profile_indirizzo_tv);
 		mTVNCiv = (TextView) getView().findViewById(R.id.profile_nciv_tv);
 
-		mUtenzaSpinner = (Spinner) getView().findViewById(R.id.profile_utenza_spinner);
-		mAreaSpinner = (Spinner) getView().findViewById(R.id.profile_comune_spinner);
+		mUtenzaHelpButton = (ImageButton) getView().findViewById(R.id.profile_utenza_helpbutton);
 
-		mUtenzaSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-				updateAreas(mUtenzaSpinner.getItemAtPosition(pos).toString());
+		mETNome = (EditText) getView().findViewById(R.id.profile_name_et);
+		// mUtenzaSpinner = (Spinner)
+		// getView().findViewById(R.id.profile_utenza_spinner);
+		mUtenzaRadioGroup = (RadioGroup) getView().findViewById(R.id.profile_utenza_radiogroup);
+		mAreaSpinner = (Spinner) getView().findViewById(R.id.profile_comune_spinner);
+		mETVia = (EditText) getView().findViewById(R.id.profile_indirizzo_et);
+		mETNCiv = (EditText) getView().findViewById(R.id.profile_nciv_et);
+
+		mVSNome = (ViewSwitcher) getView().findViewById(R.id.profile_name_vs);
+		mVSUtenza = (ViewSwitcher) getView().findViewById(R.id.profile_utenza_vs);
+		mVSComune = (ViewSwitcher) getView().findViewById(R.id.profile_comune_vs);
+		mVSVia = (ViewSwitcher) getView().findViewById(R.id.profile_indirizzo_vs);
+		mVSNCiv = (ViewSwitcher) getView().findViewById(R.id.profile_nciv_vs);
+
+		/*
+		 * populate mUtenzaRadioGroup
+		 */
+		List<SysProfile> sysProfiles = RifiutiHelper.readSysProfiles();
+		for (int i = 0; i < sysProfiles.size(); i++) {
+			SysProfile sp = sysProfiles.get(i);
+			RadioButton rb = new RadioButton(getActivity());
+			rb.setId(i);
+			rb.setText(sp.getProfilo());
+			rb.setTag(sp);
+			mUtenzaRadioGroup.addView(rb);
+		}
+
+		mUtenzaHelpButton.getDrawable().setColorFilter(getResources().getColor(R.color.rifiuti_green_middle),
+				PorterDuff.Mode.SRC_ATOP);
+
+		/*
+		 * Listeners
+		 */
+		mUtenzaHelpButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				// builder.setTitle(R.string.profilo_utenza_help_title);
+
+				ScrollView dialogScrollView = (ScrollView) getActivity().getLayoutInflater().inflate(
+						R.layout.dialog_utenzahelp, null);
+
+				LinearLayout dialogLayout = (LinearLayout) dialogScrollView.findViewById(R.id.dialog_layout);
+
+				for (SysProfile sp : RifiutiHelper.readSysProfiles()) {
+					LinearLayout rowLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(
+							R.layout.dialog_utenzahelp_row, null);
+					TextView titleTv = (TextView) rowLayout.findViewById(R.id.dialog_utenzahelp_row_title);
+					TextView descTv = (TextView) rowLayout.findViewById(R.id.dialog_utenzahelp_row_description);
+					titleTv.setText(sp.getProfilo());
+					descTv.setText(sp.getDescrizione());
+					dialogLayout.addView(rowLayout);
+				}
+
+				builder.setView(dialogScrollView);
+
+				builder.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+
+				builder.create().show();
+			}
+		});
+
+		mUtenzaRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				SysProfile checkedSysProfile = (SysProfile) mUtenzaRadioGroup.findViewById(checkedId).getTag();
+				updateAreas(checkedSysProfile.getTipologiaUtenza());
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_row, comuneAreasNames);
 				mAreaSpinner.setAdapter(adapter);
-				
+
 				if (mProfile != null) {
 					for (int i = 1; i < comuneAreas.size(); i++) {
 						if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
@@ -415,12 +512,36 @@ public class ProfileFragment extends Fragment implements onBackListener {
 					}
 				}
 			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
 		});
-		
+
+		// default: first checked
+		((RadioButton) mUtenzaRadioGroup.getChildAt(0)).setChecked(true);
+
+		// mUtenzaSpinner.setOnItemSelectedListener(new OnItemSelectedListener()
+		// {
+		// public void onItemSelected(AdapterView<?> parent, View view, int pos,
+		// long id) {
+		// updateAreas(mUtenzaSpinner.getItemAtPosition(pos).toString());
+		// ArrayAdapter<String> adapter = new
+		// ArrayAdapter<String>(getActivity(), R.layout.spinner_row,
+		// comuneAreasNames);
+		// mAreaSpinner.setAdapter(adapter);
+		//
+		// if (mProfile != null) {
+		// for (int i = 1; i < comuneAreas.size(); i++) {
+		// if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
+		// mAreaSpinner.setSelection(i);
+		// break;
+		// }
+		// }
+		// }
+		// }
+		//
+		// @Override
+		// public void onNothingSelected(AdapterView<?> arg0) {
+		// }
+		// });
+
 		mAreaSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 				if (pos > 0) {
@@ -432,16 +553,6 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			}
 		});
 
-		mETNome = (EditText) getView().findViewById(R.id.profile_name_et);
-		mETVia = (EditText) getView().findViewById(R.id.profile_indirizzo_et);
-		mETNCiv = (EditText) getView().findViewById(R.id.profile_nciv_et);
-
-		mVSComune = (ViewSwitcher) getView().findViewById(R.id.profile_comune_vs);
-		mVSNome = (ViewSwitcher) getView().findViewById(R.id.profile_name_vs);
-		mVSVia = (ViewSwitcher) getView().findViewById(R.id.profile_indirizzo_vs);
-		mVSUtenza = (ViewSwitcher) getView().findViewById(R.id.profile_utenza_vs);
-		mVSNCiv = (ViewSwitcher) getView().findViewById(R.id.profile_nciv_vs);
-
 		if (saved != null) {
 			area = RifiutiHelper.findArea(saved[0]);
 			for (int i = 0; i < comuneAreas.size(); i++) {
@@ -452,12 +563,12 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			}
 			mETNome.setText(saved[2]);
 			mETNCiv.setText(saved[3]);
-			for (int i = 0; i < mUtenzaSpinner.getCount(); i++) {
-				if (saved[4].equals(mUtenzaSpinner.getItemAtPosition(i))) {
-					mUtenzaSpinner.setSelection(i);
-					break;
-				}
-			}
+			// for (int i = 0; i < mUtenzaSpinner.getCount(); i++) {
+			// if (saved[4].equals(mUtenzaSpinner.getItemAtPosition(i))) {
+			// mUtenzaSpinner.setSelection(i);
+			// break;
+			// }
+			// }
 			mETVia.setText(saved[5]);
 			saved = null;
 		}
@@ -467,16 +578,24 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		area = RifiutiHelper.findArea(mProfile.getArea());
 
 		mTVNome.setText(mProfile.getName());
-		String[] utenze = getResources().getStringArray(R.array.utenze);
-		for (int i = 0; i < utenze.length; i++) {
-			if (mProfile.getUtenza().equals(utenze[i])) {
-				mUtenzaSpinner.setSelection(i);
+		// String[] utenze = getResources().getStringArray(R.array.utenze);
+		// for (int i = 0; i < utenze.length; i++) {
+		// if (mProfile.getUtenza().equals(utenze[i])) {
+		// mUtenzaSpinner.setSelection(i);
+		// }
+		// }
+		for (int i = 0; i < mUtenzaRadioGroup.getChildCount(); i++) {
+			RadioButton rb = (RadioButton) mUtenzaRadioGroup.getChildAt(i);
+			if (mProfile.getProfilo() != null && mProfile.getProfilo().equals(((SysProfile) rb.getTag()).getProfilo())) {
+				rb.setChecked(true);
 			}
 		}
 
 		mTVComune.setText(mProfile.getComune());
 		mTVVia.setText(mProfile.getVia());
-		mTVUtenza.setText(mProfile.getUtenza().toString());
+		if (mProfile.getProfilo() != null) {
+			mTVUtenza.setText(mProfile.getProfilo().toString());
+		}
 		mTVNCiv.setText(mProfile.getNCivico());
 	}
 

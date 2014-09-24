@@ -114,8 +114,7 @@ public class PreferenceUtils {
 		List<Profile> profiles = getProfiles(ctx);
 		if (profilePosition(p, profiles) < 0) {
 			profiles.add(p);
-		}
-		else {
+		} else {
 			throw new ProfileNameExistsException();
 		}
 		JSONArray jsonArr = new JSONArray();
@@ -124,7 +123,7 @@ public class PreferenceUtils {
 		}
 		SharedPreferences sp = getProfilePreference(ctx);
 		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
-		return profiles.size()-1;
+		return profiles.size() - 1;
 	}
 
 	/**
@@ -172,7 +171,7 @@ public class PreferenceUtils {
 			throws ProfileNameExistsException {
 		List<Profile> profiles = getProfiles(ctx);
 		int oldPos = profilePosition(newProfile, profiles);
-		if (oldPos == position || oldPos<0) {
+		if (oldPos == position || oldPos < 0) {
 			profiles.set(position, newProfile);
 		} else {
 			throw new ProfileNameExistsException();
@@ -202,19 +201,23 @@ public class PreferenceUtils {
 		// if (!oldProfile.getNCivico().equals(newProfile.getNCivico())) {
 		// return true;
 		// }
-		if (!oldProfile.getUtenza().equals(newProfile.getUtenza())) {
-			return true;
-		}
 		// if (!oldProfile.getVia().equals(newProfile.getVia())) {
 		// return true;
 		// }
+		if (!oldProfile.getProfilo().equals(newProfile.getProfilo())) {
+			return true;
+		}
+		if (!oldProfile.getUtenza().equals(newProfile.getUtenza())) {
+			return true;
+		}
 		return false;
 	}
 
 	private static int profilePosition(Profile p, List<Profile> profiles) {
 		int i = 0;
 		for (Profile cmp : profiles) {
-			if (p.getName().trim().toLowerCase(Locale.getDefault()).equals(cmp.getName().trim().toLowerCase(Locale.getDefault()))) {
+			if (p.getName().trim().toLowerCase(Locale.getDefault())
+					.equals(cmp.getName().trim().toLowerCase(Locale.getDefault()))) {
 				return i;
 			}
 			i++;

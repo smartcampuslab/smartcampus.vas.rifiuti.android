@@ -9,24 +9,10 @@ import android.util.Log;
 
 public class Profile implements Serializable {
 
-	public enum Utenza {
-		PRIVATO(0), TURISTA(1), STAGIONALE(2), AZIENDA(3);
-
-		private int mIndex;
-
-		private Utenza(int index) {
-			this.mIndex = index;
-		}
-
-		public int value() {
-			return mIndex;
-		}
-		
-	}
-
 	private static final long serialVersionUID = -2983888114579592139L;
 	private static final String KEY_NAME = "name";
 	private static final String KEY_UTENZA = "utenza";
+	private static final String KEY_PROFILO = "profilo";
 	private static final String KEY_COMUNE = "comune";
 	private static final String KEY_VIA = "via";
 	private static final String KEY_CIVICO = "civico";
@@ -34,38 +20,40 @@ public class Profile implements Serializable {
 
 	private String mName;
 	private String mUtenza;
+	private String mProfilo;
 	private String mComune;
 	private String mVia;
 	private String mNCivico;
 	private String mArea;
-	
+
 	public Profile() {
 	}
 
-	public Profile(String mName, String mUtenza, String mComune, String mVia,
-			String mNCivico, String mArea) {
+	public Profile(String mName, String mProfilo, String mUtenza, String mComune, String mVia, String mNCivico, String mArea) {
 		super();
 		this.mName = mName;
+		this.mProfilo = mProfilo;
 		this.mUtenza = mUtenza;
 		this.mComune = mComune;
 		this.mVia = mVia;
 		this.mNCivico = mNCivico;
 		this.mArea = mArea;
 	}
-	
-	public Profile(Profile from){
-		this.mName= from.getName();
+
+	public Profile(Profile from) {
+		this.mName = from.getName();
+		this.mProfilo = from.getProfilo();
 		this.mUtenza = from.getUtenza();
 		this.mComune = from.getComune();
 		this.mVia = from.getVia();
 		this.mNCivico = from.getNCivico();
 		this.mArea = from.getArea();
 	}
-	
 
 	public JSONObject toJSON() throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put(KEY_NAME, mName);
+		json.put(KEY_PROFILO, mProfilo);
 		json.put(KEY_UTENZA, mUtenza);
 		json.put(KEY_COMUNE, mComune);
 		json.put(KEY_VIA, mVia);
@@ -79,6 +67,9 @@ public class Profile implements Serializable {
 		Profile profile = new Profile();
 		try {
 			profile.setName(json.getString(KEY_NAME));
+			if (json.has(KEY_PROFILO)) {
+				profile.setProfilo(json.getString(KEY_PROFILO));
+			}
 			profile.setUtenza(json.getString(KEY_UTENZA));
 			profile.setComune(json.getString(KEY_COMUNE));
 			if (json.has(KEY_VIA)) {
@@ -94,12 +85,11 @@ public class Profile implements Serializable {
 		}
 		return profile;
 	}
-	
-	
-	
+
 	@Override
 	public String toString() {
-		return mUtenza+": " + mComune+(mVia == null? "": ", "+mVia)+(mNCivico == null? "": ", "+mNCivico);
+		return (mProfilo == null ? "" : mProfilo + ": ") + mComune + (mVia == null ? "" : ", " + mVia)
+				+ (mNCivico == null ? "" : ", " + mNCivico);
 	}
 
 	public String getName() {
@@ -116,6 +106,14 @@ public class Profile implements Serializable {
 
 	public void setUtenza(String utenza) {
 		this.mUtenza = utenza;
+	}
+
+	public String getProfilo() {
+		return mProfilo;
+	}
+
+	public void setProfilo(String profilo) {
+		this.mProfilo = profilo;
 	}
 
 	public String getComune() {
@@ -149,7 +147,5 @@ public class Profile implements Serializable {
 	public void setArea(String area) {
 		mArea = area;
 	}
-	
-	
 
 }

@@ -48,23 +48,20 @@ import eu.trentorise.smartcampus.rifiuti.model.Gestore;
 import eu.trentorise.smartcampus.rifiuti.model.Istituzione;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.model.PuntoRaccolta;
+import eu.trentorise.smartcampus.rifiuti.model.SysProfile;
 import eu.trentorise.smartcampus.rifiuti.utils.LocationHelper;
 
 /**
  * @author raman
- * 
  */
 @SuppressLint("DefaultLocale")
 public class RifiutiHelper {
 
-	/**
-	 * 
-	 */
 	private static final String UTENZA_OCCASIONALE = "utenza occasionale";
 	private static final String UTENZA_NON_DOMESTICA = "utenza non domestica";
 	private static final String UTENZA_DOMESTICA = "utenza domestica";
 
-	public static final int DB_VERSION = 7;
+	public static final int DB_VERSION = 8;
 
 	private static final String TUT_PREFS = "tutorial preference";
 
@@ -139,6 +136,34 @@ public class RifiutiHelper {
 		return mHelper.dbHelper;
 	}
 
+	/*
+	 * Read SysProfiles
+	 */
+	public static List<SysProfile> readSysProfiles() {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		try {
+			cursor = db.rawQuery("SELECT * FROM profili", null);
+			List<SysProfile> result = new ArrayList<SysProfile>();
+			if (cursor != null) {
+				cursor.moveToFirst();
+				for (int i = 0; i < cursor.getCount(); i++) {
+					SysProfile sysProfile = new SysProfile();
+					sysProfile.setProfilo(cursor.getString(cursor.getColumnIndex("profilo")));
+					sysProfile.setTipologiaUtenza(cursor.getString(cursor.getColumnIndex("tipologiaUtenza")));
+					sysProfile.setDescrizione(cursor.getString(cursor.getColumnIndex("descrizione")));
+					result.add(sysProfile);
+					cursor.moveToNext();
+				}
+			}
+			return result;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+	}
+
 	/**
 	 * Read 'tipi di rifiuti' for the specified user
 	 * 
@@ -162,10 +187,10 @@ public class RifiutiHelper {
 			}
 			return result;
 		} finally {
-			if (cursor != null)
+			if (cursor != null) {
 				cursor.close();
+			}
 		}
-
 	}
 
 	/**
@@ -196,8 +221,9 @@ public class RifiutiHelper {
 			}
 			return result;
 		} finally {
-			if (cursor != null)
+			if (cursor != null) {
 				cursor.close();
+			}
 		}
 	}
 

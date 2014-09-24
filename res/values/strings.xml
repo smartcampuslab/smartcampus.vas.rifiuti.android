@@ -2,6 +2,7 @@
 <resources>
 
     <string name="empty"></string>
+    <string name="close">Chiudi</string>
     <string name="dialog_confirm_title">Avviso</string>
     <string name="dialog_confirm_msg">Premendo OK cancellerai definitivamente questo profilo, incluse le eventuali note personali. Confermi?</string>
     <string name="dialog_confirm_note_msg">Premendo OK cancellerai definitivamente questa nota personale. Confermi?</string>
@@ -11,7 +12,7 @@
 
     <!-- Notifications -->
     <string name="notifications_title">Domani a %s</string>
-    
+
     <!-- Toast strings -->
     <string name="profile_changed_by_intent">Profilo: %s</string>
 
@@ -41,6 +42,13 @@
     <!-- Dove lo butto? strings -->
     <string name="dovelobutto_search_hint">Che rifiuto vuoi buttare?</string>
 
+    <!-- Notes strings -->
+    <string name="notes_empty_title">Aggiungi una tua nota</string>
+    <string name="notes_empty_subtitle">ad esempio:\n\"Portare la tv al CRM\"\n\"Pagare la bolletta dei rifiuti\"</string>
+    
+    <!-- Calendar strings -->
+    <string name="calendaragenda_empty_title">Non ci sono elementi</string>
+
     <!-- Profile Fragment -->
     <string name="niente_profili">Aggiungi un nuovo profilo dal menu in alto!</string>
     <string name="profilo_nome">Nome del profilo</string>
@@ -49,13 +57,19 @@
     <string name="profilo_utenza">Tipo di utenza</string>
     <string name="profilo_via">Via/Piazza/Viale</string>
     <string name="profilo_nciv">Numero Civico</string>
+    <string name="profilo_nome_placeholder">casa/azienda/vacanza</string>
+    <string name="profilo_comune_placeholder">Seleziona Comune/Località</string>
+    <string name="profilo_area_placeholder">Area</string>
+    <string name="profilo_via_placeholder">Via Verdi/Piazza Dante/&#8230;</string>
+    <string name="profilo_nciv_placeholder">0</string>
+    <string name="profilo_utenza_help_cd">Vedi le descrizioni delle tipologie di utenza</string>
+    <string name="profilo_utenza_help_title">Tipologie di utenza</string>
     <string name="err_delete_profilo">Impossibile eliminare l\' ultimo profilo</string>
     <string name="err_gps_off">Accendi il gps se vuoi velocizzare il processo!</string>
     <string name="dialog_gps_title">Vuoi usare questa posizione?</string>
     <string name="dialog_gps_msg">%1$s %2$s, %3$s</string>
     <string name="err_unknown_area">Area specificata non è riconosciuta.</string>
     <string name="err_prof_name">Il nome del profilo è già in uso</string>
-    <string name="comune_empty">Selezionare</string>
     <string name="profilo_utenza_PRIVATO">utenza domestica</string>
     <string name="profilo_utenza_OCCASIONALE">utenza occasionale</string>
     <string name="profilo_utenza_NONPRIVATO">utenza non domestica</string>
