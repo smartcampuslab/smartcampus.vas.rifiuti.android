@@ -200,14 +200,8 @@
     <string name="info_giudicarie">Comunità delle giudicarie \n http://www.comunitadellegiudicarie.it/</string>
     <string name="info_ladurner">Ladurner Energy\n www.ladurnerambiente.it</string>
     <string name="info_fbk">fbk</string>
-<<<<<<< HEAD
-    <string name="info_mail">Per eventuali segnalazioni o richieste di informazioni contattateci scrivendo a riciclo@smartcampuslab.it</string>
-    <string name="info_feedback">Per segnalare un problema con la raccolta dei rifiuti schiaccia qui:</string>
-=======
     <string name="info_mail">Per informazioni:\nriciclo@smartcampuslab.it</string>
     <string name="info_feedback"></string>
-    
->>>>>>> multiutenza
     <string name="geocoding">Ricerca della posizione...</string>
     <string name="distance">%.2f km</string>
     <string name="confirm_exit">Sei sicuro di voler uscire dall\'app?</string>
