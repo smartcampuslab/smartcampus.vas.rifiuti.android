@@ -7,8 +7,6 @@ import org.json.JSONException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -455,9 +453,6 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			rb.setTag(sp);
 			mUtenzaRadioGroup.addView(rb);
 		}
-
-		mUtenzaHelpButton.getDrawable().setColorFilter(getResources().getColor(R.color.rifiuti_green_middle),
-				PorterDuff.Mode.SRC_ATOP);
 
 		/*
 		 * Listeners
