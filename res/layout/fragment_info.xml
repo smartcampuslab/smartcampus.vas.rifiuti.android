@@ -10,12 +10,19 @@
         android:gravity="center"
         android:orientation="vertical" >
 
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="12dp"
-		    android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/info_intro" />
+            android:text="@string/info_intro"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/rifiuti_color" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,16 +32,16 @@
             <ImageView
                 android:id="@+id/smartcampus"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:padding="12dp"
                 android:src="@drawable/smart_campus_credits" />
 
             <ImageView
                 android:id="@+id/ladurner"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:padding="12dp"
                 android:src="@drawable/ladurnerenergy" />
         </LinearLayout>
@@ -44,54 +51,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-                android:src="@drawable/fbk_logo" />
+            android:src="@drawable/fbk_logo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="12dp"
             android:layout_marginTop="20dp"
-		    android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/info_collab" />
+            android:padding="12dp"
+            android:text="@string/info_collab"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/rifiuti_color" />
 
-            <ImageView
-                android:id="@+id/cct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/autonomie_locali" />
-
-
+        <ImageView
+            android:id="@+id/cct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/autonomie_locali" />
 
         <TextView
-            android:layout_marginTop="30dp"
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:autoLink="email"
+            android:gravity="center"
             android:padding="12dp"
-		    android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/info_mail" />
-        
-        <LinearLayout 
-            android:padding="12dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView 
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-			    android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/info_feedback"/>
-            
-            <ImageView 
-                android:id="@+id/info_feedback_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit"
-                android:padding="4dp"
-                android:tint="@color/rifiuti_green_middle"/>
-        </LinearLayout>
+            android:text="@string/info_mail"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/rifiuti_color"
+            android:textColorLink="@android:color/black" />
     </LinearLayout>
 
 </ScrollView>

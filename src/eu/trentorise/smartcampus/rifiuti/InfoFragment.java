@@ -78,14 +78,6 @@ public class InfoFragment extends Fragment {
 			}
 		});
 
-		ImageView feedback = (ImageView) getActivity().findViewById(R.id.info_feedback_img);
-		feedback.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				Fragment fragment = new FeedbackFragment();
-				getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-			}
-		});
 	}
 
 	@Override
