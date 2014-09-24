@@ -194,15 +194,15 @@
     <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità</string>
 
     <!-- INFO FRAGMENT -->
-    <string name="info_intro">Un progetto di:</string>
+    <string name="info_intro">"100% Rifiuti" è un progetto di:</string>
     <string name="info_collab">con la collaborazione di:</string>
     <string name="info_cdc">CDC</string>
-    <string name="info_giudicarie">Comunità delle giudicarie \n http://www.comunitadellegiudicarie.it/</string>
-    <string name="info_ladurner">Ladurner Energy\n www.ladurnerambiente.it</string>
+    <string name="info_giudicarie">Comunità delle giudicarie\nhttp://www.comunitadellegiudicarie.it/</string>
+    <string name="info_ladurner">Ladurner Energy\nwww.ladurnerambiente.it</string>
     <string name="info_fbk">fbk</string>
     <string name="info_mail">Per informazioni:\nriciclo@smartcampuslab.it</string>
     <string name="info_feedback"></string>
-    <string name="geocoding">Ricerca della posizione...</string>
+    <string name="geocoding">Ricerca della posizione&#8230;</string>
     <string name="distance">%.2f km</string>
     <string name="confirm_exit">Sei sicuro di voler uscire dall\'app?</string>
 

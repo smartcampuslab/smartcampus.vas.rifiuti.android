@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ViewSwitcher;
 
@@ -93,6 +94,8 @@ public class CalendarFragment extends Fragment {
 		View aView = (View) inflater.inflate(R.layout.fragment_calendaragenda, container, false);
 		calendarAgendaSRL = (SwipeRefreshLayout) aView.findViewById(R.id.calendaragenda_srl);
 		calendarAgendaList = (ListView) calendarAgendaSRL.findViewById(R.id.calendaragenda_list);
+		LinearLayout calendarAgendaEmptyView = (LinearLayout) calendarAgendaSRL.findViewById(R.id.calendaragenda_empty);
+		calendarAgendaList.setEmptyView(calendarAgendaEmptyView);
 		viewSwitcher.addView(aView);
 
 		return view;
@@ -294,9 +297,10 @@ public class CalendarFragment extends Fragment {
 				}
 
 				cae.setEventsMap(tipologiaPuntiRaccoltaMap);
+				caeList.add(cae);
 			}
 
-			caeList.add(cae);
+			// caeList.add(cae);
 		}
 
 		if (calendarAgendaAdapter == null) {
@@ -338,18 +342,20 @@ public class CalendarFragment extends Fragment {
 	}
 
 	private void showCalendarMonth() {
-		int firstVisiblePosition = calendarAgendaList.getFirstVisiblePosition();
-		if (calendarAgendaList.getChildAt(0).getTop() < 0 && firstVisiblePosition + 1 < calendarAgendaAdapter.getCount()) {
-			firstVisiblePosition++;
+		if (!calendarAgendaAdapter.isEmpty()) {
+			int firstVisiblePosition = calendarAgendaList.getFirstVisiblePosition();
+			if (calendarAgendaList.getChildAt(0).getTop() < 0 && firstVisiblePosition + 1 < calendarAgendaAdapter.getCount()) {
+				firstVisiblePosition++;
+			}
+			lastAgendaDayViewed = calendarAgendaAdapter.getItem(firstVisiblePosition).getCalendar();
+
+			Calendar goToMonthCalendar = Calendar.getInstance(Locale.getDefault());
+			goToMonthCalendar.setTimeInMillis(monthCalDefault.getTimeInMillis());
+			goToMonthCalendar.set(Calendar.YEAR, lastAgendaDayViewed.get(Calendar.YEAR));
+			goToMonthCalendar.set(Calendar.MONTH, lastAgendaDayViewed.get(Calendar.MONTH));
+
+			calendarView.goToMonth(goToMonthCalendar);
 		}
-		lastAgendaDayViewed = calendarAgendaAdapter.getItem(firstVisiblePosition).getCalendar();
-
-		Calendar goToMonthCalendar = Calendar.getInstance(Locale.getDefault());
-		goToMonthCalendar.setTimeInMillis(monthCalDefault.getTimeInMillis());
-		goToMonthCalendar.set(Calendar.YEAR, lastAgendaDayViewed.get(Calendar.YEAR));
-		goToMonthCalendar.set(Calendar.MONTH, lastAgendaDayViewed.get(Calendar.MONTH));
-
-		calendarView.goToMonth(goToMonthCalendar);
 
 		viewSwitcher.showPrevious();
 	}
@@ -374,7 +380,7 @@ public class CalendarFragment extends Fragment {
 				&& cal.get(Calendar.MONTH) == monthCalDefault.get(Calendar.MONTH)) {
 			// show today
 			goToAgendaToday();
-		} else if (!forceDay && cal.get(Calendar.YEAR) == lastAgendaDayViewed.get(Calendar.YEAR)
+		} else if (!forceDay && lastAgendaDayViewed != null && cal.get(Calendar.YEAR) == lastAgendaDayViewed.get(Calendar.YEAR)
 				&& cal.get(Calendar.MONTH) == lastAgendaDayViewed.get(Calendar.MONTH)) {
 			// leave the agenda at the same day (aka: do nothing)
 		} else {
