@@ -74,20 +74,15 @@ public class DBHelper extends SQLiteOpenHelper {
 	public static final String NOTE_PROFILE = "profile";
 	public static final String NOTE_DATE = "ndate";
 
-	private static final String CREATE_NOTE_TABLE = "CREATE TABLE IF NOT EXISTS "
-			+ TABLE_NOTE
-			+ "("
-			+ NOTE_ID
-			+ " INTEGER PRIMARY KEY,"
-			+ NOTE_TXT + " TEXT,"
-			+ NOTE_PROFILE + " TEXT,"
-			+ NOTE_DATE + " INTEGER)";
+	private static final String CREATE_NOTE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NOTE + "(" + NOTE_ID
+			+ " INTEGER PRIMARY KEY," + NOTE_TXT + " TEXT," + NOTE_PROFILE + " TEXT," + NOTE_DATE + " INTEGER)";
 
 	/**
 	 * Creates a empty database on the system and rewrites it with your own
 	 * database.
-	 * @param dbVersion 
-	 * @param ctx 
+	 * 
+	 * @param dbVersion
+	 * @param ctx
 	 * */
 	public static DBHelper createDataBase(Context ctx, int dbVersion) throws IOException {
 		int version = checkDataBase(ctx);
@@ -96,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
 			// the default system path
 			// of your application so we are gonna be able to overwrite that
 			// database with our database.
-//			this.getReadableDatabase();
+			// this.getReadableDatabase();
 			try {
 				copyDataBase(ctx);
 			} catch (IOException e) {
@@ -104,14 +99,14 @@ public class DBHelper extends SQLiteOpenHelper {
 			}
 		} else if (version < dbVersion) {
 			SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath(ctx), null, SQLiteDatabase.OPEN_READONLY);
-			mNotes = NotesHelper.getNotes(db);
+			mNotes = NotesHelper.getAllNotes(db);
 			db.close();
 			try {
 				copyDataBase(ctx);
 			} catch (IOException e) {
 				throw new Error("Error copying database");
 			}
-		}	
+		}
 		DBHelper helper = new DBHelper(ctx, dbVersion);
 		helper.openDataBase();
 		return helper;
@@ -149,8 +144,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		int version = -1;
 		try {
 			String myPath = dbPath(ctx);
-			checkDB = SQLiteDatabase.openDatabase(myPath, null,
-					SQLiteDatabase.OPEN_READONLY);
+			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 			version = checkDB.getVersion();
 		} catch (SQLiteException e) {
 			// database does't exist yet.

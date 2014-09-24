@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import eu.trentorise.smartcampus.rifiuti.model.Note;
+import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.utils.PreferenceUtils;
 
 public class NotesHelper {
@@ -41,15 +42,39 @@ public class NotesHelper {
 	};
 
 	private static String getNotesSQL() {
-		return "select * from "
-				+ DBHelper.TABLE_NOTE
-				+ " where "+ DBHelper.NOTE_PROFILE+ "="
-				+ "\""
-				+ PreferenceUtils
-						.getProfile(mHelper.mCtx,
-								PreferenceUtils.getCurrentProfilePosition(mHelper.mCtx)).getName() 
-				+ "\"" 
-				+ " order by " + DBHelper.NOTE_DATE;
+		return "select * from " + DBHelper.TABLE_NOTE + " where " + DBHelper.NOTE_PROFILE + "=" + "\""
+				+ PreferenceUtils.getProfile(mHelper.mCtx, PreferenceUtils.getCurrentProfilePosition(mHelper.mCtx)).getName()
+				+ "\"" + " order by " + DBHelper.NOTE_DATE;
+	}
+
+	private static String getAllNotesSQL() {
+		return "select * from " + DBHelper.TABLE_NOTE;
+	}
+
+	public static List<Note> getAllNotes() {
+		SQLiteDatabase db = RifiutiHelper.getDBHelper().getReadableDatabase();
+		return getAllNotes(db);
+	}
+
+	public static List<Note> getAllNotes(SQLiteDatabase db) {
+		List<Note> notes = new ArrayList<Note>();
+		Cursor c = null;
+		try {
+			c = db.rawQuery(getAllNotesSQL(), null);
+			while (c.moveToNext()) {
+				Profile p = new Profile();
+				p.setName(c.getString(c.getColumnIndex(DBHelper.NOTE_PROFILE)));
+				Note n = new Note(c.getInt(c.getColumnIndex(DBHelper.NOTE_ID)),
+						c.getString(c.getColumnIndex(DBHelper.NOTE_TXT)), p, new Date(c.getLong(c
+								.getColumnIndex(DBHelper.NOTE_DATE))));
+				notes.add(n);
+			}
+		} finally {
+			if (c != null) {
+				c.close();
+			}
+		}
+		return notes;
 	}
 
 	public static List<Note> getNotes() {
@@ -57,39 +82,36 @@ public class NotesHelper {
 		return getNotes(db);
 	}
 
-	/**
-	 * @param db
-	 * @return
-	 */
 	public static List<Note> getNotes(SQLiteDatabase db) {
 		List<Note> notes = new ArrayList<Note>();
 		Cursor c = null;
 		try {
 			c = db.rawQuery(getNotesSQL(), null);
 			while (c.moveToNext()) {
-				PreferenceUtils.getCurrentProfilePosition(mHelper.mCtx);
-				Note n = new Note(c.getInt(c.getColumnIndex(DBHelper.NOTE_ID)), c.getString(c
-						.getColumnIndex(DBHelper.NOTE_TXT)), RifiutiHelper.getProfile(), new Date(c.getLong(c
-						.getColumnIndex(DBHelper.NOTE_DATE))));
+				Profile p = new Profile();
+				p.setName(c.getString(c.getColumnIndex(DBHelper.NOTE_PROFILE)));
+				Note n = new Note(c.getInt(c.getColumnIndex(DBHelper.NOTE_ID)),
+						c.getString(c.getColumnIndex(DBHelper.NOTE_TXT)), RifiutiHelper.getProfile(), new Date(c.getLong(c
+								.getColumnIndex(DBHelper.NOTE_DATE))));
 				notes.add(n);
 			}
 		} finally {
-			if (c!=null)
+			if (c != null) {
 				c.close();
+			}
 		}
 		return notes;
 	}
 
 	public static void addNote(String s) {
 		SQLiteDatabase db = RifiutiHelper.getDBHelper().getWritableDatabase();
-		db.insert(DBHelper.TABLE_NOTE, null,
-				Note.toContentValues(s, RifiutiHelper.getProfile()));
+		db.insert(DBHelper.TABLE_NOTE, null, Note.toContentValues(s, RifiutiHelper.getProfile()));
 		db.close();
 	}
-	
+
 	public static void editNote(Note n) {
 		SQLiteDatabase db = RifiutiHelper.getDBHelper().getWritableDatabase();
-		String where=DBHelper.NOTE_ID+"="+n.getID();
+		String where = DBHelper.NOTE_ID + "=" + n.getID();
 		db.update(DBHelper.TABLE_NOTE, n.toContentValues(), where, null);
 		db.close();
 	}
@@ -108,11 +130,11 @@ public class NotesHelper {
 		Log.i("deleted", rows + "");
 		db.close();
 	}
-	
+
 	public static void deleteNotes(String profileName) {
 		SQLiteDatabase db = RifiutiHelper.getDBHelper().getWritableDatabase();
 		String whereClause = DBHelper.NOTE_PROFILE + " = ? ";
-		String[] whereArgs = new String[]{profileName};
+		String[] whereArgs = new String[] { profileName };
 		int rows = db.delete(DBHelper.TABLE_NOTE, whereClause, whereArgs);
 		Log.i("deleted", rows + "");
 		db.close();
