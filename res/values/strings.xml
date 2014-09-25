@@ -194,7 +194,7 @@
     <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità</string>
 
     <!-- INFO FRAGMENT -->
-    <string name="info_intro">"100% Rifiuti" è un progetto di:</string>
+    <string name="info_intro">\"100% Riciclo\" è un progetto di:</string>
     <string name="info_collab">con la collaborazione di:</string>
     <string name="info_cdc">CDC</string>
     <string name="info_giudicarie">Comunità delle giudicarie\nhttp://www.comunitadellegiudicarie.it/</string>
