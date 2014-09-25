@@ -12,6 +12,7 @@
     <dimen name="rifiuti_small">8dp</dimen>
     <dimen name="rifiuti_medium">16dp</dimen>
     <dimen name="rifiuti_large">24dp</dimen>
+    <dimen name="rifiuti_maxi">32dp</dimen>
     
     <!-- Navigation drawer -->
     <dimen name="navigation_drawer_item_height">48dp</dimen>

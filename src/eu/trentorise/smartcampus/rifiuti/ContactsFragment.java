@@ -48,23 +48,6 @@ public class ContactsFragment extends Fragment implements onBackListener {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			onBack();
-			return true;
-		} else if (item.getItemId() == R.id.action_goto) {
-			callAppForDirectionsGmaps(data.get(mPosition).get("address"));
-		}
-		return false;
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.contact_detail_menu, menu);
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_contacts, container, false);
 	}
@@ -85,6 +68,23 @@ public class ContactsFragment extends Fragment implements onBackListener {
 			abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 			abActivity.supportInvalidateOptionsMenu();
 		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.contact_detail_menu, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			onBack();
+			return true;
+		} else if (item.getItemId() == R.id.action_goto) {
+			callAppForDirectionsGmaps(data.get(mPosition).get("address"));
+		}
+		return false;
 	}
 
 	@Override
