@@ -474,17 +474,20 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				SysProfile checkedSysProfile = (SysProfile) mUtenzaRadioGroup.findViewById(checkedId).getTag();
+				String previousComuneArea = (String) mAreaSpinner.getSelectedItem();
 				updateAreas(checkedSysProfile.getTipologiaUtenza());
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_row, comuneAreasNames);
 				mAreaSpinner.setAdapter(adapter);
 
-				if (mProfile != null) {
-					for (int i = 1; i < comuneAreas.size(); i++) {
-						if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
+				if (comuneAreasNames.contains(previousComuneArea)) {
+					for (int i = 1; i < comuneAreasNames.size(); i++) {
+						if (previousComuneArea.equals(comuneAreasNames.get(i))) {
 							mAreaSpinner.setSelection(i);
 							break;
 						}
 					}
+				} else {
+					mAreaSpinner.setSelection(0);
 				}
 			}
 		});
