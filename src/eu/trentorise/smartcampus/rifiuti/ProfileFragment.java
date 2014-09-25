@@ -435,14 +435,16 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		/*
 		 * populate mUtenzaRadioGroup
 		 */
-		List<SysProfile> sysProfiles = RifiutiHelper.readSysProfiles();
-		for (int i = 0; i < sysProfiles.size(); i++) {
-			SysProfile sp = sysProfiles.get(i);
-			RadioButton rb = new RadioButton(getActivity());
-			rb.setId(i);
-			rb.setText(sp.getProfilo());
-			rb.setTag(sp);
-			mUtenzaRadioGroup.addView(rb);
+		if (mUtenzaRadioGroup.getChildCount() == 0) {
+			List<SysProfile> sysProfiles = RifiutiHelper.readSysProfiles();
+			for (int i = 0; i < sysProfiles.size(); i++) {
+				SysProfile sp = sysProfiles.get(i);
+				RadioButton rb = new RadioButton(getActivity());
+				rb.setId(i);
+				rb.setText(sp.getProfilo());
+				rb.setTag(sp);
+				mUtenzaRadioGroup.addView(rb);
+			}
 		}
 
 		/*

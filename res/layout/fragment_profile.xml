@@ -1,266 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_horizontal_margin" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
-        android:id="@+id/layout_profile_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/profilo_nome"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/primary_text_light" />
-
-        <ViewSwitcher
-            android:id="@+id/profile_name_vs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inAnimation="@android:anim/fade_in"
-            android:measureAllChildren="false"
-            android:minHeight="48dp" >
-
-            <TextView
-                android:id="@+id/profile_name_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/profilo_nome"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/secondary_text_light" />
-
-            <EditText
-                android:id="@+id/profile_name_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/profilo_nome"
-                android:imeOptions="actionNext"
-                android:inputType="text" >
-
-                <requestFocus />
-            </EditText>
-        </ViewSwitcher>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_profile_utenza"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fragment_vertical_margin"
-        android:orientation="vertical" >
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/layout_profile_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/profilo_utenza"
+                android:text="@string/profilo_nome"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/primary_text_light" />
 
-            <ImageButton
-                android:id="@+id/profile_utenza_helpbutton"
-                android:layout_width="wrap_content"
+            <ViewSwitcher
+                android:id="@+id/profile_name_vs"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/profilo_utenza_help_cd"
-                android:src="@drawable/ic_help" />
+                android:inAnimation="@android:anim/fade_in"
+                android:measureAllChildren="false"
+                android:minHeight="48dp" >
+
+                <TextView
+                    android:id="@+id/profile_name_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profilo_nome"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/secondary_text_light" />
+
+                <EditText
+                    android:id="@+id/profile_name_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/profilo_nome"
+                    android:imeOptions="actionNext"
+                    android:inputType="text" >
+
+                    <requestFocus />
+                </EditText>
+            </ViewSwitcher>
         </LinearLayout>
 
-        <ViewSwitcher
-            android:id="@+id/profile_utenza_vs"
+        <LinearLayout
+            android:id="@+id/layout_profile_utenza"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inAnimation="@android:anim/fade_in"
-            android:measureAllChildren="false"
-            android:minHeight="48dp" >
+            android:layout_marginTop="@dimen/fragment_vertical_margin"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/profile_utenza_tv"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profilo_utenza"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@android:color/primary_text_light" />
+
+                <ImageButton
+                    android:id="@+id/profile_utenza_helpbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/profilo_utenza_help_cd"
+                    android:src="@drawable/ic_help" />
+            </LinearLayout>
+
+            <ViewSwitcher
+                android:id="@+id/profile_utenza_vs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/profilo_utenza"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/secondary_text_light" />
+                android:inAnimation="@android:anim/fade_in"
+                android:measureAllChildren="false"
+                android:minHeight="48dp" >
 
-            <!-- <Spinner -->
-            <!-- android:id="@+id/profile_utenza_spinner" -->
-            <!-- android:layout_width="match_parent" -->
-            <!-- android:layout_height="wrap_content" -->
-            <!-- android:entries="@array/utenze" -->
-            <!-- android:spinnerMode="dialog" /> -->
+                <TextView
+                    android:id="@+id/profile_utenza_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profilo_utenza"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/secondary_text_light" />
 
-            <RadioGroup
-                android:id="@+id/profile_utenza_radiogroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-            </RadioGroup>
-        </ViewSwitcher>
-    </LinearLayout>
+                <!-- <Spinner -->
+                <!-- android:id="@+id/profile_utenza_spinner" -->
+                <!-- android:layout_width="match_parent" -->
+                <!-- android:layout_height="wrap_content" -->
+                <!-- android:entries="@array/utenze" -->
+                <!-- android:spinnerMode="dialog" /> -->
 
-    <LinearLayout
-        android:id="@+id/layout_profile_comune"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fragment_vertical_margin"
-        android:orientation="vertical" >
+                <RadioGroup
+                    android:id="@+id/profile_utenza_radiogroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                </RadioGroup>
+            </ViewSwitcher>
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/profilo_comune"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/primary_text_light" />
-
-        <ViewSwitcher
-            android:id="@+id/profile_comune_vs"
+        <LinearLayout
+            android:id="@+id/layout_profile_comune"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inAnimation="@android:anim/fade_in"
-            android:measureAllChildren="false"
-            android:minHeight="48dp" >
+            android:layout_marginTop="@dimen/fragment_vertical_margin"
+            android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/profile_comune_tv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/profilo_comune"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/primary_text_light" />
 
-            <Spinner
-                android:id="@+id/profile_comune_spinner"
+            <ViewSwitcher
+                android:id="@+id/profile_comune_vs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dialog" />
-        </ViewSwitcher>
-    </LinearLayout>
+                android:inAnimation="@android:anim/fade_in"
+                android:measureAllChildren="false"
+                android:minHeight="48dp" >
 
-    <LinearLayout
-        android:id="@+id/layout_profile_indirizzo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fragment_vertical_margin"
-        android:orientation="vertical"
-        android:visibility="gone" >
+                <TextView
+                    android:id="@+id/profile_comune_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profilo_comune"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/secondary_text_light" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/profilo_via"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/primary_text_light" />
+                <Spinner
+                    android:id="@+id/profile_comune_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog" />
+            </ViewSwitcher>
+        </LinearLayout>
 
-        <ViewSwitcher
-            android:id="@+id/profile_indirizzo_vs"
+        <LinearLayout
+            android:id="@+id/layout_profile_indirizzo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inAnimation="@android:anim/fade_in"
-            android:measureAllChildren="false"
-            android:minHeight="48dp" >
+            android:layout_marginTop="@dimen/fragment_vertical_margin"
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <TextView
-                android:id="@+id/profile_indirizzo_tv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/profilo_via"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/primary_text_light" />
 
-            <EditText
-                android:id="@+id/profile_indirizzo_et"
+            <ViewSwitcher
+                android:id="@+id/profile_indirizzo_vs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/profilo_via"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:nextFocusDown="@+id/profile_nciv_et" />
-        </ViewSwitcher>
-    </LinearLayout>
+                android:inAnimation="@android:anim/fade_in"
+                android:measureAllChildren="false"
+                android:minHeight="48dp" >
 
-    <LinearLayout
-        android:id="@+id/layout_profile_nciv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/fragment_vertical_margin"
-        android:orientation="vertical"
-        android:visibility="gone" >
+                <TextView
+                    android:id="@+id/profile_indirizzo_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profilo_via"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/secondary_text_light" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/profilo_nciv"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/primary_text_light" />
+                <EditText
+                    android:id="@+id/profile_indirizzo_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/profilo_via"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:nextFocusDown="@+id/profile_nciv_et" />
+            </ViewSwitcher>
+        </LinearLayout>
 
-        <ViewSwitcher
-            android:id="@+id/profile_nciv_vs"
+        <LinearLayout
+            android:id="@+id/layout_profile_nciv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inAnimation="@android:anim/fade_in"
-            android:measureAllChildren="false"
-            android:minHeight="48dp" >
+            android:layout_marginTop="@dimen/fragment_vertical_margin"
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <TextView
-                android:id="@+id/profile_nciv_tv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/profilo_nciv"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/primary_text_light" />
 
-            <EditText
-                android:id="@+id/profile_nciv_et"
+            <ViewSwitcher
+                android:id="@+id/profile_nciv_vs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/profilo_nciv"
-                android:imeOptions="actionDone"
-                android:inputType="text" />
-        </ViewSwitcher>
+                android:inAnimation="@android:anim/fade_in"
+                android:measureAllChildren="false"
+                android:minHeight="48dp" >
+
+                <TextView
+                    android:id="@+id/profile_nciv_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profilo_nciv"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/secondary_text_light" />
+
+                <EditText
+                    android:id="@+id/profile_nciv_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/profilo_nciv"
+                    android:imeOptions="actionDone"
+                    android:inputType="text" />
+            </ViewSwitcher>
+        </LinearLayout>
+        <!-- <TextView -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:text="@string/profilo_area" -->
+        <!-- android:textAppearance="?android:attr/textAppearanceLarge" -->
+        <!-- android:textColor="@android:color/primary_text_light" -->
+        <!-- android:visibility="gone" /> -->
+
+
+        <!-- <ViewSwitcher -->
+        <!-- android:id="@+id/profile_area_vs" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:inAnimation="@anim/expand" -->
+        <!-- android:visibility="gone" > -->
+
+
+        <!-- <TextView -->
+        <!-- android:id="@+id/profile_area_tv" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!--  -->
+        <!-- android:text="@string/profilo_area" -->
+        <!-- android:textColor="@android:color/secondary_text_light" /> -->
+
+
+        <!-- <EditText -->
+        <!-- android:id="@+id/profile_area_et" -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:hint="@string/profilo_area" -->
+        <!-- android:minHeight="48dp" -->
+        <!-- android:text="@string/profilo_area" /> -->
+        <!-- </ViewSwitcher> -->
+
     </LinearLayout>
-    <!-- <TextView -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:text="@string/profilo_area" -->
-    <!-- android:textAppearance="?android:attr/textAppearanceLarge" -->
-    <!-- android:textColor="@android:color/primary_text_light" -->
-    <!-- android:visibility="gone" /> -->
 
-
-    <!-- <ViewSwitcher -->
-    <!-- android:id="@+id/profile_area_vs" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:inAnimation="@anim/expand" -->
-    <!-- android:visibility="gone" > -->
-
-
-    <!-- <TextView -->
-    <!-- android:id="@+id/profile_area_tv" -->
-    <!-- android:layout_width="wrap_content" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!--  -->
-    <!-- android:text="@string/profilo_area" -->
-    <!-- android:textColor="@android:color/secondary_text_light" /> -->
-
-
-    <!-- <EditText -->
-    <!-- android:id="@+id/profile_area_et" -->
-    <!-- android:layout_width="match_parent" -->
-    <!-- android:layout_height="wrap_content" -->
-    <!-- android:hint="@string/profilo_area" -->
-    <!-- android:minHeight="48dp" -->
-    <!-- android:text="@string/profilo_area" /> -->
-    <!-- </ViewSwitcher> -->
-
-</LinearLayout>
+</ScrollView>

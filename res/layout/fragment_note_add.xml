@@ -8,15 +8,11 @@
         android:id="@+id/fragment_add_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:layout_margin="@dimen/fragment_vertical_margin"
+        android:ems="10"
+        android:inputType="textMultiLine" >
 
         <requestFocus />
     </EditText>
-
-    <Button
-        android:id="@+id/fragment_add_ok_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@android:string/ok" />
 
 </LinearLayout>
