@@ -382,11 +382,11 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			mVSNCiv.showNext();
 
 			if (mProfile != null) {
-				mETNome.setHint(mProfile.getName());
-				// mETArea.setHint(mProfile.getArea());
-				// mACTVComune.setHint(mProfile.getComune());
-				mETVia.setHint(mProfile.getVia());
-				mETNCiv.setHint(mProfile.getNCivico());
+				mETNome.setText(mProfile.getName());
+				// mETArea.setText(mProfile.getArea());
+				// mACTVComune.setText(mProfile.getComune());
+				mETVia.setText(mProfile.getVia());
+				mETNCiv.setText(mProfile.getNCivico());
 			}
 		} else {
 			mActiveMode = MODE.VIEW;
@@ -418,21 +418,6 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		mVSComune = (ViewSwitcher) getView().findViewById(R.id.profile_comune_vs);
 		mVSVia = (ViewSwitcher) getView().findViewById(R.id.profile_indirizzo_vs);
 		mVSNCiv = (ViewSwitcher) getView().findViewById(R.id.profile_nciv_vs);
-
-		/*
-		 * populate mUtenzaRadioGroup
-		 */
-		if (mUtenzaRadioGroup.getChildCount() == 0) {
-			List<SysProfile> sysProfiles = RifiutiHelper.readSysProfiles();
-			for (int i = 0; i < sysProfiles.size(); i++) {
-				SysProfile sp = sysProfiles.get(i);
-				RadioButton rb = new RadioButton(getActivity());
-				rb.setId(i);
-				rb.setText(sp.getProfilo());
-				rb.setTag(sp);
-				mUtenzaRadioGroup.addView(rb);
-			}
-		}
 
 		/*
 		 * Listeners
@@ -469,6 +454,21 @@ public class ProfileFragment extends Fragment implements onBackListener {
 				builder.create().show();
 			}
 		});
+
+		/*
+		 * populate mUtenzaRadioGroup
+		 */
+		if (mUtenzaRadioGroup.getChildCount() == 0) {
+			List<SysProfile> sysProfiles = RifiutiHelper.readSysProfiles();
+			for (int i = 0; i < sysProfiles.size(); i++) {
+				SysProfile sp = sysProfiles.get(i);
+				RadioButton rb = new RadioButton(getActivity());
+				rb.setId(i);
+				rb.setText(sp.getProfilo());
+				rb.setTag(sp);
+				mUtenzaRadioGroup.addView(rb);
+			}
+		}
 
 		mUtenzaRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -551,10 +551,12 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			}
 		}
 
-		for (int i = 1; i < comuneAreas.size(); i++) {
-			if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
-				mAreaSpinner.setSelection(i);
-				break;
+		if (comuneAreas != null) {
+			for (int i = 1; i < comuneAreas.size(); i++) {
+				if (mProfile.getArea().equals(comuneAreas.get(i).getNome())) {
+					mAreaSpinner.setSelection(i);
+					break;
+				}
 			}
 		}
 
