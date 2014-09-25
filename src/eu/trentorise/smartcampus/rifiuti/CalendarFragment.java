@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ViewSwitcher;
 
@@ -49,6 +48,7 @@ public class CalendarFragment extends Fragment {
 
 	private SwipeRefreshLayout calendarAgendaSRL;
 	private ListView calendarAgendaList;
+	private View calendarAgendaEmptyView;
 	private Calendar monthCalDefault;
 	private CalendarAgendaAdapter calendarAgendaAdapter;
 	private Calendar lastAgendaDayViewed;
@@ -94,8 +94,8 @@ public class CalendarFragment extends Fragment {
 		View aView = (View) inflater.inflate(R.layout.fragment_calendaragenda, container, false);
 		calendarAgendaSRL = (SwipeRefreshLayout) aView.findViewById(R.id.calendaragenda_srl);
 		calendarAgendaList = (ListView) calendarAgendaSRL.findViewById(R.id.calendaragenda_list);
-		LinearLayout calendarAgendaEmptyView = (LinearLayout) calendarAgendaSRL.findViewById(R.id.calendaragenda_empty);
-		calendarAgendaList.setEmptyView(calendarAgendaEmptyView);
+		calendarAgendaEmptyView = aView.findViewById(R.id.calendaragenda_empty);
+		// calendarAgendaList.setEmptyView(calendarAgendaEmptyView);
 		viewSwitcher.addView(aView);
 
 		return view;
@@ -336,6 +336,14 @@ public class CalendarFragment extends Fragment {
 
 		if (calendarAgendaSRL.isRefreshing()) {
 			calendarAgendaSRL.setRefreshing(false);
+		}
+
+		if (calendarAgendaAdapter.isEmpty()) {
+			calendarAgendaSRL.setVisibility(View.GONE);
+			calendarAgendaEmptyView.setVisibility(View.VISIBLE);
+		} else {
+			calendarAgendaSRL.setVisibility(View.VISIBLE);
+			calendarAgendaEmptyView.setVisibility(View.GONE);
 		}
 
 		return cal.getTimeInMillis();

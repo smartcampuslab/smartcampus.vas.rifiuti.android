@@ -10,46 +10,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <FrameLayout
+        <ListView
+            android:id="@+id/calendaragenda_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-
-            <ListView
-                android:id="@+id/calendaragenda_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/rifiuti_middle"
-                android:drawSelectorOnTop="false"
-                android:fadeScrollbars="false"
-                android:listSelector="@drawable/rifiuti_list_selector_holo_light"
-                android:scrollbarStyle="outsideOverlay" >
-            </ListView>
-
-            <LinearLayout
-                android:id="@+id/calendaragenda_empty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/calendaragenda_empty_title"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/rifiuti_middle" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/empty"
-                    android:src="@drawable/ic_empty_calendar" />
-            </LinearLayout>
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:divider="@color/rifiuti_middle"
+            android:drawSelectorOnTop="false"
+            android:fadeScrollbars="false"
+            android:listSelector="@drawable/rifiuti_list_selector_holo_light"
+            android:scrollbarStyle="outsideOverlay" >
+        </ListView>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/calendaragenda_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/calendaragenda_empty_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/rifiuti_middle" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/ic_empty_calendar" />
+    </LinearLayout>
 
     <!-- <View -->
     <!-- android:layout_width="match_parent" -->
