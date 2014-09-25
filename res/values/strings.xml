@@ -3,12 +3,16 @@
 
     <string name="empty"></string>
     <string name="close">Chiudi</string>
-    <string name="dialog_confirm_title">Avviso</string>
-    <string name="dialog_confirm_msg">Premendo OK cancellerai definitivamente questo profilo, incluse le eventuali note personali. Confermi?</string>
-    <string name="dialog_confirm_note_msg">Premendo OK cancellerai definitivamente questa nota personale. Confermi?</string>
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
     <string name="toast_no_prof">Crea il tuo profilo!</string>
     <string name="err_everything_go_lazy">Qualcosa è andato storto</string>
+
+    <!-- Profile delete confirmation or denying -->
+    <string name="profile_dialog_title">Avviso</string>
+    <string name="profile_dialog_delete_confirm_msg">Premendo OK cancellerai definitivamente questo profilo, incluse le eventuali note personali. Confermi?</string>
+    <string name="profile_dialog_delete_deny_msg">Non è possibile cancellare il profilo in uso.</string>
+    <!-- Note delete confirmation -->
+    <string name="note_dialog_delete_msg">Premendo OK cancellerai definitivamente questa nota personale. Confermi?</string>
 
     <!-- Notifications -->
     <string name="notifications_title">Domani a %s</string>
@@ -43,9 +47,10 @@
     <string name="dovelobutto_search_hint">Che rifiuto vuoi buttare?</string>
 
     <!-- Notes strings -->
-    <string name="notes_empty_title">Aggiungi una tua nota</string>
+    <string name="notes_empty_title1">Tocca</string>
+    <string name="notes_empty_title2">per aggiungere una nota</string>
     <string name="notes_empty_subtitle">ad esempio:\n\"Portare la tv al CRM\"\n\"Pagare la bolletta dei rifiuti\"</string>
-    
+
     <!-- Calendar strings -->
     <string name="calendaragenda_empty_title">Non ci sono elementi</string>
 

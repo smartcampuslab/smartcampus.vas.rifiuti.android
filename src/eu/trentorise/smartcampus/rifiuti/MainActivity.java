@@ -104,7 +104,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 				lockDrawer();
 				loadFragment(8);
 				Toast.makeText(this, getString(R.string.toast_no_prof), Toast.LENGTH_SHORT).show();
-			// } else if (PreferenceUtils.getProfiles(this).size() > 1) {
 			} else {
 				populateProfilesList(true);
 			}

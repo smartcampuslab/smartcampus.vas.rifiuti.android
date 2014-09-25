@@ -198,16 +198,12 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	public void onPrepareOptionsMenu(Menu menu) {
 		if (mActiveMode == MODE.VIEW) {
 			menu.getItem(0).setVisible(true);
-			if (mProfile != null
-					&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments().getInt(PROFILE_INDEX_KEY))
-				menu.getItem(1).setVisible(true);
-			else
-				menu.getItem(1).setVisible(false);
+			menu.getItem(1).setVisible(true);
 			menu.getItem(2).setVisible(false);
 		} else {
 			menu.getItem(0).setVisible(false);
-			menu.getItem(2).setVisible(true);
 			menu.getItem(1).setVisible(false);
+			menu.getItem(2).setVisible(true);
 		}
 		super.onPrepareOptionsMenu(menu);
 	}
@@ -221,6 +217,10 @@ public class ProfileFragment extends Fragment implements onBackListener {
 			onBack();
 		} else if (item.getItemId() == R.id.action_edit) {
 			switchMode();
+		} else if (item.getItemId() == R.id.action_delete) {
+			if (mProfile != null) {
+				showConfirmAndDelete();
+			}
 		} else if (item.getItemId() == R.id.action_save) {
 			Profile newProfile;
 			try {
@@ -242,10 +242,6 @@ public class ProfileFragment extends Fragment implements onBackListener {
 				ValidatorHelper.highlight(getActivity(), mETNCiv, null);
 			} catch (InvalidComuneExeption e) {
 				ValidatorHelper.highlight(getActivity(), mAreaSpinner, null);
-			}
-		} else if (item.getItemId() == R.id.action_delete) {
-			if (mProfile != null) {
-				showConfirmAndDelete();
 			}
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -568,37 +564,46 @@ public class ProfileFragment extends Fragment implements onBackListener {
 	}
 
 	private void showConfirmAndDelete() {
-		AlertDialog.Builder build = createConfirmDialog();
-		build.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				try {
-					PreferenceUtils.removeProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
-					if (getActivity() instanceof MainActivity)
-						((MainActivity) getActivity()).populateProfilesList(false);
-
-				} catch (Exception e) {
-					Toast.makeText(getActivity(), getString(R.string.err_delete_profilo), Toast.LENGTH_SHORT).show();
-				}
-				onBack();
-			}
-		});
-		build.show();
-	}
-
-	private AlertDialog.Builder createConfirmDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(getString(R.string.dialog_confirm_title));
-		builder.setMessage(getString(R.string.dialog_confirm_msg));
-		builder.setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+		builder.setTitle(getString(R.string.profile_dialog_title));
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		return builder;
+		if (mProfile != null
+				&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments().getInt(PROFILE_INDEX_KEY)) {
+			// confirm deletion
+			builder.setMessage(getString(R.string.profile_dialog_delete_confirm_msg));
+			builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					try {
+						PreferenceUtils.removeProfile(getActivity(), getArguments().getInt(PROFILE_INDEX_KEY));
+						if (getActivity() instanceof MainActivity)
+							((MainActivity) getActivity()).populateProfilesList(false);
+
+					} catch (Exception e) {
+						Toast.makeText(getActivity(), getString(R.string.err_delete_profilo), Toast.LENGTH_SHORT).show();
+					}
+					onBack();
+				}
+			});
+
+			builder.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+		} else {
+			// cannot delete profile!
+			builder.setMessage(getString(R.string.profile_dialog_delete_deny_msg));
+			builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+		}
+
+		builder.show();
 	}
 
 	// private class GeocoderTask extends AsyncTask<Location, OSMAddress, Void>

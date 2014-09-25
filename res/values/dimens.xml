@@ -6,7 +6,12 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fragment_horizontal_margin">8dp</dimen>
     <dimen name="fragment_vertical_margin">8dp</dimen>
-    <dimen name="rifiuti_vertical">24dp</dimen>
+    
+    <!-- Custom dimensions -->
+    <dimen name="rifiuti_mini">4dp</dimen>
+    <dimen name="rifiuti_small">8dp</dimen>
+    <dimen name="rifiuti_medium">16dp</dimen>
+    <dimen name="rifiuti_large">24dp</dimen>
     
     <!-- Navigation drawer -->
     <dimen name="navigation_drawer_item_height">48dp</dimen>

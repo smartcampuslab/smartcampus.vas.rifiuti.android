@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import eu.trentorise.smartcampus.rifiuti.AddNoteFragment.OnAddListener;
 import eu.trentorise.smartcampus.rifiuti.data.NotesHelper;
@@ -37,7 +39,10 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_noteslist, container, false);
+		View view = inflater.inflate(R.layout.fragment_noteslist, container, false);
+		ImageView addIcon = (ImageView) view.findViewById(R.id.notes_empty_addicon);
+		addIcon.setColorFilter(getResources().getColor(R.color.rifiuti_middle), Mode.MULTIPLY);
+		return view;
 	}
 
 	@Override
@@ -142,8 +147,8 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	}
 
 	private void showConfirmAndDelete(final SparseBooleanArray pos) {
-		new AlertDialog.Builder(getActivity()).setTitle(R.string.dialog_confirm_title)
-				.setMessage(R.string.dialog_confirm_note_msg).setPositiveButton(android.R.string.ok, new OnClickListener() {
+		new AlertDialog.Builder(getActivity()).setTitle(R.string.profile_dialog_title)
+				.setMessage(R.string.note_dialog_delete_msg).setPositiveButton(android.R.string.ok, new OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						getActivity().setProgressBarIndeterminateVisibility(true);
 						new DeleteNotesTask().execute(pos);
