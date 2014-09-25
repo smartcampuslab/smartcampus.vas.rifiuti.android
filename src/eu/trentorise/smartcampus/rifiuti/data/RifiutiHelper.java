@@ -237,34 +237,34 @@ public class RifiutiHelper {
 					+ "' AND tipologiaPuntoRaccolta = '" + puntoRaccolta.getTipologiaPuntiRaccolta() + "'";
 			// filter per puntoRaccolta attributes
 			String filter = "";
-			if ((puntoRaccolta.isGettoniera() == null || puntoRaccolta.isGettoniera())
-					|| (puntoRaccolta.isResiduo() == null || puntoRaccolta.isResiduo())) {
-				filter += "tipologiaRaccolta = 'Residuo'";
+			if ((puntoRaccolta.isGettoniera() != null && !puntoRaccolta.isGettoniera())
+					&& (puntoRaccolta.isResiduo() != null && !puntoRaccolta.isResiduo())) {
+				filter += "tipologiaRaccolta != 'Residuo'";
 			}
-			if (puntoRaccolta.isImbCarta() == null || puntoRaccolta.isImbCarta()) {
+			if (puntoRaccolta.isImbCarta() != null && !puntoRaccolta.isImbCarta()) {
 				if (filter.length() > 0)
-					filter += " OR ";
-				filter += "tipologiaRaccolta = 'Carta, cartone e cartoni per bevande'";
+					filter += " AND ";
+				filter += "tipologiaRaccolta != 'Carta, cartone e cartoni per bevande'";
 			}
-			if (puntoRaccolta.isImbPlMet() == null || puntoRaccolta.isImbPlMet()) {
+			if (puntoRaccolta.isImbPlMet() != null && !puntoRaccolta.isImbPlMet()) {
 				if (filter.length() > 0)
-					filter += " OR ";
-				filter += "tipologiaRaccolta = 'Imballaggi in plastica e metallo'";
+					filter += " AND ";
+				filter += "tipologiaRaccolta != 'Imballaggi in plastica e metallo'";
 			}
-			if (puntoRaccolta.isImbVetro() == null || puntoRaccolta.isImbVetro()) {
+			if (puntoRaccolta.isImbVetro() != null && !puntoRaccolta.isImbVetro()) {
 				if (filter.length() > 0)
-					filter += " OR ";
-				filter += "tipologiaRaccolta = 'Imballaggi in vetro'";
+					filter += " AND ";
+				filter += "tipologiaRaccolta != 'Imballaggi in vetro'";
 			}
-			if (puntoRaccolta.isOrganico() == null || puntoRaccolta.isOrganico()) {
+			if (puntoRaccolta.isOrganico() != null && !puntoRaccolta.isOrganico()) {
 				if (filter.length() > 0)
-					filter += " OR ";
-				filter += "tipologiaRaccolta = 'Organico'";
+					filter += " AND ";
+				filter += "tipologiaRaccolta != 'Organico'";
 			}
-			if (puntoRaccolta.isIndumenti() == null || puntoRaccolta.isIndumenti()) {
+			if (puntoRaccolta.isIndumenti() != null && !puntoRaccolta.isIndumenti()) {
 				if (filter.length() > 0)
-					filter += " OR ";
-				filter += "tipologiaRaccolta = 'Indumenti usati'";
+					filter += " AND ";
+				filter += "tipologiaRaccolta != 'Indumenti usati'";
 			}
 			if (filter.length() > 0) {
 				query += " AND (" + filter + ")";
