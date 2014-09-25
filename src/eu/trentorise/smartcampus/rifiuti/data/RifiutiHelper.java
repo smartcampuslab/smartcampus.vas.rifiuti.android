@@ -57,7 +57,6 @@ import eu.trentorise.smartcampus.rifiuti.utils.LocationHelper;
 @SuppressLint("DefaultLocale")
 public class RifiutiHelper {
 
-	private static final String UTENZA_OCCASIONALE = "utenza occasionale";
 	private static final String UTENZA_NON_DOMESTICA = "utenza non domestica";
 	private static final String UTENZA_DOMESTICA = "utenza domestica";
 
@@ -96,7 +95,7 @@ public class RifiutiHelper {
 	public static void init(Context ctx) throws IOException {
 		mHelper = new RifiutiHelper(ctx);
 		NotesHelper.init(ctx);
-		
+
 		if (locationHelper == null) {
 			locationHelper = new LocationHelper(ctx);
 		}
@@ -1122,8 +1121,9 @@ public class RifiutiHelper {
 			}
 			return result;
 		} finally {
-			if (cursor != null)
+			if (cursor != null) {
 				cursor.close();
+			}
 		}
 
 	}

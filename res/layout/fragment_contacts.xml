@@ -14,12 +14,9 @@
             android:layout_height="1dp"
             android:background="@color/rifiuti_light" />
 
-
-
         <include
             android:id="@+id/contacts_details"
             layout="@layout/contacts_details" />
-
     </LinearLayout>
 
 </ScrollView>

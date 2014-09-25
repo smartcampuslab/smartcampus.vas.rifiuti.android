@@ -7,8 +7,6 @@ import org.json.JSONException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -35,8 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 import eu.trentorise.smartcampus.rifiuti.data.RifiutiHelper;
-import eu.trentorise.smartcampus.rifiuti.geo.OSMAddress;
-import eu.trentorise.smartcampus.rifiuti.geo.OSMGeocoder;
 import eu.trentorise.smartcampus.rifiuti.model.Area;
 import eu.trentorise.smartcampus.rifiuti.model.Profile;
 import eu.trentorise.smartcampus.rifiuti.model.SysProfile;
@@ -127,14 +123,9 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		// messageHandler = new MessageHandler();
 	}
 
-	private void updateAreas(String tipoUtenza) {
-		comuneAreas = RifiutiHelper.readAreasForTipoUtenza(tipoUtenza);
-		comuneAreasNames = new ArrayList<String>(comuneAreas.size());
-		for (Area a : comuneAreas) {
-			comuneAreasNames.add(a.getLocalita());
-		}
-		comuneAreas.add(0, null);
-		comuneAreasNames.add(0, getString(R.string.profilo_comune_placeholder));
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_profile, container, false);
 	}
 
 	@Override
@@ -145,9 +136,14 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_profile, container, false);
+	private void updateAreas(String tipoUtenza) {
+		comuneAreas = RifiutiHelper.readAreasForTipoUtenza(tipoUtenza);
+		comuneAreasNames = new ArrayList<String>(comuneAreas.size());
+		for (Area a : comuneAreas) {
+			comuneAreasNames.add(a.getLocalita());
+		}
+		comuneAreas.add(0, null);
+		comuneAreasNames.add(0, getString(R.string.profilo_comune_placeholder));
 	}
 
 	@Override
@@ -295,11 +291,6 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		getActivity().setProgressBarIndeterminateVisibility(false);
 		getFragmentManager().popBackStack();
 	}
-
-	// private boolean isInDB(Location l) {
-	// // TODO check with db
-	// return true;
-	// }
 
 	private void addOrModify(Profile newProfile) {
 		// if it's a new one
@@ -457,13 +448,13 @@ public class ProfileFragment extends Fragment implements onBackListener {
 				// builder.setTitle(R.string.profilo_utenza_help_title);
 
 				ScrollView dialogScrollView = (ScrollView) getActivity().getLayoutInflater().inflate(
-						R.layout.dialog_utenzahelp, null);
+						R.layout.dialog_utenzahelp, new LinearLayout(getActivity()), false);
 
 				LinearLayout dialogLayout = (LinearLayout) dialogScrollView.findViewById(R.id.dialog_layout);
 
 				for (SysProfile sp : RifiutiHelper.readSysProfiles()) {
 					LinearLayout rowLayout = (LinearLayout) getActivity().getLayoutInflater().inflate(
-							R.layout.dialog_utenzahelp_row, null);
+							R.layout.dialog_utenzahelp_row, new LinearLayout(getActivity()), false);
 					TextView titleTv = (TextView) rowLayout.findViewById(R.id.dialog_utenzahelp_row_title);
 					TextView descTv = (TextView) rowLayout.findViewById(R.id.dialog_utenzahelp_row_description);
 					titleTv.setText(sp.getProfilo());
@@ -610,65 +601,71 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		return builder;
 	}
 
-	private class GeocoderTask extends AsyncTask<Location, OSMAddress, Void> {
-
-		@Override
-		protected Void doInBackground(Location... params) {
-			try {
-				Location l = params[0];
-				OSMGeocoder geo = new OSMGeocoder(getActivity());
-				final List<OSMAddress> addresses = geo.getFromLocation(l.getLatitude(), l.getLongitude(), null);
-				publishProgress(addresses.get(0));
-
-			} catch (Exception e) {
-				Log.e(ProfileFragment.class.getName(), e.toString());
-			}
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(OSMAddress... values) {
-			super.onProgressUpdate(values);
-			final OSMAddress address = values[0];
-			// the user might have clicked back
-			if (getFragmentManager() != null && getFragmentManager().findFragmentById(R.id.content_frame) != null
-					&& getFragmentManager().findFragmentById(R.id.content_frame) instanceof ProfileFragment) {
-				for (int i = 0; i < comuneAreasNames.size(); i++) {
-					if (address.city().equalsIgnoreCase(comuneAreasNames.get(i))) {
-						final int pos = i;
-						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-						builder.setTitle(getString(R.string.dialog_gps_title));
-						String msg = String.format(getString(R.string.dialog_gps_msg), address.getStreet(),
-								(address.getHousenumber() != null) ? address.getHousenumber() : "", address.city());
-						builder.setMessage(msg);
-						builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								mAreaSpinner.setSelection(pos);
-								// mACTVComune.setText(address.city());
-								mETVia.setText(address.getStreet());
-								mETNCiv.setText(address.getHousenumber());
-							}
-						});
-						builder.setNeutralButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.dismiss();
-							}
-						});
-						builder.create().show();
-					}
-				}
-
-			}
-			if (getActivity() != null)
-				getActivity().setProgressBarIndeterminateVisibility(false);
-
-		}
-
-	}
+	// private class GeocoderTask extends AsyncTask<Location, OSMAddress, Void>
+	// {
+	// @Override
+	// protected Void doInBackground(Location... params) {
+	// try {
+	// Location l = params[0];
+	// OSMGeocoder geo = new OSMGeocoder(getActivity());
+	// final List<OSMAddress> addresses = geo.getFromLocation(l.getLatitude(),
+	// l.getLongitude(), null);
+	// publishProgress(addresses.get(0));
+	//
+	// } catch (Exception e) {
+	// Log.e(ProfileFragment.class.getName(), e.toString());
+	// }
+	// return null;
+	// }
+	//
+	// @Override
+	// protected void onProgressUpdate(OSMAddress... values) {
+	// super.onProgressUpdate(values);
+	// final OSMAddress address = values[0];
+	// // the user might have clicked back
+	// if (getFragmentManager() != null &&
+	// getFragmentManager().findFragmentById(R.id.content_frame) != null
+	// && getFragmentManager().findFragmentById(R.id.content_frame) instanceof
+	// ProfileFragment) {
+	// for (int i = 0; i < comuneAreasNames.size(); i++) {
+	// if (address.city().equalsIgnoreCase(comuneAreasNames.get(i))) {
+	// final int pos = i;
+	// AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	// builder.setTitle(getString(R.string.dialog_gps_title));
+	// String msg = String.format(getString(R.string.dialog_gps_msg),
+	// address.getStreet(),
+	// (address.getHousenumber() != null) ? address.getHousenumber() : "",
+	// address.city());
+	// builder.setMessage(msg);
+	//
+	// builder.setPositiveButton(getString(android.R.string.ok), new
+	// DialogInterface.OnClickListener() {
+	// @Override
+	// public void onClick(DialogInterface dialog, int which) {
+	// mAreaSpinner.setSelection(pos);
+	// // mACTVComune.setText(address.city());
+	// mETVia.setText(address.getStreet());
+	// mETNCiv.setText(address.getHousenumber());
+	// }
+	// });
+	//
+	// builder.setNeutralButton(getString(android.R.string.cancel), new
+	// DialogInterface.OnClickListener() {
+	// @Override
+	// public void onClick(DialogInterface dialog, int which) {
+	// dialog.dismiss();
+	// }
+	// });
+	// builder.create().show();
+	// }
+	// }
+	//
+	// }
+	// if (getActivity() != null) {
+	// getActivity().setProgressBarIndeterminateVisibility(false);
+	// }
+	// }
+	// }
 
 	// private class LoadAreasTask extends AsyncTask<String, Area, Void> {
 	//

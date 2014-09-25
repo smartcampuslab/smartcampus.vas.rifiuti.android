@@ -39,13 +39,11 @@ public class ContactsFragment extends Fragment implements onBackListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setHasOptionsMenu(true);
 
 		Bundle bundle = getArguments();
 		data = (ArrayList<HashMap<String, String>>) bundle.get(ArgUtils.ARGUMENT_CONTACTS);
 		mPosition = bundle.getInt(ArgUtils.ARGUMENT_CONTACT_POSITION);
-
 		((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(data.get(mPosition).get("name"));
 	}
 
@@ -68,18 +66,14 @@ public class ContactsFragment extends Fragment implements onBackListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 		return inflater.inflate(R.layout.fragment_contacts, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		abActivity = (ActionBarActivity) getActivity();
-
 		createOfficeView(getView().findViewById(R.id.contacts_details), data.get(mPosition));
-
 	}
 
 	@Override

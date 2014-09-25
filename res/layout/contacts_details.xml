@@ -9,23 +9,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:padding="@dimen/fragment_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/rifiuti_dark" />
+        android:textColor="@color/rifiuti_dark"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/contacts_address_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-         >
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/selectable_background_contacts"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:background="@drawable/selectable_background_contacts" >
+            android:orientation="horizontal" >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -54,15 +56,15 @@
         android:id="@+id/contacts_opening_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/selectable_background_contacts" >
+        android:background="@drawable/selectable_background_contacts"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/selectable_background_contacts"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:background="@drawable/selectable_background_contacts" >
+            android:orientation="horizontal" >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -90,8 +92,8 @@
         android:id="@+id/contacts_web_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/selectable_background_contacts" >
+        android:background="@drawable/selectable_background_contacts"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -125,8 +127,8 @@
         android:id="@+id/contacts_tel_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/selectable_background_contacts" >
+        android:background="@drawable/selectable_background_contacts"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,13 +158,13 @@
             android:layout_height="1dp"
             android:background="@color/rifiuti_middle" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:id="@+id/contacts_fax_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/selectable_background_contacts">
+        android:background="@drawable/selectable_background_contacts"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -197,8 +199,8 @@
         android:id="@+id/contacts_email_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/selectable_background_contacts" >
+        android:background="@drawable/selectable_background_contacts"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -227,15 +229,14 @@
             android:layout_height="1dp"
             android:background="@color/rifiuti_middle" />
     </LinearLayout>
-    
 
     <LinearLayout
         android:id="@+id/contacts_pec_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/selectable_background_contacts"
         android:gravity="center_vertical"
-        android:padding="@dimen/fragment_horizontal_margin"
-        android:background="@drawable/selectable_background_contacts" >
+        android:padding="@dimen/fragment_horizontal_margin" >
 
         <ImageView
             android:id="@+id/contacts_pec_img"

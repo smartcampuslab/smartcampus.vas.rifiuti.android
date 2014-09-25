@@ -25,16 +25,12 @@ public class ContactsListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setHasOptionsMenu(true);
-
 		loadData();
-
 	}
 
 	private void loadData() {
 		new AsyncTask<Void, Void, Void>() {
-
 			@Override
 			protected Void doInBackground(Void... params) {
 				data = new ArrayList<HashMap<String, String>>();
@@ -42,7 +38,6 @@ public class ContactsListFragment extends ListFragment {
 				data.addAll(getGestoriData(RifiutiHelper.getGestori()));
 
 				getActivity().runOnUiThread(new Runnable() {
-
 					@Override
 					public void run() {
 						setListAdapter(new SimpleAdapter(getActivity(), data, R.layout.contacts_group, new String[] { "name" },
@@ -83,8 +78,7 @@ public class ContactsListFragment extends ListFragment {
 		FragmentTransaction ft = fm.beginTransaction();
 		ft.addToBackStack(null);
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		ft.replace(R.id.content_frame, ContactsFragment
-				.newInstance(data,position));
+		ft.replace(R.id.content_frame, ContactsFragment.newInstance(data, position));
 		ft.commit();
 	}
 

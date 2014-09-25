@@ -15,7 +15,6 @@
         android:paddingTop="16dp"
         android:text="@string/begin_tut"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/rifiuti_dark"
-        android:textStyle="bold" />
+        android:textColor="@color/rifiuti_dark" />
 
 </LinearLayout>

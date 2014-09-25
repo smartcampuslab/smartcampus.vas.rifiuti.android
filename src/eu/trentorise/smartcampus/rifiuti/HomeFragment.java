@@ -18,14 +18,14 @@ import eu.trentorise.smartcampus.rifiuti.utils.ArgUtils;
 
 public class HomeFragment extends Fragment {
 
-	private static final String PAGER_CURRENT_ITEM = "pagerCurrentItem";
+	// private static final String PAGER_CURRENT_ITEM = "pagerCurrentItem";
 
 	private String[] mPagerTitles;
 	private ViewPager mPager;
 	private HomePagerAdapter mPagerAdapter;
 	private PagerTabStrip mPagerStrip;
 	private ActionBarActivity abActivity;
-	private Integer pagerPreviousItem = null;
+	// private Integer pagerPreviousItem = null;
 	public static DrawerLayout mDrawerLayout;
 	public static ListView mDrawerList;
 
@@ -79,9 +79,10 @@ public class HomeFragment extends Fragment {
 			}
 		});
 
-		if (savedInstanceState != null && savedInstanceState.containsKey(PAGER_CURRENT_ITEM)) {
-			pagerPreviousItem = savedInstanceState.getInt(PAGER_CURRENT_ITEM);
-		}
+		// if (savedInstanceState != null &&
+		// savedInstanceState.containsKey(PAGER_CURRENT_ITEM)) {
+		// pagerPreviousItem = savedInstanceState.getInt(PAGER_CURRENT_ITEM);
+		// }
 
 		return viewGroup;
 	}
@@ -108,14 +109,14 @@ public class HomeFragment extends Fragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		pagerPreviousItem = mPager.getCurrentItem();
+		// pagerPreviousItem = mPager.getCurrentItem();
 		intentBundle = null;
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(PAGER_CURRENT_ITEM, mPager.getCurrentItem());
+		// outState.putInt(PAGER_CURRENT_ITEM, mPager.getCurrentItem());
 	}
 
 	@Override
