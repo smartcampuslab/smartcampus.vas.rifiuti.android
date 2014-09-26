@@ -29,6 +29,12 @@ public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 	private SparseArray<List<PuntoRaccolta>> points;
 	private SparseArray<List<DatiTipologiaRaccolta>> infos;
 
+	private final int CHILDREN_COUNT_TYPES = 2;
+
+	private enum CHILDREN_COUNT {
+		EMPTY, POPULATED
+	}
+
 	public PuntoDiRaccoltaGroupAdapter(Activity activity, int layoutGroupId, int layoutItemId, List<PuntoRaccolta> objects,
 			List<DatiTipologiaRaccolta> infos) {
 		this.activity = activity;
@@ -90,33 +96,66 @@ public class PuntoDiRaccoltaGroupAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
+	public int getChildrenCount(int groupPosition) {
+		int count = points.get(groupPosition).size();
+		// trick to show placeholder for empty list
+		if (count == 0) {
+			return 1;
+		}
+		return count;
+	}
+
+	@Override
+	public int getChildTypeCount() {
+		return CHILDREN_COUNT_TYPES;
+	}
+
+	@Override
+	public int getChildType(int groupPosition, int childPosition) {
+		if (points.get(groupPosition).isEmpty()) {
+			return CHILDREN_COUNT.EMPTY.ordinal();
+		}
+		return CHILDREN_COUNT.POPULATED.ordinal();
+	}
+
+	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 		View row;
+
 		if (convertView == null) {
 			row = activity.getLayoutInflater().inflate(layoutItemId, parent, false);
 		} else {
 			row = convertView;
 		}
+		TextView empty = (TextView) row.findViewById(R.id.puntoraccolta_empty);
 		TextView title = (TextView) row.findViewById(R.id.puntoraccolta_title);
 		TextView dist = (TextView) row.findViewById(R.id.puntoraccolta_distance);
-		PuntoRaccolta pr = getChild(groupPosition, childPosition);
-		if (pr.location() != null && RifiutiHelper.locationHelper.getLocation() != null) {
-			Location l = new Location("");
-			l.setLatitude(pr.location()[0]);
-			l.setLongitude(pr.location()[1]);
-			double distKm = l.distanceTo(RifiutiHelper.locationHelper.getLocation()) / 1000;
-			dist.setText(activity.getString(R.string.distance, distKm));
+
+		if (getChildType(groupPosition, childPosition) == CHILDREN_COUNT.POPULATED.ordinal()) {
+			PuntoRaccolta pr = getChild(groupPosition, childPosition);
+			if (pr.location() != null && RifiutiHelper.locationHelper.getLocation() != null) {
+				Location l = new Location("");
+				l.setLatitude(pr.location()[0]);
+				l.setLongitude(pr.location()[1]);
+				double distKm = l.distanceTo(RifiutiHelper.locationHelper.getLocation()) / 1000;
+				dist.setText(activity.getString(R.string.distance, distKm));
+				dist.setVisibility(View.VISIBLE);
+			} else {
+				dist.setVisibility(View.GONE);
+			}
+			title.setText(pr.dettaglio());
+
+			empty.setVisibility(View.GONE);
+			title.setVisibility(View.VISIBLE);
 			dist.setVisibility(View.VISIBLE);
-		} else {
+		} else if (getChildType(groupPosition, childPosition) == CHILDREN_COUNT.EMPTY.ordinal()) {
+			// empty view
+			empty.setVisibility(View.VISIBLE);
+			title.setVisibility(View.GONE);
 			dist.setVisibility(View.GONE);
 		}
-		title.setText(pr.dettaglio());
-		return row;
-	}
 
-	@Override
-	public int getChildrenCount(int groupPosition) {
-		return points.get(groupPosition).size();
+		return row;
 	}
 
 	@Override
