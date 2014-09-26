@@ -11,8 +11,10 @@
     <string name="profile_dialog_title">Avviso</string>
     <string name="profile_dialog_delete_confirm_msg">Premendo OK cancellerai definitivamente questo profilo, incluse le eventuali note personali. Confermi?</string>
     <string name="profile_dialog_delete_deny_msg">Non è possibile cancellare il profilo in uso.</string>
-    <!-- Note delete confirmation -->
+    <!-- Notes -->
     <string name="note_dialog_delete_msg">Premendo OK cancellerai definitivamente questa nota personale. Confermi?</string>
+    <string name="note_add">Cosa vuoi ricordare?</string>
+    <string name="no_notes">Non ci sono note</string>
 
     <!-- Notifications -->
     <string name="notifications_title">Domani a %s</string>
@@ -103,10 +105,6 @@
     <string name="action_call">Chiama</string>
     <string name="action_goto">Vai</string>
 
-    <!-- NOTE -->
-    <string name="note_add">Cosa vuoi ricordare?</string>
-    <string name="no_notes">Non ci sono note</string>
-
     <!-- Calendar and agenda -->
     <string name="from_time_to_time">dalle %1$s alle %2$s</string>
 
@@ -116,6 +114,7 @@
 
     <!-- Punti di raccolta - Lista -->
     <string name="puntoraccolta_list_item">%1$s - %2$s</string>
+    <string name="puntoraccolta_empty">Nessun elemento da visualizzare</string>
 
     <!-- Punto di raccolta - Dettagli -->
     <string name="dettagli_label">DETTAGLI</string>
