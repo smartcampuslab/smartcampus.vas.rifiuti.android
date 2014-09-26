@@ -91,7 +91,6 @@
         <item name="android:background">@drawable/spinner_background_ab_rifiuti</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_rifiuti</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_rifiuti</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_rifiuti</item>
         <item name="android:textColor">@android:color/darker_gray</item>
     </style>
 
@@ -126,7 +125,7 @@
     </style>
 
     <style name="RadioButtonRifiuti" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:button">@drawable/rifiuti_btn_radio_holo_dark</item>
+        <item name="android:button">@drawable/rifiuti_btn_radio_holo_light</item>
     </style>
 
     <style name="ButtonRifiuti" parent="android:Widget.Button">
@@ -146,7 +145,7 @@
     </style>
 
     <style name="SpinnerDropDownItemRifiuti" parent="android:Widget.DropDownItem.Spinner">
-        <item name="android:checkMark">@drawable/rifiuti_btn_radio_holo_dark</item>
+        <item name="android:checkMark">@drawable/rifiuti_btn_radio_holo_light</item>
     </style>
 
     <style name="ListViewRifiuti" parent="android:Widget.ListView">
