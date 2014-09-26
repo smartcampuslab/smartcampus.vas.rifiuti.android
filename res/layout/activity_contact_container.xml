@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/contact_container_fragment"
-        android:name="eu.trentorise.smartcampus.rifiuti.ContactsListFragment"
+        android:name="it.smartcampuslab.riciclo.ContactsListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

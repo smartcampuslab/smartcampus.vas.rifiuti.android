@@ -99,7 +99,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
 
-            <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
+            <it.smartcampuslab.riciclo.custom.ExpandedListView
                 android:id="@+id/puntodiraccolta_listatipologie"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -107,7 +107,7 @@
                 android:divider="@color/rifiuti_middle"
                 android:dividerHeight="1dp"
                 android:drawSelectorOnTop="false" >
-            </eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView>
+            </it.smartcampuslab.riciclo.custom.ExpandedListView>
         </LinearLayout>
 
         <View

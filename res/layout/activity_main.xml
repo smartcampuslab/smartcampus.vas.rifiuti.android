@@ -46,7 +46,7 @@
 
             <!-- <ListView -->
 
-            <eu.trentorise.smartcampus.rifiuti.custom.ExpandedListView
+            <it.smartcampuslab.riciclo.custom.ExpandedListView
                 android:id="@+id/left_drawer"
                 android:layout_width="240dp"
                 android:layout_height="match_parent"
