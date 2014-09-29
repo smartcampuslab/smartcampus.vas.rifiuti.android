@@ -1,7 +1,9 @@
 package it.smartcampuslab.riciclo;
 
+import it.smartcampuslab.riciclo.data.RifiutiHelper;
 import it.smartcampuslab.riciclo.model.Profile;
 import it.smartcampuslab.riciclo.utils.PreferenceUtils;
+import it.smartcampuslab.riciclo.utils.PreferenceUtils.ProfileNameExistsException;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +25,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ProfilesListFragment extends ListFragment {
+
+	private final String TAG = "ProfilesListFragment";
 
 	private ActionBarActivity abActivity;
 
@@ -45,6 +50,11 @@ public class ProfilesListFragment extends ListFragment {
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
 		List<Profile> profiles = PreferenceUtils.getProfiles(getActivity());
+		// fix obsolete profiles (if "profilo" field is missing)
+		if (fixObsoleteProfiles(profiles)) {
+			profiles = PreferenceUtils.getProfiles(getActivity());
+		}
+
 		setListAdapter(new ProfileAdapter(getActivity(), profiles));
 		// setEmptyText(getString(R.string.niente_profili));
 
@@ -105,6 +115,26 @@ public class ProfilesListFragment extends ListFragment {
 		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		ft.replace(R.id.content_frame, pf);
 		ft.commit();
+	}
+
+	private boolean fixObsoleteProfiles(List<Profile> profiles) {
+		// fix obsolete profiles (if "profilo" field is missing)
+		boolean reloadProfilesList = false;
+		for (int i = 0; i < profiles.size(); i++) {
+			Profile p = profiles.get(i);
+			if (p.getProfilo() == null) {
+				Log.e(TAG, "Obsolete profile: " + p.getName());
+				try {
+					Profile newProfile = new Profile(p);
+					newProfile.setProfilo(RifiutiHelper.readSysProfiles().get(0).getProfilo());
+					PreferenceUtils.editProfile(getActivity(), i, newProfile, p);
+					reloadProfilesList = true;
+				} catch (ProfileNameExistsException e) {
+					Log.e(TAG, e.getMessage());
+				}
+			}
+		}
+		return reloadProfilesList;
 	}
 
 	private class ProfileAdapter extends ArrayAdapter<Profile> {

@@ -6,9 +6,9 @@ import it.smartcampuslab.riciclo.model.Profile;
 import it.smartcampuslab.riciclo.model.SysProfile;
 import it.smartcampuslab.riciclo.utils.KeyboardUtils;
 import it.smartcampuslab.riciclo.utils.PreferenceUtils;
+import it.smartcampuslab.riciclo.utils.PreferenceUtils.ProfileNameExistsException;
 import it.smartcampuslab.riciclo.utils.ValidatorHelper;
 import it.smartcampuslab.riciclo.utils.onBackListener;
-import it.smartcampuslab.riciclo.utils.PreferenceUtils.ProfileNameExistsException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -564,6 +564,8 @@ public class ProfileFragment extends Fragment implements onBackListener {
 		mTVComune.setText(mProfile.getComune());
 		mTVVia.setText(mProfile.getVia());
 		if (mProfile.getProfilo() != null) {
+			mTVUtenza.setText(mProfile.getProfilo().toString());
+		} else {
 			mTVUtenza.setText(mProfile.getProfilo().toString());
 		}
 		mTVNCiv.setText(mProfile.getNCivico());
