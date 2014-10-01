@@ -187,13 +187,13 @@
 
     <!-- TUTORAL DOVE LO BUTTO -->
     <string name="tut_dove_title_search">Benvenuto!</string>
-    <string name="tut_dove_desc_search">Questo tutorial ti illustrerà il funzionamento della app.\nPer sapere dove buttare uno specifico rifiuto, scrivine il nome qui e premi sulla lente d\'ingrandimento.</string>
+    <string name="tut_dove_desc_search">Benvenuto! Questo tutorial mostra il funzionamento della app.\nPer scoprire dove buttare uno specifico rifiuto, scrivi il nome qui e premi sulla lente di ingrandimento.</string>
     <string name="tut_dove_title_kind">Tipologie di rifiuto</string>
-    <string name="tut_dove_desc_kind">Scopri quali rifiuti appartengono ad una certa categoria e dove possono essere conferiti.</string>
-    <string name="tut_dove_title_notes">Scadenze e note</string>
-    <string name="tut_dove_desc_notes">Tieni sotto controllo le scadenze della raccolta porta a porta e aggiungi delle note personali</string>
+    <string name="tut_dove_desc_kind">Scopri quali rifiuti appartengono ad una determinata categoria e scopri dove devono essere conferiti.</string>
+    <string name="tut_dove_title_notes">Note</string>
+    <string name="tut_dove_desc_notes">Aggiungi delle note personali o dei pro-memoria legati alla gestione dei rifiuti (e.g. pagamento della bolletta, oggetti da portare al CRM, etc).</string>
     <string name="tut_dove_title_cal">Calendario</string>
-    <string name="tut_dove_desc_cal">Verifica quali rifiuti vengono raccolti oggi e quali punti di raccolta sono aperti.</string>
+    <string name="tut_dove_desc_cal">Controlla cosa succede oggi o in un qualsiasi altro giorno: quale tipologia di porta a porta è prevista e quali CRM sono aperti.</string>
     <string name="tut_dove_title_menu">Menù laterale</string>
     <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità</string>
 
