@@ -58,6 +58,12 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 			this.insert(c, 0);
 		}
 	}
+	
+	public void addAllAtEnd(List<CalendarioAgendaEntry> itemsList) {
+		for (CalendarioAgendaEntry c : itemsList) {
+			this.add(c);
+		}
+	}
 
 	public Integer getDayPosition(Calendar cal) {
 		for (int i = 0; i < getCount(); i++) {

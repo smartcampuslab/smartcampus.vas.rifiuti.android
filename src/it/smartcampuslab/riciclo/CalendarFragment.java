@@ -306,7 +306,8 @@ public class CalendarFragment extends Fragment {
 
 		if (calendarAgendaAdapter == null) {
 			calendarAgendaAdapter = new CalendarAgendaAdapter(getActivity(), R.layout.calendaragenda_row);
-			calendarAgendaAdapter.addAll(caeList);
+			// calendarAgendaAdapter.addAll(caeList);
+			calendarAgendaAdapter.addAllAtEnd(caeList);
 			loadedMonths.add(cal.getTimeInMillis());
 			calendarAgendaList.setAdapter(calendarAgendaAdapter);
 		} else {
@@ -318,7 +319,8 @@ public class CalendarFragment extends Fragment {
 				loadedMonths.add(0, cal.getTimeInMillis());
 			} else if (loadedMonths.get(loadedMonths.size() - 1) < cal.getTimeInMillis()) {
 				// add after
-				calendarAgendaAdapter.addAll(caeList);
+				// calendarAgendaAdapter.addAll(caeList);
+				calendarAgendaAdapter.addAllAtEnd(caeList);
 				loadedMonths.add(cal.getTimeInMillis());
 			}
 
