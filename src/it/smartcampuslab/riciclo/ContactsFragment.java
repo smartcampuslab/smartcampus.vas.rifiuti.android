@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,8 +25,8 @@ import android.widget.TextView;
 public class ContactsFragment extends Fragment implements onBackListener {
 
 	private ActionBarActivity abActivity;
-	private ArrayList<HashMap<String, String>> data;
-	private int mPosition;
+	private HashMap<String, String> contact;
+	private Location contactLocation;
 
 	public static ContactsFragment newInstance(ArrayList<HashMap<String, String>> data, int position) {
 		ContactsFragment rf = new ContactsFragment();
@@ -43,9 +44,21 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		setHasOptionsMenu(true);
 
 		Bundle bundle = getArguments();
-		data = (ArrayList<HashMap<String, String>>) bundle.get(ArgUtils.ARGUMENT_CONTACTS);
-		mPosition = bundle.getInt(ArgUtils.ARGUMENT_CONTACT_POSITION);
-		((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(data.get(mPosition).get("name"));
+		ArrayList<HashMap<String, String>> data = (ArrayList<HashMap<String, String>>) bundle.get(ArgUtils.ARGUMENT_CONTACTS);
+		int mPosition = bundle.getInt(ArgUtils.ARGUMENT_CONTACT_POSITION);
+		contact = data.get(mPosition);
+		((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(contact.get("name"));
+
+		/*
+		 * Workaround!
+		 */
+		if (contact.get("name").contains("Servizio TIA")) {
+			contactLocation = parseContactLocation(getResources().getString(R.string.contacts_coords_tia));
+		} else if (contact.get("name").contains("Ufficio Igiene Ambientale")) {
+			contactLocation = parseContactLocation(getResources().getString(R.string.contacts_coords_ufficioigieneambientale));
+		} else if (contact.get("name").contains("SOGAP")) {
+			contactLocation = parseContactLocation(getResources().getString(R.string.contacts_coords_sogap));
+		}
 	}
 
 	@Override
@@ -57,7 +70,7 @@ public class ContactsFragment extends Fragment implements onBackListener {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		abActivity = (ActionBarActivity) getActivity();
-		createOfficeView(getView().findViewById(R.id.contacts_details), data.get(mPosition));
+		createOfficeView(getView().findViewById(R.id.contacts_details), contact);
 	}
 
 	@Override
@@ -82,9 +95,10 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		if (item.getItemId() == android.R.id.home) {
 			onBack();
 			return true;
-		} else if (item.getItemId() == R.id.action_goto) {
-			callAppForDirectionsGmaps(data.get(mPosition).get("address"));
 		}
+		// else if (item.getItemId() == R.id.action_goto) {
+		// callAppForDirectionsGmaps(contact.get("address"));
+		// }
 		return false;
 	}
 
@@ -125,11 +139,15 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		prepareField(view, data.get("fax"), R.id.contacts_fax_container, R.id.contacts_fax, R.string.contacts_fax_ph);
 		prepareField(view, data.get("pec"), R.id.contacts_pec_container, R.id.contacts_pec, R.string.contacts_pec_ph);
 
-		final String addr = data.get("address");
+		// final String addr = data.get("address");
 		View addrView = view.findViewById(R.id.contacts_address_layout);
 		addrView.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				callAppForPlaceGmaps(addr);
+				// callAppForPlaceGmaps(contact.get("address"));
+
+				if (contactLocation != null) {
+					callAppForDirectionsGmaps();
+				}
 			}
 		});
 
@@ -182,16 +200,27 @@ public class ContactsFragment extends Fragment implements onBackListener {
 		startActivity(callIntent);
 	}
 
-	private void callAppForPlaceGmaps(String addr) {
-		String url = "http://maps.google.com/maps?q=" + addr;
+	// private void callAppForPlaceGmaps(String addr) {
+	// String url = "http://maps.google.com/maps?q=" + addr;
+	// Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+	// getActivity().startActivity(navigation);
+	// }
+
+	private void callAppForDirectionsGmaps() {
+		String url = "http://maps.google.com/maps?daddr=" + contactLocation.getLatitude() + ","
+				+ contactLocation.getLongitude();
 		Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		getActivity().startActivity(navigation);
+		startActivity(navigation);
 	}
 
-	private void callAppForDirectionsGmaps(String addr) {
-		String url = "http://maps.google.com/maps?daddr=" + addr;
-		Intent navigation = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		getActivity().startActivity(navigation);
+	private Location parseContactLocation(String locationString) {
+		Location location = new Location("");
+		String[] coordsString = locationString.split(",");
+		double lat = Double.parseDouble(coordsString[0]);
+		double lng = Double.parseDouble(coordsString[1]);
+		location.setLatitude(lat);
+		location.setLongitude(lng);
+		return location;
 	}
 
 }
