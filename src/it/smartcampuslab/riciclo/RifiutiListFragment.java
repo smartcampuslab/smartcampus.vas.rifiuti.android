@@ -49,18 +49,15 @@ public class RifiutiListFragment extends ListFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(
-				R.layout.fragment_rifiuti_list, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_rifiuti_list, container, false);
 		return viewGroup;
 	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		FragmentTransaction fragmentTransaction = getActivity()
-				.getSupportFragmentManager().beginTransaction();
+		FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 		RifiutoDetailsFragment fragment = new RifiutoDetailsFragment();
 
 		Bundle args = new Bundle();
@@ -72,8 +69,7 @@ public class RifiutiListFragment extends ListFragment {
 		// tipologiaRifiuto);
 		args.putString(ArgUtils.ARGUMENT_RIFIUTO, rifiuti.get(position));
 		fragment.setArguments(args);
-		fragmentTransaction
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 		// fragmentTransaction.detach(this);
 		fragmentTransaction.replace(R.id.content_frame, fragment, "rifiuti");
 		fragmentTransaction.addToBackStack(fragment.getTag());
@@ -88,44 +84,41 @@ public class RifiutiListFragment extends ListFragment {
 		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
 		Bundle bundle = getArguments();
-		if(bundle==null)
-			bundle=getArguments();
-		if(bundle==null)
+		if (bundle == null)
+			bundle = getArguments();
+		if (bundle == null)
 			bundle = savedInstanceState;
 		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA))
-			tipologiaRaccolta = bundle
-					.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
+			tipologiaRaccolta = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RACCOLTA);
 		if (bundle.containsKey(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO))
-			tipologiaRifiuto = bundle
-					.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
+			tipologiaRifiuto = bundle.getString(ArgUtils.ARGUMENT_TIPOLOGIA_RIFIUTO);
 
 		try {
 			if (RifiutiHelper.getInstance() == null) {
 				RifiutiHelper.init(getActivity());
-				RifiutiHelper.setProfile(PreferenceUtils.getProfile(
-						getActivity(), PreferenceUtils
-								.getCurrentProfilePosition(getActivity())));
+				RifiutiHelper.setProfile(PreferenceUtils.getProfile(getActivity(),
+						PreferenceUtils.getCurrentProfilePosition(getActivity())));
 			}
 			if (tipologiaRaccolta != null) {
-				rifiuti = RifiutiHelper
-						.getRifiutoPerTipoRaccolta(tipologiaRaccolta);
+				rifiuti = RifiutiHelper.getRifiutoPerTipoRaccolta(tipologiaRaccolta);
 			} else if (tipologiaRifiuto != null) {
-				rifiuti = RifiutiHelper
-						.getRifiutoPerTipoRifiuti(tipologiaRifiuto);
+				rifiuti = RifiutiHelper.getRifiutoPerTipoRifiuti(tipologiaRifiuto);
 			}
 		} catch (Exception e) {
-			Log.e(getClass().getSimpleName(), e.getMessage());
+			e.printStackTrace();
+			if (e.getMessage() != null) {
+				Log.e(getClass().getSimpleName(), e.getMessage());
+			}
 		}
 
 		RifiutoAdapter adapter = new RifiutoAdapter(getActivity(), android.R.layout.simple_list_item_1, rifiuti);
 		setListAdapter(adapter);
 	}
 
-
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putAll(getArguments());
 		super.onSaveInstanceState(outState);
 	}
-	
+
 }
