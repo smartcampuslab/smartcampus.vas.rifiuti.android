@@ -195,7 +195,7 @@
     <string name="tut_dove_title_cal">Calendario</string>
     <string name="tut_dove_desc_cal">Controlla cosa succede oggi o in un qualsiasi altro giorno: quale tipologia di porta a porta è prevista e quali CRM sono aperti.</string>
     <string name="tut_dove_title_menu">Menù laterale</string>
-    <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità</string>
+    <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità.</string>
 
     <!-- INFO FRAGMENT -->
     <string name="info_intro">\"100% Riciclo\" è un progetto di:</string>
