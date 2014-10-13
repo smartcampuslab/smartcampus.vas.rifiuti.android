@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.smartcampuslab.riciclo"
-    android:versionCode="2"
-    android:versionName="1.1.0" >
+    android:versionCode="3"
+    android:versionName="1.1.1" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -108,12 +108,12 @@
             android:name="it.smartcampuslab.riciclo.notifications.NotificationsService"
             android:enabled="true" />
 
-        <!-- <meta-data -->
-        <!-- android:name="com.google.android.maps.v2.API_KEY" -->
-        <!-- android:value="AIzaSyC8Iafl-PanukaEoWT8GuYh4UJEUAZcgv8" /> -->
         <meta-data
+        android:name="com.google.android.maps.v2.API_KEY"
+        android:value="AIzaSyC8Iafl-PanukaEoWT8GuYh4UJEUAZcgv8" />
+<!--         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAYMob8Ipl_ykdVq9hkQTvFVSQMNSXn3aA" />
-    </application>
+ -->    </application>
 
 </manifest>
