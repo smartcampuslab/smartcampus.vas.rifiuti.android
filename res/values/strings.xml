@@ -3,16 +3,18 @@
 
     <string name="empty"></string>
     <string name="close">Chiudi</string>
+    <string name="confirm">Conferma</string>
     <string name="app_failure_setup">Inizializzazione dell\'applicazione non riuscita</string>
     <string name="toast_no_prof">Crea il tuo profilo!</string>
     <string name="err_everything_go_lazy">Qualcosa è andato storto</string>
 
     <!-- Profile delete confirmation or denying -->
     <string name="profile_dialog_title">Avviso</string>
-    <string name="profile_dialog_delete_confirm_msg">Premendo OK cancellerai definitivamente questo profilo, incluse le eventuali note personali. Confermi?</string>
+    <string name="profile_dialog_delete_confirm_msg">Confermi l\'eliminazione del profilo?</string>
     <string name="profile_dialog_delete_deny_msg">Non è possibile cancellare il profilo in uso.</string>
     <!-- Notes -->
-    <string name="note_dialog_delete_msg">Premendo OK cancellerai definitivamente questa nota personale. Confermi?</string>
+    <string name="note_dialog_delete_msg">Confermi l\'eliminazione della nota?</string>
+    <string name="note_dialog_delete_msg_multi">Confermi l\'eliminazione delle note?</string>
     <string name="note_add">Cosa vuoi ricordare?</string>
     <string name="no_notes">Non ci sono note</string>
 
@@ -198,8 +200,11 @@
     <string name="tut_dove_desc_menu">Premi qui per aprire il menù laterale e scoprire ulteriori funzionalità.</string>
 
     <!-- INFO FRAGMENT -->
-    <string name="info_intro">\"100% Riciclo\" è un progetto di:</string>
-    <string name="info_collab">con la collaborazione di:</string>
+    <string name="info_credits">Credits</string>
+    <string name="info_intro">100% Riciclo</string>
+    <string name="info_subtitle">Tutto quello che devi sapere sulla raccolta differenziata del tuo Comune</string>
+    <string name="info_project">Un progetto di:</string>
+    <string name="info_collab">In collaborazione con:</string>
     <string name="info_cdc">CDC</string>
     <string name="info_giudicarie">Comunità delle giudicarie\nhttp://www.comunitadellegiudicarie.it/</string>
     <string name="info_ladurner">Ladurner Energy\nwww.ladurnerambiente.it</string>

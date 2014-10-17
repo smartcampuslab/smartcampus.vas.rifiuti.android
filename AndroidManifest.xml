@@ -42,6 +42,11 @@
             android:launchMode="singleTop" >
         </activity>
         <activity
+            android:name="it.smartcampuslab.riciclo.InfoActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/application_title" >
+        </activity>
+        <activity
             android:name="it.smartcampuslab.riciclo.RifiutiManagerContainerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/application_title" >
@@ -109,11 +114,13 @@
             android:enabled="true" />
 
         <meta-data
-        android:name="com.google.android.maps.v2.API_KEY"
-        android:value="AIzaSyC8Iafl-PanukaEoWT8GuYh4UJEUAZcgv8" />
-<!--         <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyC8Iafl-PanukaEoWT8GuYh4UJEUAZcgv8" />
+        <!--
+             <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAYMob8Ipl_ykdVq9hkQTvFVSQMNSXn3aA" />
- -->    </application>
+        -->
+    </application>
 
 </manifest>

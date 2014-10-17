@@ -3,41 +3,28 @@ package it.smartcampuslab.riciclo;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
-public class InfoFragment extends Fragment {
-
-	private ActionBarActivity abActivity;
+public class InfoActivity extends ActionBarActivity {
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	}
+		overridePendingTransition(R.anim.pull_up, android.R.anim.fade_out);
+		setContentView(R.layout.info_credits);
+		getSupportActionBar().hide();
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.info_credits, container, false);
-		return viewGroup;
-	}
+		ImageButton closeCreditsBtn = (ImageButton) findViewById(R.id.close_credits);
+		closeCreditsBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		abActivity = (ActionBarActivity) getActivity();
-		// abActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		abActivity.getSupportActionBar().setHomeButtonEnabled(true);
-		abActivity.getSupportActionBar().setTitle(abActivity.getString(R.string.informazioni_title));
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		ImageView smartcampus = (ImageView) getActivity().findViewById(R.id.smartcampus);
+		ImageView smartcampus = (ImageView) findViewById(R.id.smartcampus);
 		smartcampus.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -47,7 +34,7 @@ public class InfoFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
-		ImageView cct = (ImageView) getActivity().findViewById(R.id.cct);
+		ImageView cct = (ImageView) findViewById(R.id.cct);
 		cct.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -57,7 +44,7 @@ public class InfoFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
-		ImageView ladurner = (ImageView) getActivity().findViewById(R.id.ladurner);
+		ImageView ladurner = (ImageView) findViewById(R.id.ladurner);
 		ladurner.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -67,7 +54,7 @@ public class InfoFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
-		ImageView fbk = (ImageView) getActivity().findViewById(R.id.fbk);
+		ImageView fbk = (ImageView) findViewById(R.id.fbk);
 		fbk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -77,17 +64,12 @@ public class InfoFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
-
 	}
 
 	@Override
-	public void onPause() {
+	protected void onPause() {
 		super.onPause();
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
+		this.overridePendingTransition(android.R.anim.fade_in, R.anim.push_down);
 	}
 
 }

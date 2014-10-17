@@ -579,7 +579,7 @@ public class ProfileFragment extends Fragment implements onBackListener {
 				&& PreferenceUtils.getCurrentProfilePosition(getActivity()) != getArguments().getInt(PROFILE_INDEX_KEY)) {
 			// confirm deletion
 			builder.setMessage(getString(R.string.profile_dialog_delete_confirm_msg));
-			builder.setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+			builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					try {

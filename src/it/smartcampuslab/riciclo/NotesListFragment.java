@@ -148,8 +148,12 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 	}
 
 	private void showConfirmAndDelete(final SparseBooleanArray pos) {
-		new AlertDialog.Builder(getActivity()).setTitle(R.string.profile_dialog_title)
-				.setMessage(R.string.note_dialog_delete_msg).setPositiveButton(android.R.string.ok, new OnClickListener() {
+		int message = R.string.note_dialog_delete_msg;
+		if (pos.size() > 1) {
+			message = R.string.note_dialog_delete_msg_multi;
+		}
+		new AlertDialog.Builder(getActivity()).setTitle(R.string.profile_dialog_title).setMessage(message)
+				.setPositiveButton(R.string.confirm, new OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						getActivity().setProgressBarIndeterminateVisibility(true);
 						new DeleteNotesTask().execute(pos);
@@ -224,8 +228,9 @@ public class NotesListFragment extends ListFragment implements OnAddListener, Ac
 		protected Void doInBackground(SparseBooleanArray... params) {
 			SparseBooleanArray pos = params[0];
 			for (int i = 0; i < pos.size(); i++) {
-				if (pos.valueAt(i))
+				if (pos.valueAt(i)) {
 					NotesHelper.deleteNotes(((Note) getListView().getItemAtPosition(pos.keyAt(i))));
+				}
 			}
 			publishProgress();
 			return null;
