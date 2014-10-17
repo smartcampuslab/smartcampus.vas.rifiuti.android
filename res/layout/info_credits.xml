@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/close_credits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/ic_action_remove" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/rifiuti_small"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/rifiuti_large"
+                android:layout_marginTop="@dimen/rifiuti_medium"
+                android:text="@string/info_credits" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_intro"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/rifiuti_color"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/info_subtitle"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/rifiuti_small"
+                android:layout_marginTop="@dimen/rifiuti_large"
+                android:text="@string/info_project"
+                android:textColor="@color/rifiuti_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/rifiuti_small"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/smartcampus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/smart_campus_credits" />
+
+                <ImageView
+                    android:id="@+id/ladurner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/ladurnerenergy" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/fbk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/fbk_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/rifiuti_small"
+                android:layout_marginTop="@dimen/rifiuti_large"
+                android:text="@string/info_collab"
+                android:textColor="@color/rifiuti_color" />
+
+            <ImageView
+                android:id="@+id/cct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/autonomie_locali" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/rifiuti_large"
+                android:autoLink="email"
+                android:gravity="center"
+                android:text="@string/info_mail"
+                android:textColor="@color/rifiuti_color"
+                android:textColorLink="@android:color/black" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

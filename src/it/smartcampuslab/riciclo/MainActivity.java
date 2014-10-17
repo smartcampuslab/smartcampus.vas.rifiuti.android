@@ -350,6 +350,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
 	private void loadFragment(int position) {
 		Fragment fragment = null;
+		Intent intent = null;
+
 		switch (position) {
 		case 0:
 			fragment = new HomeFragment();
@@ -377,7 +379,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			fragment = new HomeFragment();
 			break;
 		case 7:
-			fragment = new InfoFragment();
+			// fragment = new InfoFragment();
+			intent = new Intent(getApplicationContext(), InfoActivity.class);
 			break;
 		case 8:
 			fragment = new ProfileFragment();
@@ -396,6 +399,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 			mDrawerLayout.closeDrawer(findViewById(R.id.drawer_wrapper));
 			// erase intent
 			intentBundle = null;
+		} else if (intent != null) {
+			startActivity(intent);
+//			overridePendingTransition(R.anim.pull_up, android.R.anim.fade_out);
 		}
 	}
 
