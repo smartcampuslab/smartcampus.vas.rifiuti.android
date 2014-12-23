@@ -60,7 +60,7 @@ public class RifiutiHelper {
 	private static final String UTENZA_NON_DOMESTICA = "utenza non domestica";
 	private static final String UTENZA_DOMESTICA = "utenza domestica";
 
-	public static final int DB_VERSION = 11;
+	public static final int DB_VERSION = 12;
 
 	private static final String TUT_PREFS = "tutorial preference";
 

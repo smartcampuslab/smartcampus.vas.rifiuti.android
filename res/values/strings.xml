@@ -202,7 +202,7 @@
     <!-- INFO FRAGMENT -->
     <string name="info_credits">Credits</string>
     <string name="info_intro">100% Riciclo</string>
-    <string name="info_subtitle">Tutto quello che devi sapere sulla raccolta differenziata del tuo Comune</string>
+    <string name="info_subtitle">Tutto quello che devi sapere sulla raccolta differenziata nel tuo Comune</string>
     <string name="info_project">Un progetto di:</string>
     <string name="info_collab">In collaborazione con:</string>
     <string name="info_cdc">CDC</string>

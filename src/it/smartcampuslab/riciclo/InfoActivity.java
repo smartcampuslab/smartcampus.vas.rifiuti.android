@@ -1,12 +1,15 @@
 package it.smartcampuslab.riciclo;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class InfoActivity extends ActionBarActivity {
 
@@ -16,6 +19,14 @@ public class InfoActivity extends ActionBarActivity {
 		overridePendingTransition(R.anim.pull_up, android.R.anim.fade_out);
 		setContentView(R.layout.info_credits);
 		getSupportActionBar().hide();
+
+		TextView version = (TextView) findViewById(R.id.credits_version);
+		try {
+			PackageInfo info = getApplication().getPackageManager().getPackageInfo(getApplication().getPackageName(), 0);
+			version.setText(info.versionName);
+		} catch (NameNotFoundException e) {
+			version.setVisibility(View.GONE);
+		}
 
 		ImageButton closeCreditsBtn = (ImageButton) findViewById(R.id.close_credits);
 		closeCreditsBtn.setOnClickListener(new View.OnClickListener() {
