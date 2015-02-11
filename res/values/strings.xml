@@ -215,4 +215,6 @@
     <string name="distance">%.2f km</string>
     <string name="confirm_exit">Sei sicuro di voler uscire dall\'app?</string>
 
+    <string name="version">v %s</string>
+    
 </resources>

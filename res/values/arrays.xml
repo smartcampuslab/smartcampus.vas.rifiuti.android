@@ -142,4 +142,23 @@
         <item>@drawable/rif_ic_verde_ramaglie</item>
     </integer-array>
 
+    <string-array name="removed_areas">
+<!--         <item>Bersone</item> -->
+<!--         <item>Daone</item> -->
+<!--         <item>Praso</item> -->
+<!--         <item>Pieve di Bono</item> -->
+<!--         <item>Prezzo</item> -->
+<!--         <item>San Lorenzo in Banale</item> -->
+<!--         <item>Dorsino</item> -->
+    </string-array>
+    <string-array name="new_areas">
+<!--         <item>Valdaone</item> -->
+<!--         <item>Valdaone</item> -->
+<!--         <item>Valdaone</item> -->
+<!--         <item>Pieve di Bono - Prezzo</item> -->
+<!--         <item>Pieve di Bono - Prezzo</item> -->
+<!--         <item>San Lorenzo Banale - Dorsino</item> -->
+<!--         <item>San Lorenzo Banale - Dorsino</item> -->
+    </string-array>
+    
 </resources>

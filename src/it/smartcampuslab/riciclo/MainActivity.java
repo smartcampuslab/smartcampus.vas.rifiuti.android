@@ -101,6 +101,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		});
 		try {
 			RifiutiHelper.init(this.getApplicationContext());
+			RifiutiHelper.validateProfiles(this, PreferenceUtils.getProfiles(this));
 			if (PreferenceUtils.getProfiles(this).isEmpty()) {
 				lockDrawer();
 				loadFragment(8);

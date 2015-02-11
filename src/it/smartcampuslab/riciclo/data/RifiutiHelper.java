@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -50,6 +51,7 @@ import it.smartcampuslab.riciclo.model.Profile;
 import it.smartcampuslab.riciclo.model.PuntoRaccolta;
 import it.smartcampuslab.riciclo.model.SysProfile;
 import it.smartcampuslab.riciclo.utils.LocationHelper;
+import it.smartcampuslab.riciclo.utils.PreferenceUtils;
 
 /**
  * @author raman
@@ -60,7 +62,7 @@ public class RifiutiHelper {
 	private static final String UTENZA_NON_DOMESTICA = "utenza non domestica";
 	private static final String UTENZA_DOMESTICA = "utenza domestica";
 
-	public static final int DB_VERSION = 12;
+	public static final int DB_VERSION = 13;
 
 	private static final String TUT_PREFS = "tutorial preference";
 
@@ -1294,6 +1296,52 @@ public class RifiutiHelper {
 		} finally {
 			if (cursor != null)
 				cursor.close();
+		}
+	}
+
+	/**
+	 * Check for each profile that the profile area exist. If it doesn't, 
+	 * search for area mapping in special array and update. If not found, remove profile.
+	 * @param list 
+	 * @param mainActivity
+	 */
+	public static void validateProfiles(Context ctx, List<Profile> list) {
+		SQLiteDatabase db = mHelper.dbHelper.getReadableDatabase();
+		String[] removedAreas = ctx.getResources().getStringArray(R.array.removed_areas);
+		String[] newAreas = ctx.getResources().getStringArray(R.array.new_areas);
+		Map<String,String> areas = new HashMap<String, String>(removedAreas.length);
+		for (int i = 0; i < removedAreas.length; i++) {
+			String old = removedAreas[i];
+			areas.put(old, newAreas[i]);
+		}
+		boolean hasChanges = false;
+		Cursor cursor = null;
+		try {
+			for (Iterator<Profile> iterator = list.iterator(); iterator.hasNext();) {
+				Profile p = iterator.next();
+				if (areas.get(p.getArea()) != null) {
+					p.setArea(areas.get(p.getArea()));
+					hasChanges = true;
+					String query = "SELECT comune FROM aree WHERE nome = \"" + p.getArea() + "\"";
+					cursor = db.rawQuery(query, null);
+					if (cursor.moveToFirst()) {
+						p.setComune(cursor.getString(0));
+					}
+					continue;
+				}
+				String query = "SELECT nome FROM aree WHERE nome = \"" + p.getArea() + "\"";
+				cursor = db.rawQuery(query, null);
+				if (cursor.getCount() <= 0) {
+					iterator.remove();
+					hasChanges = true;
+				}
+			}
+		} finally {
+			if (cursor != null)
+				cursor.close();
+		}
+		if (hasChanges) {
+			PreferenceUtils.updateProfiles(ctx, list);
 		}
 	}
 

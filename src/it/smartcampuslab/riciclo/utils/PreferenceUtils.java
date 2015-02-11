@@ -162,6 +162,23 @@ public class PreferenceUtils {
 	}
 
 	/**
+	 * Update all the profiles in one shot
+	 * @param newProfiles
+	 */
+	public static void updateProfiles(Context ctx, List<Profile> newProfiles) {
+		JSONArray jsonArr = new JSONArray();
+		try {
+			for (Profile tmp : newProfiles) {
+				jsonArr.put(tmp.toJSON());
+			}
+		} catch (JSONException e) {
+			Log.w(PreferenceUtils.class.getName(), e.toString());
+		}
+		SharedPreferences sp = getProfilePreference(ctx);
+		sp.edit().putString(ALL_PROFILES_KEY, jsonArr.toString()).commit();
+	}
+	
+	/**
 	 * 
 	 * @param ctx
 	 * @param position

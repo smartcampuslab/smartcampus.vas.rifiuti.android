@@ -23,7 +23,7 @@ public class InfoActivity extends ActionBarActivity {
 		TextView version = (TextView) findViewById(R.id.credits_version);
 		try {
 			PackageInfo info = getApplication().getPackageManager().getPackageInfo(getApplication().getPackageName(), 0);
-			version.setText(info.versionName);
+			version.setText(getString(R.string.version, info.versionName));
 		} catch (NameNotFoundException e) {
 			version.setVisibility(View.GONE);
 		}
