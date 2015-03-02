@@ -29,8 +29,8 @@ import android.widget.TextView;
 
 public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 
-	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE d MMMM yyyy", Locale.getDefault());
-	private static final String TIME_FORMAT = "H:mm";
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE d MMMM yyyy", Locale.ITALY);
+	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.ITALY);
 	private List<DatiTipologiaRaccolta> tipologiaRaccoltaList = RifiutiHelper.readTipologiaRaccolta();
 
 	private Calendar todayCalendar = Calendar.getInstance(Locale.getDefault());
@@ -174,8 +174,8 @@ public class CalendarAgendaAdapter extends ArrayAdapter<CalendarioAgendaEntry> {
 				List<CalendarioEvent> eventsList = map.get(pr);
 				for (int j = 0; j < eventsList.size(); j++) {
 					CalendarioEvent event = eventsList.get(j);
-					String startDate = event.getStartDate(TIME_FORMAT);
-					String endDate = event.getEndDate(TIME_FORMAT);
+					String startDate = event.getStartDate(timeFormatter);
+					String endDate = event.getEndDate(timeFormatter);
 					if (!startDate.equals(endDate)) {
 						if (desc.length() > 0) {
 							desc += "\n";

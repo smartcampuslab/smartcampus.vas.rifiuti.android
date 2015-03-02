@@ -1,9 +1,14 @@
 package it.smartcampuslab.riciclo.data;
 
+import it.smartcampuslab.riciclo.R;
+import it.smartcampuslab.riciclo.model.CalendarioEvent;
+import it.smartcampuslab.riciclo.model.CalendarioItem;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -16,14 +21,12 @@ import android.util.SparseArray;
 
 import com.tyczj.extendedcalendarview.EventsSource;
 
-import it.smartcampuslab.riciclo.R;
-import it.smartcampuslab.riciclo.model.CalendarioEvent;
-import it.smartcampuslab.riciclo.model.CalendarioItem;
-
 public class RifiutiEventsSource implements EventsSource<CalendarioEvent> {
 
 	private Map<String, Integer> calendarEventsColors;
 
+	private static Boolean syncMonitor = true;
+	
 	public RifiutiEventsSource(Context ctx) {
 		calendarEventsColors = new HashMap<String, Integer>();
 		String[] array = ctx.getResources().getStringArray(R.array.calendar_events_strings);
@@ -54,35 +57,42 @@ public class RifiutiEventsSource implements EventsSource<CalendarioEvent> {
 	}
 
 	private void filler(Calendar cal, SparseArray<Collection<CalendarioEvent>> eventsByMonth) {
-		List<List<CalendarioItem>> data = RifiutiHelper.getCalendarsForMonth(cal);
-		for (int i = 0; i < data.size(); i++) {
-			List<CalendarioEvent> events = new ArrayList<CalendarioEvent>();
-			cal.set(Calendar.DAY_OF_MONTH, i + 1);
-			for (CalendarioItem item : data.get(i)) {
-				CalendarioEvent event = null;
-				long start = 0, end = 0;
-				try {
-					start = item.getCalendar().start(cal);
-					end = item.getCalendar().end(cal);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				event = new CalendarioEvent(start, end, item);
-				event.setName(item.getPoint().getTipologiaPuntiRaccolta());
-				event.setDescription(item.getPoint().dettaglio());
-				event.setLocation(item.getPoint().getLocalizzazione());
-				event.setCalendarioItem(item);
-				if (!item.getColor().equals("")) {
-					Integer colorInteger = calendarEventsColors.get(item.getColor().toLowerCase(Locale.getDefault()));
-					if (colorInteger != null) {
-						event.setColor(colorInteger);
+		synchronized (syncMonitor) {
+			List<List<CalendarioItem>> data = RifiutiHelper.getCalendarsForMonth(cal);
+			Calendar tmpCal = (Calendar)cal.clone();
+			tmpCal.set(Calendar.HOUR_OF_DAY,0);
+			tmpCal.set(Calendar.MINUTE,0);
+			tmpCal.set(Calendar.SECOND,0);
+			for (int i = 0; i < data.size(); i++) {
+				List<CalendarioEvent> events = new ArrayList<CalendarioEvent>();
+				tmpCal.add(Calendar.DAY_OF_MONTH, 1);
+				for (CalendarioItem item : data.get(i)) {
+					CalendarioEvent event = null;
+					long start = 0, end = 0;
+					try {
+						start = item.getCalendar().start(tmpCal);
+						end = item.getCalendar().end(tmpCal);
+//						System.err.print("START = "+item.getCalendar().getDalle()+":"+new Date(start));
+//						System.err.println(" / END = "+item.getCalendar().getAlle()+":"+new Date(end));
+					} catch (ParseException e) {
+						e.printStackTrace();
 					}
+					event = new CalendarioEvent(start, end, item);
+					event.setName(item.getPoint().getTipologiaPuntiRaccolta());
+					event.setDescription(item.getPoint().dettaglio());
+					event.setLocation(item.getPoint().getLocalizzazione());
+					event.setCalendarioItem(item);
+					if (!item.getColor().equals("")) {
+						Integer colorInteger = calendarEventsColors.get(item.getColor().toLowerCase(Locale.getDefault()));
+						if (colorInteger != null) {
+							event.setColor(colorInteger);
+						}
+					}
+					events.add(event);
 				}
-				events.add(event);
+				eventsByMonth.append(i + 1, events);
 			}
-			eventsByMonth.append(i + 1, events);
 		}
-
 	}
 
 	// private void testFiller(Calendar cal, SparseArray<Collection<Event>>
