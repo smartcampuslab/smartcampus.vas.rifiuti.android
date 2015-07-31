@@ -62,8 +62,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ExpandedListView) findViewById(R.id.left_drawer);
 
-		mDrawerList.setAdapter(new DrawerArrayAdapter(this, R.layout.drawer_entry, getResources().getStringArray(
-				R.array.drawer_entries_strings)));
+		mDrawerList.setAdapter(new DrawerArrayAdapter(this, R.layout.drawer_entry,
+				getResources().getStringArray(R.array.drawer_entries_strings)));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		// mTutorialHelper = new ListViewTutorialHelper(this,
@@ -277,8 +277,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 		mDrawerToggle.syncState();
 
 		Integer profilePosition = null;
-		if (intentBundle != null && intentBundle.containsKey(ArgUtils.ARGUMENT_PROFILE)) {
-			Profile intentBundleProfile = (Profile) intentBundle.getSerializable(ArgUtils.ARGUMENT_PROFILE);
+		if (intentBundle != null && intentBundle.containsKey(ArgUtils.ARGUMENT_NOTIFICATION_PROFILE)) {
+			Profile intentBundleProfile = (Profile) intentBundle.getSerializable(ArgUtils.ARGUMENT_NOTIFICATION_PROFILE);
 			for (int pc = 0; pc < profiles.size(); pc++) {
 				Profile p = profiles.get(pc);
 				if (p.toString().equals(intentBundleProfile.toString())) {
@@ -298,8 +298,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	}
 
 	private void updateActionBarSubtitle() {
-		getSupportActionBar().setSubtitle(
-				PreferenceUtils.getProfiles(this).get(PreferenceUtils.getCurrentProfilePosition(this)).getName());
+		getSupportActionBar()
+				.setSubtitle(PreferenceUtils.getProfiles(this).get(PreferenceUtils.getCurrentProfilePosition(this)).getName());
 	}
 
 	private void addNavDrawerButton() {

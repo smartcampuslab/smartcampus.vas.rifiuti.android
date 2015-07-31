@@ -13,6 +13,6 @@ public class ArgUtils {
 	public static final String ARGUMENT_CONTACT_POSITION = "contact_pos";
 
 	public static final String ARGUMENT_CALENDAR_TOMORROW = "tomorrow calendar";
-	public static final String ARGUMENT_PROFILE = "profile";
+	public static final String ARGUMENT_NOTIFICATION_PROFILE = "notificationprofile";
 
 }

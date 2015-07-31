@@ -131,7 +131,7 @@ public class NotificationsService extends Service {
 
 					Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 					intent.putExtra(ArgUtils.ARGUMENT_CALENDAR_TOMORROW, tomorrowCal);
-					intent.putExtra(ArgUtils.ARGUMENT_PROFILE, profile);
+					intent.putExtra(ArgUtils.ARGUMENT_NOTIFICATION_PROFILE, profile);
 					PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
 							PendingIntent.FLAG_UPDATE_CURRENT);
 					mBuilder.setContentIntent(pendingIntent);

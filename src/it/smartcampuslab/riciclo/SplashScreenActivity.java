@@ -8,7 +8,7 @@ import android.os.Handler;
 public class SplashScreenActivity extends Activity {
 
 	private static int SPLASH_TIME_OUT = 1500; // default 1500
-	
+
 	private Bundle intentBundle;
 
 	@Override
@@ -16,7 +16,7 @@ public class SplashScreenActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscreen);
-		
+
 		if (getIntent().getExtras() != null) {
 			intentBundle = getIntent().getExtras();
 		}
