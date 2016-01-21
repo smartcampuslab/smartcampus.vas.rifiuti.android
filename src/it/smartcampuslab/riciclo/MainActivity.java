@@ -51,7 +51,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_main);
 		mContentFrameId = R.id.content_frame;
 

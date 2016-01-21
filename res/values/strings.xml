@@ -140,7 +140,7 @@
     <string name="profili_title">Profili</string>
     <string name="tutorial_title">Tutorial</string>
     <string name="informazioni_title">Informazioni</string>
-    <string name="application_title">100% Riciclo</string>
+    <string name="application_title">100% Riciclo - Giudicarie</string>
     <string name="feedback_title">Segnalazione</string>
 
     <!-- FEEDBACK -->
@@ -151,7 +151,7 @@
     <string name="feedback_photo_hint">Scatta una foto</string>
     <string name="feedback_gps_hint">Allega la tua posizione</string>
     <string name="feedback_send">Segnala!</string>
-    <string name="feedback_subject">Segnalazione dalla app \"100% Riciclo\"</string>
+    <string name="feedback_subject">Segnalazione dalla app \"100% Riciclo - Giudicarie\"</string>
     <string name="feedback_capture">Image</string>
     <string name="feedback_mail">Seleziona l\'app per segnalazione</string>
     <string name="feedback_to">segnalazioni.rifiuti@comunitadellegiudicarie.it</string>
@@ -201,7 +201,7 @@
 
     <!-- INFO FRAGMENT -->
     <string name="info_credits">Credits</string>
-    <string name="info_intro">100% Riciclo</string>
+    <string name="info_intro">100% Riciclo - Giudicarie</string>
     <string name="info_subtitle">Tutto quello che devi sapere sulla raccolta differenziata nel tuo Comune</string>
     <string name="info_project">Un progetto di:</string>
     <string name="info_collab">In collaborazione con:</string>
